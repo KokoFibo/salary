@@ -9,7 +9,7 @@
         <div class="row justify-content-center ">
             <div class="col-xl-6 ">
                 <div class="card">
-                    <div class="card-header text-light text-center" style="background-color: #EF4444; ">
+                    <div class="card-header text-light text-center" style="background-color: #3f85ee; ">
                         <h5>{{ __('Login') }}</h5>
                     </div>
                     {{-- <div class="card-body pt-4" style="background-color: #E5E7EB;">
@@ -85,7 +85,7 @@
                                 <div class="col-md-8 offset-md-4">
                                     {{-- <button type="submit" class="btn btn-primary"  --}}
                                     <button type="submit" class="btn btn-primary" x-bind:disabled="submitButtonDisabled"
-                                        style="background-color: #EF4444; border-color: #EF4444;">
+                                        style="background-color: #3f85ee; border-color: #3f85ee;">
                                         {{ __('Login') }}
                                     </button>
 
