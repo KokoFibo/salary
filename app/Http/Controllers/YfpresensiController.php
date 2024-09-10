@@ -265,18 +265,18 @@ class YfpresensiController extends Controller
 
     public function store(Request $request)
     {
+
         // disini
-        $missingArray = [];
-        $missingArray = checkNonRegisterUser();
-        if ($missingArray != null) {
-            // Yfrekappresensi::with('karyawan')->where('date', $tgl_delete)->truncate();
-            $missingUserId = null;
-            foreach ($missingArray as $arr) {
-                $missingUserId = $missingUserId . $arr['Karyawan_id'] . ', ';
-            }
-            clear_locks();
-            return back()->with('error', 'Ada ' . count($missingArray) . ' Id karyawan yang tidak terdaftar di Database Karyawan (' . $missingUserId . ') - Data Tidak di Upload');
-        }
+        // $missingArray = [];
+        // $missingArray = checkNonRegisterUser();
+        // if ($missingArray != null) {
+        //     $missingUserId = null;
+        //     foreach ($missingArray as $arr) {
+        //         $missingUserId = $missingUserId . $arr['Karyawan_id'] . ', ';
+        //     }
+        //     clear_locks();
+        //     return back()->with('error', 'Ada ' . count($missingArray) . ' Id karyawan yang tidak terdaftar di Database Karyawan (' . $missingUserId . ') - Data Tidak di Upload');
+        // }
 
 
         $lock = Lock::find(1);
@@ -412,17 +412,30 @@ class YfpresensiController extends Controller
         }
 
         // Check apakah ada ID yang belum terdaftar
-        $data_id = check_id_presensi();
-        if ($data_id != null) {
-            Yfpresensi::query()->truncate();
-            return view('no-id', [
-                'data_id' => $data_id
-            ]);
-        }
+        // dd('stop');
 
+        // $data_id = check_id_presensi();
+        // if ($data_id != null) {
+        //     Yfpresensi::query()->truncate();
+        //     return view('no-id', [
+        //         'data_id' => $data_id
+        //     ]);
+        // }
 
         // dd( 'ok' );
         // mulai rekap data dari tabel Yfpresensi
+
+        $data_yfpresensi = Yfpresensi::select('user_id')->get();
+
+        foreach ($data_yfpresensi as $dyf) {
+            $finddata = Karyawan::where('id_karyawan', $dyf->user_id)->exists();
+            if (!$finddata) {
+                Yfpresensi::where('user_id', $dyf->user_id)->delete();
+            }
+        }
+        // dd('stop');
+
+
 
         $jumlahKaryawanHadir = DB::table('yfpresensis')
             ->distinct('user_id')
