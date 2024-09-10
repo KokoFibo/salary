@@ -13,7 +13,7 @@
 @endsection
 
 @section('content')
-    <h1 class="pt-3  text-xl lg:text-4xl text-center font-semibold">{{ __('Dashboard') }}</h1>
+    <h1 class="pt-3  text-xl lg:text-4xl text-center font-semibold">{{ __('Dashboard Non OS') }}</h1>
     <div>
     </div>
 

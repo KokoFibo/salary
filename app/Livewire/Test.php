@@ -72,8 +72,11 @@ class Test extends Component
     foreach ($data as $d) {
       $user = User::where('username', $d->id_karyawan)->first();
       if ($user) {
-        $user->delete();
-        $cx++;
+        if ($user->role == 1) {
+
+          $user->delete();
+          $cx++;
+        }
       }
     }
     // dd($cx);
@@ -97,8 +100,10 @@ class Test extends Component
     foreach ($data as $d) {
       $user = User::where('username', $d->id_karyawan)->first();
       if ($user) {
-        $user->delete();
-        $cx++;
+        if ($user->role == 1) {
+          $user->delete();
+          $cx++;
+        }
       }
     }
     // dd($cx);
