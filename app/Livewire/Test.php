@@ -61,6 +61,35 @@ class Test extends Component
   }
 
 
+  public function delete_karyawan_company()
+  {
+    $users_count = User::count();
+    // dd($users_count);
+    $datas_count = Karyawan::whereIn('company_id', [7, 5, 3, 6, 4])->count();
+    $data = Karyawan::whereIn('company_id', [7, 5, 3, 6, 4])->get();
+    // delete user
+    $cx = 0;
+    foreach ($data as $d) {
+      $user = User::where('username', $d->id_karyawan)->first();
+      if ($user) {
+        if ($user->role == 1) {
+
+          $user->delete();
+          $cx++;
+        }
+      }
+    }
+    // dd($cx);
+    // delete data
+    $delete_data = Karyawan::whereIn('company_id', [7, 5, 3, 6, 4])->delete();
+
+    $this->dispatch(
+      'message',
+      type: 'success',
+      title: 'Data Berhasil di delete : ' . $datas_count . ' data, ' . $cx . ' users',
+    );
+  }
+
   public function delete_diatas_4jt()
   {
     $users_count = User::count();
@@ -93,8 +122,11 @@ class Test extends Component
   {
     $users_count = User::count();
     // dd($users_count);
-    $datas_count = Karyawan::where('gaji_pokok', '<', 4000000)->count();
-    $data = Karyawan::where('gaji_pokok', '<', 4000000)->get();
+    $datas_count = Karyawan::where('gaji_pokok', '<', 4000000)
+      // ['YAM', 'YIG', 'YCME', 'YSM', 'YEV']
+      ->whereNotIn('company_id', [7, 5, 3, 6, 4])
+      ->count();
+    $data = Karyawan::where('gaji_pokok', '<', 4000000)->whereNotIn('company_id', [7, 5, 3, 6, 4])->get();
     // delete user
     $cx = 0;
     foreach ($data as $d) {
@@ -109,7 +141,8 @@ class Test extends Component
     // dd($cx);
 
     // delete data
-    $delete_data = Karyawan::where('gaji_pokok', '<', 4000000)->delete();
+    // $delete_data = Karyawan::where('gaji_pokok', '<', 4000000)->delete();
+    Karyawan::where('gaji_pokok', '<', 4000000)->whereNotIn('company_id', [7, 5, 3, 6, 4])->delete();
     $this->dispatch(
       'message',
       type: 'success',

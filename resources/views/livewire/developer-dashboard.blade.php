@@ -19,4 +19,16 @@
         <button wire:click='clear_payroll_rebuild' class="btn btn-primary">Clear Payroll Rebuild</button>
         <button wire:click='delete_failed_jobs' class="btn btn-primary">Delete Failed Job</button>
     </div>
+    <div class="d-flex mt-5 justify-content-evenly">
+        <button class='btn btn-danger' wire:confirm='Are you sure?' wire:click='delete_diatas_4jt'>Delete Karyawan Gaji
+            diatas
+            atau sama dengan 4
+            juta</button>
+        <button class='btn btn-danger' wire:confirm='Are you sure?' wire:click='delete_dibawah_4jt'>Delete Karyawan
+            Gaji
+            dibawah 4 juta</button>
+        <button class='btn btn-danger' wire:confirm='Are you sure?' wire:click='delete_karyawan_company'>Delete
+            karyawan
+            Company ['YAM', 'YIG', 'YCME', 'YSM','YEV']</button>
+    </div>
 </div>
