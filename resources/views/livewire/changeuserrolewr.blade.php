@@ -23,24 +23,24 @@
                                     <tr>
                                         <th>{{ __('ID') }}</th>
                                         <th>{{ __('Nama') }}</th>
-                                        <th>{{ __('Email') }}</th>
+                                        {{-- <th>{{ __('Email') }}</th>
                                         <th>{{ __('Handphone') }}</th>
                                         <th>{{ __('Tanggal Lahir') }}</th>
                                         <th>{{ __('Company') }}</th>
                                         <th>{{ __('Departemen') }}</th>
-                                        <th>{{ __('Jabatan') }}</th>
+                                        <th>{{ __('Jabatan') }}</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{{ $data->id_karyawan }}</td>
-                                        <td>{{ $data->nama }}</td>
-                                        <td>{{ $data->email }}</td>
+                                        <td>{{ $data->username }}</td>
+                                        <td>{{ $data->name }}</td>
+                                        {{-- <td>{{ $data->email }}</td>
                                         <td>{{ $data->hp }}</td>
                                         <td>{{ format_tgl($data->tanggal_lahir) }}</td>
                                         <td>{{ $data->branch }}</td>
                                         <td>{{ $data->departemen }}</td>
-                                        <td>{{ $data->jabatan->nama_jabatan }}</td>
+                                        <td>{{ $data->jabatan->nama_jabatan }}</td> --}}
                                     </tr>
                                 </tbody>
                             </table>
