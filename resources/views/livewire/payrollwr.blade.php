@@ -158,7 +158,7 @@
                                 {{-- @if (!in_array(now()->month, $select_month))
                                     <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
                                 @endif --}}
-                                <option value="9">Sept 9</option>
+                                {{-- <option value="9">Sept 9</option> --}}
 
                             </select>
 
