@@ -37,6 +37,6 @@
             dibawah 4 juta keep Company ['YAM', 'YIG', 'YCME', 'YSM','YEV']</button>
         <button class='btn btn-danger' wire:confirm='Are you sure?' wire:click='delete_karyawan_company'>Delete
             karyawan
-            Company ['YAM', 'YIG', 'YCME', 'YSM','YEV']</button>
+            Company ['YAM', 'YIG', 'YCME', 'YSM', 'YEV']</button>
     </div>
 </div>
