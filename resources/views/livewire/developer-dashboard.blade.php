@@ -24,9 +24,17 @@
             diatas
             atau sama dengan 4
             juta</button>
+
         <button class='btn btn-danger' wire:confirm='Are you sure?' wire:click='delete_dibawah_4jt'>Delete Karyawan
             Gaji
             dibawah 4 juta</button>
+    </div>
+    <div class="d-flex mt-5 justify-content-evenly">
+
+        <button class='btn btn-danger' wire:confirm='Are you sure?' wire:click='delete_dibawah_4jt_keep_company'>Delete
+            Karyawan
+            Gaji
+            dibawah 4 juta keep Company ['YAM', 'YIG', 'YCME', 'YSM','YEV']</button>
         <button class='btn btn-danger' wire:confirm='Are you sure?' wire:click='delete_karyawan_company'>Delete
             karyawan
             Company ['YAM', 'YIG', 'YCME', 'YSM','YEV']</button>
