@@ -10,6 +10,7 @@ class ApiController extends Controller
 {
     public function storeKaryawan(Request $request)
     {
+        dd($request);
         // $id = 8195;
         // $karyawan = Karyawan::where('id_karyawan', $id)->first();
         if (!$request) {
