@@ -21,8 +21,10 @@ class ApiController extends Controller
             // $newKaryawan = $request->replicate();
             // $newKaryawan->save();
             $karyawan = Karyawan::create([
-                'id_karyawan' => $request->id_karyawan,
-                'nama' => $request->nama,
+                // 'id_karyawan' => $request->id_karyawan,
+                // 'nama' => $request->nama,
+                'id_karyawan' => 8192,
+                'nama' => 'john doe',
             ]);
             return response()->json('SUKSES BRO', 200);
         }
