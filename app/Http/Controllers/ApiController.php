@@ -10,7 +10,7 @@ class ApiController extends Controller
 {
     public function storeKaryawan(Request $request)
     {
-        dd($request);
+        // dd($request);
         // $id = 8195;
         // $karyawan = Karyawan::where('id_karyawan', $id)->first();
         if (!$request) {
@@ -18,8 +18,12 @@ class ApiController extends Controller
                 'message' => 'User or Karyawan not found'
             ], 404);
         } else {
-            $newKaryawan = $request->replicate();
-            $newKaryawan->save();
+            // $newKaryawan = $request->replicate();
+            // $newKaryawan->save();
+            $karyawan = Karyawan::create([
+                'id_karyawan' => $request->id_karyawan,
+                'nama' => $request->nama,
+            ]);
             return response()->json('SUKSES BRO', 200);
         }
     }
