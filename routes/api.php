@@ -20,4 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::get('/karyawan', [ApiController::class, 'index']);
 // Route::post('store/{id}', [ApiController::class, 'store']);
-Route::post('store/{request}', [ApiController::class, 'store']);
+Route::post('store/{karyawan}', [ApiController::class, 'store']);
