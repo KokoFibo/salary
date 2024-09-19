@@ -8,23 +8,20 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    public function store($id)
+    public function storeKaryawan(Request $request)
     {
-        $karyawan = Karyawan::where('id_karyawan', $id)->first();
-        $user = User::where('id_karyawan', $id)->first();
-        if ($karyawan || $user) {
-            $newKaryawan = $karyawan->replicate();
-            $newUser = $user->replicate();
-            $newKaryawan->save();
-            $newUser->save();
-            return response()->json($newKaryawan, 200);
-        } else {
+        // $id = 8195;
+        // $karyawan = Karyawan::where('id_karyawan', $id)->first();
+        if (!$request) {
             return response()->json([
                 'message' => 'User or Karyawan not found'
             ], 404);
+        } else {
+            $newKaryawan = $request->replicate();
+            $newKaryawan->save();
+            return response()->json('SUKSES BRO', 200);
         }
     }
-
     public function index()
     {
         return Karyawan::where('id_karyawan', '2')->get();
