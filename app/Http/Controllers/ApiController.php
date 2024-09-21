@@ -8,29 +8,84 @@ use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
-    public function storeKaryawan(Request $request)
+
+    public function store($id)
     {
-        // dd($request);
-        // $id = 8195;
-        // $karyawan = Karyawan::where('id_karyawan', $id)->first();
-        if (!$request) {
-            return response()->json([
-                'message' => 'User or Karyawan not found'
-            ], 404);
+
+        $respKaryawan = Http::get('https://payroll.accel365.id/api/getkaryawan/' . $id);
+        $dataKaryawan = $respKaryawan->json();
+
+        $respUser = Http::get('https://payroll.accel365.id/api/getuser/' . $id);
+        $dataUser = $respUser->json();
+
+        if ($respKaryawan->successful() && $respUser->successful()) {
+
+            // dd('berhasil');
+            $karyawan = Karyawan::create($dataKaryawan);
+            $user = User::create($dataUser);
+            return response()->json(
+                [
+                    'message' => 'Karyawan created successfully!',
+                    'karyawan' => $karyawan
+                ],
+                200
+            );
         } else {
-            // $newKaryawan = $request->replicate();
-            // $newKaryawan->save();
-            $karyawan = Karyawan::create([
-                // 'id_karyawan' => $request->id_karyawan,
-                // 'nama' => $request->nama,
-                'id_karyawan' => 8192,
-                'nama' => 'john doe',
-            ]);
-            return response()->json('SUKSES BRO', 200);
+            return response()->json(['error' => 'Data karyawan ini tidak dalam database'], 500);
         }
     }
+
     public function index()
     {
         return Karyawan::where('id_karyawan', '2')->get();
+    }
+
+    // Dibawah ini hanya contoh saja
+    public function getDataUser($id)
+    {
+        // Find the user by ID
+        $user = User::where('username', $id)->first();
+
+        // Check if the user exists
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        // Return user data
+        return response()->json($user, 200);
+    }
+    public function getDataKaryawan($id)
+    {
+        // Find the user by ID
+        $karyawan = Karyawan::where('id_karyawan', $id)->first();
+
+        // Check if the user exists
+        if (!$karyawan) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        // Return user data
+        return response()->json($karyawan, 200);
+    }
+
+    public function move_data($id)
+    {
+        // Find the user by ID
+        $user = User::where('username', $id)->first();
+        $karyawan = Karyawan::where('id_karyawan', $id)->first();
+
+        // Check if the user exists
+        if (!$user || !$karyawan) {
+            return response()->json([
+                'message' => 'User or Karyawan not found'
+            ], 404);
+        }
+
+        // Return user data
+        return response()->json($user, 200);
     }
 }
