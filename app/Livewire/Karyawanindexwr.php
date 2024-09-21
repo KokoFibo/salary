@@ -6,17 +6,18 @@ use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
-use Livewire\Attributes\On;
+use App\Models\Placement;
 // use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use App\Exports\KaryawanExport;
 use App\Exports\DataPelitaExport;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\KaryawanByEtnisExport;
 use Illuminate\Database\Query\Builder;
 use App\Exports\KaryawanByDepartmentExport;
-use App\Models\Placement;
 use Google\Service\YouTube\ThirdPartyLinkStatus;
 
 class Karyawanindexwr extends Component
