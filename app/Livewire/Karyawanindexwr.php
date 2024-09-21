@@ -53,6 +53,29 @@ class Karyawanindexwr extends Component
 
     // public $departments, $companies, $etnises, $jabatans;
 
+    public function export($id)
+    {
+        if ($id) {
+
+            $respStore = Http::get('https://payroll.accel365.id/api/store/' . $id);
+            if ($respStore->successful()) {
+                $this->dispatch(
+                    'message',
+                    type: 'success',
+                    title: 'Data Sudah berhasil di copy ke OS',
+                    position: 'center'
+                );
+            }
+        } else {
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'ID ini tidak ada dalam database',
+                position: 'center'
+            );
+        }
+    }
+
     public function delete($id)
     {
         $Data_Karyawan = Karyawan::find($id);

@@ -298,6 +298,10 @@
                                                     wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
                                                     class="btn btn-danger btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                         class="fa-solid fa-trash-can"></i></button>
+                                                <button wire:click="export(`{{ $data->id }}`)"
+                                                    wire:confirm.prompt="Yakin mau di export?\n\nKetik EXPORT untuk konfirmasi|EXPORT"
+                                                    class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
+                                                        class="fa-solid fa-file-export"></i></button>
                                             @endif
                                         </div>
                                     </td>
