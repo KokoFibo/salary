@@ -264,6 +264,8 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/changefield', ChangeField::class)->name('changefield');
                             Route::get('applicantditerima', ApplicantDiterima::class)->name('applicantditerima');
                             Route::get('/department', Departmentwr::class);
+                            Route::get('/rubahid', Rubahid::class);
+
 
 
 

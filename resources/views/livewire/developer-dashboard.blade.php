@@ -6,6 +6,8 @@
         <a href="/moveback"><button class="btn btn-primary">Move Back Data</button></a>
         <a href="/absensikosong"><button class="btn btn-primary col-12">Data Absensi Kosong</button></a>
         <a href="/usernotfound"><button class="btn btn-primary col-12">User Not Found</button></a>
+        <a href="/rubahid"><button class="btn btn-primary">Rubah ID</button></a>
+
 
 
 
