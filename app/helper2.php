@@ -822,11 +822,6 @@ function build_payroll($month, $year)
         );
 
         $total_bpjs = $data_karyawan->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
-
-
-
-
-
         $is_exist = Payroll::where('id_karyawan', $id)->whereMonth('date', $month)
             ->whereYear('date', $year)->first();
         if ($is_exist) {
@@ -852,7 +847,7 @@ function build_payroll($month, $year)
             $data->date = $year . '-' . $month . '-01';
             $data->pph21  = $pph21;
             $data->subtotal = $data_karyawan->gaji_pokok;
-            $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21;
+            $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21 - $data->potongan1x + $data->bonus1x;
             $data->total_bpjs = $total_bpjs;
             $data->save();
         } else {
