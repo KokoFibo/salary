@@ -749,25 +749,9 @@ function build_payroll($month, $year)
     $idArrTKA = [1, 3, 5, 25, 6];
     $idArrTionghoa = [4, 2, 6435]; // TKA hanya 3 orang
     $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 800, 900, 5576, 5693, 6566, 7511, 6576, 6577, 6578, 6579, 8127]; //TKA hanya 3 no didepan
-
+    $potongan1x = 0;
+    $bonus1x = 0;
     foreach ($idKhusus as $id) {
-        // bonus dan potongan
-
-        $all_bonus = 0;
-        $all_potongan = 0;
-        $bonuspotongan = Bonuspotongan::whereMonth('tanggal', $month)
-            ->whereYear('tanggal', $year)->where('user_id', $id)
-            ->first();
-        if ($bonuspotongan) {
-            $all_bonus = $bonuspotongan->uang_makan + $bonuspotongan->bonus_lain;
-            $all_potongan = $bonuspotongan->baju_esd + $bonuspotongan->gelas + $bonuspotongan->sandal + $bonuspotongan->seragam + $bonuspotongan->sport_bra + $bonuspotongan->hijab_instan + $bonuspotongan->id_card_hilang + $bonuspotongan->masker_hijau + $bonuspotongan->potongan_lain;
-        } else {
-            $all_bonus = 0;
-            $all_potongan = 0;
-        }
-
-
-        // End
 
         $data_id = Karyawan::where('id_karyawan', $id)->first();
         $data_karyawan = Karyawan::find($data_id->id);
@@ -843,7 +827,6 @@ function build_payroll($month, $year)
         $is_exist = Payroll::where('id_karyawan', $id)->whereMonth('date', $month)
             ->whereYear('date', $year)->first();
         if ($is_exist) {
-
             $data = Payroll::find($is_exist->id);
             $data->jp = $jp;
             $data->jht = $jht;
@@ -866,13 +849,10 @@ function build_payroll($month, $year)
             $data->date = $year . '-' . $month . '-01';
             $data->pph21  = $pph21;
             $data->subtotal = $data_karyawan->gaji_pokok;
-            $data->bonus1x = $all_bonus;
-            $data->potongan1x = $all_potongan;
-            $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21 - $all_potongan + $all_bonus;
+            $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21 - $data->potongan1x + $data->bonus1x;
             $data->total_bpjs = $total_bpjs;
             $data->save();
         } else {
-
             $data = new Payroll();
             $data->jp = $jp;
             $data->jht = $jht;
@@ -897,9 +877,7 @@ function build_payroll($month, $year)
             $data->date = $year . '-' . $month . '-01';
             $data->pph21  = $pph21;
             $data->subtotal = $data_karyawan->gaji_pokok;
-            $data->bonus1x = $all_bonus;
-            $data->potongan1x = $all_potongan;
-            $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21 - $all_potongan + $all_bonus;
+            $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21;
             $data->total_bpjs = $total_bpjs;
 
             $data->save();
