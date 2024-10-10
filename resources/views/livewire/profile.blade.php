@@ -128,9 +128,8 @@
                 </div>
 
                 {{-- Update Etnis --}}
-                <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
+                {{-- <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
 
-                    {{-- <label class="block text-sm font-medium  text-gray-900">Bahasa</label> --}}
                     <div class="flex gap-5">
                         <div>
                             <div>
@@ -163,7 +162,7 @@
                     </div>
                     <button class="bg-blue-500 text-sm text-white px-1 py-1 w-full rounded shadow"
                         wire:click="updateEtnis">{{ __('Update Etnis') }}</button>
-                </div>
+                </div> --}}
                 {{-- Update Kontak Darurat --}}
                 <div class="bg-white mx-3 px-3 py-3 mt-3  flex flex-col gap-2 rounded-xl shadow-xl">
 
