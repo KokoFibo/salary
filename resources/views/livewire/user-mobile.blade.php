@@ -4,6 +4,7 @@
     {{-- <p>is_perbulan : {{ is_perbulan() }}</p> --}}
     <div>
         <div class="flex flex-col h-screen">
+            {{-- @if (auth()->user()->language == 'Id') --}}
             <div class=header>
                 <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
 
@@ -337,7 +338,8 @@
                                         {{-- @if ($data_payroll->gaji_pokok >= 4500000) --}}
                                         @if ($data_payroll->gaji_libur != 0)
                                             <tr>
-                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Gaji Libur
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">Gaji
+                                                    Libur
                                                 </td>
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                                     Rp. {{ number_format($data_payroll->gaji_libur) }}
@@ -346,7 +348,8 @@
                                         @endif
                                         @if ($data_payroll->jht != 0)
                                             <tr>
-                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JHT
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS
+                                                    JHT
                                                 </td>
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                                     Rp. {{ number_format($data_payroll->jht) }}
@@ -355,7 +358,8 @@
                                         @endif
                                         @if ($data_payroll->jp != 0)
                                             <tr>
-                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS JP
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">BPJS
+                                                    JP
                                                 </td>
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                                     Rp. {{ number_format($data_payroll->jp) }}
@@ -399,14 +403,16 @@
                                         {{-- @endif --}}
                                         @if ($data_karyawan->ptkp != 0)
                                             <tr>
-                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">PTKP</td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">PTKP
+                                                </td>
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                                     {{ $data_karyawan->ptkp }}</td>
                                             </tr>
                                         @endif
                                         @if ($data_payroll->pph21 != 0)
                                             <tr>
-                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">PPh21</td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">PPh21
+                                                </td>
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
                                                     Rp. {{ number_format($data_payroll->pph21) }}</td>
                                             </tr>
@@ -622,7 +628,8 @@
                                                 </td>
                                                 <td class="text-center">
                                                     <p class="text-gray-500 text-sm">{{ __('S. Malam') }}</p>
-                                                    <p class="font-bold text-blue-500">{{ $tambahan_shift_malam }}</p>
+                                                    <p class="font-bold text-blue-500">{{ $tambahan_shift_malam }}
+                                                    </p>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -636,6 +643,8 @@
                     {{-- End Presensi Harian --}}
                 </div>.
             @endif
+            {{-- @endif --}}
+
 
             {{-- End Main Table --}}
 
