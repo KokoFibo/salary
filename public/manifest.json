@@ -8,7 +8,7 @@
     "theme_color": "#212529",
     "icons": [
         {
-            "src": "logo_yf.png",
+            "src": "logoyf.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable"
