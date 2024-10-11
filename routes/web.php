@@ -80,6 +80,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\Headcount;
 
 // Middleware
 Auth::routes([
@@ -165,6 +166,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/kview', [KviewController::class, 'index']);
 
 
+
                 // YF PRESENSI
                 Route::get('/yfupload', function () {
                     return view('yfpresensi.upload');
@@ -214,6 +216,7 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/reportindex', [ReportController::class, 'index']);
                         Route::post('/createexcel', [ReportController::class, 'createExcel']);
                         Route::get('/bankreport', BankReport::class);
+                        Route::get('/headcount', Headcount::class);
 
 
                         // Route::get('/karyawan/excel', [KaryawanExcelController::class, 'index']);
