@@ -204,6 +204,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('permohonan-personnel', PermohonanPersonnel::class);
                     Route::get('/addrequester', Requesterwr::class);
                     Route::get('/addtimeoutrequester', Timeoutrequsterwr::class);
+                    Route::get('/headcount', Headcount::class);
 
 
 
@@ -216,7 +217,6 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/reportindex', [ReportController::class, 'index']);
                         Route::post('/createexcel', [ReportController::class, 'createExcel']);
                         Route::get('/bankreport', BankReport::class);
-                        Route::get('/headcount', Headcount::class);
 
 
                         // Route::get('/karyawan/excel', [KaryawanExcelController::class, 'index']);
