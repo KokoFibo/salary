@@ -1,4 +1,4 @@
-<h4 class='text-center'>Yifang Non OS head count for {{ monthname($bulan) }} {{ $tahun }}</h4>
+<h4 class='text-center'>Yifang Non OS Headcount for {{ monthname($bulan) }} {{ $tahun }}</h4>
 <table class="table">
     <thead>
         <tr>
