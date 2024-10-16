@@ -418,7 +418,8 @@ class HeadcountExport implements FromView, ShouldAutoSize, WithColumnFormatting,
         $this->yevoffero();
         $this->yevsmoot();
         // $header_text = 'Yifang Non OS head count for ' . monthname($this->month) . ' ' . $this->year;
-        $header_text = 'Yifang ' . monthname($this->month) . ' ' . $this->year;
+        $header_text = 'Yifang Non-OS Headcount for' . monthname($this->month) . ' ' . $this->year;
+
 
         return view('headcount_excel_view', [
             'header_text' => $header_text,

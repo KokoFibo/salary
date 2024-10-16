@@ -384,7 +384,8 @@ class Headcount extends Component
         $this->headcount = Payroll::whereYear('date', $this->year)->whereMonth('date', $this->month)->count();
         $this->bulan = $this->month;
         $this->tahun = $this->year;
-        $nama_file = 'Excel.xlsx';
+        $nama_file = 'Yifang Non-OS Headcount for ' . monthname($this->month) . ' ' . $this->year . '.xlsx';
+
         // dd($this->month, $this->year, $nama_file);
         return Excel::download(new HeadcountExport($this->month, $this->year), $nama_file);
         // return Excel::download(new HeadcountExport($this->month, $this->year));
