@@ -1,18 +1,25 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Exports;
 
-use Carbon\Carbon;
 use App\Models\Payroll;
-use Livewire\Component;
-use App\Exports\HeadcountExport;
-use Illuminate\Support\Facades\DB;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\FromView;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 
-class Headcount extends Component
+// class HeadcountExport implements FromView,  ShouldAutoSize, WithColumnFormatting, WithStyles
+class HeadcountExport implements FromView, ShouldAutoSize, WithColumnFormatting, WithStyles
 {
-    public $select_month, $select_year;
-    public $month, $year, $headcount;
+
+    use Exportable;
+    protected $month, $year;
+
 
     public $yig_hr, $yig_finance, $yig_procurement, $yig_ga, $yig_legal, $yig_exim, $yig_me, $yig_bd, $yig_qc, $yig_production, $yig_warehouse, $yig_bod, $yig_total;
     public $ycme_hr, $ycme_finance, $ycme_procurement, $ycme_ga, $ycme_legal, $ycme_exim, $ycme_me, $ycme_bd, $ycme_qc, $ycme_production, $ycme_warehouse, $ycme_bod, $ycme_total;
@@ -27,7 +34,49 @@ class Headcount extends Component
     public $yevelektronik_hr, $yevelektronik_finance, $yevelektronik_procurement, $yevelektronik_ga, $yevelektronik_legal, $yevelektronik_exim, $yevelektronik_me, $yevelektronik_bd, $yevelektronik_qc, $yevelektronik_production, $yevelektronik_warehouse, $yevelektronik_bod, $yevelektronik_total;
 
     public $yig_total1, $ycme_total1, $ysm_total1, $yam_total1, $yev_total1, $yevsmoot_total1, $yevoffero_total1, $yevsunra_total1, $yevaima_total1, $yevelektronik_total1;
-    public $dept, $bulan, $tahun;
+
+
+    public function __construct($month, $year)
+    {
+
+        $this->month = $month;
+        $this->year = $year;
+        // dd($this->month, $this->year);
+    }
+
+    public function styles(Worksheet $sheet)
+    {
+        return [
+            // Style the first row as bold text.
+            2    => ['font' => ['bold' => true]],
+            // Styling a specific cell by coordinate.
+
+            // Styling an entire column.
+            2  => ['font' => ['size' => 15]],
+            // 2 => ['font' => ['italic' => true]],
+            3  => ['font' => ['size' => 12]],
+
+
+        ];
+    }
+
+    public function columnFormats(): array
+    {
+        return [
+            // 'C' => NumberFormat::FORMAT_TEXT,
+            'B' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'C' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'D' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'E' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'F' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'G' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'H' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'I' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'J' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'K' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+
+        ];
+    }
 
     public function yevelektronik()
     {
@@ -348,69 +397,188 @@ class Headcount extends Component
         $this->yam_total1 = Payroll::whereYear('date', $this->year)->whereMonth('date', $this->month)->where('placement', 'YAM')->count();
         $this->yam_total = $this->yam_hr + $this->yam_finance + $this->yam_procurement + $this->yam_ga + $this->yam_legal + $this->yam_exim + $this->yam_me + $this->yam_bd + $this->yam_qc + $this->yam_production + $this->yam_warehouse + $this->yam_bod + $this->yam_total;
     }
-    public function mount()
-    {
-        $payroll = Payroll::orderBy('date', 'desc')->first();
-        $this->year = Carbon::parse($payroll->date)->year;
-        $this->month = Carbon::parse($payroll->date)->month;
-        $this->select_year = Payroll::select(DB::raw('YEAR(date) as year'))
-            ->distinct()
-            ->pluck('year')
-            ->toArray();
 
-        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))
-            ->whereYear('date', $this->year)
-            ->distinct()
-            ->orderBy('date', 'desc')
-            ->pluck('month')
-            ->toArray();
-    }
-    public function excel()
+    public function view(): View
     {
-        // public $ysm_hr, $ysm_finance, $ysm_procurement, $ysm_ga, $ysm_legal, $ysm_exim, $ysm_me, $ysm_bd, $ysm_qc, $ysm_production, $ysm_warehouse, $ysm_bod, $ysm_total;
-        // public $yam_hr, $yam_finance, $yam_procurement, $yam_ga, $yam_legal, $yam_exim, $yam_me, $yam_bd, $yam_qc, $yam_production, $yam_warehouse, $yam_bod, $yam_total;
+
+        $header_text = 'Headcount ' . nama_bulan($this->month) . ' ' . $this->year;
+
+        // return view('payroll_excel_view', [
+        //     'data' => $data,
+        //     'header_text' => $header_text
+        // ]);
         $this->yig();
         $this->ycme();
         $this->ysm();
         $this->yam();
+        $this->yev();
         $this->yevelektronik();
         $this->yevaima();
         $this->yevsunra();
         $this->yevoffero();
         $this->yevsmoot();
-        $this->yev();
-
-        $this->headcount = 0;
-        $this->headcount = Payroll::whereYear('date', $this->year)->whereMonth('date', $this->month)->count();
-        $this->bulan = $this->month;
-        $this->tahun = $this->year;
-        $nama_file = 'Yifang Non-OS Headcount for ' . monthname($this->month) . ' ' . $this->year . '.xlsx';
-
-        // dd($this->month, $this->year, $nama_file);
-        return Excel::download(new HeadcountExport($this->month, $this->year), $nama_file);
-        // return Excel::download(new HeadcountExport($this->month, $this->year));
-    }
-
-    public function render()
-    {
-        $this->select_year = Payroll::select(DB::raw('YEAR(date) as year'))
-            ->distinct()
-            ->pluck('year')
-            ->toArray();
-
-        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))
-            ->whereYear('date', $this->year)
-            ->distinct()
-            ->orderBy('date', 'desc')
-            ->pluck('month')
-            ->toArray();
-
-        $this->dept =
-            Payroll::distinct()
-            ->pluck('departemen')
-            ->toArray();
+        // $header_text = 'Yifang Non OS head count for ' . monthname($this->month) . ' ' . $this->year;
+        $header_text = 'Yifang Non-OS Headcount for ' . monthname($this->month) . ' ' . $this->year;
 
 
-        return view('livewire.headcount');
+        return view('headcount_excel_view', [
+            'header_text' => $header_text,
+
+            // YIG
+            'yig_hr' => $this->yig_hr,
+            'yig_finance' => $this->yig_finance,
+            'yig_procurement' => $this->yig_procurement,
+            'yig_ga' => $this->yig_ga,
+            'yig_legal' => $this->yig_legal,
+            'yig_exim' => $this->yig_exim,
+            'yig_me' => $this->yig_me,
+            'yig_bd' => $this->yig_bd,
+            'yig_qc' => $this->yig_qc,
+            'yig_production' => $this->yig_production,
+            'yig_warehouse' => $this->yig_warehouse,
+            'yig_bod' => $this->yig_bod,
+            'yig_total' => $this->yig_total,
+
+            //YCME
+            'ycme_hr' => $this->ycme_hr,
+            'ycme_finance' => $this->ycme_finance,
+            'ycme_procurement' => $this->ycme_procurement,
+            'ycme_ga' => $this->ycme_ga,
+            'ycme_legal' => $this->ycme_legal,
+            'ycme_exim' => $this->ycme_exim,
+            'ycme_me' => $this->ycme_me,
+            'ycme_bd' => $this->ycme_bd,
+            'ycme_qc' => $this->ycme_qc,
+            'ycme_production' => $this->ycme_production,
+            'ycme_warehouse' => $this->ycme_warehouse,
+            'ycme_bod' => $this->ycme_bod,
+            'ycme_total' => $this->ycme_total,
+
+            //YSM
+            'ysm_hr' => $this->ysm_hr,
+            'ysm_finance' => $this->ysm_finance,
+            'ysm_procurement' => $this->ysm_procurement,
+            'ysm_ga' => $this->ysm_ga,
+            'ysm_legal' => $this->ysm_legal,
+            'ysm_exim' => $this->ysm_exim,
+            'ysm_me' => $this->ysm_me,
+            'ysm_bd' => $this->ysm_bd,
+            'ysm_qc' => $this->ysm_qc,
+            'ysm_production' => $this->ysm_production,
+            'ysm_warehouse' => $this->ysm_warehouse,
+            'ysm_bod' => $this->ysm_bod,
+            'ysm_total' => $this->ysm_total,
+
+            //YAM
+            'yam_hr' => $this->yam_hr,
+            'yam_finance' => $this->yam_finance,
+            'yam_procurement' => $this->yam_procurement,
+            'yam_ga' => $this->yam_ga,
+            'yam_legal' => $this->yam_legal,
+            'yam_exim' => $this->yam_exim,
+            'yam_me' => $this->yam_me,
+            'yam_bd' => $this->yam_bd,
+            'yam_qc' => $this->yam_qc,
+            'yam_production' => $this->yam_production,
+            'yam_warehouse' => $this->yam_warehouse,
+            'yam_bod' => $this->yam_bod,
+            'yam_total' => $this->yam_total,
+
+            //YEV
+            'yev_hr' => $this->yev_hr,
+            'yev_finance' => $this->yev_finance,
+            'yev_procurement' => $this->yev_procurement,
+            'yev_ga' => $this->yev_ga,
+            'yev_legal' => $this->yev_legal,
+            'yev_exim' => $this->yev_exim,
+            'yev_me' => $this->yev_me,
+            'yev_bd' => $this->yev_bd,
+            'yev_qc' => $this->yev_qc,
+            'yev_production' => $this->yev_production,
+            'yev_warehouse' => $this->yev_warehouse,
+            'yev_bod' => $this->yev_bod,
+            'yev_total' => $this->yev_total,
+
+            // YEV Aima
+            'yevaima_hr' => $this->yevaima_hr,
+            'yevaima_finance' => $this->yevaima_finance,
+            'yevaima_procurement' => $this->yevaima_procurement,
+            'yevaima_ga' => $this->yevaima_ga,
+            'yevaima_legal' => $this->yevaima_legal,
+            'yevaima_exim' => $this->yevaima_exim,
+            'yevaima_me' => $this->yevaima_me,
+            'yevaima_bd' => $this->yevaima_bd,
+            'yevaima_qc' => $this->yevaima_qc,
+            'yevaima_production' => $this->yevaima_production,
+            'yevaima_warehouse' => $this->yevaima_warehouse,
+            'yevaima_bod' => $this->yevaima_bod,
+            'yevaima_total' => $this->yevaima_total,
+            'yevaima_total' => $this->yevaima_total,
+
+            // YEV Sunra
+            'yevsunra_hr' => $this->yevsunra_hr,
+            'yevsunra_finance' => $this->yevsunra_finance,
+            'yevsunra_procurement' => $this->yevsunra_procurement,
+            'yevsunra_ga' => $this->yevsunra_ga,
+            'yevsunra_legal' => $this->yevsunra_legal,
+            'yevsunra_exim' => $this->yevsunra_exim,
+            'yevsunra_me' => $this->yevsunra_me,
+            'yevsunra_bd' => $this->yevsunra_bd,
+            'yevsunra_qc' => $this->yevsunra_qc,
+            'yevsunra_production' => $this->yevsunra_production,
+            'yevsunra_warehouse' => $this->yevsunra_warehouse,
+            'yevsunra_bod' => $this->yevsunra_bod,
+            'yevsunra_total' => $this->yevsunra_total,
+            'yevsunra_total' => $this->yevsunra_total,
+
+            // YEV Offero
+            'yevoffero_hr' => $this->yevoffero_hr,
+            'yevoffero_finance' => $this->yevoffero_finance,
+            'yevoffero_procurement' => $this->yevoffero_procurement,
+            'yevoffero_ga' => $this->yevoffero_ga,
+            'yevoffero_legal' => $this->yevoffero_legal,
+            'yevoffero_exim' => $this->yevoffero_exim,
+            'yevoffero_me' => $this->yevoffero_me,
+            'yevoffero_bd' => $this->yevoffero_bd,
+            'yevoffero_qc' => $this->yevoffero_qc,
+            'yevoffero_production' => $this->yevoffero_production,
+            'yevoffero_warehouse' => $this->yevoffero_warehouse,
+            'yevoffero_bod' => $this->yevoffero_bod,
+            'yevoffero_total' => $this->yevoffero_total,
+            'yevoffero_total' => $this->yevoffero_total,
+
+            // YEV Smoot
+            'yevsmoot_hr' => $this->yevsmoot_hr,
+            'yevsmoot_finance' => $this->yevsmoot_finance,
+            'yevsmoot_procurement' => $this->yevsmoot_procurement,
+            'yevsmoot_ga' => $this->yevsmoot_ga,
+            'yevsmoot_legal' => $this->yevsmoot_legal,
+            'yevsmoot_exim' => $this->yevsmoot_exim,
+            'yevsmoot_me' => $this->yevsmoot_me,
+            'yevsmoot_bd' => $this->yevsmoot_bd,
+            'yevsmoot_qc' => $this->yevsmoot_qc,
+            'yevsmoot_production' => $this->yevsmoot_production,
+            'yevsmoot_warehouse' => $this->yevsmoot_warehouse,
+            'yevsmoot_bod' => $this->yevsmoot_bod,
+            'yevsmoot_total' => $this->yevsmoot_total,
+            'yevsmoot_total' => $this->yevsmoot_total,
+
+            // YEV Elektronik
+            'yevelektronik_hr' => $this->yevelektronik_hr,
+            'yevelektronik_finance' => $this->yevelektronik_finance,
+            'yevelektronik_procurement' => $this->yevelektronik_procurement,
+            'yevelektronik_ga' => $this->yevelektronik_ga,
+            'yevelektronik_legal' => $this->yevelektronik_legal,
+            'yevelektronik_exim' => $this->yevelektronik_exim,
+            'yevelektronik_me' => $this->yevelektronik_me,
+            'yevelektronik_bd' => $this->yevelektronik_bd,
+            'yevelektronik_qc' => $this->yevelektronik_qc,
+            'yevelektronik_production' => $this->yevelektronik_production,
+            'yevelektronik_warehouse' => $this->yevelektronik_warehouse,
+            'yevelektronik_bod' => $this->yevelektronik_bod,
+            'yevelektronik_total' => $this->yevelektronik_total,
+            'yevelektronik_total' => $this->yevelektronik_total,
+
+        ]);
     }
 }
