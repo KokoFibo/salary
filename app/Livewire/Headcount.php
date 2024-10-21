@@ -386,9 +386,7 @@ class Headcount extends Component
         $this->tahun = $this->year;
         $nama_file = 'Yifang Non-OS Headcount for ' . monthname($this->month) . ' ' . $this->year . '.xlsx';
 
-        // dd($this->month, $this->year, $nama_file);
         return Excel::download(new HeadcountExport($this->month, $this->year), $nama_file);
-        // return Excel::download(new HeadcountExport($this->month, $this->year));
     }
 
     public function render()

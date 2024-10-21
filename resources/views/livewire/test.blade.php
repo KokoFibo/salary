@@ -1,9 +1,21 @@
 <div>
-    <button class='btn btn-primary' wire:confirm='Are you sure?' wire:click='delete_diatas_4jt'>Delete Karyawan Gaji diatas
-        atau sama dengan 4
-        juta</button>
-    <button class='btn btn-primary' wire:confirm='Are you sure?' wire:click='delete_dibawah_4jt'>Delete Karyawan Gaji
-        dibawah 4 juta</button>
-    <button class='btn btn-primary' wire:confirm='Are you sure?' wire:click='delete_karyawan_company'>Delete karyawan
-        Company ['YAM', 'YIG', 'YCME', 'YSM', 'YEV']</button>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Bulan</th>
+                <th>Tahun</th>
+                <th>Jumlah Hari</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+
+                <td>{{ $month }}</td>
+                <td>{{ $year }}</td>
+                <td>{{ $rekap }}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

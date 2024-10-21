@@ -97,7 +97,7 @@ class MovePresensiData extends Component
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'ID: ' . $this->username . 'Data rekap presensi sudah di move',
+            title: 'Data rekap presensi sudah di move',
         );
     }
 
