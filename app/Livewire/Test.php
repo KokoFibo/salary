@@ -14,6 +14,7 @@ use Livewire\WithPagination;
 use App\Models\Bonuspotongan;
 use App\Models\Liburnasional;
 use App\Models\Personnelrequestform;
+use App\Models\Rekapbackup;
 use App\Models\Requester;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\DB;
@@ -43,22 +44,13 @@ class Test extends Component
 
   public function render()
   {
-    dd('stop');
-
-    // $payroll = Payroll::whereYear('date', 2024)->whereMonth('date', 3)->get();
-    // $this->cx = 0;
-    // foreach ($payroll as $d) {
-    //   $karyawan = Karyawan::where('id_karyawan', $d->id_karyawan)->first();
-    //   if ($karyawan) {
-    //     $d->departemen = nama_department($karyawan->department_id);
-    //     $d->save();
-    //     $this->cx++;
-    //   }
-    // }
-
-    // dd($this->cx);
+    $this->year = 2024;
+    $this->month = 8;
+    $rekap = Rekapbackup::whereMonth('date', $this->month)->whereYear('date', $this->year)->count();
 
 
-    return view('livewire.test');
+    return view('livewire.test', [
+      'rekap' => $rekap
+    ]);
   }
 }
