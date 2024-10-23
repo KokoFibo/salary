@@ -282,8 +282,8 @@ class YfpresensiController extends Controller
 
 
         $lock = Lock::find(1);
-        // dd('$lock->upload', $lock->upload);
         if ($lock->upload) {
+            dd('$lock->upload', $lock->upload);
             $lock->upload = false;
             $lock->save();
             return back()->with('error', 'Mohon dicoba sebentar lagi ya');
