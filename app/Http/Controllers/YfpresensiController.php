@@ -392,29 +392,31 @@ class YfpresensiController extends Controller
                     $time = date('H:i', strtotime($str));
                 }
 
-
-
-                //  pakai Chunk
-                $Yfpresensidata[] = [
+                Yfpresensi::create([
                     'user_id' => $user_id,
-
                     'date' => $tgl,
                     'time' => $time,
                     'day_number' => date('w', strtotime($tgl)),
-                ];
-            }
-        }
-        try {
-            // foreach (array_chunk($Yfpresensidata, 200) as $item) {
-            foreach (array_chunk($Yfpresensidata, 100) as $item) {
-                Yfpresensi::insert($item);
-            }
-        } catch (\Exception $e) {
-            clear_locks();
-            // return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
+                ]);
 
-            return redirect()->back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
+                //  pakai Chunk
+                // $Yfpresensidata[] = [
+                //     'user_id' => $user_id,
+
+                //     'date' => $tgl,
+                //     'time' => $time,
+                //     'day_number' => date('w', strtotime($tgl)),
+                // ];
+            }
         }
+        // try {
+        //     // foreach (array_chunk($Yfpresensidata, 200) as $item) {
+        //         Yfpresensi::insert($item);
+        //     }
+        // } catch (\Exception $e) {
+        //     clear_locks();
+        //     return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
+        // }
 
         // Check apakah ada ID yang belum terdaftar
         // dd('stop');
