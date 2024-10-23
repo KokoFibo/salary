@@ -27,13 +27,13 @@ class YfpresensiController extends Controller
 
     public function compare(Request $request)
     {
+        dd('compare');
         $request->validate([
             'file' => 'required|mimes:xlsx|max:2048',
         ]);
 
         $file = $request->file('file');
         $spreadsheet = IOFactory::load($file);
-
         $importedData = $spreadsheet->getActiveSheet();
         $row_limit = $importedData->getHighestDataRow();
         $tgl = trim(explode('~', $importedData->getCell('A2')->getValue())[1]);
@@ -89,10 +89,12 @@ class YfpresensiController extends Controller
                     $formattedIds[] = $d['user_id'];
                 }
                 $msg = 'Data tidak bisa diupload karena terdapat user id yang sama: ' . implode(', ', $formattedIds);
+                clear_locks();
 
                 return back()->with('error', $msg);
             }
         }
+        clear_locks();
 
         return back()->with('success', 'Tidak ada data duplikat');
 
@@ -280,6 +282,7 @@ class YfpresensiController extends Controller
 
 
         $lock = Lock::find(1);
+        // dd('$lock->upload', $lock->upload);
         if ($lock->upload) {
             $lock->upload = false;
             $lock->save();
@@ -288,6 +291,7 @@ class YfpresensiController extends Controller
             $lock->upload = true;
             $lock->save();
         }
+
         Yfpresensi::query()->truncate();
 
         $request->validate([
@@ -354,13 +358,11 @@ class YfpresensiController extends Controller
                     $formattedIds[] = $d['user_id'];
                 }
                 if (count($formattedIds) > 50) {
-
                     $msg = 'Data Presensi ini sudah di pernah di upload';
                 } else {
                     $msg = 'Data tidak bisa diupload karena terdapat user id yang sama: ' . implode(', ', $formattedIds);
                 }
                 clear_locks();
-
                 return back()->with('error', $msg);
             }
         }

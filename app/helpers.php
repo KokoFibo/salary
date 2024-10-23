@@ -1374,6 +1374,7 @@ function clear_locks()
     $lock->payroll = 0;
     $lock->save();
 }
+
 function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
 {
 
