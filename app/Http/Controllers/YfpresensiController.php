@@ -283,7 +283,7 @@ class YfpresensiController extends Controller
 
         $lock = Lock::find(1);
         if ($lock->upload) {
-            dd('$lock->upload', $lock->upload);
+            // dd('$lock->upload', $lock->upload);
             $lock->upload = false;
             $lock->save();
             return back()->with('error', 'Mohon dicoba sebentar lagi ya');
@@ -410,7 +410,8 @@ class YfpresensiController extends Controller
             }
         } catch (\Exception $e) {
             clear_locks();
-            return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
+            // return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
+            return redirect()->back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
         }
 
         // Check apakah ada ID yang belum terdaftar
