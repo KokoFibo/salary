@@ -45,7 +45,7 @@ class Test extends Component
   public function render()
   {
     $this->year = 2024;
-    $this->month = 8;
+    $this->month = 6;
     $rekap = Rekapbackup::whereMonth('date', $this->month)->whereYear('date', $this->year)->count();
 
 
