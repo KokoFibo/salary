@@ -309,7 +309,6 @@ class YfpresensiController extends Controller
         $tgl2 = trim(explode(':', $tgl1)[1]);
         if ($tgl != $tgl2) {
             clear_locks();
-            dd('Gagal Upload Tanggal harus dihari yang sama');
             return back()->with('error', 'Gagal Upload Tanggal harus dihari yang sama');
         }
         $user_id = '';
@@ -364,7 +363,6 @@ class YfpresensiController extends Controller
                     $msg = 'Data tidak bisa diupload karena terdapat user id yang sama: ' . implode(', ', $formattedIds);
                 }
                 clear_locks();
-                dd($msg);
                 return back()->with('error', $msg);
             }
         }
@@ -381,7 +379,6 @@ class YfpresensiController extends Controller
                     foreach ($tgl_sama as $data) {
                         if ($user_id == $data->user_id && $time != '') {
                             clear_locks();
-                            dd('Gagal Upload, User ID kembar');
                             return back()->with('error', 'Gagal Upload, User ID kembar : ' . $data->user_id);
                         }
                     }
@@ -413,7 +410,6 @@ class YfpresensiController extends Controller
             }
         } catch (\Exception $e) {
             clear_locks();
-            dd('Gagal Upload Format tanggal tidak sesuai');
             // return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
 
             return redirect()->back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
