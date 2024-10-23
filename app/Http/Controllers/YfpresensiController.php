@@ -724,6 +724,7 @@ class YfpresensiController extends Controller
 
         Yfpresensi::query()->truncate();
         clear_locks();
-        return back()->with('info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data');
+        return redirect()->back()->with('info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data');
     }
+    // end
 }
