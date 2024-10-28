@@ -192,7 +192,7 @@ class Payrollwr extends Component
                         ->whereMonth('date', $this->month)
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'semua_karyawan_Bank.xlsx';
                     break;
                     // case '2':
@@ -201,7 +201,7 @@ class Payrollwr extends Component
                     //         ->whereYear('date', $this->year)
                     //         ->orderBy('id_karyawan', 'asc')
                     //         ->where('placement', 'YCME')
-                    //         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    //         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     //     $nama_file = 'Pabrik-1_Bank.xlsx';
                     //     break;
                     // case '3':
@@ -210,7 +210,7 @@ class Payrollwr extends Component
                     //         ->whereYear('date', $this->year)
                     //         ->orderBy('id_karyawan', 'asc')
                     //         ->where('placement', 'YEV')
-                    //         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    //         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     //     $nama_file = 'Pabrik-2_Bank.xlsx';
                     //     break;
                     // case '4':
@@ -220,7 +220,7 @@ class Payrollwr extends Component
                     //         ->orderBy('id_karyawan', 'asc')
                     //         ->whereIn('placement', ['YIG', 'YSM'])
 
-                    //         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    //         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     //     $nama_file = 'Kantor_Bank.xlsx';
                     //     break;
 
@@ -230,7 +230,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('company', 'ASB')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'ASB_Company_Bank.xlsx';
                     break;
                 case '5':
@@ -239,7 +239,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('company', 'DPA')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'DPA_Company_Bank.xlsx';
                     break;
                 case '6':
@@ -248,7 +248,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('company', 'YCME')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'YCME_Company_Bank.xlsx';
                     break;
                 case '7':
@@ -257,7 +257,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('company', 'YEV')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'YEV_Company_Bank.xlsx';
                     break;
                 case '8':
@@ -266,7 +266,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('company', 'YIG')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'YIG_Company_Bank.xlsx';
                     break;
                 case '9':
@@ -275,7 +275,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('company', 'YSM')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'YSM_Company_Bank.xlsx';
                     break;
                 case '10':
@@ -284,7 +284,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('company', 'YAM')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'YAM_Company_Bank.xlsx';
                     break;
                 case '11':
@@ -293,7 +293,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('company', 'GAMA')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'GAMA_Company_Bank.xlsx';
                     break;
                 case '12':
@@ -302,7 +302,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('company', 'WAS')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'WAS_Company_Bank.xlsx';
                     break;
             }
@@ -313,7 +313,7 @@ class Payrollwr extends Component
                         ->whereMonth('date', $this->month)
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'semua_karyawan_Bank.xlsx';
                     break;
                 case '6':
@@ -322,7 +322,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('placement', 'YCME')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'YCME_Placement_Bank.xlsx';
                     break;
                 case '7':
@@ -331,7 +331,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('placement', 'YEV')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'YEV_Placement_Bank.xlsx';
                     break;
                 case '8':
@@ -340,7 +340,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('placement', 'YIG')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'YIG_Placement_Bank.xlsx';
                     break;
                 case '9':
@@ -349,7 +349,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('placement', 'YSM')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'YSM_Placement_Bank.xlsx';
                     break;
                 case '10':
@@ -358,7 +358,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('placement', 'YAM')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'YAM_Placement_Bank.xlsx';
                     break;
                 case '11':
@@ -367,7 +367,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('placement', 'Pabrik 2')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'Pabrik_2_Placement_Bank.xlsx';
                     break;
                 case '12':
@@ -376,7 +376,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('placement', 'Pabrik 3')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'Pabrik_3_Placement_Bank.xlsx';
                     break;
                 case '13':
@@ -385,7 +385,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('placement', 'YEV SUNRA')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'YEV_SUNRA_Placement_Bank.xlsx';
                     break;
                 case '14':
@@ -394,7 +394,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('placement', 'YEV AIMA')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'YEV_AIMA_Placement_Bank.xlsx';
                     break;
                 case '15':
@@ -403,7 +403,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('placement', 'Pabrik 4')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'Pabrik_4_Placement_Bank.xlsx';
                     break;
                 case '16':
@@ -412,7 +412,7 @@ class Payrollwr extends Component
                         ->whereYear('date', $this->year)
                         ->orderBy('id_karyawan', 'asc')
                         ->where('placement', 'Pabrik 1')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                     $nama_file = 'Pabrik_1_Placement_Bank.xlsx';
                     break;
             }
@@ -422,7 +422,7 @@ class Payrollwr extends Component
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->orderBy('id_karyawan', 'asc')
-                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement']);
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
                 $nama_file = 'semua_karyawan_Bank.xlsx';
             } else {
                 $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
