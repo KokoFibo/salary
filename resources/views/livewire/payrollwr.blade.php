@@ -219,16 +219,20 @@
                         <select wire:model.live="selected_placement" class="form-select"
                             aria-label="Default select example">
                             <option value="0"selected>{{ __('All Placement') }}</option>
+                            {{-- <option value="11">YEV SMOOT</option>
+                            <option value="12">YEV OFFERO</option>
+                            <option value="15">YEV ELEKTRONIK</option> --}}
+                            <option value="16">Pabrik 1</option>
+                            <option value="11">Pabrik 2</option>
+                            <option value="12">Pabrik 3</option>
+                            <option value="15">Pabrik 4</option>
                             <option value="6">YCME</option>
                             <option value="7">YEV</option>
                             <option value="10">YAM</option>
                             <option value="8">YIG</option>
                             <option value="9">YSM</option>
-                            <option value="11">YEV SMOOT</option>
-                            <option value="12">YEV OFFERO</option>
                             <option value="13">YEV SUNRA</option>
                             <option value="14">YEV AIMA</option>
-                            <option value="15">YEV ELEKTRONIK</option>
                             {{-- <option value="1">{{ __('Pabrik 1') }}</option>
                                 <option value="2">{{ __('Pabrik 2') }}</option>
                                 <option value="3">{{ __('Kantor') }}</option>

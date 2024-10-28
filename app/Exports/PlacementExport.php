@@ -151,14 +151,14 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
                 break;
             case 11:
                 $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YEV SMOOT')
+                    ->where('placement', 'Pabrik 2')
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->orderBy('id_karyawan', 'asc')->get();
                 break;
             case 12:
                 $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YEV OFFERO')
+                    ->where('placement', 'Pabrik 3')
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->orderBy('id_karyawan', 'asc')->get();
@@ -179,7 +179,14 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
                 break;
             case 15:
                 $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YEV ELEKTRONIK')
+                    ->where('placement', 'Pabrik 4')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc')->get();
+                break;
+            case 16:
+                $data = Payroll::whereIn('status_karyawan', $statuses)
+                    ->where('placement', 'Pabrik 1')
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->orderBy('id_karyawan', 'asc')->get();
