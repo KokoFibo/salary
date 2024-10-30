@@ -20,6 +20,7 @@ use App\Models\Rekapbackup;
 use App\Models\Requester;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class Test extends Component
 {
@@ -43,23 +44,21 @@ class Test extends Component
   }
 
   public $department_id, $placement_id;
+  public $passBaru;
   // public $karyawan;
 
   public function proses()
   {
-    Karyawan::where('placement_id', 6)->whereIn('department_id', [5, 11, 10, 2, 6])
-      ->update(['placement_id' => 102]);
-
     $this->dispatch(
       'message',
       type: 'success',
-      title: 'Placement Berhasil dirubah',
+      title: 'Gak ngapa ngapain',
     );
   }
 
   public function render()
   {
-
+    $this->passBaru = '';
 
 
 
