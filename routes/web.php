@@ -12,6 +12,7 @@ use App\Livewire\Moveback;
 use App\Models\Department;
 use App\Livewire\Applicant;
 use App\Livewire\Developer;
+use App\Livewire\Headcount;
 use App\Livewire\Jabatanwr;
 use App\Livewire\MissingId;
 use App\Livewire\Payrollwr;
@@ -67,6 +68,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TerControler;
 use App\Http\Controllers\PphController;
 use App\Livewire\TanpaEmergencyContact;
+use App\Livewire\Gantipassworddeveloper;
 use App\Http\Controllers\KviewController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ReportController;
@@ -80,7 +82,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Livewire\Headcount;
 
 // Middleware
 Auth::routes([
@@ -269,6 +270,8 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('applicantditerima', ApplicantDiterima::class)->name('applicantditerima');
                             Route::get('/department', Departmentwr::class);
                             Route::get('/rubahid', Rubahid::class);
+                            Route::get('/GantiPasswordDeveloper', Gantipassworddeveloper::class);
+
 
                             // TEST
                             Route::get('/test', Test::class)->name('test');
