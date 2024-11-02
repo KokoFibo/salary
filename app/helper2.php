@@ -722,7 +722,8 @@ function build_payroll($month, $year)
 
             if ($data_payroll != null) {
                 if (trim($data_payroll->metode_penggajian) == 'Perbulan') {
-                    $data_payroll->denda_resigned = 3 * ($data_payroll->gaji_pokok / 26);
+                    // per26
+                    $data_payroll->denda_resigned = 3 * ($data_payroll->gaji_pokok / $total_n_hari_kerja);
                 } else {
                     $data_payroll->denda_resigned = 24 * ($data_payroll->gaji_pokok / 198);
                 }

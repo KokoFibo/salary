@@ -58,7 +58,11 @@ class Test extends Component
 
   public function render()
   {
-    $this->passBaru = '';
+    $year = 2024;
+    $month = 10;
+
+    $total_n_hari_kerja = getTotalWorkingDays($year, $month);
+    dd($total_n_hari_kerja);
 
 
 
