@@ -7,21 +7,57 @@ use App\Models\User;
 use App\Models\Company;
 use App\Models\Jabatan;
 use App\Models\Payroll;
+use App\Models\Timeoff;
 use App\Models\Karyawan;
 use App\Models\Tambahan;
 use App\Models\Placement;
 use App\Models\Requester;
 use App\Models\Department;
 use Illuminate\Support\Str;
+use App\Models\Applicantdata;
 use App\Models\Applicantfile;
 use App\Models\Dashboarddata;
 use App\Models\Liburnasional;
 use App\Models\Yfrekappresensi;
-use App\Models\Personnelrequestform;
-use App\Models\Timeoff;
 use App\Models\Timeoffrequester;
+use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+
+function check_resigned_blacklist($id)
+{
+    // Retrieve the applicant data
+    $dataApplicant = Applicantdata::find($id);
+
+    // Ensure that applicant data exists
+    if (!$dataApplicant) {
+        return 0;
+    }
+
+    // Search for a matching Karyawan record
+    $karyawan = Karyawan::where('nama', trim($dataApplicant->nama))
+        // ->orWhere('email', trim($dataApplicant->email))
+        ->orWhere('email', 'resigned_' . $dataApplicant->email)
+        ->orWhere('email', 'blacklist_' . $dataApplicant->email)
+        ->orWhere('no_identitas', trim($dataApplicant->no_identitas))
+        ->orWhere('hp', trim($dataApplicant->hp))
+        ->first();
+
+    // If no matching Karyawan is found, return 0
+    if (!$karyawan) {
+        return 0;
+    }
+
+    // Check the status of the Karyawan and return corresponding values
+    switch ($karyawan->status_karyawan) {
+        case 'Resigned':
+            return 1;
+        case 'Blacklist':
+            return 2;
+        default:
+            return 0;
+    }
+}
 
 function get_ter($ptkp)
 {
