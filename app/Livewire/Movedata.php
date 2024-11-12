@@ -19,7 +19,7 @@ class Movedata extends Component
 
         $this->data_karyawan = getDataApi($apiUrlKaryawan);
         $this->data_user = getDataApi($apiUrlUser);
-        dd($this->data_user);
+        // dd($this->data_user);
 
         if (isset($this->data_karyawan['status']) && $this->data_karyawan['status'] === 'error') {
             // Display the error message

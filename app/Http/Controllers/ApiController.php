@@ -121,7 +121,7 @@ class ApiController extends Controller
     public function getDataUser($id)
     {
         // Find the user by ID
-        $user = User::where('username ', $id)->first();
+        $user = User::where('username', $id)->first();
 
         // Check if the user exists
         if (!$user) {
