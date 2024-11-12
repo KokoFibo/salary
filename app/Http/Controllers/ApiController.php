@@ -56,6 +56,38 @@ class ApiController extends Controller
         // Return user data
         return response()->json($user, 200);
     }
+    public function delete_data_karyawan_yf_aja($id)
+    {
+        try {
+            // Find the karyawan by id
+            $karyawan = Karyawan::where('id_karyawan', $id)->first();
+
+            // Check if the karyawan exists
+            if (!$karyawan) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Karyawan not found',
+                ], 404);
+            }
+
+            // Delete the karyawan record
+            $karyawan->delete();
+
+            // Return a success response
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Karyawan deleted successfully',
+            ], 200);
+        } catch (\Exception $e) {
+            // Handle any exceptions that occur
+            return response()->json([
+                'status' => 'error',
+                'message' => 'An error occurred while deleting karyawan',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function getDataKaryawan($id)
     {
         // Find the user by ID

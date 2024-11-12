@@ -22,4 +22,6 @@ Route::get('/karyawan', [ApiController::class, 'index']);
 // Route::post('store/{id}', [ApiController::class, 'store']);
 Route::get('getkaryawan/{id}', [ApiController::class, 'getDataKaryawan']);
 Route::get('getuser/{id}', [ApiController::class, 'getDataUser']);
+Route::delete('delete_karyawan_yf_aja/{id}', [ApiController::class, 'delete_data_karyawan_yf_aja']);
+
 Route::post('store/{karyawan}', [ApiController::class, 'store']);
