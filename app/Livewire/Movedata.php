@@ -37,7 +37,7 @@ class Movedata extends Component
             $this->dispatch(
                 'message',
                 type: 'error',
-                title: 'Data user tidak ditemukan bos',
+                title: 'Data user tidak ditemukan',
                 position: 'center'
             );
             // $this->data_user = '';

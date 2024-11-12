@@ -71,6 +71,7 @@ use App\Http\Controllers\PphController;
 use App\Livewire\TanpaEmergencyContact;
 use App\Livewire\Gantipassworddeveloper;
 use App\Http\Controllers\KviewController;
+use App\Livewire\Deleteduplicatepresensi;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\ReportController;
 use App\Livewire\Removepresensiduplikatwr;
@@ -274,6 +275,8 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/rubahid', Rubahid::class);
                             Route::get('/GantiPasswordDeveloper', Gantipassworddeveloper::class);
                             Route::get('/movedata', Movedata::class);
+                            Route::get('/deleteduplicatepresensi', Deleteduplicatepresensi::class);
+
 
 
 

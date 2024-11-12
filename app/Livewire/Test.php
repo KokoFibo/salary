@@ -58,11 +58,14 @@ class Test extends Component
 
   public function render()
   {
-    $year = 2024;
-    $month = 10;
-
-    $total_n_hari_kerja = getTotalWorkingDays($year, $month);
-    dd($total_n_hari_kerja);
+    // $latestDate = Karyawan::max('created_at');
+    $latestDate = Carbon::parse(Karyawan::max('created_at'))->toDateString();
+    // $highestIdRecord = Karyawan::whereDate('created_at', $latestDate)
+    //   ->orderBy('id_karyawan', 'desc')
+    //   ->first();
+    $highestIdRecord = Karyawan::orderBy('created_at', 'desc')->first();
+    // dd($highestIdRecord->id_karyawan);
+    dd($highestIdRecord->id_karyawan);
 
 
 
