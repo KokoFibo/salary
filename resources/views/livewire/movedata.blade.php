@@ -53,11 +53,7 @@
                         <td class='px-3'>:</td>
                         <td>{{ $data_karyawan['status_karyawan'] }}</td>
                     </tr>
-                    {{-- <tr>
-                        <td>Email User</td>
-                        <td class='px-3'>:</td>
-                        <td>{{ $data_user['email'] }}</td>
-                    </tr> --}}
+
 
                 </table>
             </h3>
