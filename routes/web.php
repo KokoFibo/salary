@@ -207,7 +207,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/addrequester', Requesterwr::class);
                     Route::get('/addtimeoutrequester', Timeoutrequsterwr::class);
                     Route::get('/headcount', Headcount::class);
-                    Route::get('/movedata', Movedata::class);
+                    // Route::get('/movedata', Movedata::class);
 
 
 
@@ -273,6 +273,8 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/department', Departmentwr::class);
                             Route::get('/rubahid', Rubahid::class);
                             Route::get('/GantiPasswordDeveloper', Gantipassworddeveloper::class);
+                            Route::get('/movedata', Movedata::class);
+
 
 
                             // TEST
