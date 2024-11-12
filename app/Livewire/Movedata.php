@@ -15,10 +15,10 @@ class Movedata extends Component
     {
         // $apiUrl =  "https://payroll.yifang.co.id/api/getkaryawan/" . $this->id_karyawan;
         $apiUrlKaryawan =  "https://payroll.accel365.id/api/getkaryawan/" . $this->id_karyawan;
-        $apiUrlUser =  "https://payroll.accel365.id/api/getuser/" . $this->id_karyawan;
+        // $apiUrlUser =  "https://payroll.accel365.id/api/getuser/" . $this->id_karyawan;
 
         $this->data_karyawan = getDataApi($apiUrlKaryawan);
-        $this->data_user = getDataApi($apiUrlUser);
+        // $this->data_user = getDataApi($apiUrlUser);
         // dd($data);
 
         if (isset($this->data_karyawan['status']) && $this->data_karyawan['status'] === 'error') {
@@ -32,17 +32,17 @@ class Movedata extends Component
             $this->data_karyawan = '';
             return;
         }
-        if (isset($this->data_user['status']) && $this->data_user['status'] === 'error') {
-            // Display the error message
-            $this->dispatch(
-                'message',
-                type: 'error',
-                title: 'Data user tidak ditemukan',
-                position: 'center'
-            );
-            $this->data_user = '';
-            return;
-        }
+        // if (isset($this->data_user['status']) && $this->data_user['status'] === 'error') {
+        //     // Display the error message
+        //     $this->dispatch(
+        //         'message',
+        //         type: 'error',
+        //         title: 'Data user tidak ditemukan',
+        //         position: 'center'
+        //     );
+        //     $this->data_user = '';
+        //     return;
+        // }
     }
     public function deleteDataUserApi($apiUrl)
     {
