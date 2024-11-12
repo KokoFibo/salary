@@ -24,7 +24,7 @@ use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-function getDataKaryawanApi($apiUrl)
+function getDataApi($apiUrl)
 {
     try {
         // Make the GET request

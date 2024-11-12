@@ -206,6 +206,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/addrequester', Requesterwr::class);
                     Route::get('/addtimeoutrequester', Timeoutrequsterwr::class);
                     Route::get('/headcount', Headcount::class);
+                    Route::get('/movedata', Movedata::class);
 
 
 
