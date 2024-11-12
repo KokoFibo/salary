@@ -191,7 +191,7 @@
                                         <th style="width: 150px; border-style: none;">
                                             <a href="/usernotfound">
                                                 <button wire:loading.remove class="btn btn-primary col-12">User Not
-                                                    Found lho</button></a>
+                                                    Found</button></a>
                                         </th>
                                     @endif
                                     @if (auth()->user()->role >= 8)
