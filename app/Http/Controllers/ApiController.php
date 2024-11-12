@@ -41,21 +41,21 @@ class ApiController extends Controller
     }
 
     // Dibawah ini hanya contoh saja
-    public function getDataUser($id)
-    {
-        // Find the user by ID
-        $user = User::where('username', $id)->first();
+    // public function getDataUser($id)
+    // {
+    //     // Find the user by ID
+    //     $user = User::where('username', $id)->first();
 
-        // Check if the user exists
-        if (!$user) {
-            return response()->json([
-                'message' => 'User not found'
-            ], 404);
-        }
+    //     // Check if the user exists
+    //     if (!$user) {
+    //         return response()->json([
+    //             'message' => 'User not found'
+    //         ], 404);
+    //     }
 
-        // Return user data
-        return response()->json($user, 200);
-    }
+    //     // Return user data
+    //     return response()->json($user, 200);
+    // }
     public function delete_data_user_yf_aja($id)
     {
         try {
@@ -117,6 +117,21 @@ class ApiController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+    public function getDataUser($id)
+    {
+        // Find the user by ID
+        $user = User::where('username ', $id)->first();
+
+        // Check if the user exists
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found'
+            ], 404);
+        }
+
+        // Return user data
+        return response()->json($user, 200);
     }
     public function getDataKaryawan($id)
     {
