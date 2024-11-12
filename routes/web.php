@@ -9,6 +9,7 @@ use App\Livewire\Rubahid;
 use App\Livewire\UserLog;
 use App\Livewire\Gajibpjs;
 use App\Livewire\Moveback;
+use App\Livewire\Movedata;
 use App\Models\Department;
 use App\Livewire\Applicant;
 use App\Livewire\Developer;
