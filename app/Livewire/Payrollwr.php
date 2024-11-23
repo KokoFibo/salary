@@ -4,11 +4,15 @@ namespace App\Livewire;
 
 use Carbon\Carbon;
 use App\Models\Lock;
+use App\Models\Company;
 use App\Models\Payroll;
 use Livewire\Component;
+use App\Jobs\rebuildJob;
 use App\Models\Karyawan;
 use App\Models\Tambahan;
+use App\Models\Placement;
 use App\Exports\PphExport;
+use App\Models\Department;
 use App\Models\Jamkerjaid;
 use Livewire\WithPagination;
 use App\Jobs\BuildPayrollJob;
@@ -17,7 +21,6 @@ use App\Models\Yfrekappresensi;
 use App\Exports\BankReportExcel;
 use App\Exports\PlacementExport;
 use App\Exports\DepartmentExport;
-use App\Jobs\rebuildJob;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -31,7 +34,7 @@ class Payrollwr extends Component
     public $selected_company = 0;
     public $selected_placement = 0;
     public $selected_departemen = 0;
-    public $departments;
+    // public $departments;
     public $search;
     public $perpage = 10;
     public $month;
@@ -59,107 +62,16 @@ class Payrollwr extends Component
     {
         $nama_file = '';
         if ($this->selected_company != 0) {
-            switch ($this->selected_company) {
-                case 0:
-                    $nama_file = 'semua_payroll.xlsx';
-                    break;
-
-                case 4:
-                    $nama_file = 'payroll_company_ASB.xlsx';
-                    break;
-
-                case 5:
-                    $nama_file = 'payroll_company_DPA.xlsx';
-                    break;
-
-                case 6:
-                    $nama_file = 'payroll_company_YCME.xlsx';
-                    break;
-
-                case 7:
-                    $nama_file = 'payroll_company_YEV.xlsx';
-                    break;
-
-                case 8:
-                    $nama_file = 'payroll_company_YIG.xlsx';
-                    break;
-
-                case 9:
-                    $nama_file = 'payroll_company_YSM.xlsx';
-                    break;
-
-                case 10:
-                    $nama_file = 'payroll_company_YAM.xlsx';
-                    break;
-                case 11:
-                    $nama_file = 'payroll_company_GAMA.xlsx';
-                    break;
-                case 12:
-                    $nama_file = 'payroll_company_WAS.xlsx';
-                    break;
+            if ($this->selected_company == 0) {
+                $nama_file = 'semua_payroll.xlsx';
+            } else {
+                $nama_file = 'payroll_company_' . nama_company($this->selected_company) . '.xlsx';
             }
         } elseif ($this->selected_placement != 0) {
-            switch ($this->selected_placement) {
-                case 0:
-                    $nama_file = 'semua_payroll.xlsx';
-                    break;
-
-                    // case 1:
-                    //     $nama_file = 'payroll_placement_pabrik1.xlsx';
-                    //     break;
-
-                    // case 2:
-                    //     $nama_file = 'payroll_placement_pabrik2.xlsx';
-                    //     break;
-
-                    // case 3:
-                    //     $nama_file = 'payroll_placement_kantor.xlsx';
-                    //     break;
-
-                    // case 4:
-                    //     $nama_file = 'payroll_placement_ASB.xlsx';
-                    //     break;
-
-                    // case 5:
-                    //     $nama_file = 'payroll_placement_DPA.xlsx';
-                    //     break;
-
-                case 6:
-                    $nama_file = 'payroll_placement_YCME.xlsx';
-                    break;
-
-                case 7:
-                    $nama_file = 'payroll_placement_YEV.xlsx';
-                    break;
-
-                case 8:
-                    $nama_file = 'payroll_placement_YIG.xlsx';
-                    break;
-
-                case 9:
-                    $nama_file = 'payroll_placement_YSM.xlsx';
-                    break;
-                case 10:
-                    $nama_file = 'payroll_placement_YAM.xlsx';
-                    break;
-                case 11:
-                    $nama_file = 'payroll_placement_Pabrik_2.xlsx';
-                    break;
-                case 12:
-                    $nama_file = 'payroll_placement_Pabrik_3.xlsx';
-                    break;
-                case 13:
-                    $nama_file = 'payroll_placement_YEV_SUNRA.xlsx';
-                    break;
-                case 14:
-                    $nama_file = 'payroll_placement_YEV_AIMA.xlsx';
-                    break;
-                case 15:
-                    $nama_file = 'payroll_placement_Pabrik_4.xlsx';
-                    break;
-                case 16:
-                    $nama_file = 'payroll_placement_Pabrik_1.xlsx';
-                    break;
+            if ($this->selected_placement == 0) {
+                $nama_file = 'semua_payroll.xlsx';
+            } else {
+                $nama_file = 'payroll_placement_' . nama_placement($this->selected_placement) . '.xlsx';
             }
         } else {
             if ($this->selected_departemen == 0) {
@@ -186,235 +98,41 @@ class Payrollwr extends Component
     {
         $nama_file = '';
         if ($this->selected_company != 0) {
-            switch ($this->selected_company) {
-                case '0':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'semua_karyawan_Bank.xlsx';
-                    break;
-                    // case '2':
-                    //     $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                    //         ->whereMonth('date', $this->month)
-                    //         ->whereYear('date', $this->year)
-                    //         ->orderBy('id_karyawan', 'asc')
-                    //         ->where('placement', 'YCME')
-                    //         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    //     $nama_file = 'Pabrik-1_Bank.xlsx';
-                    //     break;
-                    // case '3':
-                    //     $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                    //         ->whereMonth('date', $this->month)
-                    //         ->whereYear('date', $this->year)
-                    //         ->orderBy('id_karyawan', 'asc')
-                    //         ->where('placement', 'YEV')
-                    //         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    //     $nama_file = 'Pabrik-2_Bank.xlsx';
-                    //     break;
-                    // case '4':
-                    //     $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                    //         ->whereMonth('date', $this->month)
-                    //         ->whereYear('date', $this->year)
-                    //         ->orderBy('id_karyawan', 'asc')
-                    //         ->whereIn('placement', ['YIG', 'YSM'])
+            if ($this->selected_company == 0) {
+                $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc')
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company_id', 'placement_id', 'department_id']);
+                $nama_file = 'semua_karyawan_Bank.xlsx';
+            } else {
+                $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc')
+                    ->where('company_id', $this->selected_company)
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company_id', 'placement_id', 'department_id']);
 
-                    //         ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    //     $nama_file = 'Kantor_Bank.xlsx';
-                    //     break;
-
-                case '4':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('company', 'ASB')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'ASB_Company_Bank.xlsx';
-                    break;
-                case '5':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('company', 'DPA')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'DPA_Company_Bank.xlsx';
-                    break;
-                case '6':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('company', 'YCME')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'YCME_Company_Bank.xlsx';
-                    break;
-                case '7':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('company', 'YEV')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'YEV_Company_Bank.xlsx';
-                    break;
-                case '8':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('company', 'YIG')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'YIG_Company_Bank.xlsx';
-                    break;
-                case '9':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('company', 'YSM')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'YSM_Company_Bank.xlsx';
-                    break;
-                case '10':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('company', 'YAM')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'YAM_Company_Bank.xlsx';
-                    break;
-                case '11':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('company', 'GAMA')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'GAMA_Company_Bank.xlsx';
-                    break;
-                case '12':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('company', 'WAS')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'WAS_Company_Bank.xlsx';
-                    break;
+                $nama_file = nama_company($this->selected_company) . '_Company_Bank.xlsx';
             }
         } elseif ($this->selected_placement != 0) {
-            switch ($this->selected_placement) {
-                case '0':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'semua_karyawan_Bank.xlsx';
-                    break;
-                case '6':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('placement', 'YCME')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'YCME_Placement_Bank.xlsx';
-                    break;
-                case '7':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('placement', 'YEV')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'YEV_Placement_Bank.xlsx';
-                    break;
-                case '8':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('placement', 'YIG')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'YIG_Placement_Bank.xlsx';
-                    break;
-                case '9':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('placement', 'YSM')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'YSM_Placement_Bank.xlsx';
-                    break;
-                case '10':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('placement', 'YAM')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'YAM_Placement_Bank.xlsx';
-                    break;
-                case '11':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('placement', 'Pabrik 2')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'Pabrik_2_Placement_Bank.xlsx';
-                    break;
-                case '12':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('placement', 'Pabrik 3')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'Pabrik_3_Placement_Bank.xlsx';
-                    break;
-                case '13':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('placement', 'YEV SUNRA')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'YEV_SUNRA_Placement_Bank.xlsx';
-                    break;
-                case '14':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('placement', 'YEV AIMA')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'YEV_AIMA_Placement_Bank.xlsx';
-                    break;
-                case '15':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('placement', 'Pabrik 4')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'Pabrik_4_Placement_Bank.xlsx';
-                    break;
-                case '16':
-                    $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy('id_karyawan', 'asc')
-                        ->where('placement', 'Pabrik 1')
-                        ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
-                    $nama_file = 'Pabrik_1_Placement_Bank.xlsx';
-                    break;
+            if ($this->selected_placement == 0) {
+                $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc')
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company_id', 'placement_id', 'department_id']);
+
+                $nama_file = 'semua_karyawan_Bank.xlsx';
+            } else {
+                $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy('id_karyawan', 'asc')
+                    ->where('placement_id', $this->selected_placement)
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company_id', 'placement_id', 'department_id']);
+
+                $nama_file = nama_placement($this->selected_placement) . '_Placement_Bank.xlsx';
             }
         } else {
             if ($this->selected_departemen == 0) {
@@ -422,15 +140,18 @@ class Payrollwr extends Component
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->orderBy('id_karyawan', 'asc')
-                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company_id', 'placement_id', 'department_id']);
+
                 $nama_file = 'semua_karyawan_Bank.xlsx';
             } else {
                 $payroll = Payroll::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'])
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->orderBy('id_karyawan', 'asc')
-                    ->where('departemen', $this->selected_departemen)
-                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company', 'placement', 'departemen']);
+                    ->where('department_id', $this->selected_departemen)
+                    ->get(['nama', 'nama_bank', 'nomor_rekening', 'total', 'company_id', 'placement_id', 'department_id']);
+
+
                 $nama_file = sambungKata($this->selected_departemen) . '_Department_Bank.xlsx';
             }
         }
@@ -469,10 +190,10 @@ class Payrollwr extends Component
 
     public function mount()
     {
-        $this->departments = Karyawan::select('department_id')
-            ->distinct()
-            ->pluck('department_id')
-            ->toArray();
+        // $this->departments = Karyawan::select('department_id')
+        //     ->distinct()
+        //     ->pluck('department_id')
+        //     ->toArray();
 
         $data = Payroll::first();
         if (now()->day < 5) {
@@ -636,7 +357,7 @@ class Payrollwr extends Component
         );
     }
 
-    public function getPayrollQuery($statuses, $search = null, $placement = null, $company = null, $departemen = null)
+    public function getPayrollQuery($statuses, $search = null, $placement_id = null, $company_id = null, $department_id = null)
     {
         return Payroll::query()
 
@@ -646,20 +367,20 @@ class Payrollwr extends Component
                     // ->where('id_karyawan', 'LIKE', '%' . trim($search) . '%')
                     ->where('id_karyawan',  trim($search))
                     ->orWhere('nama', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('jabatan', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('company', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('departemen', 'LIKE', '%' . trim($search) . '%')
+                    ->orWhere('jabatan_id', 'LIKE', '%' . trim($search) . '%')
+                    ->orWhere('company_id', 'LIKE', '%' . trim($search) . '%')
+                    ->orWhere('department_id', 'LIKE', '%' . trim($search) . '%')
                     ->orWhere('metode_penggajian', 'LIKE', '%' . trim($search) . '%')
                     ->orWhere('status_karyawan', 'LIKE', '%' . trim($search) . '%');
             })
-            ->when($placement, function ($query) use ($placement) {
-                $query->where('placement', $placement);
+            ->when($placement_id, function ($query) use ($placement_id) {
+                $query->where('placement_id', $placement_id);
             })
-            ->when($company, function ($query) use ($company) {
-                $query->where('company', $company);
+            ->when($company_id, function ($query) use ($company_id) {
+                $query->where('company_id', $company_id);
             })
-            ->when($departemen, function ($query) use ($departemen) {
-                $query->where('departemen', $departemen);
+            ->when($department_id, function ($query) use ($department_id) {
+                $query->where('department_id', $department_id);
             })
 
             ->orderBy($this->columnName, $this->direction);
@@ -733,640 +454,82 @@ class Payrollwr extends Component
         }
 
         if ($this->selected_placement == 0 && $this->selected_departemen == 0) {
+            if ($this->selected_company == 0) {
+                $total = Payroll::whereIn('status_karyawan', $statuses)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->sum('total');
 
-            switch ($this->selected_company) {
-                case 0:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
+                $payroll = $this->getPayrollQuery($statuses, $this->search)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
+            } else {
+                $total = Payroll::whereIn('status_karyawan', $statuses)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->where('company_id', $this->selected_company)
+                    ->sum('total');
 
-                    $payroll = $this->getPayrollQuery($statuses, $this->search)
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 1:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->where('placement', 'YCME')
-                        ->sum('total');
-
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 2:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'YEV')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 3:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->whereIn('placement', ['YIG', 'YSM'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-
-                    $payroll = Payroll::query()
-                        ->whereIn('status_karyawan', $statuses)
-                        ->when($this->search, function ($query) {
-                            $query
-                                ->where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                                ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                                ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                                ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                                ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                        })
-                        ->whereIn('placement', ['YIG', 'YSM'])
-                        ->orderBy($this->columnName, $this->direction)
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 4:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('company', 'ASB')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'ASB')
-
-                        ->where('company', 'ASB')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 5:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('company', 'DPA')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'DPA')
-
-                        ->where('company', 'DPA')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 6:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('company', 'YCME')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YCME')
-
-                        ->where('company', 'YCME')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 7:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('company', 'YEV')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YEV')
-
-                        ->where('company', 'YEV')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 8:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('company', 'YIG')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YIG')
-
-                        ->where('company', 'YIG')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 9:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('company', 'YSM')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YSM')
-                        ->where('company', 'YSM')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-                case 10:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('company', 'YAM')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'YAM')
-                        ->where('company', 'YAM')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-                case 11:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('company', 'GAMA')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'GAMA')
-                        ->where('company', 'GAMA')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-                case 12:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('company', 'WAS')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', 'WAS')
-                        ->where('company', 'WAS')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
+                $payroll = $this->getPayrollQuery($statuses, $this->search, '', $this->selected_company)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
             }
         } elseif ($this->selected_company == 0 && $this->selected_departemen == 0) {
-            switch ($this->selected_placement) {
-                case 0:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
+            if ($this->selected_placement == 0) {
+                $total = Payroll::whereIn('status_karyawan', $statuses)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->sum('total');
 
-                    $payroll = $this->getPayrollQuery($statuses, $this->search)
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
+                $payroll = $this->getPayrollQuery($statuses, $this->search)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
+            } else {
+                $total = Payroll::whereIn('status_karyawan', $statuses)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->where('placement_id', $this->selected_placement)
+                    ->sum('total');
 
-                case 1:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->where('placement', 'YCME')
-                        ->sum('total');
-
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 2:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'YEV')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 3:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->whereIn('placement', ['YIG', 'YSM'])
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-
-                    $payroll = Payroll::query()
-                        ->whereIn('status_karyawan', $statuses)
-                        ->when($this->search, function ($query) {
-                            $query
-                                ->where('id_karyawan', 'LIKE', '%' . trim($this->search) . '%')
-                                ->orWhere('nama', 'LIKE', '%' . trim($this->search) . '%')
-                                ->orWhere('jabatan', 'LIKE', '%' . trim($this->search) . '%')
-                                ->orWhere('company', 'LIKE', '%' . trim($this->search) . '%')
-                                ->orWhere('metode_penggajian', 'LIKE', '%' . trim($this->search) . '%');
-                        })
-                        ->whereIn('placement', ['YIG', 'YSM'])
-                        ->orderBy($this->columnName, $this->direction)
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 4:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'ASB')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'ASB', '')
-
-                        ->where('placement', 'ASB')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 5:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'DPA')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'DPA', '')
-
-                        ->where('placement', 'DPA')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 6:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'YCME')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YCME', '')
-
-                        ->where('placement', 'YCME')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 7:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'YEV')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV', '')
-
-                        ->where('placement', 'YEV')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 8:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'YIG')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YIG', '')
-
-                        ->where('placement', 'YIG')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 9:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'YSM')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YSM', '')
-                        ->where('placement', 'YSM')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-                case 10:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'YAM')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YAM', '')
-                        ->where('placement', 'YAM')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-                case 11:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'Pabrik 2')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'Pabrik 2', '')
-                        ->where('placement', 'Pabrik 2')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-                case 12:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'Pabrik 3')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'Pabrik 3', '')
-                        ->where('placement', 'Pabrik 3')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-                case 13:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'YEV SUNRA')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV SUNRA', '')
-                        ->where('placement', 'YEV SUNRA')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-                case 14:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'YEV AIMA')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'YEV AIMA', '')
-                        ->where('placement', 'YEV AIMA')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-                case 15:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'Pabrik 4')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'Pabrik 4', '')
-                        ->where('placement', 'Pabrik 4')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-                case 16:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('placement', 'Pabrik 1')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, 'Pabrik 1', '')
-                        ->where('placement', 'Pabrik 1')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
+                $payroll = $this->getPayrollQuery($statuses, $this->search, $this->selected_placement, '', '')
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
             }
         } else {
-            switch ($this->selected_departemen) {
-                case 0:
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
+            if ($this->selected_departemen == 0) {
+                $total = Payroll::whereIn('status_karyawan', $statuses)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->sum('total');
 
-                    $payroll = $this->getPayrollQuery($statuses, $this->search)
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
+                $payroll = $this->getPayrollQuery($statuses, $this->search)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
+            } else {
 
-                case 'BD':
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('departemen', 'BD')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', 'BD')
 
-                        ->where('departemen', 'BD')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
+                $total = Payroll::whereIn('status_karyawan', $statuses)
+                    ->where('department_id', $this->selected_departemen)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->sum('total');
+                $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', $this->selected_departemen)
 
-                case 'Engineering':
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('departemen', 'Engineering')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', 'Engineering')
-
-                        ->where('departemen', 'Engineering')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 'EXIM':
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('departemen', 'EXIM')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', 'EXIM')
-
-                        ->where('departemen', 'EXIM')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 'Finance Accounting':
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('departemen', 'Finance Accounting')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', 'Finance Accounting')
-
-                        ->where('departemen', 'Finance Accounting')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 'GA':
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('departemen', 'GA')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', 'GA')
-
-                        ->where('departemen', 'GA')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 'Gudang':
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('departemen', 'Gudang')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', 'Gudang')
-
-                        ->where('departemen', 'Gudang')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 'HR':
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('departemen', 'HR')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', 'HR')
-
-                        ->where('departemen', 'HR')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 'Legal':
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('departemen', 'Legal')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', 'Legal')
-
-                        ->where('departemen', 'Legal')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-
-                case 'Procurement':
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('departemen', 'Procurement')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', 'Procurement')
-                        ->where('departemen', 'Procurement')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-                case 'Produksi':
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('departemen', 'Produksi')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', 'Produksi')
-                        ->where('departemen', 'Produksi')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-                case 'Quality Control':
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('departemen', 'Quality Control')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', 'Quality Control')
-                        ->where('departemen', 'Quality Control')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
-                case 'Board of Director':
-                    $total = Payroll::whereIn('status_karyawan', $statuses)
-                        ->where('departemen', 'Board of Director')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->sum('total');
-                    $payroll = $this->getPayrollQuery($statuses, $this->search, '', '', 'Board of Director')
-                        ->where('departemen', 'Board of Director')
-                        ->whereMonth('date', $this->month)
-                        ->whereYear('date', $this->year)
-                        ->orderBy($this->columnName, $this->direction)
-                        ->paginate($this->perpage);
-                    break;
+                    ->where('department_id', $this->selected_departemen)
+                    ->whereMonth('date', $this->month)
+                    ->whereYear('date', $this->year)
+                    ->orderBy($this->columnName, $this->direction)
+                    ->paginate($this->perpage);
             }
         }
 
@@ -1384,7 +547,18 @@ class Payrollwr extends Component
 
         $this->cx++;
 
-
-        return view('livewire.payrollwr', compact(['payroll', 'total', 'last_build', 'data_kosong', 'data_bulan_ini']));
+        $companies = Company::orderBy('company_name', 'ASC')->get();
+        $placements = Placement::orderBy('placement_name', 'ASC')->get();
+        $departments = Department::orderBy('nama_department', 'ASC')->get();
+        return view('livewire.payrollwr', compact([
+            'payroll',
+            'total',
+            'last_build',
+            'data_kosong',
+            'data_bulan_ini',
+            'companies',
+            'departments',
+            'placements',
+        ]));
     }
 }

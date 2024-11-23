@@ -72,13 +72,14 @@ class DepartmentExport implements FromView,  ShouldAutoSize, WithColumnFormattin
                 ->orderBy('id_karyawan', 'asc')->get();
         } else {
             $data = Payroll::whereIn('status_karyawan', $statuses)
-                ->where('departemen', $this->selected_departemen)
+                ->where('department_id', $this->selected_departemen)
                 ->whereMonth('date', $this->month)
                 ->whereYear('date', $this->year)
                 ->orderBy('id_karyawan', 'asc')->get();
         }
+
         if ($this->selected_departemen != 0) {
-            $header_text = 'Perincian Payroll untuk Department ' . $this->selected_departemen . ' ' . nama_bulan($this->month) . ' ' . $this->year;
+            $header_text = 'Perincian Payroll untuk Department ' . nama_department($this->selected_departemen) . ' ' . nama_bulan($this->month) . ' ' . $this->year;
         } else {
             $header_text = 'Seluruh Perincian Payroll ' .  nama_bulan($this->month) . ' ' . $this->year;
         }

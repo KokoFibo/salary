@@ -19,6 +19,10 @@ return new class extends Migration
             $table->index('jamkerjaid_id');
             $table->integer('id_karyawan');
             $table->string('nama');
+            $table->foreignId('company_id')->nullable();
+            $table->foreignId('placement_id')->nullable();
+            $table->foreignId('department_id')->nullable();
+            $table->foreignId('jabatan_id')->nullable();
             $table->string('jabatan');
             $table->string('company');
             $table->string('placement');

@@ -219,25 +219,9 @@
                         <select wire:model.live="selected_placement" class="form-select"
                             aria-label="Default select example">
                             <option value="0"selected>{{ __('All Placement') }}</option>
-                            {{-- <option value="11">YEV SMOOT</option>
-                            <option value="12">YEV OFFERO</option>
-                            <option value="15">YEV ELEKTRONIK</option> --}}
-                            <option value="16">Pabrik 1</option>
-                            <option value="11">Pabrik 2</option>
-                            <option value="12">Pabrik 3</option>
-                            <option value="15">Pabrik 4</option>
-                            <option value="6">YCME</option>
-                            <option value="7">YEV</option>
-                            <option value="10">YAM</option>
-                            <option value="8">YIG</option>
-                            <option value="9">YSM</option>
-                            <option value="13">YEV SUNRA</option>
-                            <option value="14">YEV AIMA</option>
-                            {{-- <option value="1">{{ __('Pabrik 1') }}</option>
-                                <option value="2">{{ __('Pabrik 2') }}</option>
-                                <option value="3">{{ __('Kantor') }}</option>
-                                <option value="4">ASB</option>
-                                <option value="5">DPA</option> --}}
+                            @foreach ($placements as $p)
+                                <option value="{{ $p->id }}">{{ $p->placement_name }}
+                            @endforeach
                         </select>
                     </div>
                     {{-- Company --}}
@@ -245,18 +229,9 @@
                         <select wire:model.live="selected_company" class="form-select"
                             aria-label="Default select example">
                             <option value="0"selected>{{ __('All Companies') }}</option>
-                            {{-- <option value="1">{{ __('Pabrik 1') }}</option>
-                                <option value="2">{{ __('Pabrik 2') }}</option>
-                                <option value="3">{{ __('Kantor') }}</option> --}}
-                            <option value="4">ASB</option>
-                            <option value="5">DPA</option>
-                            <option value="6">YCME</option>
-                            <option value="7">YEV</option>
-                            <option value="8">YIG</option>
-                            <option value="9">YSM</option>
-                            <option value="10">YAM</option>
-                            <option value="11">GAMA</option>
-                            <option value="12">WAS</option>
+                            @foreach ($companies as $c)
+                                <option value="{{ $c->id }}">{{ $c->company_name }} </option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -265,16 +240,9 @@
                         <select wire:model.live="selected_departemen" class="form-select"
                             aria-label="Default select example">
                             <option value="0"selected>{{ __('All Department') }}</option>
-                            @foreach ($departments as $department)
-                                <option value="{{ nama_department($department) }}">{{ nama_department($department) }}
-                                </option>
+                            @foreach ($departments as $d)
+                                <option value="{{ $d->id }}">{{ $d->nama_department }}</option>
                             @endforeach
-
-                            {{-- <option value="1">{{ __('Pabrik 1') }}</option>
-                                <option value="2">{{ __('Pabrik 2') }}</option>
-                                <option value="3">{{ __('Kantor') }}</option>
-                                <option value="4">ASB</option>
-                                <option value="5">DPA</option> --}}
                         </select>
                     </div>
 
@@ -428,10 +396,10 @@
                                             <td>{{ month_year($p->date) }}</td>
                                             <td>{{ $p->nama }}</td>
                                             <td>{{ $p->status_karyawan }}</td>
-                                            <td>{{ $p->jabatan }}</td>
-                                            <td>{{ $p->placement }}</td>
-                                            <td>{{ $p->company }}</td>
-                                            <td>{{ $p->departemen }}</td>
+                                            <td>{{ nama_jabatan($p->jabatan_id) }}</td>
+                                            <td>{{ nama_placement($p->placement_id) }}</td>
+                                            <td>{{ nama_company($p->company_id) }}</td>
+                                            <td>{{ nama_department($p->department_id) }}</td>
                                             <td>{{ $p->metode_penggajian }}</td>
                                             <td class="text-end">{{ $p->hari_kerja }}</td>
                                             <td class="text-end">{{ number_format($p->jam_kerja, 1) }}</td>

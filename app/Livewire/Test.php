@@ -12,13 +12,16 @@ use App\Models\Tambahan;
 use App\Models\Jamkerjaid;
 use Livewire\WithPagination;
 use App\Models\Bonuspotongan;
+use App\Models\Company;
 use App\Models\Department;
+use App\Models\Jabatan;
 use App\Models\Liburnasional;
 use App\Models\Personnelrequestform;
 use App\Models\Placement;
 use App\Models\Rekapbackup;
 use App\Models\Requester;
 use App\Models\Yfrekappresensi;
+use Google\Service\YouTube\ThirdPartyLinkStatus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -55,23 +58,67 @@ class Test extends Component
       title: 'Gak ngapa ngapain',
     );
   }
+  public function getJabatan_id($jabatan)
+  {
+    if ($jabatan) {
+      $data = Jabatan::where('nama_jabatan', $jabatan)->first();
+      // dd($data->id);
+      return $data->id;
+    }
+    return 0;
+  }
+  public function getCompany_id($company)
+  {
+    if ($company) {
+      $data = Company::where('company_name', $company)->first();
+      return $data->id;
+    }
+    return 0;
+  }
+  public function getPlacement_id($placement)
+  {
+    if ($placement) {
+      if ($placement == 'YCME') return 102;
+      if ($placement == 'YEV SMOOT') return 10;
+      if ($placement == 'YEV OFFERO') return 9;
+      if ($placement == 'YEV ELEKTRONIK') return 101;
+      $data = Placement::where('placement_name', $placement)->first();
+      return $data->id;
+    }
+    return 0;
+  }
+
+  public function getDepartment_id($department)
+  {
+    if ($department) {
+      $data = Department::where('nama_department', $department)->first();
+      return $data->id;
+    }
+    return 0;
+  }
 
   public function render()
   {
-    // $latestDate = Karyawan::max('created_at');
-    $latestDate = Carbon::parse(Karyawan::max('created_at'))->toDateString();
-    // $highestIdRecord = Karyawan::whereDate('created_at', $latestDate)
-    //   ->orderBy('id_karyawan', 'desc')
-    //   ->first();
-    $highestIdRecord = Karyawan::orderBy('created_at', 'desc')->first();
-    // dd($highestIdRecord->id_karyawan);
-    dd($highestIdRecord->id_karyawan);
+    $data = Payroll::all();
+    foreach ($data as $d) {
+      $d->jabatan_id = $this->getJabatan_id($d->jabatan);
+      $d->company_id = $this->getCompany_id($d->company);
+      $d->placement_id = $this->getPlacement_id($d->placement);
+      $d->department_id = $this->getDepartment_id($d->departemen);
+      $d->save();
+    }
+    dd('done');
+
+    // $data = Karyawan::where('metode_penggajian', null)->get();
 
 
 
 
 
 
-    return view('livewire.test');
+
+    return view('livewire.test', [
+      'data' => $data
+    ]);
   }
 }
