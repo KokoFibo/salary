@@ -157,7 +157,14 @@ class Payrollwr extends Component
         }
 
         $nama_file = nama_file_excel($nama_file, $this->month, $this->year);
-        return Excel::download(new BankReportExcel($payroll), $nama_file);
+        // $nama_file = 'test.xlsx';
+        // dd($this->selected_company, $this->selected_placement, $this->selected_departemen);
+
+        // return Excel::download(new DepartmentExport($this->selected_departemen, $this->status, $this->month, $this->year), $nama_file);
+
+        return Excel::download(new BankReportExcel($this->status, $this->month, $this->year, $this->selected_company, $this->selected_placement, $this->selected_departemen), $nama_file,);
+
+        // return Excel::download(new BankReportExcel($payroll), $nama_file, $this->selected_company, $this->selected_placement, $this->selected_departemen);
     }
 
     public function showDetail($id_karyawan)
