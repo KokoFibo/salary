@@ -63,136 +63,20 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
-        switch ($this->selected_placement) {
-            case 0:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-
-            case 1:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YCME')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-
-            case 2:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YEV')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-
-            case 3:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->whereIn('placement', ['YIG', 'YSM'])
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-
-            case 4:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'ASB')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-
-            case 5:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'DPA')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-
-            case 6:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YCME')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-
-            case 7:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YEV')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-
-            case 8:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YIG')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-
-            case 9:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YSM')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-            case 10:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YAM')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-            case 11:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'Pabrik 2')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-            case 12:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'Pabrik 3')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-            case 13:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YEV SUNRA')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-            case 14:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'YEV AIMA')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-            case 15:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'Pabrik 4')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
-            case 16:
-                $data = Payroll::whereIn('status_karyawan', $statuses)
-                    ->where('placement', 'Pabrik 1')
-                    ->whereMonth('date', $this->month)
-                    ->whereYear('date', $this->year)
-                    ->orderBy('id_karyawan', 'asc')->get();
-                break;
+        if ($this->selected_placement == 0) {
+            $data = Payroll::whereIn('status_karyawan', $statuses)
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
+                ->orderBy('id_karyawan', 'asc')->get();
+        } else {
+            $data = Payroll::whereIn('status_karyawan', $statuses)
+                ->where('placement_id', $this->selected_placement)
+                ->whereMonth('date', $this->month)
+                ->whereYear('date', $this->year)
+                ->orderBy('id_karyawan', 'asc')->get();
         }
-        $header_text = 'Perincian Payroll untuk Placement ' .  nama_bulan($this->month) . ' ' . $this->year;
+
+        $header_text = 'Perincian Payroll untuk Placement ' . nama_placement($this->selected_placement) . ' ' .  nama_bulan($this->month) . ' ' . $this->year;
 
         return view('payroll_excel_view', [
             'data' => $data,

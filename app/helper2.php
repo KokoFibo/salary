@@ -573,7 +573,7 @@ function build_payroll($month, $year)
             $tambahan_shift_malam;
 
 
-
+        if ($data->karyawan->metode_penggajian == '') dd($data->karyawan->id_karyawan);
 
         Payroll::create([
             'jp' => $jp,
@@ -589,10 +589,16 @@ function build_payroll($month, $year)
             'nama' => $data->karyawan->nama,
             'id_karyawan' => $data->karyawan->id_karyawan,
             // 'jabatan' => $data->karyawan->jabatan_id,
-            'jabatan' => nama_jabatan($data->karyawan->jabatan_id),
-            'company' => nama_company($data->karyawan->company_id),
-            'placement' => nama_placement($data->karyawan->placement_id),
-            'departemen' => nama_department($data->karyawan->department_id),
+            // 'jabatan' => nama_jabatan($data->karyawan->jabatan_id),
+            // 'company' => nama_company($data->karyawan->company_id),
+            // 'placement' => nama_placement($data->karyawan->placement_id),
+            // 'departemen' => nama_department($data->karyawan->department_id),
+
+            'jabatan_id' => $data->karyawan->jabatan_id,
+            'company_id' => $data->karyawan->company_id,
+            'placement_id' => $data->karyawan->placement_id,
+            'department_id' => $data->karyawan->department_id,
+
             // 'departemen' => $data->karyawan->department->nama_department,
             'status_karyawan' => $data->karyawan->status_karyawan,
             'metode_penggajian' => $data->karyawan->metode_penggajian,
@@ -772,6 +778,7 @@ function build_payroll($month, $year)
 
         $data_id = Karyawan::where('id_karyawan', $id)->first();
         $data_karyawan = Karyawan::find($data_id->id);
+
         if ($data_karyawan->potongan_JP == 1) {
             if ($data_karyawan->gaji_bpjs <= 10042300) {
                 $jp = $data_karyawan->gaji_bpjs * 0.01;
@@ -851,10 +858,18 @@ function build_payroll($month, $year)
             $data->kesehatan = $kesehatan;
             $data->nama = $data_karyawan->nama;
             $data->id_karyawan = $data_karyawan->id_karyawan;
-            $data->jabatan = nama_jabatan($data_karyawan->jabatan_id);
-            $data->company = nama_company($data_karyawan->company_id);
-            $data->departemen = nama_department($data_karyawan->department_id);
-            $data->placement = nama_placement($data_karyawan->placement_id);
+
+            // $data->jabatan = nama_jabatan($data_karyawan->jabatan_id);
+            // $data->company = nama_company($data_karyawan->company_id);
+            // $data->departemen = nama_department($data_karyawan->department_id);
+            // $data->placement = nama_placement($data_karyawan->placement_id);
+
+            $data->jabatan_id = $data_karyawan->jabatan_id;
+            $data->company_id = $data_karyawan->company_id;
+            $data->department_id = $data_karyawan->department_id;
+            $data->placement_id = $data_karyawan->placement_id;
+
+
             $data->status_karyawan = $data_karyawan->status_karyawan;
             $data->metode_penggajian = $data_karyawan->metode_penggajian;
             $data->nomor_rekening = $data_karyawan->nomor_rekening;
@@ -880,12 +895,17 @@ function build_payroll($month, $year)
             $data->kesehatan = $kesehatan;
             $data->nama = $data_karyawan->nama;
             $data->id_karyawan = $data_karyawan->id_karyawan;
-            $data->jabatan = nama_jabatan($data_karyawan->jabatan_id);
 
-            $data->company = nama_company($data_karyawan->company_id);
-            $data->departemen = nama_department($data_karyawan->department_id);
+            // $data->jabatan = nama_jabatan($data_karyawan->jabatan_id);
+            // $data->company = nama_company($data_karyawan->company_id);
+            // $data->departemen = nama_department($data_karyawan->department_id);
+            // $data->placement = nama_placement($data_karyawan->placement_id);
 
-            $data->placement = nama_placement($data_karyawan->placement_id);
+            $data->jabatan_id = $data_karyawan->jabatan_id;
+            $data->company_id = $data_karyawan->company_id;
+            $data->department_id = $data_karyawan->department_id;
+            $data->placement_id = $data_karyawan->placement_id;
+
             $data->status_karyawan = $data_karyawan->status_karyawan;
             $data->metode_penggajian = $data_karyawan->metode_penggajian;
             $data->nomor_rekening = $data_karyawan->nomor_rekening;

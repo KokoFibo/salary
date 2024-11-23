@@ -203,10 +203,11 @@
                     <td> {{ $d->nama }}</td>
                     <td style="text-align: center"> {{ $d->nama_bank }}</td>
                     <td style="text-align: center"> {{ strval($d->nomor_rekening) }}</td>
-                    <td style="text-align: center"> {{ $d->jabatan }}</td>
-                    <td style="text-align: center"> {{ $d->company }}</td>
-                    <td style="text-align: center"> {{ $d->placement }}</td>
-                    <td style="text-align: center"> {{ $d->departemen }}</td>
+                    <td style="text-align: center"> {{ nama_jabatan($d->jabatan_id) }}</td>
+                    <td style="text-align: center"> {{ nama_company($d->company_id) }}</td>
+                    <td style="text-align: center"> {{ nama_placement($d->placement_id) }}</td>
+                    <td style="text-align: center"> {{ nama_department($d->department_id) }}</td>
+
                     <td style="text-align: center"> {{ $d->metode_penggajian }}</td>
                     <td> {{ $d->hari_kerja }}</td>
                     <td> {{ $d->jam_kerja }}</td>
