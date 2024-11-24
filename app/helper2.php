@@ -249,25 +249,6 @@ function build_payroll($month, $year)
                     'updated_at' => now()->toDateTimeString(),
                 ];
             }
-            // else if (Carbon::parse($d->karyawan->tanggal_blacklist)->month > Carbon::parse($d->date)->month) {
-            //     $dataArr[] = [
-            //         'user_id' => $data,
-            //         'total_hari_kerja' => $total_hari_kerja,
-            //         'jumlah_jam_kerja' => $total_jam_kerja,
-            //         'jumlah_menit_lembur' => $total_jam_lembur,
-            //         'jumlah_jam_terlambat' => $total_keterlambatan,
-            //         'tambahan_jam_shift_malam' => $total_tambahan_shift_malam,
-            //         'jam_kerja_libur' => $jam_kerja_libur,
-
-
-            //         'total_noscan' => $n_noscan,
-            //         'karyawan_id' => $d->karyawan->id,
-            //         'date' => buatTanggal($d->date),
-            //         'last_data_date' => $last_data_date->date,
-            //         'created_at' => now()->toDateTimeString(),
-            //         'updated_at' => now()->toDateTimeString(),
-            //     ];
-            // }
         }
 
         // dd('sini');
@@ -398,40 +379,6 @@ function build_payroll($month, $year)
         }
 
 
-
-
-        // $status_resign = ($data->karyawan->status_karyawan == 'Resigned') && (check_resigned_validity($month, $year, $data->karyawan->tanggal_resigned));
-
-
-        // if ($data->karyawan->status_karyawan == 'Resigned' && check_resigned_validity($month, $year, $data->karyawan->tanggal_resigned) && $data->karyawan->metode_penggajian == 'Perbulan' && $manfaat_libur > 0) {
-        //     $manfaat_libur = manfaat_libur_resigned($month, $year, $libur, $data->user_id, $data->karyawan->tanggal_resigned);
-        // }
-
-
-        // if ($data->karyawan_id == '1026') {
-        //     dd($manfaat_libur);
-        // }
-
-        //ggg
-
-        // $total_n_hari_kerja = getTotalWorkingDays($year, $month);
-        // $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
-        // $max_hari_kerja = $total_n_hari_kerja - $jumlah_libur_nasional;
-        // $gaji_potongan = $data->karyawan->gaji_pokok / 26;
-        // $selisih_manfaat_libur = $jumlah_libur_nasional - $manfaat_libur;
-        // $selisih_hari_kerja = $max_hari_kerja - $data->total_hari_kerja;
-        // if ($selisih_hari_kerja < 0) $selisih_hari_kerja = 0;
-        // if ($selisih_manfaat_libur < 0) $selisih_manfaat_libur = 0;
-
-        // $gaji_karyawan_bulanan = $data->karyawan->gaji_pokok - ($gaji_potongan * ($selisih_manfaat_libur + $selisih_hari_kerja));
-        // if ($data->user_id == 58) dd($selisih_manfaat_libur, $selisih_hari_kerja, $max_hari_kerja, $total_n_hari_kerja, $jumlah_libur_nasional, $manfaat_libur);
-        // if ($data->total_hari_kerja >= 23) {
-        //     $gaji_karyawan_bulanan = $data->karyawan->gaji_pokok - ($gaji_potongan * $selisih_manfaat_libur);
-        // } else {
-        //     $gaji_karyawan_bulanan = $data->karyawan->gaji_pokok - ($gaji_potongan * ($selisih_manfaat_libur + $selisih_hari_kerja));
-        // }
-
-
         $gaji_karyawan_bulanan = ($data->karyawan->gaji_pokok / $total_n_hari_kerja) * ($data->total_hari_kerja + $manfaat_libur);
 
 
@@ -443,9 +390,7 @@ function build_payroll($month, $year)
             $subtotal = $gaji_karyawan_bulanan + $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
         }
 
-        // if ($data->user_id == '1145') {
-        //     dd($data->karyawan->gaji_pokok, $total_n_hari_kerja, $data->total_hari_kerja, $manfaat_libur, $data->jumlah_menit_lembur, $data->karyawan->gaji_overtime);
-        // }
+
 
         $tambahan_shift_malam = $data->tambahan_jam_shift_malam * $data->karyawan->gaji_overtime;
         if ($data->karyawan->jabatan_id == 17) {
@@ -453,63 +398,6 @@ function build_payroll($month, $year)
         }
 
         $libur_nasional = 0;
-
-        // $payrollArr[] = [
-        //     'jp' => $jp,
-        //     'jht' => $jht,
-        //     'kesehatan' => $kesehatan,
-        //     'tanggungan' => $tanggungan,
-        //     'jkk' => $jkk,
-        //     'jkm' => $jkm,
-        //     'denda_lupa_absen' => $denda_lupa_absen,
-        //     'gaji_libur' => $gaji_libur,
-
-        //     'jamkerjaid_id' => $data->id,
-        //     'nama' => $data->karyawan->nama,
-        //     'id_karyawan' => $data->karyawan->id_karyawan,
-        //     'jabatan' => $data->karyawan->jabatan_id,
-        //     'company' => $data->karyawan->company,
-        //     'placement' => $data->karyawan->placement,
-        //     'departemen' => $data->karyawan->departemen,
-        //     'status_karyawan' => $data->karyawan->status_karyawan,
-        //     'metode_penggajian' => $data->karyawan->metode_penggajian,
-        //     'nomor_rekening' => $data->karyawan->nomor_rekening,
-        //     'nama_bank' => $data->karyawan->nama_bank,
-        //     'gaji_pokok' => $data->karyawan->gaji_pokok,
-        //     'gaji_lembur' => $data->karyawan->gaji_overtime,
-        //     'gaji_bpjs' => $data->karyawan->gaji_bpjs,
-        //     // oll
-        //     'libur_nasional' => $libur_nasional,
-
-        //     'jkk' => $data->karyawan->jkk,
-        //     'jkm' => $data->karyawan->jkm,
-        //     'hari_kerja' => $data->total_hari_kerja,
-        //     'jam_kerja' => $data->jumlah_jam_kerja,
-        //     'jam_lembur' => $data->jumlah_menit_lembur,
-        //     'jumlah_jam_terlambat' => $data->jumlah_jam_terlambat,
-        //     'total_noscan' => $data->total_noscan,
-        //     'thr' => $data->karyawan->bonus,
-        //     'tunjangan_jabatan' => $data->karyawan->tunjangan_jabatan,
-        //     'tunjangan_bahasa' => $data->karyawan->tunjangan_bahasa,
-        //     'tunjangan_skill' => $data->karyawan->tunjangan_skill,
-        //     'tunjangan_lama_kerja' => $data->karyawan->tunjangan_lama_kerja,
-        //     'tunjangan_lembur_sabtu' => $data->karyawan->tunjangan_lembur_sabtu,
-        //     'iuran_air' => $data->karyawan->iuran_air,
-        //     'iuran_locker' => $data->karyawan->iuran_locker,
-        //     'tambahan_jam_shift_malam' => $data->tambahan_jam_shift_malam,
-        //     'tambahan_shift_malam' => $tambahan_shift_malam,
-        //     'subtotal' => $subtotal,
-        //     'date' => buatTanggal($data->date),
-        //     'total' => $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen,
-        //     'created_at' => now()->toDateTimeString(),
-        //     'updated_at' => now()->toDateTimeString(),
-        // ];
-
-        // total gaji lembur
-
-
-        // hitung pph21
-        // $pph21 = hitung_pph21($data->karyawan->gaji_bpjs, $data->karyawan->ptkp, $data->karyawan->potongan_JHT, $data->karyawan->potongan_JP, $data->karyawan->potongan_JKK, $data->karyawan->potongan_JKM, $data->karyawan->potongan_kesehatan);
 
         // oioi
         $total_gaji_lembur = $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;

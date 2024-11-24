@@ -49,6 +49,9 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
                 <th colspan="5" style="text-align: center; background-color: green; color:black">
                     <h4>Karyawan</h4>
                 </th>
@@ -81,7 +84,10 @@
                 <th style="text-align: center;">Jumlah Jam Terlambat</th>
                 <th style="text-align: center;">Tambahan Shift Malam</th>
                 <th style="text-align: center;">Gaji Pokok</th>
+                <th style="text-align: center;">Gaji Per Hari/Jam</th>
+                <th style="text-align: center;">Gaji Bulan Ini</th>
                 <th style="text-align: center;">Gaji Lembur</th>
+                <th style="text-align: center;">Total Gaji Lembur</th>
                 <th style="text-align: center;">Gaji Libur</th>
                 <th style="text-align: center;">Bonus/U.Makan</th>
                 <th style="text-align: center;">Potongan 1X</th>
@@ -113,6 +119,7 @@
             </tr>
         </thead>
         <tbody>
+
             @foreach ($data as $key => $d)
                 @php
                     if ($d->gaji_bpjs >= 12000000) {
@@ -215,7 +222,10 @@
                     <td> {{ $d->jumlah_jam_terlambat }}</td>
                     <td style="text-align: right"> {{ $d->tambahan_shift_malam }}</td>
                     <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
+                    <td style="text-align: right"> {{ $d->gaji_pokok / $total_n_hari_kerja }}</td>
+                    <td style="text-align: right"> {{ ($d->gaji_pokok / $total_n_hari_kerja) * $d->hari_kerja }}</td>
                     <td style="text-align: right"> {{ $d->gaji_lembur }}</td>
+                    <td style="text-align: right"> {{ $d->gaji_lembur * $d->jam_lembur }}</td>
                     <td style="text-align: right"> {{ $d->gaji_libur }}</td>
                     <td style="text-align: right"> {{ $d->bonus1x }}</td>
                     <td style="text-align: right"> {{ $d->potongan1x }}</td>
