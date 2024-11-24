@@ -83,10 +83,13 @@ class DepartmentExport implements FromView,  ShouldAutoSize, WithColumnFormattin
         } else {
             $header_text = 'Seluruh Perincian Payroll ' .  nama_bulan($this->month) . ' ' . $this->year;
         }
+        $total_n_hari_kerja = getTotalWorkingDays($this->year, $this->month);
 
         return view('payroll_excel_view', [
             'data' => $data,
-            'header_text' => $header_text
+            'header_text' => $header_text,
+            'total_n_hari_kerja' => $total_n_hari_kerja
+
         ]);
     }
 
@@ -120,8 +123,11 @@ class DepartmentExport implements FromView,  ShouldAutoSize, WithColumnFormattin
             'AJ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AK' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AL' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AP' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AQ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
+            'AM' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AN' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AO' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AS' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AT' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
         ];
     }
 }
