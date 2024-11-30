@@ -70,26 +70,30 @@ function check_resigned_blacklist($id)
         // ->orWhere('email', trim($dataApplicant->email))
         ->orWhere('email', 'resigned_' . $dataApplicant->email)
         ->orWhere('email', 'blacklist_' . $dataApplicant->email)
+        ->orWhere('email',  $dataApplicant->email)
         ->orWhere('no_identitas', trim($dataApplicant->no_identitas))
         ->orWhere('hp', trim($dataApplicant->hp))
         ->first();
 
     // If no matching Karyawan is found, return 0
     if (!$karyawan) {
-        return 0;
+        $data = [0, 0];
+        return $data;
     }
 
     // Check the status of the Karyawan and return corresponding values
     switch ($karyawan->status_karyawan) {
         case 'Resigned':
-            return 1;
+            $data = [1, $karyawan->id_karyawan];
+            return $data;
         case 'Blacklist':
-            return 2;
+            $data = [2, $karyawan->id_karyawan];
+            return $data;
         default:
-            return 0;
+            $data = [3, $karyawan->id_karyawan];
+            return $data;
     }
 }
-
 function get_ter($ptkp)
 {
 

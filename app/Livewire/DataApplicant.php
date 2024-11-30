@@ -79,20 +79,30 @@ class DataApplicant extends Component
     {
         // dd($this->terima_id);
         $id = $this->terima_id;
-        $hasil_check = check_resigned_blacklist($id);
+        $array_hasil_check = check_resigned_blacklist($id);
+        $hasil_check = $array_hasil_check[0];
+        // dd($array_hasil_check[0]);
         // dd($hasil_check);
         if ($hasil_check == 1) {
             $this->dispatch(
                 'message',
                 type: 'error',
-                title: 'Karyawan ini sudah pernah RESIGNED',
+                // title: 'Karyawan ini sudah pernah RESIGNED, ID : ' . getId($id),
+                title: 'Karyawan ini sudah pernah RESIGNED, ID : ' . $array_hasil_check[1],
             );
             return;
         } else if ($hasil_check == 2) {
             $this->dispatch(
                 'message',
                 type: 'error',
-                title: 'Karyawan ini sudah pernah Blacklist',
+                title: 'Karyawan ini sudah pernah Blacklist, ID : ' . $array_hasil_check[1],
+            );
+            return;
+        } else if ($hasil_check == 3) {
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Karyawan ini sudah pernah terdaftar dalam database, ID : ' . $array_hasil_check[1],
             );
             return;
         }
