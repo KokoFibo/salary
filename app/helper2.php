@@ -401,8 +401,11 @@ function build_payroll($month, $year)
 
         // oioi
         $total_gaji_lembur = $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
+        $total_gaji_BPJS = $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen;
+
         $pph21 = hitung_pph21(
-            $data->karyawan->gaji_bpjs,
+            // $data->karyawan->gaji_bpjs,
+            $total_gaji_BPJS,
             $data->karyawan->ptkp,
             $data->karyawan->potongan_JHT,
             $data->karyawan->potongan_JP,
@@ -721,8 +724,10 @@ function build_payroll($month, $year)
         }
 
         // hitung pph21
+        $total_gaji_BPJS = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21 - $all_potongan + $all_bonus;
         $pph21 = hitung_pph21(
-            $data_karyawan->gaji_bpjs,
+            // $data_karyawan->gaji_bpjs,
+            $total_gaji_BPJS,
             $data_karyawan->ptkp,
             $data_karyawan->potongan_JHT,
             $data_karyawan->potongan_JP,
@@ -810,6 +815,8 @@ function build_payroll($month, $year)
             $data->potongan1x = $all_potongan;
             $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21 - $all_potongan + $all_bonus;
             $data->total_bpjs = $total_bpjs;
+
+
 
             $data->save();
         }
