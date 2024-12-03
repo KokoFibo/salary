@@ -109,7 +109,7 @@
                 <th style="text-align: center;">JKK</th>
                 <th style="text-align: center;">JKM</th>
                 <th style="text-align: center;">Kesehatan</th>
-                <th style="text-align: center;">Total BPJS</th>
+                <th style="text-align: center;">Total TAX</th>
                 <th style="text-align: center;">PTKP</th>
                 <th style="text-align: center;">TER</th>
                 <th style="text-align: center;">Rate</th>
@@ -164,15 +164,72 @@
                     }
 
                     $total_bpjs_company = 0;
-                    $total_bpjs_company =
-                        $d->gaji_bpjs +
-                        $jkk_company +
-                        $jkm_company +
-                        $kesehatan_company +
-                        $d->gaji_lembur * $d->jam_lembur +
-                        $d->gaji_libur +
-                        $d->bonus1x +
-                        $d->tambahan_shift_malam;
+
+                    // $total_bpjs_company =
+                    // // $d->gaji_bpjs +
+                    //     $d->subtotal +
+                    //     $jkk_company +
+                    //     $jkm_company +
+                    //     $kesehatan_company +
+                    //     $d->gaji_lembur * $d->jam_lembur +
+                    //     $d->gaji_libur +
+                    //     $d->bonus1x +
+                    //     $d->tambahan_shift_malam;
+                    $idKhusus = [
+                        4,
+                        2,
+                        6435,
+                        1,
+                        3,
+                        5,
+                        6,
+                        21,
+                        22,
+                        23,
+                        24,
+                        25,
+                        26,
+                        27,
+                        28,
+                        29,
+                        30,
+                        31,
+                        32,
+                        33,
+                        34,
+                        35,
+                        800,
+                        900,
+                        5576,
+                        5693,
+                        6566,
+                        7511,
+                        6576,
+                        6577,
+                        6578,
+                        6579,
+                        8127,
+                    ]; // TKA hanya 3 nomor di depan
+
+                    if (in_array($d->id_karyawan, $idKhusus)) {
+                        $total_bpjs_company =
+                            $d->gaji_bpjs +
+                            $jkk_company +
+                            $jkm_company +
+                            $kesehatan_company +
+                            $d->gaji_libur +
+                            $d->bonus1x +
+                            $d->tambahan_shift_malam;
+                    } else {
+                        $total_bpjs_company =
+                            $d->subtotal +
+                            $jkk_company +
+                            $jkm_company +
+                            $kesehatan_company +
+                            $d->gaji_libur +
+                            $d->bonus1x +
+                            $d->tambahan_shift_malam;
+                    }
 
                     $ter = '';
                     switch ($d->ptkp) {
@@ -222,8 +279,23 @@
                     <td> {{ $d->jumlah_jam_terlambat }}</td>
                     <td style="text-align: right"> {{ $d->tambahan_shift_malam }}</td>
                     <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
-                    <td style="text-align: right"> {{ $d->gaji_pokok / $total_n_hari_kerja }}</td>
-                    <td style="text-align: right"> {{ ($d->gaji_pokok / $total_n_hari_kerja) * $d->hari_kerja }}</td>
+                    @if ($d->metode_penggajian == 'Perjam')
+                        <td style="text-align: right"> {{ $d->gaji_pokok / 198 }}</td>
+                        <td style="text-align: right"> {{ ($d->gaji_pokok / 198) * $d->jam_kerja }}</td>
+                    @else
+                        @php
+                            $gajiPerHari = $d->gaji_pokok / $total_n_hari_kerja;
+                            $total = $total_n_hari_kerja - $jumlah_libur_nasional - $d->hari_kerja;
+                            if ($total > 0) {
+                                $total_gaji = $d->gaji_pokok - $gajiPerHari * $total;
+                            } else {
+                                $total_gaji = $d->gaji_pokok;
+                            }
+                        @endphp
+                        <td style="text-align: right"> {{ $d->gaji_pokok / $total_n_hari_kerja }}</td>
+                        <td style="text-align: right"> {{ $total_gaji }}
+                        </td>
+                    @endif
                     <td style="text-align: right"> {{ $d->gaji_lembur }}</td>
                     <td style="text-align: right"> {{ $d->gaji_lembur * $d->jam_lembur }}</td>
                     <td style="text-align: right"> {{ $d->gaji_libur }}</td>

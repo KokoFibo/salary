@@ -261,6 +261,7 @@ function hitung_pph21_simple($total_bpjs_company, $ptkp, $gaji_bpjs)
 }
 
 function hitung_pph21(
+    $gaji_total,
     $gaji_bpjs,
     $ptkp,
     $jht,
@@ -301,14 +302,15 @@ function hitung_pph21(
         else $kesehatan_company = 0;
 
 
+        // $total_bpjs_company =
+        //     $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company +
+        //     $total_gaji_lembur +
+        //     $gaji_libur +
+        //     $total_bonus_dari_karyawan +
+        //     $tambahan_shift_malam;
         $total_bpjs_company =
-            // $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company + $jp_company + $jht_company;
             // $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
-            $gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company +
-            $total_gaji_lembur +
-            $gaji_libur +
-            $total_bonus_dari_karyawan +
-            $tambahan_shift_malam;
+            $gaji_total + $jkk_company + $jkm_company + $kesehatan_company;
 
         $ter = '';
         switch ($ptkp) {

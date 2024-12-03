@@ -364,34 +364,57 @@ class Payrollwr extends Component
         );
     }
 
+    // public function getPayrollQuery($statuses, $search = null, $placement_id = null, $company_id = null, $department_id = null)
+    // {
+    //     return Payroll::query()
+
+    //         ->whereIn('status_karyawan', $statuses)
+    //         ->when($search, function ($query) use ($search) {
+    //             $query
+    //                 // ->where('id_karyawan', 'LIKE', '%' . trim($search) . '%')
+    //                 ->where('id_karyawan',  trim($search))
+    //                 ->orWhere('nama', 'LIKE', '%' . trim($search) . '%')
+    //                 ->orWhere('jabatan_id', 'LIKE', '%' . trim($search) . '%')
+    //                 ->orWhere('company_id', 'LIKE', '%' . trim($search) . '%')
+    //                 ->orWhere('department_id', 'LIKE', '%' . trim($search) . '%')
+    //                 ->orWhere('metode_penggajian', 'LIKE', '%' . trim($search) . '%')
+    //                 ->orWhere('status_karyawan', 'LIKE', '%' . trim($search) . '%');
+    //         })
+    //         ->when($placement_id, function ($query) use ($placement_id) {
+    //             $query->where('placement_id', $placement_id);
+    //         })
+    //         ->when($company_id, function ($query) use ($company_id) {
+    //             $query->where('company_id', $company_id);
+    //         })
+    //         ->when($department_id, function ($query) use ($department_id) {
+    //             $query->where('department_id', $department_id);
+    //         })
+
+    //         ->orderBy($this->columnName, $this->direction);
+    // }
+
     public function getPayrollQuery($statuses, $search = null, $placement_id = null, $company_id = null, $department_id = null)
     {
         return Payroll::query()
-
             ->whereIn('status_karyawan', $statuses)
             ->when($search, function ($query) use ($search) {
-                $query
-                    // ->where('id_karyawan', 'LIKE', '%' . trim($search) . '%')
-                    ->where('id_karyawan',  trim($search))
-                    ->orWhere('nama', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('jabatan_id', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('company_id', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('department_id', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('metode_penggajian', 'LIKE', '%' . trim($search) . '%')
-                    ->orWhere('status_karyawan', 'LIKE', '%' . trim($search) . '%');
+                $query->where(function ($subQuery) use ($search) {
+                    $trimmedSearch = trim($search);
+                    $subQuery->where('id_karyawan', $trimmedSearch)
+                        ->orWhere('nama', 'LIKE', "%{$trimmedSearch}%")
+                        ->orWhere('jabatan_id', 'LIKE', "%{$trimmedSearch}%")
+                        ->orWhere('company_id', 'LIKE', "%{$trimmedSearch}%")
+                        ->orWhere('department_id', 'LIKE', "%{$trimmedSearch}%")
+                        ->orWhere('metode_penggajian', 'LIKE', "%{$trimmedSearch}%")
+                        ->orWhere('status_karyawan', 'LIKE', "%{$trimmedSearch}%");
+                });
             })
-            ->when($placement_id, function ($query) use ($placement_id) {
-                $query->where('placement_id', $placement_id);
-            })
-            ->when($company_id, function ($query) use ($company_id) {
-                $query->where('company_id', $company_id);
-            })
-            ->when($department_id, function ($query) use ($department_id) {
-                $query->where('department_id', $department_id);
-            })
-
+            ->when($placement_id, fn($query) => $query->where('placement_id', $placement_id))
+            ->when($company_id, fn($query) => $query->where('company_id', $company_id))
+            ->when($department_id, fn($query) => $query->where('department_id', $department_id))
             ->orderBy($this->columnName, $this->direction);
     }
+
 
     public function updatedSelectedCompany()
     {
