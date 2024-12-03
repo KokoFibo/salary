@@ -78,11 +78,12 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
 
         $header_text = 'Perincian Payroll untuk Placement ' . nama_placement($this->selected_placement) . ' ' .  nama_bulan($this->month) . ' ' . $this->year;
         $total_n_hari_kerja = getTotalWorkingDays($this->year, $this->month);
-
+        $jumlah_libur_nasional = jumlah_libur_nasional($this->month, $this->year);
         return view('payroll_excel_view', [
             'data' => $data,
             'header_text' => $header_text,
-            'total_n_hari_kerja' => $total_n_hari_kerja
+            'total_n_hari_kerja' => $total_n_hari_kerja,
+            'jumlah_libur_nasional' => $jumlah_libur_nasional
 
         ]);
     }

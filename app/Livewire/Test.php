@@ -99,15 +99,9 @@ class Test extends Component
 
   public function render()
   {
-    $data = Payroll::all();
-    foreach ($data as $d) {
-      $d->jabatan_id = $this->getJabatan_id($d->jabatan);
-      $d->company_id = $this->getCompany_id($d->company);
-      $d->placement_id = $this->getPlacement_id($d->placement);
-      $d->department_id = $this->getDepartment_id($d->departemen);
-      $d->save();
-    }
-    dd('done');
+    $this->month = 11;
+    $jumlah_libur_nasional = jumlah_libur_nasional($this->month, $this->year);
+    dd($this->month, $jumlah_libur_nasional);
 
     // $data = Karyawan::where('metode_penggajian', null)->get();
 

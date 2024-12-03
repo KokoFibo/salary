@@ -28,6 +28,7 @@ function build_payroll($month, $year)
 
     $jumlah_libur_nasional = jumlah_libur_nasional($month, $year);
 
+
     // $jamKerjaKosong = Jamkerjaid::count();
     $adaPresensi = Yfrekappresensi::whereMonth('date', $month)
         ->whereYear('date', $year)
@@ -362,7 +363,15 @@ function build_payroll($month, $year)
         $total_potongan_dari_karyawan = 0;
         $gaji_libur = 0;
 
+
+
         $gaji_libur = ($data->jam_kerja_libur * ($data->karyawan->gaji_pokok / 198));
+
+        // if ($data->karyawan->metode_penggajian == 'Perjam') {
+        //     $gaji_libur = ($data->jam_kerja_libur * ($data->karyawan->gaji_pokok / 198));
+        // } else {
+        //     $gaji_libur = $jumlah_libur_nasional *  ($data->karyawan->gaji_pokok / $total_n_hari_kerja);
+        // }
 
         $total_bonus_dari_karyawan = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lembur_sabtu + $data->karyawan->tunjangan_lama_kerja;
         $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker;
@@ -401,22 +410,8 @@ function build_payroll($month, $year)
 
         // oioi
         $total_gaji_lembur = $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
-        $total_gaji_BPJS = $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen;
+        // $total_gaji_BPJS = $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen;
 
-        $pph21 = hitung_pph21(
-            // $data->karyawan->gaji_bpjs,
-            $total_gaji_BPJS,
-            $data->karyawan->ptkp,
-            $data->karyawan->potongan_JHT,
-            $data->karyawan->potongan_JP,
-            $data->karyawan->potongan_JKK,
-            $data->karyawan->potongan_JKM,
-            $data->karyawan->potongan_kesehatan,
-            $total_gaji_lembur,
-            $gaji_libur,
-            0,
-            $tambahan_shift_malam
-        );
         //==================
         if ($data->karyawan->gaji_bpjs >= 12000000) {
             $gaji_bpjs_max = 12000000;
@@ -451,18 +446,36 @@ function build_payroll($month, $year)
             $jkm_company = 0;
         }
 
+        $total_gaji_BPJS = $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam + $jkk_company + $jkm_company + $kesehatan_company;
+        $total_gaji_BPJS_PPH21 = $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam;
+
+        $pph21 = hitung_pph21(
+            $total_gaji_BPJS_PPH21,
+            $data->karyawan->gaji_bpjs,
+            $data->karyawan->ptkp,
+            $data->karyawan->potongan_JHT,
+            $data->karyawan->potongan_JP,
+            $data->karyawan->potongan_JKK,
+            $data->karyawan->potongan_JKM,
+            $data->karyawan->potongan_kesehatan,
+            $total_gaji_lembur,
+            $gaji_libur,
+            0,
+            $tambahan_shift_malam
+        );
+
         // ====================
-        $total_bpjs = $data->karyawan->gaji_bpjs +
-            // $data->karyawan->ptkp +
+        // $total_bpjs = $data->karyawan->gaji_bpjs +
+        //     // $data->karyawan->ptkp +
 
-            $jkk_company +
-            $jkm_company +
-            $kesehatan_company +
-            $total_gaji_lembur +
-            $gaji_libur +
+        //     $jkk_company +
+        //     $jkm_company +
+        //     $kesehatan_company +
+        //     $total_gaji_lembur +
+        //     $gaji_libur +
 
-            $tambahan_shift_malam;
-
+        //     $tambahan_shift_malam;
+        // $total_bpjs = $total_gaji_BPJS;
 
         if ($data->karyawan->metode_penggajian == '') dd($data->karyawan->id_karyawan);
 
@@ -523,7 +536,7 @@ function build_payroll($month, $year)
             'date' => buatTanggal($data->date),
             'pph21' => $pph21,
             'total' => $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen - $pph21,
-            'total_bpjs' => $total_bpjs,
+            'total_bpjs' => $total_gaji_BPJS,
             // 'created_at' => now()->toDateTimeString(),
             // 'updated_at' => now()->toDateTimeString()
         ]);
@@ -724,10 +737,11 @@ function build_payroll($month, $year)
         }
 
         // hitung pph21
-        $total_gaji_BPJS = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21 - $all_potongan + $all_bonus;
+        // $total_gaji_BPJS = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21 - $all_potongan + $all_bonus;
         $pph21 = hitung_pph21(
-            // $data_karyawan->gaji_bpjs,
-            $total_gaji_BPJS,
+            // $data_karyawan->gaji_pokok,
+            $data_karyawan->gaji_bpjs,
+            $data_karyawan->gaji_bpjs,
             $data_karyawan->ptkp,
             $data_karyawan->potongan_JHT,
             $data_karyawan->potongan_JP,
@@ -740,7 +754,9 @@ function build_payroll($month, $year)
             0
         );
 
+        // $total_bpjs = $data_karyawan->gaji_pokok + $jkk_company + $jkm_company + $kesehatan_company;
         $total_bpjs = $data_karyawan->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
+        // $total_bpjs = $total_gaji_BPJS + $jkk_company + $jkm_company + $kesehatan_company;
         $is_exist = Payroll::where('id_karyawan', $id)->whereMonth('date', $month)
             ->whereYear('date', $year)->first();
         if ($is_exist) {
@@ -778,6 +794,9 @@ function build_payroll($month, $year)
             $data->bonus1x = $all_bonus;
             $data->potongan1x = $all_potongan;
             $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21 - $all_potongan + $all_bonus;
+            $data->hari_kerja = $total_n_hari_kerja - $jumlah_libur_nasional;
+            $data->jam_kerja = 0;
+            $data->jam_lembur = 0;
             $data->total_bpjs = $total_bpjs;
             $data->save();
         } else {
@@ -814,6 +833,9 @@ function build_payroll($month, $year)
             $data->bonus1x = $all_bonus;
             $data->potongan1x = $all_potongan;
             $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21 - $all_potongan + $all_bonus;
+            $data->hari_kerja = $total_n_hari_kerja - $jumlah_libur_nasional;
+            $data->jam_kerja = 0;
+            $data->jam_lembur = 0;
             $data->total_bpjs = $total_bpjs;
 
 
