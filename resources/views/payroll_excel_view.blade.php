@@ -109,7 +109,7 @@
                 <th style="text-align: center;">JKK</th>
                 <th style="text-align: center;">JKM</th>
                 <th style="text-align: center;">Kesehatan</th>
-                <th style="text-align: center;">Total BPJS</th>
+                <th style="text-align: center;">Total TAX</th>
                 <th style="text-align: center;">PTKP</th>
                 <th style="text-align: center;">TER</th>
                 <th style="text-align: center;">Rate</th>
