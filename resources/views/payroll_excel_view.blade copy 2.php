@@ -109,7 +109,7 @@
                 <th style="text-align: center;">JKK</th>
                 <th style="text-align: center;">JKM</th>
                 <th style="text-align: center;">Kesehatan</th>
-                <th style="text-align: center;">Total BPJS</th>
+                <th style="text-align: center;">Total TAX</th>
                 <th style="text-align: center;">PTKP</th>
                 <th style="text-align: center;">TER</th>
                 <th style="text-align: center;">Rate</th>
@@ -164,15 +164,72 @@
                     }
 
                     $total_bpjs_company = 0;
-                    $total_bpjs_company =
-                        $d->gaji_bpjs +
-                        $jkk_company +
-                        $jkm_company +
-                        $kesehatan_company +
-                        $d->gaji_lembur * $d->jam_lembur +
-                        $d->gaji_libur +
-                        $d->bonus1x +
-                        $d->tambahan_shift_malam;
+
+                    // $total_bpjs_company =
+                    // // $d->gaji_bpjs +
+                    //     $d->subtotal +
+                    //     $jkk_company +
+                    //     $jkm_company +
+                    //     $kesehatan_company +
+                    //     $d->gaji_lembur * $d->jam_lembur +
+                    //     $d->gaji_libur +
+                    //     $d->bonus1x +
+                    //     $d->tambahan_shift_malam;
+                    $idKhusus = [
+                        4,
+                        2,
+                        6435,
+                        1,
+                        3,
+                        5,
+                        6,
+                        21,
+                        22,
+                        23,
+                        24,
+                        25,
+                        26,
+                        27,
+                        28,
+                        29,
+                        30,
+                        31,
+                        32,
+                        33,
+                        34,
+                        35,
+                        800,
+                        900,
+                        5576,
+                        5693,
+                        6566,
+                        7511,
+                        6576,
+                        6577,
+                        6578,
+                        6579,
+                        8127,
+                    ]; // TKA hanya 3 nomor di depan
+
+                    if (in_array($d->id_karyawan, $idKhusus)) {
+                        $total_bpjs_company =
+                            $d->gaji_bpjs +
+                            $jkk_company +
+                            $jkm_company +
+                            $kesehatan_company +
+                            $d->gaji_libur +
+                            $d->bonus1x +
+                            $d->tambahan_shift_malam;
+                    } else {
+                        $total_bpjs_company =
+                            $d->subtotal +
+                            $jkk_company +
+                            $jkm_company +
+                            $kesehatan_company +
+                            $d->gaji_libur +
+                            $d->bonus1x +
+                            $d->tambahan_shift_malam;
+                    }
 
                     $ter = '';
                     switch ($d->ptkp) {
