@@ -643,7 +643,7 @@ function build_payroll($month, $year)
 
     $idArrTKA = [1, 3, 5, 25, 6];
     $idArrTionghoa = [4, 2, 6435]; // TKA hanya 3 orang
-    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 800, 900, 5576, 5693, 6566, 7511, 6576, 6577, 6578, 6579, 8127]; //TKA hanya 3 no didepan
+    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24,  26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 800, 900, 5576, 6566, 7511, 6576, 6577, 6578, 6579, 8127]; //TKA hanya 3 no didepan
 
     foreach ($idKhusus as $id) {
         // bonus dan potongan
@@ -773,6 +773,9 @@ function build_payroll($month, $year)
             $data->bonus1x = $all_bonus;
             $data->potongan1x = $all_potongan;
             $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21 - $all_potongan + $all_bonus;
+            $data->hari_kerja = $total_n_hari_kerja - $jumlah_libur_nasional;
+            $data->jam_kerja = 0;
+            $data->jam_lembur = 0;
             $data->total_bpjs = $total_bpjs;
             $data->save();
         } else {
@@ -809,6 +812,9 @@ function build_payroll($month, $year)
             $data->bonus1x = $all_bonus;
             $data->potongan1x = $all_potongan;
             $data->total = $data_karyawan->gaji_pokok - ($jp + $jht + $kesehatan) - $pph21 - $all_potongan + $all_bonus;
+            $data->hari_kerja = $total_n_hari_kerja - $jumlah_libur_nasional;
+            $data->jam_kerja = 0;
+            $data->jam_lembur = 0;
             $data->total_bpjs = $total_bpjs;
 
             $data->save();

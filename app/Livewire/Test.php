@@ -97,13 +97,66 @@ class Test extends Component
     return 0;
   }
 
+  public function get_tgl_resigned($id)
+  {
+    $data = Karyawan::where('id_karyawan', $id)->first();
+    return $data ? $data->tanggal_resigned : 0;
+  }
+
+  public function get_jumlah_hari_libur_regsigned($month, $year, $id)
+  {
+    $data = Payroll::whereMonth('date', 11)
+      ->whereYear('date', 2024)
+      ->where('status_karyawan', 'Resigned')
+      ->first();
+    $tgl_resigned = $this->get_tgl_resigned($data->id_karyawan);
+    if (!$data) {
+      dd('No resigned employee data found for the given month and year.');
+    }
+    // Ensure $tgl_resigned is a valid date
+    if (!$tgl_resigned) {
+      dd('No resignation date found for the given employee.');
+    }
+
+    // Convert $tgl_resigned to a DateTime object
+    $tgl_resigned = \Carbon\Carbon::parse($tgl_resigned);
+
+    $liburNasional = 0;
+
+    $tgl_libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', 11)
+      ->whereYear('tanggal_mulai_hari_libur', 2024)
+      ->get();
+
+    $cx = 0;
+
+    foreach ($tgl_libur_nasional as $tgl) {
+      // Convert $tgl->tanggal_mulai_hari_libur to a DateTime object
+      $tanggal_libur = Carbon::parse($tgl->tanggal_mulai_hari_libur);
+
+      if ($tgl_resigned->gt($tanggal_libur)) { // Compare using Carbon's `gt` (greater than) method
+        $cx++;
+      }
+    }
+
+    return $cx;
+  }
+
   public function render()
   {
-    $this->month = 11;
-    $jumlah_libur_nasional = jumlah_libur_nasional($this->month, $this->year);
-    dd($this->month, $jumlah_libur_nasional);
+    $month = 11;
+    $year = 2024;
+    $id = 6437;
 
-    // $data = Karyawan::where('metode_penggajian', null)->get();
+    $libur = get_jumlah_hari_libur_regsigned($month, $year, $id);
+
+
+
+    dd($libur);
+
+
+
+
+
 
 
 
