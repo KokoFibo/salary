@@ -228,12 +228,26 @@
                     @else
                         @php
                             $gajiPerHari = $d->gaji_pokok / $total_n_hari_kerja;
-                            $total = $total_n_hari_kerja - $jumlah_libur_nasional - $d->hari_kerja;
-                            if ($total > 0) {
-                                $total_gaji = $d->gaji_pokok - $gajiPerHari * $total;
+                            if ($d->status_karyawan == 'Resigned') {
+                                $jumlah_libur_nasional_resigned = 0;
+                                $month = date('m', strtotime($d->date));
+                                $year = date('Y', strtotime($d->date));
+                                $jumlah_libur_nasional_resigned = get_jumlah_hari_libur_resigned(
+                                    $month,
+                                    $year,
+                                    $d->id_karyawan,
+                                );
+                                $total = $jumlah_libur_nasional_resigned + $d->hari_kerja;
+                                $total_gaji = $gajiPerHari * $total;
                             } else {
-                                $total_gaji = $d->gaji_pokok;
+                                $total = $total_n_hari_kerja - $jumlah_libur_nasional - $d->hari_kerja;
+                                if ($total > 0) {
+                                    $total_gaji = $d->gaji_pokok - $gajiPerHari * $total;
+                                } else {
+                                    $total_gaji = $d->gaji_pokok;
+                                }
                             }
+
                         @endphp
                         <td style="text-align: right"> {{ $d->gaji_pokok / $total_n_hari_kerja }}</td>
                         <td style="text-align: right"> {{ $total_gaji }}
