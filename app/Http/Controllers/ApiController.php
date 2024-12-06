@@ -12,10 +12,10 @@ class ApiController extends Controller
     public function store($id)
     {
 
-        $respKaryawan = Http::get('https://payroll.accel365.id/api/getkaryawan/' . $id);
+        $respKaryawan = Http::get('https://payroll.yifang.co.id/api/getkaryawan/' . $id);
         $dataKaryawan = $respKaryawan->json();
 
-        $respUser = Http::get('https://payroll.accel365.id/api/getuser/' . $id);
+        $respUser = Http::get('https://payroll.yifang.co.id/api/getuser/' . $id);
         $dataUser = $respUser->json();
 
         if ($respKaryawan->successful() && $respUser->successful()) {
