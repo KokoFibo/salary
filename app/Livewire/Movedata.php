@@ -14,8 +14,8 @@ class Movedata extends Component
     public function search()
     {
         // $apiUrl =  "https://payroll.yifang.co.id/api/getkaryawan/" . $this->id_karyawan;
-        $apiUrlKaryawan =  "https://payroll.accel365.id/api/getkaryawan/" . $this->id_karyawan;
-        $apiUrlUser =  "https://payroll.accel365.id/api/getuser/" . $this->id_karyawan;
+        $apiUrlKaryawan =  "https://payroll.yifang.co.id/api/getkaryawan/" . $this->id_karyawan;
+        $apiUrlUser =  "https://payroll.yifang.co.id/api/getuser/" . $this->id_karyawan;
 
         $this->data_karyawan = getDataApi($apiUrlKaryawan);
         $this->data_user = getDataApi($apiUrlUser);
@@ -189,8 +189,8 @@ class Movedata extends Component
         // dd($this->data_user['password']);
         $this->create_data();
         // dd($this->data_karyawan['nama']);
-        $apiUrlDeleteKaryawan =  "https://payroll.accel365.id/api/delete_karyawan_yf_aja/" . $this->id_karyawan;
-        $apiUrlDeleteUser =  "https://payroll.accel365.id/api/delete_user_yf_aja/" . $this->id_karyawan;
+        $apiUrlDeleteKaryawan =  "https://payroll.yifang.co.id/api/delete_karyawan_yf_aja/" . $this->id_karyawan;
+        $apiUrlDeleteUser =  "https://payroll.yifang.co.id/api/delete_user_yf_aja/" . $this->id_karyawan;
         $data_delete_karyawan = $this->deleteDataKaryawanApi($apiUrlDeleteKaryawan);
         $data_delete_user = $this->deleteDataUserApi($apiUrlDeleteUser);
 
