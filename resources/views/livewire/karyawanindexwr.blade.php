@@ -27,7 +27,10 @@
             <div class="card-header">
                 <div class="d-flex flex-column flex-xl-row  justify-content-between  align-items-center">
                     <div class="col-12 col-xl-3">
-                        <h3 class="fw-semibold fs-5 fwfs-3-xl">{{ __('Data Karyawan') }}</h3>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h3 class="fw-semibold fs-5 fs-3-xl me-3">{{ __('Data Karyawan') }}</h3>
+                        </div>
+
                     </div>
                     <div {{-- class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2 col-12 col-xl-6"> --}}
                         class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2  col-xl-9">
@@ -157,6 +160,7 @@
                                         </select>
                                     </div>
                                 </th>
+
                                 @if (auth()->user()->role >= 7)
                                     <th style="width: 220px; border-style: none;">
                                         <div style="width: 130px">
@@ -201,6 +205,11 @@
                                                     Data</button></a>
                                         </th>
                                     @endif
+                                    <th style="width: 150px; border-style: none;">
+                                        <a href="/infokaryawan">
+                                            <button class="btn btn-info">Informasi</button> </a>
+                                    </th>
+
                                     <th style=" border-style: none;">
                                         <div wire:loading wire:target='excel' class="spinner-border text-primary"
                                             role="status">
@@ -223,6 +232,12 @@
                                                 Iuran Locker</button></a>
                                     </th>
                                 @endif
+                                <th style="width: 150px; border-style: none;">
+                                    <a href="/infokaryawan">
+                                        <button class="btn btn-info">Informasi</button> </a>
+                                </th>
+
+
 
                             </tr>
 
