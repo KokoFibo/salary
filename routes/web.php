@@ -34,6 +34,7 @@ use App\Livewire\AddPlacement;
 use App\Livewire\DataResigned;
 use App\Livewire\DeleteNoscan;
 use App\Livewire\Departmentwr;
+use App\Livewire\Infokaryawan;
 use App\Livewire\UserNotFound;
 use App\Livewire\AbsensiKosong;
 use App\Livewire\Cutirequestwr;
@@ -167,6 +168,8 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/iuranlocker', IuranLocker::class);
                 Route::get('/karyawanreinstate/{id}', KaryawanReinstate::class)->name('karyawanreinstate');
                 Route::get('/kview', [KviewController::class, 'index']);
+                Route::get('/infokaryawan', Infokaryawan::class);
+
 
 
 
