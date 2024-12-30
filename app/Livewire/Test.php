@@ -143,21 +143,8 @@ class Test extends Component
 
   public function render()
   {
-    $month = 11;
-    $year = 2024;
-    $id = 6437;
 
-    $libur = get_jumlah_hari_libur_regsigned($month, $year, $id);
-
-
-
-    dd($libur);
-
-
-
-
-
-
+    $data = Karyawan::where('metode_penggajian', '')->orWhere('gaji_pokok', '')->get();
 
 
 

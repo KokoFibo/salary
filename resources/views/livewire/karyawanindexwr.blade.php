@@ -30,6 +30,10 @@
                         <div class="d-flex align-items-center justify-content-between">
                             <h3 class="fw-semibold fs-5 fs-3-xl me-3">{{ __('Data Karyawan') }}</h3>
                         </div>
+                        @if (isDataUtamaLengkap() > 0)
+                            <a href="/datatidaklengkap"><button class="btn btn-danger">Data Utama Tidak
+                                    Lengkap</button></a>
+                        @endif
 
                     </div>
                     <div {{-- class="col-12 d-flex flex-column flex-xl-row justify-content-end gap-xl-3 gap-2 col-12 col-xl-6"> --}}
