@@ -50,6 +50,11 @@ class Payrollwr extends Component
     public $lock_data;
     public $select_month, $select_year;
 
+    public function clear_lock()
+    {
+        clear_locks();
+    }
+
     public function close_succesful_rebuilt()
     {
         $rebuild = Lock::find(1);

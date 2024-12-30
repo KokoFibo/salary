@@ -65,6 +65,7 @@ use App\Livewire\Karyawansettingwr;
 use App\Livewire\Timeoutrequsterwr;
 use App\Livewire\Yfpresensiindexwr;
 use App\Livewire\DeveloperDashboard;
+use App\Livewire\Checkabsensitanpaid;
 use App\Livewire\PermohonanPersonnel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TerControler;
@@ -85,6 +86,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\Datatidaklengkap;
 
 // Middleware
 Auth::routes([
@@ -279,6 +281,9 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/GantiPasswordDeveloper', Gantipassworddeveloper::class);
                             Route::get('/movedata', Movedata::class);
                             Route::get('/deleteduplicatepresensi', Deleteduplicatepresensi::class);
+                            Route::get('/cekabsensitanpaid', Checkabsensitanpaid::class);
+                            Route::get('/datatidaklengkap', Datatidaklengkap::class);
+
 
 
 
