@@ -114,6 +114,7 @@
                 <th style="text-align: center;">TER</th>
                 <th style="text-align: center;">Rate</th>
                 <th style="text-align: center;">Pph21</th>
+                <th style="text-align: center;">No NPWP</th>
                 <th style="text-align: center;">Total</th>
 
             </tr>
@@ -319,6 +320,8 @@
                     <td style="text-align: right"> {{ $ter }}</td>
                     <td style="text-align: right"> {{ $rate_pph21 }}</td>
                     <td style="text-align: right"> {{ $d->pph21 }}</td>
+
+                    <td style="text-align: right"> {{ no_npwp($d->id_karyawan) }}</td>
                     <td style="text-align: right"> {{ $d->total }}</td>
                 </tr>
             @endforeach
