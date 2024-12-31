@@ -127,7 +127,8 @@ class PayrollExport implements FromView,  ShouldAutoSize, WithColumnFormatting, 
             'AN' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AO' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AS' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AT' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
+            'AT' => "0",
+            'AU' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
         ];
     }
 }

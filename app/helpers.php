@@ -24,6 +24,17 @@ use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function no_npwp($id)
+{
+    // Fetch the Karyawan data by ID
+    $karyawan = Karyawan::where('id_karyawan', $id)->select('no_npwp')->first();
+
+    if ($karyawan) {
+        return $karyawan->no_npwp;
+    }
+    return null;
+}
+
 function isDataUtamaLengkap()
 {
     $data = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])

@@ -143,6 +143,10 @@ class Test extends Component
 
   public function render()
   {
+    $id = 4;
+    dd(no_npwp($id));
+
+
 
     $data = Karyawan::where('metode_penggajian', '')->orWhere('gaji_pokok', '')->get();
 
