@@ -171,6 +171,8 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/karyawanreinstate/{id}', KaryawanReinstate::class)->name('karyawanreinstate');
                 Route::get('/kview', [KviewController::class, 'index']);
                 Route::get('/infokaryawan', Infokaryawan::class);
+                Route::get('/datatidaklengkap', Datatidaklengkap::class);
+
 
 
 
@@ -282,7 +284,6 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/movedata', Movedata::class);
                             Route::get('/deleteduplicatepresensi', Deleteduplicatepresensi::class);
                             Route::get('/cekabsensitanpaid', Checkabsensitanpaid::class);
-                            Route::get('/datatidaklengkap', Datatidaklengkap::class);
 
 
 

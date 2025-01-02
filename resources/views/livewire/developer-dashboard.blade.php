@@ -29,6 +29,10 @@
             atau sama dengan 4
             juta</button>
 
+        <button class='btn btn-danger' wire:confirm='Are you sure?' wire:click='delete_all_presensi_kosong'>Delete
+            Presensi
+            Semua Presensi Kosong</button>
+
         <button class='btn btn-danger' wire:confirm='Are you sure?' wire:click='delete_dibawah_4jt'>Delete Karyawan
             Gaji
             dibawah 4 juta</button>
