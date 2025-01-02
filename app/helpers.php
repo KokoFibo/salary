@@ -40,7 +40,6 @@ function isDataUtamaLengkap()
     $data = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
         ->where(function ($query) {
             $query->where('metode_penggajian', '')
-                ->orWhere('gaji_pokok', '')
                 ->orWhere('company_id', 100)
                 ->orWhere('placement_id', 100)
                 ->orWhere('jabatan_id', 100);

@@ -17,9 +17,6 @@ class Datatidaklengkap extends Component
             ->whereIn('status_karyawan', $statusKaryawan)
             ->get();
 
-        $gaji_pokok = Karyawan::where('gaji_pokok', '')
-            ->whereIn('status_karyawan', $statusKaryawan)
-            ->get();
 
         $company = Karyawan::where('company_id', 100)
             ->whereIn('status_karyawan', $statusKaryawan)
