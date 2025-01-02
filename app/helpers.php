@@ -1015,6 +1015,18 @@ function manfaat_libur_resigned($month, $year, $libur, $user_id, $tanggal_resign
     return $manfaat_libur_resigned;
 }
 
+function delete_all_presensi_kosong()
+{
+
+    Yfrekappresensi::whereNull('first_in')
+        ->whereNull('first_out')
+        ->whereNull('second_in')
+        ->whereNull('second_out')
+        ->whereNull('overtime_in')
+        ->whereNull('overtime_out')
+        ->delete();
+}
+
 function check_absensi_kosong()
 {
     $absensiKosong =

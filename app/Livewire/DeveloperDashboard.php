@@ -65,6 +65,17 @@ class DeveloperDashboard extends Component
             title: 'Data Berhasil di delete : ' . $datas_count . ' data, ' . $cx . ' users',
         );
     }
+
+    public function delete_all_presensi_kosong()
+    {
+        delete_all_presensi_kosong();
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Absensi kosong telah berhasil di hapus',
+            position: 'center'
+        );
+    }
     public function delete_dibawah_4jt_keep_company()
     {
         $users_count = User::count();
