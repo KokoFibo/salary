@@ -12,19 +12,6 @@
         </div>
     @endif
 
-    @if ($gaji_pokok->count() > 0)
-        <div class="card mb-3 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title text-success">Karyawan Tanpa Gaji Pokok</h5>
-                <ul class="list-group list-group-flush">
-                    @foreach ($gaji_pokok as $gp)
-                        <li class="list-group-item">{{ $gp->id_karyawan }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
-    @endif
-
     @if ($placement->count() > 0)
         <div class="card mb-3 shadow-sm">
             <div class="card-body">
