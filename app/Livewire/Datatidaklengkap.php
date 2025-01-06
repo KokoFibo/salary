@@ -32,7 +32,6 @@ class Datatidaklengkap extends Component
 
         return view('livewire.datatidaklengkap', [
             'metode_penggajian' => $metode_penggajian,
-            'gaji_pokok' => $gaji_pokok,
             'company' => $company,
             'placement' => $placement,
             'jabatan' => $jabatan,

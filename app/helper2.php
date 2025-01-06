@@ -261,7 +261,7 @@ function build_payroll($month, $year)
     // dd('first step done');
     // echo 'rekap done';
 
-    // ok 2 perhitungan payroll
+    // ok2 perhitungan payroll
     $datas = Jamkerjaid::with('karyawan', 'yfrekappresensi')
         ->whereBetween('date', [Carbon::parse($year . '-' . $month . '-01'), Carbon::parse($year . '-' . $month . '-01')->endOfMonth()])
         ->get();
@@ -565,7 +565,7 @@ function build_payroll($month, $year)
 
     $karyawanWithBonus = Payroll::whereMonth('date', $month)
         ->whereYear('date', $year)
-        ->where('metode_penggajian', 'Perbulan')
+        // ->where('metode_penggajian', 'Perbulan')
         ->where('bonus1x', '>', 0)->get();
 
     foreach ($karyawanWithBonus as $kb) {
@@ -603,13 +603,6 @@ function build_payroll($month, $year)
                 ->whereYear('date', $year)
                 ->first();
 
-            // try {
-            //     $data_payroll = Payroll::find($data_payrolls->id);
-            // } catch (\Exception $e) {
-            //     dd($e->getMessage(), $d->id_karyawan, $lama_bekerja);
-            //     return $e->getMessage();
-            // }
-
             if ($data_payrolls != null) {
                 $data_payroll = Payroll::find($data_payrolls->id);
             } else {
@@ -618,7 +611,6 @@ function build_payroll($month, $year)
 
             if ($data_payroll != null) {
                 if (trim($data_payroll->metode_penggajian) == 'Perbulan') {
-                    // per26
                     $data_payroll->denda_resigned = 3 * ($data_payroll->gaji_pokok / $total_n_hari_kerja);
                 } else {
                     $data_payroll->denda_resigned = 24 * ($data_payroll->gaji_pokok / 198);
@@ -822,44 +814,6 @@ function build_payroll($month, $year)
             $data->save();
         }
     }
-
-    // hitung PPH21 baru di remark
-    // $datapph21 = Payroll::whereMonth('date', $month)
-    //     ->whereYear('date', $year)
-    //     ->where('bonus1x', '>', 0)->get();
-
-    // foreach ($datapph21 as $data) {
-    //     if ($data->ptkp != '') {
-    //         $karyawan = Karyawan::where('id_karyawan', $data->id_karyawan)->first();
-    //         $total_gaji_lembur = $data->jam_lembur * $karyawan->gaji_overtime;
-
-    //         $pph21_lama = $data->pph21;
-    //         $pph21baru = hitung_pph21(
-    //             $karyawan->gaji_bpjs,
-    //             $karyawan->ptkp,
-    //             $karyawan->potongan_JHT,
-    //             $karyawan->potongan_JP,
-    //             $karyawan->potongan_JKK,
-    //             $karyawan->potongan_JKM,
-    //             $karyawan->potongan_kesehatan,
-    //             $total_gaji_lembur,
-    //             $data->gaji_libur,
-    //             $data->bonus1x,
-    //             $data->tambahan_shift_malam
-    //         );
-    //         $data->pph21 = $pph21baru;
-    //         $data->total = $data->total -  $pph21_lama + $pph21baru;
-    //         if ($data->id_karyawan == 101) {
-
-    //             dd($data->id_karyawan, $data->total,  $pph21_lama, $pph21baru, $data->bonus1x);
-    //         }
-    //         $data->save();
-    //     }
-    // }
-
-
-
-
 
     // ok 6
     // Libur nasional dan resigned sebelum 3 bulan bekerja
