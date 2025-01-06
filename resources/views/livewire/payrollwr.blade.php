@@ -61,7 +61,7 @@
 
         @if (check_rebuild_done())
             <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Congratulation!</strong> Payroll Succesfully rebuilt.
+                <strong>Congratulation!</strong> Payroll Rebuilt Succesfully.
                 <button wire:click='close_succesful_rebuilt' type="button" class="btn-close" data-bs-dismiss="alert"
                     aria-label="Close"></button>
             </div>
