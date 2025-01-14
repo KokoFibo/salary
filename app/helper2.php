@@ -399,10 +399,40 @@ function build_payroll($month, $year)
 
         $libur_nasional = 0;
 
+
+        //    Hitung BPJS Adjust
+
+        if ($data->karyawan->metode_penggajian == "Perjam") {
+            $gaji_bulan_ini = total_gaji_perjam($data->karyawan->gaji_pokok, $data->jumlah_jam_kerja);
+        } else {
+
+            $gaji_bulan_ini = total_gaji_bulanan(
+                $data->karyawan->gaji_pokok,
+                $data->total_hari_kerja,
+                $total_n_hari_kerja,
+                $jumlah_libur_nasional,
+                $data->date,
+                $data->karyawan->id_karyawan,
+                $data->karyawan->status_karyawan
+
+            );
+        }
+
+
+        // $total_gaji_sebelum_tax = $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen;
+        if ($data->karyawan->gaji_pokok != 0) {
+            // $gaji_bpjs_adjust = $data->karyawan->gaji_bpjs * $total_gaji_sebelum_tax / $data->karyawan->gaji_pokok;
+            $gaji_bpjs_adjust = $data->karyawan->gaji_bpjs * $gaji_bulan_ini / $data->karyawan->gaji_pokok;
+        } else {
+            // Handle the case where gaji_pokok is zero (e.g., log an error or assign a default value)
+            $gaji_bpjs_adjust = 0; // or another fallback value
+            error_log("Division by zero error: gaji_pokok is zero for karyawan ID: " . $data->karyawan->id);
+        }
         // oioi
         $total_gaji_lembur = $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
         $pph21 = hitung_pph21(
             $data->karyawan->gaji_bpjs,
+            // $gaji_bpjs_adjust,
             $data->karyawan->ptkp,
             $data->karyawan->potongan_JHT,
             $data->karyawan->potongan_JP,
@@ -414,6 +444,8 @@ function build_payroll($month, $year)
             0,
             $tambahan_shift_malam
         );
+
+
         //==================
         if ($data->karyawan->gaji_bpjs >= 12000000) {
             $gaji_bpjs_max = 12000000;
@@ -448,18 +480,23 @@ function build_payroll($month, $year)
             $jkm_company = 0;
         }
 
-        // ====================
-        $total_bpjs = $data->karyawan->gaji_bpjs +
-            // $data->karyawan->ptkp +
+
+
+
+        // $total_bpjs = $data->karyawan->gaji_bpjs +
+        $total_bpjs = $gaji_bpjs_adjust +
 
             $jkk_company +
             $jkm_company +
             $kesehatan_company +
             $total_gaji_lembur +
             $gaji_libur +
-
             $tambahan_shift_malam;
 
+
+        // if ($data->karyawan->id_karyawan  == 5794) {
+        //     dd($total_bpjs);
+        // }
 
         if ($data->karyawan->metode_penggajian == '') {
             dd('metode penggajian belum diisi', $data->karyawan->id_karyawan);
@@ -557,7 +594,14 @@ function build_payroll($month, $year)
             $payroll->bonus1x = $payroll->bonus1x + $all_bonus;
             $payroll->potongan1x = $payroll->potongan1x + $all_potongan;
             $payroll->total = $payroll->total + $all_bonus - $all_potongan;
+            $payroll->total_bpjs = $payroll->total_bpjs + $payroll->bonus1x;
             $payroll->save();
+            // if ($payroll->id_karyawan  == 5794) {
+            //     dd(
+            //         $payroll->total_bpjs,
+            //         $payroll->bonus1x
+            //     );
+            // }
         }
     }
 
@@ -572,7 +616,8 @@ function build_payroll($month, $year)
 
         $total_bpjs_company = 0;
         $total_bpjs_lama = $kb->total_bpjs;
-        $total_bpjs_company = $total_bpjs_lama + $kb->bonus1x;
+        // $total_bpjs_company = $total_bpjs_lama + $kb->bonus1x;
+        $total_bpjs_company = $total_bpjs_lama;
 
         $pph21_lama = $kb->pph21;
         $pph21simple = hitung_pph21_simple($total_bpjs_company, $kb->ptkp, $kb->gaji_bpjs);
@@ -581,8 +626,8 @@ function build_payroll($month, $year)
         $kb->total = $total_lama + $pph21_lama - $pph21simple;
         $kb->total_bpjs = $total_bpjs_company;
         $kb->save();
-        // if ($kb->id_karyawan == 101) {
-        //     dd($pph21_lama - $pph21simple);
+        // if ($kb->id_karyawan == 5794) {
+        //     dd($kb->total_bpjs);
         // }
     }
 
@@ -714,9 +759,20 @@ function build_payroll($month, $year)
             $jkm_company = 0;
         }
 
+        if (
+            $data_karyawan->gaji_pokok != 0
+        ) {
+            // $gaji_bpjs_adjust = $data_karyawan->gaji_bpjs * $total_gaji_sebelum_tax / $data_karyawan->gaji_pokok;
+            $gaji_bpjs_adjust = $data_karyawan->gaji_bpjs * $data_karyawan->gaji_pokok / $data_karyawan->gaji_pokok;
+        } else {
+            // Handle the case where gaji_pokok is zero (e.g., log an error or assign a default value)
+            $gaji_bpjs_adjust = 0; // or another fallback value
+            error_log("Division by zero error: gaji_pokok is zero for karyawan ID: " . $data_karyawan->id);
+        }
         // hitung pph21
         $pph21 = hitung_pph21(
             $data_karyawan->gaji_bpjs,
+            // $gaji_bpjs_adjust,
             $data_karyawan->ptkp,
             $data_karyawan->potongan_JHT,
             $data_karyawan->potongan_JP,
@@ -729,12 +785,26 @@ function build_payroll($month, $year)
             0
         );
 
-        $total_bpjs = $data_karyawan->gaji_bpjs + $jkk_company + $jkm_company + $kesehatan_company;
+        $total_bpjs = $gaji_bpjs_adjust + $jkk_company + $jkm_company + $kesehatan_company;
+
+
+
+
+
         $is_exist = Payroll::where('id_karyawan', $id)->whereMonth('date', $month)
             ->whereYear('date', $year)->first();
         if ($is_exist) {
 
             $data = Payroll::find($is_exist->id);
+            // Hitung gaji_bpjs_adjust 
+
+
+
+
+
+
+
+
             $data->jp = $jp;
             $data->jht = $jht;
             $data->kesehatan = $kesehatan;
@@ -810,7 +880,7 @@ function build_payroll($month, $year)
             $data->jam_kerja = 0;
             $data->jam_lembur = 0;
             $data->total_bpjs = $total_bpjs;
-
+            // dd($total_bpjs, $data_karyawan->id_karyawan);
             $data->save();
         }
     }
