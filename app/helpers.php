@@ -24,6 +24,48 @@ use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function total_gaji_bulanan(
+    $gaji_pokok,
+    $hari_kerja,
+    $total_n_hari_kerja,
+    $jumlah_libur_nasional,
+    $date,
+    $id_karyawan,
+    $status_karyawan
+) {
+    $gajiPerHari = $gaji_pokok / $total_n_hari_kerja;
+    if ($status_karyawan == 'Blacklist') {
+        return 0;
+    }
+    if ($status_karyawan == 'Resigned') {
+        $jumlah_libur_nasional_resigned = 0;
+        $month = date('m', strtotime($date));
+        $year = date('Y', strtotime($date));
+        $jumlah_libur_nasional_resigned = get_jumlah_hari_libur_resigned(
+            $month,
+            $year,
+            $id_karyawan,
+        );
+        $total = $jumlah_libur_nasional_resigned + $hari_kerja;
+        return $total_gaji = $gajiPerHari * $total;
+    }
+    $total = $total_n_hari_kerja - $jumlah_libur_nasional - $hari_kerja;
+    if ($total > 0) {
+        $total_gaji = $gaji_pokok - $gajiPerHari * $total;
+    } else {
+        $total_gaji = $gaji_pokok;
+    }
+    return $total_gaji;
+}
+
+function total_gaji_perjam($gaji_pokok, $jam_kerja)
+{
+    if ($gaji_pokok == 0 || $jam_kerja == 0) {
+        return 0;
+    }
+    return $gaji_pokok / 198 * $jam_kerja;
+}
+
 function no_npwp($id)
 {
     // Fetch the Karyawan data by ID

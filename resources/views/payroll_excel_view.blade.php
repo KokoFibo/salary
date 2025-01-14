@@ -98,6 +98,7 @@
                 <th style="text-align: center;">Iuran Air</th>
                 <th style="text-align: center;">Iuran Locker</th>
                 <th style="text-align: center;">Status Karyawan</th>
+                <th style="text-align: center;">Gaji BPJS with adjustment</th>
                 <th style="text-align: center;">Gaji BPJS</th>
                 <th style="text-align: center;">JHT</th>
                 <th style="text-align: center;">JP</th>
@@ -110,6 +111,7 @@
                 <th style="text-align: center;">JKM</th>
                 <th style="text-align: center;">Kesehatan</th>
                 <th style="text-align: center;">Total TAX</th>
+                {{-- <th style="text-align: center;">Perhitungan Tax Manual</th> --}}
                 <th style="text-align: center;">PTKP</th>
                 <th style="text-align: center;">TER</th>
                 <th style="text-align: center;">Rate</th>
@@ -223,37 +225,37 @@
                     <td> {{ $d->jumlah_jam_terlambat }}</td>
                     <td style="text-align: right"> {{ $d->tambahan_shift_malam }}</td>
                     <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
+
+                    @php
+                        if ($d->metode_penggajian == 'Perjam') {
+                            $gaji_bulan_ini = total_gaji_perjam($d->gaji_pokok, $d->jam_kerja);
+                        } else {
+                            $gaji_bulan_ini = total_gaji_bulanan(
+                                $d->gaji_pokok,
+                                $d->hari_kerja,
+                                $total_n_hari_kerja,
+                                $jumlah_libur_nasional,
+                                $d->date,
+                                $d->id_karyawan,
+                                $d->status_karyawan,
+                            );
+                        }
+                        if ($d->gaji_pokok != 0) {
+                            // $gaji_bpjs_adjust = $d->gaji_bpjs * $total_gaji_sebelum_tax / $d->gaji_pokok;
+                            $gaji_bpjs_adjust = ($d->gaji_bpjs * $gaji_bulan_ini) / $d->gaji_pokok;
+                        } else {
+                            // Handle the case where gaji_pokok is zero (e.g., log an error or assign a default value)
+                            $gaji_bpjs_adjust = 0; // or another fallback value
+                            error_log('Division by zero error: gaji_pokok is zero for karyawan ID: ' . $d->id);
+                        }
+                    @endphp
+
                     @if ($d->metode_penggajian == 'Perjam')
                         <td style="text-align: right"> {{ $d->gaji_pokok / 198 }}</td>
-                        <td style="text-align: right"> {{ ($d->gaji_pokok / 198) * $d->jam_kerja }}</td>
                     @else
-                        @php
-                            $gajiPerHari = $d->gaji_pokok / $total_n_hari_kerja;
-                            if ($d->status_karyawan == 'Resigned') {
-                                $jumlah_libur_nasional_resigned = 0;
-                                $month = date('m', strtotime($d->date));
-                                $year = date('Y', strtotime($d->date));
-                                $jumlah_libur_nasional_resigned = get_jumlah_hari_libur_resigned(
-                                    $month,
-                                    $year,
-                                    $d->id_karyawan,
-                                );
-                                $total = $jumlah_libur_nasional_resigned + $d->hari_kerja;
-                                $total_gaji = $gajiPerHari * $total;
-                            } else {
-                                $total = $total_n_hari_kerja - $jumlah_libur_nasional - $d->hari_kerja;
-                                if ($total > 0) {
-                                    $total_gaji = $d->gaji_pokok - $gajiPerHari * $total;
-                                } else {
-                                    $total_gaji = $d->gaji_pokok;
-                                }
-                            }
-
-                        @endphp
                         <td style="text-align: right"> {{ $d->gaji_pokok / $total_n_hari_kerja }}</td>
-                        <td style="text-align: right"> {{ $total_gaji }}
-                        </td>
                     @endif
+                    <td style="text-align: right"> {{ $gaji_bulan_ini }}</td>
                     <td style="text-align: right"> {{ $d->gaji_lembur }}</td>
                     <td style="text-align: right"> {{ $d->gaji_lembur * $d->jam_lembur }}</td>
                     <td style="text-align: right"> {{ $d->gaji_libur }}</td>
@@ -267,6 +269,9 @@
                     <td style="text-align: right"> {{ $d->iuran_air }}</td>
                     <td style="text-align: right"> {{ $d->iuran_locker }}</td>
                     <td style="text-align: center"> {{ $d->status_karyawan }}</td>
+
+
+                    <td style="text-align: right"> {{ $gaji_bpjs_adjust }}</td>
                     <td style="text-align: right"> {{ $d->gaji_bpjs }}</td>
                     <td style="text-align: right"> {{ $d->jht }}</td>
                     <td style="text-align: right"> {{ $d->jp }}</td>
@@ -316,6 +321,9 @@
 
                     {{-- <td style="text-align: right"> {{ $total_bpjs_company }}</td> --}}
                     <td style="text-align: right"> {{ $d->total_bpjs }}</td>
+                    {{-- <td style="text-align: right">
+                        {{ $d->gaji_lembur * $d->jam_lembur + $d->gaji_libur + $d->bonus1x + $d->tambahan_shift_malam + $gaji_bpjs_adjust + $jkk_company + $jkm_company + $kesehatan_company }}
+                    </td> --}}
                     <td style="text-align: right"> {{ $d->ptkp }}</td>
                     <td style="text-align: right"> {{ $ter }}</td>
                     <td style="text-align: right"> {{ $rate_pph21 }}</td>
