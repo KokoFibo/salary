@@ -34,6 +34,7 @@ class Payrollwr extends Component
     public $selected_company = 0;
     public $selected_placement = 0;
     public $selected_departemen = 0;
+    public $selected_etnis = '0';
     // public $departments;
     public $search;
     public $perpage = 10;
@@ -62,7 +63,7 @@ class Payrollwr extends Component
         $rebuild->save();
     }
 
-    // e1
+
     public function export()
     {
         $nama_file = '';
@@ -97,6 +98,8 @@ class Payrollwr extends Component
             return Excel::download(new DepartmentExport($this->selected_departemen, $this->status, $this->month, $this->year), $nama_file);
         }
     }
+
+
 
 
     public function bankexcel()
@@ -162,14 +165,9 @@ class Payrollwr extends Component
         }
 
         $nama_file = nama_file_excel($nama_file, $this->month, $this->year);
-        // $nama_file = 'test.xlsx';
-        // dd($this->selected_company, $this->selected_placement, $this->selected_departemen);
 
-        // return Excel::download(new DepartmentExport($this->selected_departemen, $this->status, $this->month, $this->year), $nama_file);
 
-        return Excel::download(new BankReportExcel($this->status, $this->month, $this->year, $this->selected_company, $this->selected_placement, $this->selected_departemen), $nama_file,);
-
-        // return Excel::download(new BankReportExcel($payroll), $nama_file, $this->selected_company, $this->selected_placement, $this->selected_departemen);
+        return Excel::download(new BankReportExcel($this->status, $this->month, $this->year, $this->selected_company, $this->selected_placement, $this->selected_departemen, $this->selected_etnis), $nama_file,);
     }
 
     public function showDetail($id_karyawan)
@@ -256,13 +254,6 @@ class Payrollwr extends Component
         $lock->data = $this->lock_data;
         $lock->save();
     }
-
-
-
-    // public function getPayrollQueue()
-    // {
-    //     $this->dispatch(new BuildPayrollJob($this->month, $this->year));
-    // }
 
     public function buat_payroll($queue)
     {
@@ -567,6 +558,8 @@ class Payrollwr extends Component
                     ->paginate($this->perpage);
             }
         }
+
+
 
         $tgl = Payroll::whereMonth('date', $this->month)
             ->whereYear('date', $this->year)

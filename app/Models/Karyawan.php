@@ -15,6 +15,8 @@ class Karyawan extends Model
     protected $guarded = [];
     protected static $recordEvents = ['updated', 'deleted'];
 
+
+
     public function timeoff()
     {
         return $this->hasMany(Timeoff::class);

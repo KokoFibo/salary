@@ -87,6 +87,7 @@ use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 use App\Livewire\Datatidaklengkap;
+use App\Livewire\Kenaikangaji;
 
 // Middleware
 Auth::routes([
@@ -228,6 +229,7 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/reportindex', [ReportController::class, 'index']);
                         Route::post('/createexcel', [ReportController::class, 'createExcel']);
                         Route::get('/bankreport', BankReport::class);
+                        Route::get('/kenaikangaji', Kenaikangaji::class);
 
 
                         // Route::get('/karyawan/excel', [KaryawanExcelController::class, 'index']);
