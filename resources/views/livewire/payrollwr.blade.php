@@ -261,9 +261,11 @@
                             @endforeach
                         </select>
                     </div>
-                    <div>
-                        <a href="/kenaikangaji"><button class='btn btn-success'>Excel by etnis</button></a>
-                    </div>
+                    @if (auth()->user()->role >= 7)
+                        <div>
+                            <a href="/kenaikangaji"><button class='btn btn-success'>Excel by etnis</button></a>
+                        </div>
+                    @endif
 
                     <div>
                         <select class="form-select" wire:model.live="perpage">
