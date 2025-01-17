@@ -75,7 +75,7 @@ class PerubahanGajiExport implements FromView,  ShouldAutoSize, WithColumnFormat
             })->values();
 
 
-        $header_text = "Gaji Karyawan Etnis " . $this->etnis . "Tahun " . $this->year;
+        $header_text = "Perubahan Gaji Karyawan Etnis " . $this->etnis . "Tahun " . $this->year;
 
         return view('perubahan_gaji_view', [
             'karyawans' => $karyawans,
