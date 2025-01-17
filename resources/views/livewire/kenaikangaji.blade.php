@@ -27,7 +27,7 @@
 
     <div class="card">
         <div class="card-header">
-            <h3>Gaji Karyawan Etnis {{ $etnis }} Tahun {{ $year }}</h3>
+            <h3>Perubahan Gaji Karyawan Etnis {{ $etnis }} Tahun {{ $year }}</h3>
         </div>
         <div class="card-body">
             <table class="table table-bordered table-hover">
