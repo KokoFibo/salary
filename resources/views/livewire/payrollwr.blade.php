@@ -261,6 +261,9 @@
                             @endforeach
                         </select>
                     </div>
+                    <div>
+                        <a href="/kenaikangaji"><button class='btn btn-success'>Excel by etnis</button></a>
+                    </div>
 
                     <div>
                         <select class="form-select" wire:model.live="perpage">
