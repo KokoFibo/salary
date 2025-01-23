@@ -26,6 +26,11 @@ class User extends Authenticatable
         'role',
     ];
 
+    public function getAuthIdentifierName()
+    {
+        return 'username';
+    }
+
     public function setEmailAttribute($value)
     {
         if (empty($value)) {
