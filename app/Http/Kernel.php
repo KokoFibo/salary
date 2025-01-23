@@ -22,7 +22,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         // tambahan dibawah untuk nuxt js
-        \Fruitcake\Cors\HandleCors::class,
+        // \Fruitcake\Cors\HandleCors::class,
     ];
 
     /**
