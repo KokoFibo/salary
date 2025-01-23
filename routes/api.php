@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\SlipgajiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,7 @@ Route::get('getkaryawan/{id}', [ApiController::class, 'getDataKaryawan']);
 Route::get('getuser/{id}', [ApiController::class, 'getDataUser']);
 Route::delete('delete_karyawan_yf_aja/{id}', [ApiController::class, 'delete_data_karyawan_yf_aja']);
 Route::delete('delete_user_yf_aja/{id}', [ApiController::class, 'delete_data_user_yf_aja']);
-
-
 Route::post('store/{karyawan}', [ApiController::class, 'store']);
+
+// Slip Gaji Controller
+Route::get('slipgaji/get/{id}', [SlipgajiController::class, 'getData']);
