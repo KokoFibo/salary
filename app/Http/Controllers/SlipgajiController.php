@@ -7,9 +7,15 @@ use Illuminate\Http\Request;
 
 class SlipgajiController extends Controller
 {
-    public function getData($id)
+    public function getData($id, $month, $year)
     {
-        $data = Yfrekappresensi::where('user_id', $id)->whereMonth('date', 12)->whereYear('date', 2024)->get();
-        return $data;
+        $data = Yfrekappresensi::where('user_id', $id)
+            ->whereMonth('date', $month)
+            ->whereYear('date', $year)
+            ->orderBy('date', 'desc')
+            ->select('id', 'user_id', 'date') // specify the necessary columns
+            ->get();
+
+        return $data->isEmpty() ? 0 : $data;  // Return 0 if no data is found
     }
 }
