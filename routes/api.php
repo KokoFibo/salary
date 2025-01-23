@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\ApiController;
-use App\Http\Controllers\SlipgajiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ApiController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\SlipgajiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,4 @@ Route::post('store/{karyawan}', [ApiController::class, 'store']);
 
 // Slip Gaji Controller
 Route::get('slipgaji/getdata/{id}/{month}/{year}', [SlipgajiController::class, 'getData']);
+Route::post('login', [AuthController::class, 'login']);
