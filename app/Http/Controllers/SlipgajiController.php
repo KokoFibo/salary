@@ -13,7 +13,6 @@ class SlipgajiController extends Controller
             ->whereMonth('date', $month)
             ->whereYear('date', $year)
             ->orderBy('date', 'desc')
-            ->select('id', 'user_id', 'date') // specify the necessary columns
             ->get();
 
         return $data->isEmpty() ? 0 : $data;  // Return 0 if no data is found
