@@ -29,5 +29,6 @@ Route::delete('delete_user_yf_aja/{id}', [ApiController::class, 'delete_data_use
 Route::post('store/{karyawan}', [ApiController::class, 'store']);
 
 // Slip Gaji Controller
-Route::get('slipgaji/getdata/{id}/{month}/{year}', [SlipgajiController::class, 'getData']);
+Route::get('slipgaji/getdata/{id}/{month}/{year}', [SlipgajiController::class, 'getData'])->middleware('auth:sanctum');
+// Route::get('slipgaji/getdata/{id}/{month}/{year}', [SlipgajiController::class, 'getData']);
 Route::post('login', [AuthController::class, 'login']);
