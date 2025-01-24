@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Carbon\Carbon;
 use Validator;
 
 class AuthController extends Controller
@@ -30,6 +31,8 @@ class AuthController extends Controller
 
             // Create a personal access token for the user using Sanctum
             $token = $user->createToken('YourAppName')->plainTextToken;
+            $personalAccesToken = $user->tokens()->latest()->first();
+            $personalAccesToken->expires_at = Carbon::now()->addMinutes(60);
 
             return response()->json([
                 'message' => 'Login successful',
