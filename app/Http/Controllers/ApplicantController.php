@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Applicantdata;
 use Illuminate\Http\Request;
+use App\Models\Applicantdata;
+use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class ApplicantController extends Controller
 {
+
+
+
     public function login(Request $request)
     {
         $validated = $request->validate([

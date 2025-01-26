@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SlipgajiController;
+use App\Http\Controllers\ApplicantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +33,4 @@ Route::post('store/{karyawan}', [ApiController::class, 'store']);
 // Route::get('slipgaji/getdata/{id}/{month}/{year}', [SlipgajiController::class, 'getData'])->middleware('auth:sanctum');
 Route::get('slipgaji/getdata/{id}/{month}/{year}', [SlipgajiController::class, 'getData']);
 Route::post('login', [AuthController::class, 'login']);
+Route::get('/jamKerja/{user_id}/{month}/{year}', [ApiController::class, 'getDetailJamKerjaKaryawan']);
