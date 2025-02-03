@@ -33,6 +33,7 @@ function total_gaji_bulanan(
     $id_karyawan,
     $status_karyawan
 ) {
+
     $gajiPerHari = $gaji_pokok / $total_n_hari_kerja;
     if ($status_karyawan == 'Blacklist') {
         return 0;
@@ -41,6 +42,7 @@ function total_gaji_bulanan(
         $jumlah_libur_nasional_resigned = 0;
         $month = date('m', strtotime($date));
         $year = date('Y', strtotime($date));
+
         $jumlah_libur_nasional_resigned = get_jumlah_hari_libur_resigned(
             $month,
             $year,

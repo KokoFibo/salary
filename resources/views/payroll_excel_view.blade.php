@@ -227,19 +227,20 @@
                     <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
 
                     @php
-                        if ($d->metode_penggajian == 'Perjam') {
-                            $gaji_bulan_ini = total_gaji_perjam($d->gaji_pokok, $d->jam_kerja);
-                        } else {
-                            $gaji_bulan_ini = total_gaji_bulanan(
-                                $d->gaji_pokok,
-                                $d->hari_kerja,
-                                $total_n_hari_kerja,
-                                $jumlah_libur_nasional,
-                                $d->date,
-                                $d->id_karyawan,
-                                $d->status_karyawan,
-                            );
-                        }
+                        // if ($d->metode_penggajian == 'Perjam') {
+                        //     $gaji_bulan_ini = total_gaji_perjam($d->gaji_pokok, $d->jam_kerja);
+                        // } else {
+                        //     $gaji_bulan_ini = total_gaji_bulanan(
+                        //         $d->gaji_pokok,
+                        //         $d->hari_kerja,
+                        //         $total_n_hari_kerja,
+                        //         $jumlah_libur_nasional,
+                        //         $d->date,
+                        //         $d->id_karyawan,
+                        //         $d->status_karyawan,
+                        //     );
+                        // }
+                        $gaji_bulan_ini = $d->subtotal;
                         if ($d->gaji_pokok != 0) {
                             // $gaji_bpjs_adjust = $d->gaji_bpjs * $total_gaji_sebelum_tax / $d->gaji_pokok;
                             $gaji_bpjs_adjust = ($d->gaji_bpjs * $gaji_bulan_ini) / $d->gaji_pokok;
