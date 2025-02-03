@@ -78,6 +78,11 @@ function total_gaji_bulanan(
     $id_karyawan,
     $status_karyawan
 ) {
+    $month = date('m', strtotime($date));
+    $year = date('Y', strtotime($date));
+    $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)->whereYear('tanggal_mulai_hari_libur', $year)->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
+    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24,  26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 800, 900, 5576, 6566, 7511, 6576, 6577, 6578, 6579, 8127]; //TKA hanya 3 no didepan
+
 
     $gajiPerHari = $gaji_pokok / $total_n_hari_kerja;
     if ($status_karyawan == 'Blacklist') {
@@ -85,24 +90,41 @@ function total_gaji_bulanan(
     }
     if ($status_karyawan == 'Resigned') {
         $jumlah_libur_nasional_resigned = 0;
-        $month = date('m', strtotime($date));
-        $year = date('Y', strtotime($date));
+
 
         $jumlah_libur_nasional_resigned = get_jumlah_hari_libur_resigned(
             $month,
             $year,
             $id_karyawan,
         );
-        $total = $jumlah_libur_nasional_resigned + $hari_kerja;
-        // if ($id_karyawan == 42) dd($jumlah_libur_nasional_resigned, $hari_kerja);
-        return $total_gaji = $gajiPerHari * $total;
+
+        if (in_array($id_karyawan, $idKhusus)) {
+            $total_gaji = $gaji_pokok;
+        } else {
+
+            $total = $jumlah_libur_nasional_resigned + $hari_kerja;
+            $total_gaji = $gajiPerHari * $total;
+        }
+        // if ($id_karyawan == 40) dd($total_gaji);
+        return $total_gaji;
     }
-    $total = $total_n_hari_kerja - $jumlah_libur_nasional - $hari_kerja;
-    if ($total > 0) {
-        $total_gaji = $gaji_pokok - $gajiPerHari * $total;
-    } else {
+
+    $tgl_bergabung = Karyawan::where('id_karyawan', $id_karyawan)
+        ->value('tanggal_bergabung');
+
+    $manfaat_libur = manfaat_libur($month, $year, $libur, $id_karyawan, $tgl_bergabung);
+    if ($manfaat_libur > $jumlah_libur_nasional) $manfaat_libur = $jumlah_libur_nasional;
+
+
+    $total =  $manfaat_libur + $hari_kerja;
+    if ($total == $total_n_hari_kerja) $total_gaji = $gaji_pokok;
+    else $total_gaji = $gaji_pokok / $total_n_hari_kerja * $total;
+
+    if (in_array($id_karyawan, $idKhusus)) {
         $total_gaji = $gaji_pokok;
     }
+    // if ($id_karyawan == 6772) dd($gaji_pokok, $hari_kerja, $total_n_hari_kerja,  $manfaat_libur, $total, $total_gaji);
+
     return $total_gaji;
 }
 
@@ -1010,35 +1032,25 @@ function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
 
         // Check if the holiday falls after the start date of work or joining date
     }
+    // if ($user_id == 1076) dd($manfaat_libur, $is_tgl_1);
+
     $is_karyawan_lama = false;
     // $beginning_date = new DateTime("$year-$month-01");
 
     $beginning_date = buat_tanggal($month, $year);
     $is_karyawan_lama = $tgl_bergabung < $beginning_date;
 
-    if (($is_tgl_1 && $manfaat_libur != 0 && $is_karyawan_lama) || ($is_tgl_1 && $manfaat_libur == 0 && $is_karyawan_lama)) {
-        $manfaat_libur++;
+    if ($is_karyawan_lama) {
+
+        if (($is_tgl_1 && $manfaat_libur != 0) || ($is_tgl_1 && $manfaat_libur == 0)) {
+            $manfaat_libur++;
+        }
     }
 
-
-
-    // if ($user_id == 7415) {
-    //     dd($manfaat_libur, $is_karyawan_lama);
-    // }
-
-    // if ($user_id == '7503') dd($is_karyawan_lama, $manfaat_libur);
-
-    // $beginning_date = new DateTime("$year-$month-01");
-    // if (($libur->count() == 1) && ($tgl_libur_obj->day == 1) && ($tgl_bergabung < $beginning_date)) {
-    //     $manfaat_libur = 0;
-    //     dd('hanya 1 tanggal libur dan tanggal 1');
-    // } else {
-    //     dd('hanya 1 tanggal libur dan tanggal 1');
+    // if (($is_tgl_1 && $manfaat_libur != 0 && $is_karyawan_lama) || ($is_tgl_1 && $manfaat_libur == 0 && $is_karyawan_lama)) {
     //     $manfaat_libur++;
     // }
 
-
-    //   && $tgl_bergabung < $tgl_libur
 
     return $manfaat_libur;
 }
