@@ -47,6 +47,7 @@ function total_gaji_bulanan(
             $id_karyawan,
         );
         $total = $jumlah_libur_nasional_resigned + $hari_kerja;
+        // if ($id_karyawan == 42) dd($jumlah_libur_nasional_resigned, $hari_kerja);
         return $total_gaji = $gajiPerHari * $total;
     }
     $total = $total_n_hari_kerja - $jumlah_libur_nasional - $hari_kerja;
@@ -98,14 +99,21 @@ function get_tgl_resigned($id)
 
 function get_jumlah_hari_libur_resigned($month, $year, $id)
 {
-    $data = Payroll::whereMonth('date', 11)
-        ->whereYear('date', 2024)
-        ->where('status_karyawan', 'Resigned')
-        ->first();
-    $tgl_resigned = get_tgl_resigned($data->id_karyawan);
-    if (!$data) {
-        dd('No resigned employee data found for the given month and year.');
+    // $data = Payroll::whereMonth('date', $month)
+    //     ->whereYear('date', $year)
+    //     ->where('status_karyawan', 'Resigned')
+    //     ->first();
+    try {
+        // $tgl_resigned = get_tgl_resigned($data->id_karyawan);
+        $tgl_resigned = get_tgl_resigned($id);
+    } catch (\Exception $e) {
+        dd('id tidak ditemukan :', $month, $year, $id);
+        return $e->getMessage();
     }
+    // if ($id == 42) dd($tgl_resigned, $month, $year);
+    // if (!$data) {
+    // dd('No resigned employee data found for the given month and year.');
+    // }
     // Ensure $tgl_resigned is a valid date
     if (!$tgl_resigned) {
         dd('No resignation date found for the given employee.');
@@ -116,8 +124,8 @@ function get_jumlah_hari_libur_resigned($month, $year, $id)
 
     $liburNasional = 0;
 
-    $tgl_libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', 11)
-        ->whereYear('tanggal_mulai_hari_libur', 2024)
+    $tgl_libur_nasional = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)
+        ->whereYear('tanggal_mulai_hari_libur', $year)
         ->get();
 
     $cx = 0;
