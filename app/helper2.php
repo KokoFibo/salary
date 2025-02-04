@@ -371,14 +371,16 @@ function build_payroll($month, $year)
         // $beginning_date = new DateTime("$year-$month-01");
         $beginning_date = buat_tanggal($month, $year);
         // hehehe
-        if ($data->karyawan->tanggal_bergabung >= $beginning_date  || $data->karyawan->status_karyawan == 'Resigned') {
-            $manfaat_libur = manfaat_libur($month, $year, $libur, $data->user_id, $data->karyawan->tanggal_bergabung);
+        // if ($data->karyawan->tanggal_bergabung >= $beginning_date  || $data->karyawan->status_karyawan == 'Resigned') {
+        if ($data->karyawan->status_karyawan == 'Resigned') {
+            $manfaat_libur = manfaat_libur_resigned($month, $year, $libur, $data->user_id, $data->karyawan->tanggal_resigned);
         } else {
-            $manfaat_libur = $libur->count();
+            $manfaat_libur = manfaat_libur($month, $year, $libur, $data->user_id, $data->karyawan->tanggal_bergabung);
+            // $manfaat_libur = $libur->count();
+            // if ($data->user_id == 8217) dd($month, $year, $manfaat_libur, $data->karyawan->status_karyawan);
+            if ($manfaat_libur > $libur->count()) $manfaat_libur = $libur->count();
             $cx++;
         }
-
-
         $gaji_karyawan_bulanan = ($data->karyawan->gaji_pokok / $total_n_hari_kerja) * ($data->total_hari_kerja + $manfaat_libur);
 
 
@@ -431,8 +433,8 @@ function build_payroll($month, $year)
         // oioi
         $total_gaji_lembur = $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
         $pph21 = hitung_pph21(
-            $data->karyawan->gaji_bpjs,
-            // $gaji_bpjs_adjust,
+            // $data->karyawan->gaji_bpjs,
+            $gaji_bpjs_adjust,
             $data->karyawan->ptkp,
             $data->karyawan->potongan_JHT,
             $data->karyawan->potongan_JP,
