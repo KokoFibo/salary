@@ -124,90 +124,6 @@
         <tbody>
 
             @foreach ($data as $key => $d)
-                @php
-                    if ($d->gaji_bpjs >= 12000000) {
-                        $gaji_bpjs_max = 12000000;
-                    } else {
-                        $gaji_bpjs_max = $d->gaji_bpjs;
-                    }
-
-                    if ($d->gaji_bpjs >= 10042300) {
-                        $gaji_jp_max = 10042300;
-                    } else {
-                        $gaji_jp_max = $d->gaji_bpjs;
-                    }
-                    if ($d->kesehatan != 0) {
-                        $kesehatan_company = ($gaji_bpjs_max * 4) / 100;
-                    } else {
-                        $kesehatan_company = 0;
-                    }
-
-                    if ($d->jkk) {
-                        $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
-                    } else {
-                        $jkk_company = 0;
-                    }
-
-                    if ($d->jkm) {
-                        $jkm_company = ($d->gaji_bpjs * 0.3) / 100;
-                    } else {
-                        $jkm_company = 0;
-                    }
-
-                    if ($d->jp != 0) {
-                        $jp_company = ($gaji_jp_max * 2) / 100;
-                    } else {
-                        $jp_company = 0;
-                    }
-
-                    if ($d->jht != 0) {
-                        $jht_company = ($d->gaji_bpjs * 3.7) / 100;
-                    } else {
-                        $jht_company = ($d->gaji_bpjs * 3.7) / 100;
-                    }
-
-                    $total_bpjs_company = 0;
-                    $total_bpjs_company =
-                        $d->gaji_bpjs +
-                        $jkk_company +
-                        $jkm_company +
-                        $kesehatan_company +
-                        $d->gaji_lembur * $d->jam_lembur +
-                        $d->gaji_libur +
-                        $d->bonus1x +
-                        $d->tambahan_shift_malam;
-
-                    $ter = '';
-                    switch ($d->ptkp) {
-                        case 'TK0':
-                            $ter = 'A';
-                            break;
-                        case 'TK1':
-                            $ter = 'A';
-                            break;
-                        case 'TK2':
-                            $ter = 'B';
-                            break;
-                        case 'TK3':
-                            $ter = 'B';
-                            break;
-                        case 'K0':
-                            $ter = 'A';
-                            break;
-                        case 'K1':
-                            $ter = 'B';
-                            break;
-                        case 'K2':
-                            $ter = 'B';
-                            break;
-                        case 'K3':
-                            $ter = 'C';
-                            break;
-                    }
-
-                    $rate_pph21 = get_rate_ter_pph21($d->ptkp, $total_bpjs_company);
-                    $pph21 = ($total_bpjs_company * $rate_pph21) / 100;
-                @endphp
                 <tr>
                     <td style="text-align: center"> {{ $d->id_karyawan }}</td>
                     <td> {{ $d->nama }}</td>
@@ -248,6 +164,90 @@
                             $gaji_bpjs_adjust = 0; // or another fallback value
                             error_log('Division by zero error: gaji_pokok is zero for karyawan ID: ' . $d->id);
                         }
+
+                        if ($d->gaji_bpjs >= 12000000) {
+                            $gaji_bpjs_max = 12000000;
+                        } else {
+                            $gaji_bpjs_max = $d->gaji_bpjs;
+                        }
+
+                        if ($d->gaji_bpjs >= 10042300) {
+                            $gaji_jp_max = 10042300;
+                        } else {
+                            $gaji_jp_max = $d->gaji_bpjs;
+                        }
+                        if ($d->kesehatan != 0) {
+                            $kesehatan_company = ($gaji_bpjs_max * 4) / 100;
+                        } else {
+                            $kesehatan_company = 0;
+                        }
+
+                        if ($d->jkk) {
+                            $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
+                        } else {
+                            $jkk_company = 0;
+                        }
+
+                        if ($d->jkm) {
+                            $jkm_company = ($d->gaji_bpjs * 0.3) / 100;
+                        } else {
+                            $jkm_company = 0;
+                        }
+
+                        if ($d->jp != 0) {
+                            $jp_company = ($gaji_jp_max * 2) / 100;
+                        } else {
+                            $jp_company = 0;
+                        }
+
+                        if ($d->jht != 0) {
+                            $jht_company = ($d->gaji_bpjs * 3.7) / 100;
+                        } else {
+                            $jht_company = ($d->gaji_bpjs * 3.7) / 100;
+                        }
+
+                        $total_bpjs_company = 0;
+                        $total_bpjs_company =
+                            $gaji_bpjs_adjust +
+                            // $d->gaji_bpjs +
+                            $jkk_company +
+                            $jkm_company +
+                            $kesehatan_company +
+                            $d->gaji_lembur * $d->jam_lembur +
+                            $d->gaji_libur +
+                            $d->bonus1x +
+                            $d->tambahan_shift_malam;
+
+                        $ter = '';
+                        switch ($d->ptkp) {
+                            case 'TK0':
+                                $ter = 'A';
+                                break;
+                            case 'TK1':
+                                $ter = 'A';
+                                break;
+                            case 'TK2':
+                                $ter = 'B';
+                                break;
+                            case 'TK3':
+                                $ter = 'B';
+                                break;
+                            case 'K0':
+                                $ter = 'A';
+                                break;
+                            case 'K1':
+                                $ter = 'B';
+                                break;
+                            case 'K2':
+                                $ter = 'B';
+                                break;
+                            case 'K3':
+                                $ter = 'C';
+                                break;
+                        }
+
+                        $rate_pph21 = get_rate_ter_pph21($d->ptkp, $total_bpjs_company);
+                        $pph21 = ($total_bpjs_company * $rate_pph21) / 100;
                     @endphp
 
                     @if ($d->metode_penggajian == 'Perjam')
