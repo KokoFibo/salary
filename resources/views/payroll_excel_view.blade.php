@@ -218,6 +218,20 @@
                             $d->bonus1x +
                             $d->tambahan_shift_malam;
 
+                        // if ($d->id_karyawan == 1051) {
+                        //     dd(
+                        //         $total_bpjs_company,
+                        //         $d->tambahan_shift_malam,
+                        //         $d->gaji_lembur * $d->jam_lembur,
+                        //         $d->gaji_libur,
+                        //         $d->bonus1x,
+                        //         $gaji_bpjs_adjust,
+                        //         $jkk_company,
+                        //         $jkm_company,
+                        //         $kesehatan_company,
+                        //         $d->kesehatan,
+                        //     );
+                        // }
                         $ter = '';
                         switch ($d->ptkp) {
                             case 'TK0':
@@ -319,8 +333,8 @@
                     @endif
 
 
-                    {{-- <td style="text-align: right"> {{ $total_bpjs_company }}</td> --}}
-                    <td style="text-align: right"> {{ $d->total_bpjs }}</td>
+                    {{-- <td style="text-align: right"> {{ $d->total_bpjs }}</td> --}}
+                    <td style="text-align: right"> {{ $total_bpjs_company }}</td>
                     {{-- <td style="text-align: right">
                         {{ $d->gaji_lembur * $d->jam_lembur + $d->gaji_libur + $d->bonus1x + $d->tambahan_shift_malam + $gaji_bpjs_adjust + $jkk_company + $jkm_company + $kesehatan_company }}
                     </td> --}}
