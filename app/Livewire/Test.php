@@ -143,18 +143,8 @@ class Test extends Component
 
   public function render()
   {
-    dd(get_tgl_resigned(27));
-    $data = Karyawan::where('id_karyawan', 27)->first();
-    // dd($data->tanggal_resigned);
-    // $data = Payroll::whereMonth('date', 1)->whereYear('date', 2025)->where('metode_penggajian', 'Perbulan')->get();
-    $data = Payroll::whereMonth('date', 1)
-      ->whereYear('date', 2025)
-      ->where('metode_penggajian', 'Perbulan')
-      ->where('hari_kerja', 23)
-      ->whereColumn('subtotal', '<', 'gaji_pokok')
-      ->get();
+    $data = Payroll::whereMonth('date', 12)->whereYear('date', 2024)->where('jkk', '!=', null)->orWhere('jkm', '!=', null)->get();
 
-    dd($data);
 
 
 

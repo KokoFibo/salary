@@ -1,6 +1,4 @@
 <div>
-
-
     @section('title', 'Bonus dan Potongan')
     <div class="col-12  mx-auto pt-3">
         <div class="card ">
@@ -23,11 +21,16 @@
                     </div>
                     {{-- end spinner --}}
                     <div class="">
-                        <button wire:click="add"
+                        {{-- <button wire:click="add"
                             class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"
                             {{ is_data_locked() ? 'disabled' : '' }}>
                             {{ __('Add New') }}
-                        </button>
+                        </button> --}}
+                        <a href="/addtambahan"> <button
+                                class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"
+                                {{ is_data_locked() ? 'disabled' : '' }}>
+                                {{ __('Add New') }}
+                            </button></a>
                     </div>
                 </div>
             </div>
@@ -51,6 +54,7 @@
                         <label class="form-label">{{ __('Tanggal') }} (mm/dd/yyyy)</label>
                         <input wire:model="tanggal" class="form-control" type="date">
                     </div>
+
                     <div class="card mt-lg-3 mt-2">
                         <div class="card-header bg-success nightowl-daylight">
                             <h5>Bonus</h5>
@@ -59,8 +63,10 @@
                             <div class="d-flex flex-xl-row flex-column gap-xl-3 gap-2">
 
                                 <div class="mb-3">
-                                    <label class="form-label">{{ __('Uang Makan') }}</label>
-                                    <input wire:model="uang_makan" type="number" class="form-control">
+                                    <label class="form-label">{{ __('Uang Makan1') }}</label>
+                                    {{-- <input wire:model="uang_makan" type="number" class="form-control"> --}}
+                                    <input wire:model="uang_makan" type="text" type-currency="IDR"
+                                        class="form-control">
                                 </div>
 
                                 <div class="mb-3">
@@ -235,10 +241,14 @@
                                                 <div class="text-center">
                                                     <div class="btn-group  gap-2 nightowl-daylight" role="group"
                                                         aria-label="Basic mixed styles example">
-                                                        <button wire:click="update({{ $d->id }})"
+                                                        {{-- <button wire:click="update({{ $d->id }})"
                                                             type="button"
                                                             class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
-                                                                class="fa-regular fa-pen-to-square"></i></button>
+                                                                class="fa-regular fa-pen-to-square"></i></button> --}}
+                                                        <a href="/updatetambahan/{{ $d->id }}"><button
+                                                                type="button"
+                                                                class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
+                                                                    class="fa-regular fa-pen-to-square"></i></button></a>
                                                         <button
                                                             wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE""
                                                             wire:click="delete({{ $d->id }})" type="button"
@@ -297,4 +307,5 @@
             </div>
         @endif
     </div>
+
 </div>

@@ -26,6 +26,7 @@ use App\Livewire\Karyawanwr;
 use App\Livewire\Tambahanwr;
 use App\Livewire\UserMobile;
 use App\Livewire\AddPresensi;
+use App\Livewire\AddTambahan;
 use App\Livewire\ChangeField;
 use App\Livewire\Informasiwr;
 use App\Livewire\IuranLocker;
@@ -35,12 +36,14 @@ use App\Livewire\DataResigned;
 use App\Livewire\DeleteNoscan;
 use App\Livewire\Departmentwr;
 use App\Livewire\Infokaryawan;
+use App\Livewire\Kenaikangaji;
 use App\Livewire\UserNotFound;
 use App\Livewire\AbsensiKosong;
 use App\Livewire\Cutirequestwr;
 use App\Livewire\DataApplicant;
 use App\Livewire\Informationwr;
 use App\Livewire\Editpresensiwr;
+use App\Livewire\UpdateTambahan;
 use App\Livewire\UserRegulation;
 use App\Http\Controllers\Testaja;
 use App\Livewire\ChangeFieldData;
@@ -51,6 +54,7 @@ use App\Livewire\Placementreport;
 use App\Livewire\UpdatedPresensi;
 use App\Livewire\UserInformation;
 use App\Livewire\Changeuserrolewr;
+use App\Livewire\Datatidaklengkap;
 use App\Livewire\Deletepresensiwr;
 use App\Livewire\Importkaryawanwr;
 use App\Livewire\MovePresensiData;
@@ -86,8 +90,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Livewire\Datatidaklengkap;
-use App\Livewire\Kenaikangaji;
 
 // Middleware
 Auth::routes([
@@ -168,6 +170,8 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/informasi', Informasiwr::class);
                 Route::get('/informationwr', Informationwr::class);
                 Route::get('/tambahan', Tambahanwr::class);
+                Route::get('/addtambahan', AddTambahan::class);
+                Route::get('/updatetambahan/{id}', UpdateTambahan::class);
                 Route::get('/iuranlocker', IuranLocker::class);
                 Route::get('/karyawanreinstate/{id}', KaryawanReinstate::class)->name('karyawanreinstate');
                 Route::get('/kview', [KviewController::class, 'index']);
