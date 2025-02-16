@@ -83,8 +83,10 @@ function total_gaji_bulanan(
     $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)->whereYear('tanggal_mulai_hari_libur', $year)->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
     $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24,  26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 800, 900, 5576, 6566, 7511, 6576, 6577, 6578, 6579, 8127]; //TKA hanya 3 no didepan
 
-
     $gajiPerHari = $gaji_pokok / $total_n_hari_kerja;
+
+
+
     if ($status_karyawan == 'Blacklist') {
         return 0;
     }
@@ -115,7 +117,6 @@ function total_gaji_bulanan(
     $manfaat_libur = manfaat_libur($month, $year, $libur, $id_karyawan, $tgl_bergabung);
     if ($manfaat_libur > $jumlah_libur_nasional) $manfaat_libur = $jumlah_libur_nasional;
 
-
     $total =  $manfaat_libur + $hari_kerja;
     if ($total == $total_n_hari_kerja) $total_gaji = $gaji_pokok;
     else $total_gaji = $gaji_pokok / $total_n_hari_kerja * $total;
@@ -123,8 +124,7 @@ function total_gaji_bulanan(
     if (in_array($id_karyawan, $idKhusus)) {
         $total_gaji = $gaji_pokok;
     }
-    // if ($id_karyawan == 6772) dd($gaji_pokok, $hari_kerja, $total_n_hari_kerja,  $manfaat_libur, $total, $total_gaji);
-
+    // if ($id_karyawan == 1662) dd('hello', $total_gaji, $gaji_pokok, $total_n_hari_kerja, $total);
     return $total_gaji;
 }
 
@@ -363,8 +363,6 @@ function get_first_name($name)
 
 function hitung_pph21_simple($total_bpjs_company, $ptkp, $gaji_bpjs)
 {
-
-
 
     if ($gaji_bpjs != '' &&  $ptkp != '') {
 

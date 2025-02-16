@@ -206,8 +206,8 @@
                             $jht_company = ($d->gaji_bpjs * 3.7) / 100;
                         }
 
-                        $total_tax = 0;
-                        $total_tax =
+                        $total_bpjs_company = 0;
+                        $total_bpjs_company =
                             $gaji_bpjs_adjust +
                             // $d->gaji_bpjs +
                             $jkk_company +
@@ -246,11 +246,11 @@
                                 break;
                         }
 
-                        $rate_pph21 = get_rate_ter_pph21($d->ptkp, $total_tax);
-                        $pph21 = ($total_tax * $rate_pph21) / 100;
+                        $rate_pph21 = get_rate_ter_pph21($d->ptkp, $total_bpjs_company);
+                        $pph21 = ($total_bpjs_company * $rate_pph21) / 100;
                         // if ($d->id_karyawan == 1662) {
                         //     dd(
-                        //         $total_tax,
+                        //         $total_bpjs_company,
                         //         $d->tambahan_shift_malam,
                         //         $d->gaji_lembur * $d->jam_lembur,
                         //         $d->gaji_libur,
@@ -336,7 +336,7 @@
 
 
                     {{-- <td style="text-align: right"> {{ $d->total_bpjs }}</td> --}}
-                    <td style="text-align: right"> {{ $total_tax }}</td>
+                    <td style="text-align: right"> {{ $total_bpjs_company }}</td>
                     {{-- <td style="text-align: right">
                         {{ $d->gaji_lembur * $d->jam_lembur + $d->gaji_libur + $d->bonus1x + $d->tambahan_shift_malam + $gaji_bpjs_adjust + $jkk_company + $jkm_company + $kesehatan_company }}
                     </td> --}}
