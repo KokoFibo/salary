@@ -144,26 +144,16 @@ class Test extends Component
 
   public function render()
   {
-    //code dibawah in iuntuk backup rekapbackup
+    $user_kosong = [];
+    $user = User::select('username')->get(); // Fix dari all() ke get()
 
-    // $data = Rekapbackup::whereBetween('date', ['2023-01-01', '2024-06-30'])->delete();
-    // $data = Rekapbackup::whereBetween('date', ['2023-01-01', '2024-06-30'])->count();
-    // $data = Rekapbackup::all();
-
-
-
-    // $data = Rekapbackup::where('date', '>', '2023-12-31')->get();
-
-    // dd($data);
-
-
-
-    $filename = 'Applicants/Nihil_nostrum_cum_ci_1991_01_04/ktp-01.png';
-    $url = Storage::url($filename);
-    // dd($url);
-
-    return view('livewire.test', [
-      'url' => $url
-    ]);
+    foreach ($user as $k) {
+      if (!Karyawan::where('id_karyawan', $k->username)->exists()) {
+        // dd('User tidak ada', $k->id_karyawan); // Menampilkan ID karyawan yang tidak punya user
+        $user_kosong[] = $k->username;
+      }
+    }
+    dd($user_kosong);
+    return view('livewire.test');
   }
 }
