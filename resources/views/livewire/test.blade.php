@@ -1,25 +1,12 @@
 <div>
+    {{-- <img src="/storage/Applicants/Natus_aperiam_quas_v_2008_09_14/ktp-01.png"
+        alt="/storage/Applicants/Natus_aperiam_quas_v_2008_09_14/ktp-01.png"> --}}
+    <h1>hello</h1>
+    {{-- <img src="{{ asset('images/example.png') }}" alt="">
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nama</th>
-                <th>JkK</th>
-                <th>JKM</th>
-                <th>KESEHATAN</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($data as $d)
-                <tr>
-                    <td>{{ $d->id }}</td>
-                    <td>{{ $d->nama }}</td>
-                    <td>{{ $d->jkk }}</td>
-                    <td>{{ $d->jkm }}</td>
-                    <td>{{ $d->kesehatan }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <img src="/images/example.png" alt=""> --}}
+    {{-- <img src="/storage/app/public/Applicants/Nihil_nostrum_cum_ci_1991_01_04/ktp-01.png" alt=""> --}}
+    {{-- <img src="{{ asset('storage/' . $url) }}" alt="Foto Profil"> --}}
+    <img src="{{ $url }}" alt="">
+
 </div>

@@ -175,7 +175,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="mb-3">
-                    <label class="form-label">{{ __('Nama Kontak Darurat') }} </label>
+                    <label class="form-label">{{ __('Nama Kontak Darurat 1') }} </label>
                     <input wire:model="kontak_darurat" type="text"
                         class="form-control @error('kontak_darurat') is-invalid @enderror">
                     @error('kontak_darurat')
@@ -187,7 +187,7 @@
             </div>
             <div class="col-md-4">
                 <div class="mb-3">
-                    <label class="form-label">{{ __('Handphone1') }} </label>
+                    <label class="form-label">{{ __('Handphone Kontak Darurat 1') }} </label>
                     <input wire:model="hp1" type="text" class="form-control @error('hp1') is-invalid @enderror">
                     @error('hp1')
                         <div class="invalid-feedback">
@@ -198,9 +198,47 @@
             </div>
             <div class="col-md-4">
                 <div class="mb-3">
-                    <label class="form-label">{{ __('Handphone2') }} </label>
+                    <label class="form-label">{{ __('Hubungan Kontak Darurat 1') }} </label>
+                    <input wire:model="hubungan1" type="text"
+                        class="form-control @error('hubungan1') is-invalid @enderror">
+                    @error('hubungan1')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{ __('Nama Kontak Darurat 2') }} </label>
+                    <input wire:model="kontak_darurat2" type="text"
+                        class="form-control @error('kontak_darurat2') is-invalid @enderror">
+                    @error('kontak_darurat2')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{ __('Handphone Kontak Darurat 2') }} </label>
                     <input wire:model="hp2" type="text" class="form-control @error('hp2') is-invalid @enderror">
                     @error('hp2')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{ __('Hubungan Kontak Darurat 2') }} </label>
+                    <input wire:model="hubungan2" type="text"
+                        class="form-control @error('hubungan2') is-invalid @enderror">
+                    @error('hubungan2')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>

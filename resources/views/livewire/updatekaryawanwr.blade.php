@@ -59,28 +59,141 @@
 
                 </div>
 
-                {{-- upload file --}}
-                <div class="card mx-3 mb-3">
-                    <div class='card-body'>
-                        <label for="formFileLg" class="form-label">
-                            <p>Upload Dokumen <span class="text-danger">*</span> ( hanya
-                                menerima format jpg, jpeg dan png )</p>
-                            {{-- <p>khusus untuk file PDF, tidak boleh melebihi 1,024Kb</p> --}}
-                        </label>
-                        <div class="d-flex flex-row gap-5 align-items-center ">
-                            <div>
-                                <input class="form-control form-control-lg" id="formFileLg" type="file"
-                                    wire:model='files' multiple>
-                                @error('files.*')
-                                    <div class="text-danger">
-                                        {{ $message }}
-                                    </div>
+
+                <div class="card m-3">
+                    <div class="card-header">
+                        <h4 class='pt-3'>Upload Dokumen</h4>
+                        <p>Hanya menerima file png, jpg dan jpeg saja</p>
+                    </div>
+                    <div class="card-body">
+
+
+
+                        {{-- upload files  --}}
+                        <div class="p-3 row row-cols-2 row-cols-md-4 g-4 mb-4">
+                            <div class="col">
+                                <label class="form-label" for="upload_ktp">
+                                    <p>KTP <span class="text-danger">*</span></p>
+                                </label>
+                                <input wire:model='ktp' multiple class="form-control" id="upload_ktp" type="file">
+                                @error('ktp.*')
+                                    <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-
+                            <div class="col">
+                                <label class="form-label" for="upload_kk">
+                                    <p>Kartu Keluarga <span class="text-danger">*</span></p>
+                                </label>
+                                <input wire:model='kk' multiple class="form-control" id="upload_kk" type="file">
+                                @error('kk.*')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col">
+                                <label class="form-label" for="upload_ijazah">
+                                    <p>Ijazah <span class="text-danger">*</span></p>
+                                </label>
+                                <input wire:model='ijazah' multiple class="form-control" id="upload_ijazah"
+                                    type="file">
+                                @error('ijazah.*')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col">
+                                <label class="form-label" for="upload_nilai">
+                                    <p>Transkip Nilai/SKHUN <span class="text-danger">*</span></p>
+                                </label>
+                                <input wire:model='nilai' multiple class="form-control" id="upload_nilai"
+                                    type="file">
+                                @error('nilai.*')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col">
+                                <label class="form-label" for="upload_cv">
+                                    <p>CV <span class="text-danger">*</span></p>
+                                </label>
+                                <input wire:model='cv' multiple class="form-control" id="upload_cv" type="file">
+                                @error('cv.*')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col">
+                                <label class="form-label" for="upload_pasfoto">
+                                    <p>Pass Foto <span class="text-danger">*</span></p>
+                                </label>
+                                <input wire:model='pasfoto' multiple class="form-control" id="upload_pasfoto"
+                                    type="file">
+                                @error('pasfoto.*')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col">
+                                <label class="form-label" for="upload_npwp">
+                                    <p>NPWP</p>
+                                </label>
+                                <input wire:model='npwp' multiple class="form-control" id="upload_npwp"
+                                    type="file">
+                                @error('npwp.*')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col">
+                                <label class="form-label" for="upload_paklaring">
+                                    <p>Paklaring</p>
+                                </label>
+                                <input wire:model='paklaring' multiple class="form-control" id="upload_paklaring"
+                                    type="file">
+                                @error('paklaring.*')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col">
+                                <label class="form-label" for="upload_bpjs">
+                                    <p>Kartu BPJS Ketenagakerjaan</p>
+                                </label>
+                                <input wire:model='bpjs' multiple class="form-control" id="upload_bpjs"
+                                    type="file">
+                                @error('bpjs.*')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col">
+                                <label class="form-label" for="upload_skck">
+                                    <p>SKCK</p>
+                                </label>
+                                <input wire:model='skck' multiple class="form-control" id="upload_skck"
+                                    type="file">
+                                @error('skck.*')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col">
+                                <label class="form-label" for="upload_sertifikat">
+                                    <p>Sertifikat</p>
+                                </label>
+                                <input wire:model='sertifikat' multiple class="form-control" id="upload_sertifikat"
+                                    type="file">
+                                @error('sertifikat.*')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col">
+                                <label class="form-label" for="upload_bri">
+                                    <p>Buku Tabungan Bank BRI</p>
+                                </label>
+                                <input wire:model='bri' multiple class="form-control" id="upload_bri"
+                                    type="file">
+                                @error('bri.*')
+                                    <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                 </div>
+
+
+
 
                 {{-- Show Errors --}}
                 <ul>
@@ -103,15 +216,18 @@
                     @if ($status_karyawan != 'Resigned' && $status_karyawan != 'Blacklist')
                         <button wire:click="update1" class="btn btn-primary mx-3">{{ __('Update') }}</button>
                     @endif
-                    @if (auth()->user()->role == 8)
-                        <button wire:click="update1" class="btn btn-primary mx-3">{{ __('Update') }}</button>
-                    @endif
+
                     <button wire:click="exit" class="btn btn-dark mx-3">{{ __('Exit') }}</button>
                     @if (!$show_arsip)
                         <button wire:click="arsip" class="btn btn-success mx-3">{{ __('Lihat File Arsip') }}</button>
                     @else
                         <button class="btn btn-success" wire:click='tutup_arsip'>Sembunyikan Arsip</button>
                     @endif
+                    <a href="{{ route('download.zip', ['folder' => $folder_name]) }}"
+                        class="btn btn-primary">Download
+                        All</a>
+                    <a href="{{ route('download.merged.pdf', ['folder' => $folder_name]) }}"
+                        class="btn btn-danger">Download PDF</a>
                 </div>
             </div>
 
@@ -129,7 +245,8 @@
                                 @if (strtolower(getFilenameExtension($fn->originalName)) == 'pdf')
                                     {{-- <li class="list-group-item "> --}}
                                     <div class="d-flex flex-row justify-content-between align-items-center">
-                                        <h4> {{ $fn->originalName }}</h4>
+                                        {{-- <h4> {{ $fn->originalName }}</h4> --}}
+                                        <h4> {{ get_filename($fn->filename) }}</h4>
                                         <button class="btn btn-danger" wire:confirm='Yakin mau di delete?'
                                             wire:click="deleteFile('{{ $fn->id }}')">Remove</button>
                                     </div>
@@ -150,7 +267,8 @@
 
                                                 <div
                                                     class="d-flex flex-row justify-content-between align-items-center mt-3 px-2">
-                                                    <h4> {{ $fn->originalName }}</h4>
+                                                    {{-- <h4> {{ $fn->originalName }}</h4> --}}
+                                                    <h4> {{ get_filename($fn->filename) }} </h4>
                                                     <div>
                                                         <button class="btn btn-danger"
                                                             wire:confirm='Yakin mau di delete?'
