@@ -48,6 +48,7 @@ class Updatekaryawanwr extends Component
     public $pilih_placement;
     public $delete_id;
     public $folder_name;
+    public $is_folder_kosong = false;
 
     public $ktp = [], $kk = [], $ijazah = [], $nilai = [], $cv = [], $pasfoto = [];
     public $npwp = [], $paklaring = [], $bpjs = [], $skck = [], $sertifikat = [], $bri = [];
@@ -236,11 +237,16 @@ class Updatekaryawanwr extends Component
             $this->applicant_id = makeApplicationId($data->nama, $data->tanggal_lahir);
             $data->id_file_karyawan = $this->applicant_id;
             $data->save();
+            $this->is_folder_kosong = true;
+
             // DataApplicant::create([
             //     'applicant_id' => $this->applicant_id;
             // ]);
         } else {
             $this->applicant_id =  $data->id_file_karyawan;
+            $isiFolder = Applicantfile::where('id_karyawan', $this->applicant_id)->count();
+
+            if ($isiFolder < 1) $this->is_folder_kosong = true;
         }
     }
 

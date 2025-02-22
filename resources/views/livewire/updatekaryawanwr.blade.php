@@ -219,15 +219,24 @@
 
                     <button wire:click="exit" class="btn btn-dark mx-3">{{ __('Exit') }}</button>
                     @if (!$show_arsip)
-                        <button wire:click="arsip" class="btn btn-success mx-3">{{ __('Lihat File Arsip') }}</button>
+                        @if (!$is_folder_kosong)
+                            <button wire:click="arsip"
+                                class="btn btn-success mx-3">{{ __('Lihat File Arsip') }}</button>
+                        @else
+                            <button class="btn btn-success mx-3" disabled>Belum ada file arsip</button>
+                        @endif
                     @else
                         <button class="btn btn-success" wire:click='tutup_arsip'>Sembunyikan Arsip</button>
                     @endif
-                    <a href="{{ route('download.zip', ['folder' => $folder_name]) }}"
-                        class="btn btn-primary">Download
-                        All</a>
-                    <a href="{{ route('download.merged.pdf', ['folder' => $folder_name]) }}"
-                        class="btn btn-danger">Download PDF</a>
+                    @if (!$is_folder_kosong)
+                        ;
+                        <a href="{{ route('download.zip', ['folder' => $folder_name]) }}"
+                            class="btn btn-primary">Download
+                            All</a>
+                        <a href="{{ route('download.merged.pdf', ['folder' => $folder_name]) }}"
+                            class="btn btn-danger">Download PDF</a>
+                    @endif
+
                 </div>
             </div>
 
