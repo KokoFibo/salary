@@ -90,6 +90,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\ChangeID;
 
 // Middleware
 Auth::routes([
@@ -217,6 +218,7 @@ Route::middleware(['auth'])->group(function () {
 
                 //Khusus Senior Admin
                 Route::middleware(['SeniorAdmin'])->group(function () {
+                    Route::get('/changeid', ChangeID::class);
                     Route::get('/payroll', Payrollwr::class);
                     Route::get('getexcel', [TerControler::class, 'index']);
                     Route::post('upload/ter', [TerControler::class, 'upload']);

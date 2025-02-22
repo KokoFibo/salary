@@ -235,7 +235,6 @@ class Updatekaryawanwr extends Component
         if ($data->id_file_karyawan == '') {
             $this->applicant_id = makeApplicationId($data->nama, $data->tanggal_lahir);
             $data->id_file_karyawan = $this->applicant_id;
-            dd($this->applicant_id);
             $data->save();
             // DataApplicant::create([
             //     'applicant_id' => $this->applicant_id;
