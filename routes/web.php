@@ -153,6 +153,12 @@ Route::middleware(['auth'])->group(function () {
 
 
             Route::middleware(['Admin'])->group(function () {
+
+                Route::get('/download-zip/{folder}', [ApplicantController::class, 'download'])->name('download.zip');
+                // Route::get('/download-pdf/{folder}', [ApplicantController::class, 'downloadPdf'])->name('download.pdf');
+                // Route::get('/download-pdf/{folder}', [ApplicantController::class, 'downloadPdf'])->name('download.pdf');
+                Route::get('/download-merged-pdf/{folder}', [ApplicantController::class, 'mergeFilesToPdf'])->name('download.merged.pdf');
+
                 //Dashboard
                 Route::get('/dashboard', [DashboardController::class, 'index']);
                 Route::get('/mobile', [DashboardController::class, 'mobile']);

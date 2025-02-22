@@ -7,10 +7,72 @@ use App\Models\Applicantdata;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use ZipArchive;
+use Illuminate\Http\Response;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Karyawan;
+
+
 
 class ApplicantController extends Controller
 {
 
+    public function mergeFilesToPdf($folder)
+    {
+        $folderPath = "public/Applicants/{$folder}";
+        $files = Storage::files($folderPath);
+        $data = [];
+
+        // ganti ini jika karyawan sudah diterima
+        // $data_karyawan = Applicantdata::where('applicant_id', $folder)->first();
+        $data_karyawan = Karyawan::where('id_file_karyawan', $folder)->first();
+
+        $nama_karyawan = $data_karyawan->nama;
+
+
+        foreach ($files as $file) {
+            $extension = pathinfo($file, PATHINFO_EXTENSION);
+            $data[] = [
+                'name' => basename($file), // Tambahkan Nama File
+                'type' => in_array(strtolower($extension), ['jpg', 'jpeg', 'png', 'gif', 'webp']) ? 'image' : 'text',
+                'path' => storage_path("app/$file"),
+            ];
+        }
+
+        // Generate PDF
+        $pdf = Pdf::loadView('pdf.merged-files', compact('folder', 'data', 'nama_karyawan'));
+
+        return $pdf->download("{$folder}.pdf");
+    }
+
+
+
+    public function download($folder)
+    {
+        // ganti Applicantdata dengan Karyawan jika sudah diterima sebagai karyawan
+
+        $data = Karyawan::where('id_file_karyawan', $folder)->first();
+        $zip_nama = $data->nama;
+        $folderPath = "public/Applicants/{$folder}";
+        // $zipFileName = "{$folder}.zip";
+        $zipFileName = "{$zip_nama}.zip";
+        $zipFilePath = storage_path("app/public/$zipFileName");
+
+        $zip = new ZipArchive;
+        if ($zip->open($zipFilePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
+            $files = Storage::allFiles($folderPath);
+            foreach ($files as $file) {
+                $relativePath = str_replace("$folderPath/", '', $file);
+                $zip->addFile(storage_path("app/$file"), $relativePath);
+            }
+            $zip->close();
+        } else {
+            return response()->json(['error' => 'Could not create zip file'], 500);
+        }
+
+        return response()->download($zipFilePath)->deleteFileAfterSend(true);
+    }
 
 
     public function login(Request $request)

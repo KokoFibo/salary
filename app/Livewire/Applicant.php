@@ -24,12 +24,16 @@ class Applicant extends Component
 
     public $is_registered, $show, $showMenu, $showSubmit, $registeredEmail, $registeredPassword, $is_update;
     public $nama, $email, $password, $confirm_password, $hp, $telp, $tempat_lahir, $tgl_lahir, $gender;
-    public $status_pernikahan, $golongan_darah, $agama, $etnis, $nama_contact_darurat;
-    public $contact_darurat_1, $contact_darurat_2, $jenis_identitas, $no_identitas;
+    public $status_pernikahan, $golongan_darah, $agama, $etnis;
+    public  $nama_contact_darurat, $contact_darurat_1, $hubungan_1;
+    public $nama_contact_darurat_2, $contact_darurat_2, $hubungan_2;
+    public $jenis_identitas, $no_identitas;
     public $alamat_identitas, $alamat_tinggal_sekarang;
     public $applicant_id, $originalName, $filename;
     public $toggle_eye_password;
     public $id;
+    public $ktp = [], $kk = [], $ijazah = [], $nilai = [], $cv = [], $pasfoto = [];
+    public $npwp = [], $paklaring = [], $bpjs = [], $skck = [], $sertifikat = [], $bri = [];
 
 
     public function toggleEyePassword()
@@ -38,53 +42,33 @@ class Applicant extends Component
     }
 
 
-    public function deleteFile($id)
+    public function deleteFile($filename)
     {
-        // $data = Applicantfile::where('filename', $filename)->first();
-        $data = Applicantfile::find($id);
-        if ($data != null) {
+        try {
+            // Cari file dalam database, jika tidak ada, langsung lempar error
+            $data = Applicantfile::where('filename', $filename)->firstOrFail();
 
+            // Hapus file dari storage
+            if (Storage::disk('public')->delete($data->filename)) {
+                // Hapus record di database
+                $data->delete();
 
-            try {
-
-                // $result = Storage::disk('google')->delete($data->filename);
-                $result = Storage::disk('public')->delete($data->filename);
-                if ($result) {
-                    // File was deleted successfully
-                    $data->delete();
-                    // $this->dispatch('success', message: 'File telah di delete');
-                    $this->dispatch(
-                        'message',
-                        type: 'success',
-                        title: 'File telah di delete',
-                    );
-
-                    return 'File deleted successfully.';
-                } else {
-                    // File could not be deleted
-                    // return 'Failed to delete file.';
-
-
-                    // $this->dispatch('error', message: 'File GAGAL di delete');
-                    $this->dispatch(
-                        'message',
-                        type: 'error',
-                        title: 'File GAGAL di delete',
-                    );
-                }
-            } catch (\Exception $e) {
-                // An error occurred while deleting the file
-                return 'An error occurred: ' . $e->getMessage();
+                // Beri notifikasi sukses
+                $this->dispatch('message', type: 'success', title: 'File berhasil dihapus.');
+                return;
             }
-        } else {
-            // $this->dispatch('error', message: 'File tidak ketemu');
-            $this->dispatch(
-                'message',
-                type: 'error',
-                title: 'File tidak ketemu',
-            );
+
+            // Jika gagal menghapus dari storage
+            $this->dispatch('message', type: 'error', title: 'Gagal menghapus file dari penyimpanan.');
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            // Jika file tidak ditemukan dalam database
+            $this->dispatch('message', type: 'error', title: 'File tidak ditemukan.');
+        } catch (\Exception $e) {
+            // Tangani error lain yang tidak terduga
+            $this->dispatch('message', type: 'error', title: 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
 
     public function submit()
     {
@@ -122,8 +106,11 @@ class Applicant extends Component
             $this->agama = $data->agama;
             $this->etnis = $data->etnis;
             $this->nama_contact_darurat = $data->nama_contact_darurat;
+            $this->nama_contact_darurat_2 = $data->nama_contact_darurat_2;
             $this->contact_darurat_1 = $data->contact_darurat_1;
             $this->contact_darurat_2 = $data->contact_darurat_2;
+            $this->hubungan_1 = $data->hubungan_1;
+            $this->hubungan_2 = $data->hubungan_2;
             $this->jenis_identitas = $data->jenis_identitas;
             $this->no_identitas = $data->no_identitas;
             $this->alamat_identitas = $data->alamat_identitas;
@@ -161,21 +148,75 @@ class Applicant extends Component
             'golongan_darah.required' => 'Golongan Darah wajib diisi.',
             'agama.required' => 'Agama wajib diisi.',
             'etnis.required' => 'Etnis wajib diisi.',
-            'nama_contact_darurat.required' => 'Nama Konta Darurat wajib diisi.',
+            'nama_contact_darurat.required' => 'Nama Kontak 1 Darurat wajib diisi.',
+            'nama_contact_darurat_2.required' => 'Nama Kontak 2 Darurat wajib diisi.',
+            'hubungan_1.required' => 'Hubungan 1 Kontak Darurat wajib diisi.',
+            'hubungan_2.required' => 'Hubungan 2 Kontak Darurat wajib diisi.',
             'contact_darurat_1.required' => 'Kontak Darurat 1 wajib diisi.',
+            'contact_darurat_2.required' => 'Kontak Darurat 2 wajib diisi.',
+            'contact_darurat_1.min' => 'Kontak Darurat 1 minimal 10 karakter.',
+            'contact_darurat_2.min' => 'Kontak Darurat 2 minimal 10 karakter.',
             'jenis_identitas.required' => 'Jenis Identitas wajib diisi.',
             'no_identitas.required' => 'No Identitas wajib diisi.',
             'alamat_identitas.required' => 'Alamat Identitas wajib diisi.',
             'alamat_tinggal_sekarang.required' => 'Alamat tinggal tekarang wajib diisi.',
             'files.*.mimes' => 'Hanya menerima file png, jpg dan jpeg',
             'files.*.max' => 'Max file size 1Mb',
+            'ktp.*.required' => 'File KTP wajib diunggah.',
+            'ktp.*.image' => 'File KTP harus berupa gambar.',
+            'ktp.*.mimes' => 'File KTP harus dalam format: jpeg, png, jpg.',
+            'ktp.*.max' => 'Ukuran file KTP maksimal 2MB.',
+            'kk.*.required' => 'File kartu keluarga wajib diunggah.',
+            'kk.*.image' => 'File kartu keluarga harus berupa gambar.',
+            'kk.*.mimes' => 'File kartu keluarga harus dalam format: jpeg, png, jpg.',
+            'kk.*.max' => 'Ukuran file kartu keluarga maksimal 2MB.',
+            'ijazah.*.required' => 'File IJAZAH wajib diunggah.',
+            'ijazah.*.image' => 'File IJAZAH harus berupa gambar.',
+            'ijazah.*.mimes' => 'File IJAZAH harus dalam format: jpeg, png, jpg.',
+            'ijazah.*.max' => 'Ukuran file IJAZAH maksimal 2MB.',
+            'nilai.*.required' => 'File NILAI wajib diunggah.',
+            'nilai.*.image' => 'File NILAI harus berupa gambar.',
+            'nilai.*.mimes' => 'File NILAI harus dalam format: jpeg, png, jpg.',
+            'nilai.*.max' => 'Ukuran file NILAI maksimal 2MB.',
+            'cv.*.required' => 'File CV wajib diunggah.',
+            'cv.*.image' => 'File CV harus berupa gambar.',
+            'cv.*.mimes' => 'File CV harus dalam format: jpeg, png, jpg.',
+            'cv.*.max' => 'Ukuran file CV maksimal 2MB.',
+            'pasfoto.*.required' => 'File PASFOTO wajib diunggah.',
+            'pasfoto.*.image' => 'File PASFOTO harus berupa gambar.',
+            'pasfoto.*.mimes' => 'File PASFOTO harus dalam format: jpeg, png, jpg.',
+            'pasfoto.*.max' => 'Ukuran file PASFOTO maksimal 2MB.',
+            'npwp.*.required' => 'File NPWP wajib diunggah.',
+            'npwp.*.image' => 'File NPWP harus berupa gambar.',
+            'npwp.*.mimes' => 'File NPWP harus dalam format: jpeg, png, jpg.',
+            'npwp.*.max' => 'Ukuran file NPWP maksimal 2MB.',
+            'paklaring.*.required' => 'File PAKLARING wajib diunggah.',
+            'paklaring.*.image' => 'File PAKLARING harus berupa gambar.',
+            'paklaring.*.mimes' => 'File PAKLARING harus dalam format: jpeg, png, jpg.',
+            'paklaring.*.max' => 'Ukuran file PAKLARING maksimal 2MB.',
+            'bpjs.*.required' => 'File BPJS wajib diunggah.',
+            'bpjs.*.image' => 'File BPJS harus berupa gambar.',
+            'bpjs.*.mimes' => 'File BPJS harus dalam format: jpeg, png, jpg.',
+            'bpjs.*.max' => 'Ukuran file BPJS maksimal 2MB.',
+            'skck.*.required' => 'File SKCK wajib diunggah.',
+            'skck.*.image' => 'File SKCK harus berupa gambar.',
+            'skck.*.mimes' => 'File SKCK harus dalam format: jpeg, png, jpg.',
+            'skck.*.max' => 'Ukuran file SKCK maksimal 2MB.',
+            'sertifikat.*.required' => 'File SERTIFIKAT wajib diunggah.',
+            'sertifikat.*.image' => 'File SERTIFIKAT harus berupa gambar.',
+            'sertifikat.*.mimes' => 'File SERTIFIKAT harus dalam format: jpeg, png, jpg.',
+            'sertifikat.*.max' => 'Ukuran file SERTIFIKAT maksimal 2MB.',
+            'bri.*.required' => 'File BRI wajib diunggah.',
+            'bri.*.image' => 'File BRI harus berupa gambar.',
+            'bri.*.mimes' => 'File BRI harus dalam format: jpeg, png, jpg.',
+            'bri.*.max' => 'Ukuran file BRI maksimal 2MB.',
+
 
             'nama.min' => 'Nama minimal 5 karakter.',
             'password.min' => 'Password minimal 6 karakter.',
             'hp.min' => 'Handphone minimal 10 karakter.',
             'telp.min' => 'Telepon minimal 9 karakter.',
-            'contact_darurat_1.min' => 'Kontak Darurat 1 minimal 10 karakter.',
-            'contact_darurat_2.min' => 'Kontak Darurat 2 minimal 10 karakter.',
+
             'confirm_password.min' => 'Konfirmasi Password minimal 6 karakter.',
             'confirm_password.same' => 'Konfirmasi Password Berbeda',
             'email.unique' => 'Email ini sudah terdaftar dalam database',
@@ -203,8 +244,12 @@ class Applicant extends Component
             'agama' => 'required',
             'etnis' => 'required',
             'nama_contact_darurat' => 'required',
+            'nama_contact_darurat_2' => 'required',
             'contact_darurat_1' => 'required|min:10',
-            'contact_darurat_2' => 'nullable|min:10',
+            'contact_darurat_2' => 'required|min:10',
+            'hubungan_1' => 'required',
+            'hubungan_2' => 'required',
+
             'jenis_identitas' => 'required',
             'no_identitas' => 'required',
             'alamat_identitas' => 'required',
@@ -212,61 +257,329 @@ class Applicant extends Component
             // 'files.*' =>  ['nullable',  new AllowedFileExtension, new FileSizeLimit(1024)]
             // 'files.*' =>  ['nullable',  new AllowedFileExtension]
             'files.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-
+            'ktp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'kk.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ijazah.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'nilai.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'cv.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'pasfoto.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            // public $ktp, $kk, $ijazah, $nilai, $cv, $pasfoto;
+            // public $npwp, $paklaring, $bpjs, $skck, $sertifikat, $bri;
         ];
     }
 
-    public function updatedFiles()
+
+    public function updatedKtp()
     {
+
+
         $this->validate([
-            // 'files.*' => ['nullable', 'mimes:png,jpg,jpeg,pdf', new FileSizeLimit(1024)],
-            'files.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+
         ]);
     }
+    public function updatedKk()
+    {
+        $this->validate([
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+
+        ]);
+    }
+    public function updatedIjazah()
+    {
+        $this->validate([
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+
+        ]);
+    }
+    public function updatedNilai()
+    {
+        $this->validate([
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+
+        ]);
+    }
+    public function updatedCv()
+    {
+        $this->validate([
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+
+        ]);
+    }
+    public function updatedPasfoto()
+    {
+        $this->validate([
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+
+        ]);
+    }
+    public function updatedNpwp()
+    {
+        $this->validate([
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+
+        ]);
+    }
+    public function updatedPaklaring()
+    {
+        $this->validate([
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+
+        ]);
+    }
+    public function updatedBpjs()
+    {
+        $this->validate([
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+
+        ]);
+    }
+    public function updatedSkck()
+    {
+        $this->validate([
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+
+        ]);
+    }
+    public function updatedSertifikat()
+    {
+        $this->validate([
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+
+        ]);
+    }
+    public function updatedBri()
+    {
+        $this->validate([
+            // 'kk' => 'required|image|max:2048'
+            'ktp.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'kk.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'ijazah.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'nilai.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'cv.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'pasfoto.*' => ['required', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'npwp.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'paklaring.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bpjs.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+            'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
+
+        ]);
+    }
+    // public $ktp = [], $kk = [], $ijazah = [], $nilai = [], $cv = [], $pasfoto = [];
+    // public $npwp = [], $paklaring = [], $bpjs = [], $skck = [], $sertifikat = [], $bri = [];
+
+    private function processAndStoreFiles($files, $folderName)
+    {
+        if (!$files || count($files) === 0) {
+            return;
+        }
+
+        $manager = ImageManager::gd();
+        $folderPath = "Applicants/{$this->applicant_id}/";
+
+        // Ambil jumlah file yang sudah ada di storage dengan prefix yang sesuai
+        $existingFiles = Storage::disk('public')->files($folderPath);
+        $existingNumbers = [];
+
+        // Ambil nomor dari nama file yang ada (misal: "ktp-01.webp" → 1)
+        foreach ($existingFiles as $file) {
+            if (preg_match("/{$folderName}-(\d+)\./", $file, $matches)) {
+                $existingNumbers[] = (int) $matches[1];
+            }
+        }
+
+        // Mulai counter dari angka tertinggi yang sudah ada + 1
+        $counter = empty($existingNumbers) ? 1 : (max($existingNumbers) + 1);
+
+        foreach ($files as $file) {
+            $fileExtension = $file->getClientOriginalExtension();
+
+            // Pastikan tidak ada nama yang sama dengan perulangan while
+            do {
+                $fileName = "{$folderName}-" . str_pad($counter, 2, '0', STR_PAD_LEFT) . ".{$fileExtension}";
+                $filePath = "{$folderPath}{$fileName}";
+                $counter++;
+            } while (Storage::disk('public')->exists($filePath));
+
+            // Resize dan konversi gambar ke WebP
+            $image = $manager->read($file)->scale(width: 800);
+            $imageData = (string) $image->toWebp(60);
+
+            // Simpan ke storage
+            Storage::disk('public')->put($filePath, $imageData);
+
+            // Simpan informasi file ke database
+            Applicantfile::create([
+                'id_karyawan' => $this->applicant_id,
+                'originalName' => clear_dot($file->getClientOriginalName(), $fileExtension),
+                'filename' => $filePath,
+            ]);
+        }
+    }
+
 
     public function save()
     {
-        $validated = $this->validate();
+        $this->validate();
         $this->is_update = true;
         $this->applicant_id = makeApplicationId($this->nama, $this->tgl_lahir);
-        // if ($this->files != null) {
-        if ($this->files) {
-            foreach ($this->files as $file) {
-                $folder = 'Applicants/' . $this->applicant_id;
-                $fileExension = $file->getClientOriginalExtension();
 
-                if ($fileExension != 'pdf') {
-                    $folder = 'Applicants/' . $this->applicant_id . '/' . random_int(100000, 900000) . '.' . $fileExension;
-                    $manager = ImageManager::gd();
+        // Proses semua file sekaligus
+        $this->processAndStoreFiles($this->ktp, 'ktp');
+        $this->processAndStoreFiles($this->kk, 'kartu_keluarga');
+        $this->processAndStoreFiles($this->ijazah, 'ijazah');
+        $this->processAndStoreFiles($this->nilai, 'nilai');
+        $this->processAndStoreFiles($this->cv, 'cv');
+        $this->processAndStoreFiles($this->pasfoto, 'pasfoto');
+        $this->processAndStoreFiles($this->npwp, 'npwp');
+        $this->processAndStoreFiles($this->paklaring, 'paklaring');
+        $this->processAndStoreFiles($this->bpjs, 'bpjs');
+        $this->processAndStoreFiles($this->skck, 'skck');
+        $this->processAndStoreFiles($this->sertifikat, 'sertifikat');
+        $this->processAndStoreFiles($this->bri, 'bri');
 
-                    // resize gif image
-                    $image = $manager
-                        ->read($file)
-                        ->scale(width: 800);
-
-                    // $imagedata = (string) $image->toJpeg();
-                    $imagedata = (string) $image->toWebp(60);
-
-                    // Storage::disk('google')->put($folder, $imagedata);
-                    Storage::disk('public')->put($folder, $imagedata);
-                    $this->path = $folder;
-                } else {
-                    // $this->path = Storage::disk('google')->put($folder, $file);
-                    $this->path = Storage::disk('public')->put($folder, $file);
-                }
-
-                $this->originalFilename = $file->getClientOriginalName();
-                Applicantfile::create([
-                    'id_karyawan' => $this->applicant_id,
-                    // 'originalName' => $this->originalFilename,
-                    'originalName' => clear_dot($this->originalFilename, $fileExension),
-                    'filename' => $this->path,
-                ]);
-            }
-            $this->files = '';
-            // return response()->json(['success' => true]);
-        }
-        Applicantdata::create([
+        // Simpan data pelamar
+        $applicantData = Applicantdata::create([
             'applicant_id' => $this->applicant_id,
             'nama' => titleCase(trim($this->nama)),
             'email' => $this->email,
@@ -281,8 +594,11 @@ class Applicant extends Component
             'agama' => $this->agama,
             'etnis' => $this->etnis,
             'nama_contact_darurat' => titleCase($this->nama_contact_darurat),
+            'nama_contact_darurat_2' => titleCase($this->nama_contact_darurat_2),
             'contact_darurat_1' => $this->contact_darurat_1,
             'contact_darurat_2' => $this->contact_darurat_2,
+            'hubungan_1' => titleCase($this->hubungan_1),
+            'hubungan_2' => titleCase($this->hubungan_2),
             'jenis_identitas' => $this->jenis_identitas,
             'no_identitas' => $this->no_identitas,
             'alamat_identitas' => titleCase($this->alamat_identitas),
@@ -290,94 +606,132 @@ class Applicant extends Component
             'status' => 1
         ]);
 
-        $currentApplicantdata = Applicantdata::where('applicant_id', $this->applicant_id)->first();
-        $this->id = $currentApplicantdata->id;
+        $this->id = $applicantData->id;
 
+        $this->ktp = '';
+        $this->kk = '';
+        $this->ijazah = '';
+        $this->nilai = '';
+        $this->cv = '';
+        $this->pasfoto = '';
+        $this->npwp = '';
+        $this->paklaring = '';
+        $this->bpjs = '';
+        $this->skck = '';
+        $this->sertifikat = '';
+        $this->bri = '';
 
-        // $this->dispatch('success', message: 'Data Anda sudah berhasil di submit');
+        // Dispatch pesan sukses
         $this->dispatch(
             'message',
             type: 'success',
             title: 'Data Anda sudah berhasil di submit',
         );
 
-        $this->files = [];
+        // $this->files = [];
     }
+
     public function update()
     {
-        $validated = $this->validate();
+        $this->validate();
 
-        // update data
+        // Data yang akan diperbarui
+        $dataFields = [
+            'nama',
+            'email',
+            'password',
+            'hp',
+            'telp',
+            'tempat_lahir',
+            'tgl_lahir',
+            'gender',
+            'status_pernikahan',
+            'golongan_darah',
+            'agama',
+            'etnis',
+            'nama_contact_darurat',
+            'nama_contact_darurat_2',
+            'contact_darurat_1',
+            'contact_darurat_2',
+            'hubungan_1',
+            'hubungan_2',
+            'jenis_identitas',
+            'no_identitas',
+            'alamat_identitas',
+            'alamat_tinggal_sekarang'
+        ];
 
-        $data = Applicantdata::where('applicant_id', $this->applicant_id)->first();
-        if ($this->files) {
-            foreach ($this->files as $file) {
-                $folder = 'Applicants/' . $data->applicant_id;
-                $fileExension = $file->getClientOriginalExtension();
-                // $folder = 'Applicants/' . $this->applicant_id;
+        // Gunakan array_reduce untuk membangun array data dengan key-value yang benar
+        $data = array_reduce($dataFields, function ($carry, $field) {
+            $carry[$field] = in_array($field, ['nama', 'tempat_lahir', 'nama_contact_darurat', 'alamat_identitas', 'alamat_tinggal_sekarang'])
+                ? titleCase($this->$field)
+                : $this->$field;
+            return $carry;
+        }, []);
 
-                if ($fileExension != 'pdf') {
-                    // $folder = 'Applicants/' . $this->applicant_id . '/' . time() . '.' . $fileExension;
-                    // $folder = 'Applicants/' . $data->applicant_id . '/' . time() . '.' . $fileExension;
-                    $folder = 'Applicants/' . $data->applicant_id . '/' . random_int(1000, 9000) . '.' . $fileExension;
+        // Simpan data pelamar
+        Applicantdata::updateOrCreate(
+            ['applicant_id' => $this->applicant_id],
+            $data
+        );
 
-                    $manager = ImageManager::gd();
+        // List dokumen yang akan diproses
+        $documents = [
+            // 'files' => "Applicants/{$this->applicant_id}",
+            'ktp' => 'ktp',
+            'kk' => 'kartu_keluarga',
+            'ijazah' => 'ijazah',
+            'nilai' => 'nilai',
+            'cv' => 'cv',
+            'pasfoto' => 'pasfoto',
+            'npwp' => 'npwp',
+            'paklaring' => 'paklaring',
+            'bpjs' => 'bpjs',
+            'skck' => 'skck',
+            'sertifikat' => 'sertifikat',
+            'bri' => 'bri'
+        ];
 
-                    // resize gif image
-                    $image = $manager
-                        ->read($file)
-                        ->scale(width: 800);
-                    // $imagedata = (string) $image->toJpeg();
-                    $imagedata = (string) $image->toWebp(60);
-
-                    // Storage::disk('google')->put($folder, $imagedata);
-                    Storage::disk('public')->put($folder, $imagedata);
-                    $this->path = $folder;
-                } else {
-                    // $this->path = Storage::disk('google')->put($folder, $file);
-                    $this->path = Storage::disk('public')->put($folder, $file);
-                }
-
-                $this->originalFilename = $file->getClientOriginalName();
-                Applicantfile::create([
-                    'id_karyawan' => $this->applicant_id,
-                    'originalName' => clear_dot($this->originalFilename, $fileExension),
-                    'filename' => $this->path,
-                ]);
+        // Proses dokumen secara otomatis
+        foreach ($documents as $property => $folder) {
+            if (!empty($this->$property)) {
+                $this->processAndStoreFiles($this->$property, $folder);
             }
         }
 
+        // Dispatch pesan sukses
 
-        $data->applicant_id = $this->applicant_id;
-        $data->nama = titleCase($this->nama);
-        $data->email = $this->email;
-        $data->password = $this->password;
-        $data->hp = $this->hp;
-        $data->telp = $this->telp;
-        $data->tempat_lahir = titleCase($this->tempat_lahir);
-        $data->tgl_lahir = $this->tgl_lahir;
-        $data->gender = $this->gender;
-        $data->status_pernikahan = $this->status_pernikahan;
-        $data->golongan_darah = $this->golongan_darah;
-        $data->agama = $this->agama;
-        $data->etnis = $this->etnis;
-        $data->nama_contact_darurat = titleCase($this->nama_contact_darurat);
-        $data->contact_darurat_1 = $this->contact_darurat_1;
-        $data->contact_darurat_2 = $this->contact_darurat_2;
-        $data->jenis_identitas = $this->jenis_identitas;
-        $data->no_identitas = $this->no_identitas;
-        $data->alamat_identitas = titleCase($this->alamat_identitas);
-        $data->alamat_tinggal_sekarang = titleCase($this->alamat_tinggal_sekarang);
-        $data->save();
 
-        // $this->dispatch('success', message: 'Data Anda sudah berhasil di update');
+        $this->ktp = '';
+        $this->kk = '';
+        $this->ijazah = '';
+        $this->nilai = '';
+        $this->cv = '';
+        $this->pasfoto = '';
+        $this->npwp = '';
+        $this->paklaring = '';
+        $this->bpjs = '';
+        $this->skck = '';
+        $this->sertifikat = '';
+        $this->bri = '';
+
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'Data Anda sudah berhasil di update',
+            title: 'Data Anda sudah berhasil diupdate',
         );
-        $this->files = [];
     }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -415,13 +769,12 @@ class Applicant extends Component
 
 
 
-    public function updatedIsRegistered()
-    {
-    }
+    public function updatedIsRegistered() {}
     public function render()
     {
         $file_data = Applicantfile::where('id_karyawan', $this->applicant_id)->get();
         $this->filenames = $file_data;
+
         return view('livewire.applicant')->layout('layouts.newpolos');
     }
 }

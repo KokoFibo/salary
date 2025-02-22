@@ -1,4 +1,7 @@
 <div>
+    <img src="/storage/app/public/Applicants/Nihil_nostrum_cum_ci_1991_01_04/ktp-01.png" alt="">
+    <img src="/public/images/example.png" alt="">
+
     @if ($showMenu)
         <div class='h-screen flex  flex-col  justify-center items-center px-5 mx-auto gap-10'>
             <div>
@@ -10,18 +13,39 @@
                     jika anda ingin merubah data atau mengupload file, silakan pilih menu "Sudah Pernah Register".
                 </p>
                 <p class="text-lg mb-3 mt-3">
-                    Silakan siapkan softcopy :
-                <ul>
-                    <li class="text-lg">1 Passfoto (jpg/png)</li>
-                    <li class="text-lg">2. KTP / Pasport (jpg/png)</li>
-                    <li class="text-lg"> 3. CV (jpg/png/pdf)</li>
-                    <li class="text-lg">4. Ijasah (jpg/png/pdf)</li>
-                </ul>
+                    Sebelum mulai register silakan siapkan terlebih softcopy dalam format jpg/png/pdf, untuk mempermudah
+                    proses registrasi</p>
+                <div class="flex flex-col gap-5 md:flex-row ">
+                    <div>
+                        <p class="text-xl mb-2 underline">Wajib:</p>
+                        <ul>
+                            <li class="text-lg">KTP / Pasport </li>
+                            <li class="text-lg">Passfoto </li>
+                            <li class="text-lg">CV</li>
+                            <li class="text-lg">Ijasah</li>
+                            <li class="text-lg">Transkip Nilai/SKHUN</li>
+                            <li class="text-lg">Kartu Keluarga</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="text-xl mb-2 underline">Jika ada</p>
+                        <ul>
+                            <li class="text-lg">NPWP</li>
+                            <li class="text-lg">Sertifikat</li>
+                            <li class="text-lg">Paklaring (bagi yang pernah kerja)</li>
+                            <li class="text-lg">kartu BPJS Ketenagakerjaan (Yang belum di klaim)</li>
+                            <li class="text-lg">Paklaring (bagi yang pernah kerja)</li>
+                            <li class="text-lg">Scan Buku tabungan depan untuk No Rekening BRI</li>
+                        </ul>
+
+                    </div>
+                </div>
 
 
 
 
-                </p>
+
+
 
             </div>
 
@@ -84,16 +108,21 @@
 
     @if ($show)
         <div>
+            @if ($is_update == false)
+                <form wire:submit='save'>
+                @else
+                    <form wire:submit='update'>
+            @endif
             <h1 class="mt-10 text-center text-blue-500 lg:text-4xl text-2xl lg:font-semibold">Form Pendaftaran
                 Calon Karyawan
             </h1>
             <h3 class="text-center lg:text-2xl my-2 mb-4">Mohon dilengkapi dan diperiksa sebelum tekan submit</h3>
             <div class="lg:w-2/3 w-full px-2 mx-auto">
-                @if ($is_update == false)
+                {{-- @if ($is_update == false)
                     <form wire:submit='save'>
                     @else
                         <form wire:submit='update'>
-                @endif
+                @endif --}}
                 <div class="p-3 grid gap-6 mb-6 md:grid-cols-2">
                     <div>
                         <label for="nama_lengkap" class="block mb-2 text-sm font-medium text-gray-900 ">Nama
@@ -258,6 +287,7 @@
                             </div>
                         @enderror
                     </div>
+
                     <div>
                         <label for="agama" class="block mb-2 text-sm font-medium text-gray-900">Agama<span
                                 class="text-red-500 ml-1">*</span></label>
@@ -298,10 +328,14 @@
                             </div>
                         @enderror
                     </div>
+                    <div></div>
+                </div>
+                {{-- kontak --}}
+                <div class="p-3 grid gap-6 mb-6 md:grid-cols-3">
                     <div>
                         <label for="nama_contact_darurat" class="block mb-2 text-sm font-medium text-gray-900">Nama
                             Kontak
-                            Darurat<span class="text-red-500 ml-1">*</span></label>
+                            Darurat 1<span class="text-red-500 ml-1">*</span></label>
                         <input wire:model='nama_contact_darurat' type="text" id="nama_contact_darurat"
                             class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                         @error('nama_contact_darurat')
@@ -322,8 +356,32 @@
                         @enderror
                     </div>
                     <div>
+                        <label for="hubungan1" class="block mb-2 text-sm font-medium text-gray-900">Hubungan dengan
+                            Kontak Darurat 1<span class="text-red-500 ml-1">*</span></label>
+                        <input wire:model='hubungan_1' type="text" id="hubungan1"
+                            class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+                        @error('hubungan_1')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="nama_contact_darurat" class="block mb-2 text-sm font-medium text-gray-900">Nama
+                            Kontak
+                            Darurat 2<span class="text-red-500 ml-1">*</span></label>
+                        <input wire:model='nama_contact_darurat_2' type="text" id="nama_contact_darurat"
+                            class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+                        @error('nama_contact_darurat_2')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div>
                         <label for="contact_darurat_2" class="block mb-2 text-sm font-medium text-gray-900">Handphone
-                            Kontak Darurat 2</label>
+                            Kontak Darurat 2<span class="text-red-500 ml-1">*</span></label>
                         <input wire:model='contact_darurat_2' type="text" id="contact_darurat_2"
                             class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
                         @error('contact_darurat_2')
@@ -332,6 +390,22 @@
                             </div>
                         @enderror
                     </div>
+                    <div>
+                        <label for="hubungan2" class="block mb-2 text-sm font-medium text-gray-900">Hubungan dengan
+                            Kontak Darurat 2<span class="text-red-500 ml-1">*</span></label>
+                        <input wire:model='hubungan_2' type="text" id="hubungan2"
+                            class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+                        @error('hubungan_2')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+
+                </div>
+                <div class="p-3 grid gap-6 mb-6 md:grid-cols-2">
+
                     <div>
                         <label for="jenis_identitas" class="block mb-2 text-sm font-medium text-gray-900">Jenis
                             Identitas<span class="text-red-500 ml-1">*</span></label>
@@ -382,124 +456,272 @@
                             </div>
                         @enderror
                     </div>
+                </div>
+                <p>Untuk upload hanya menerima file png, jpg dan jpeg saja</p>
+                <div class="p-3 grid grid-cols-2 gap-6 mb-6 md:grid-cols-4">
                     <div>
-
                         <label class="block  text-sm font-medium text-gray-900" for="upload_files">
-                            <p>Upload Dokumen <span class="text-red-500 ml-1">*</span> ( hanya menerima format jpg dan
-                                png )</p>
-
+                            <p>Upload KTP <span class="text-red-500 ml-1">*</span></p>
                         </label>
-                        <input wire:model='files' multiple
+                        <input wire:model='ktp' multiple
                             class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
                             id="upload_files" type="file">
 
-                        @error('files.*')
+                        @error('ktp.*')
                             <div class="text-red-500">
                                 {{ $message }}
                             </div>
                         @enderror
+                    </div>
+                    <div>
+                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
+                            <p>Upload Kartu Keluarga <span class="text-red-500 ml-1">*</span></p>
+                        </label>
+                        <input wire:model='kk' multiple
+                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                            id="upload_files" type="file">
 
+                        @error('kk.*')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
 
-                </div>
-                <div class="flex justify-evenly w-full lg:w-1/2 ">
-                    @if ($is_update)
-                        <div role="status" wire:loading wire:target='update'>
-                        @else
-                            <div role="status" wire:loading wire:target='save'>
-                    @endif
-                    <div class="flex justify-evenly items-center w-full mb-2 gap-5 px-3">
-                        <p class='lg:text-xl text-normal'>Mohon ditunggu sampai proses upload selesai</p>
+                    <div>
+                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
+                            <p>Upload Ijazah <span class="text-red-500 ml-1">*</span></p>
+                        </label>
+                        <input wire:model='ijazah' multiple
+                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                            id="upload_files" type="file">
 
-                        <svg aria-hidden="true"
-                            class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                fill="currentColor" />
-                            <path
-                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                fill="currentFill" />
-                        </svg>
+                        @error('ijazah.*')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div>
+                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
+                            <p>Upload Transkip Nilai/SKHUN <span class="text-red-500 ml-1">*</span></p>
+                        </label>
+                        <input wire:model='nilai' multiple
+                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                            id="upload_files" type="file">
 
+                        @error('nilai.*')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div>
+                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
+                            <p>Upload CV <span class="text-red-500 ml-1">*</span></p>
+                        </label>
+                        <input wire:model='cv' multiple
+                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                            id="upload_files" type="file">
+
+                        @error('cv.*')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div>
+                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
+                            <p>Upload Pass Foto <span class="text-red-500 ml-1">*</span></p>
+                        </label>
+                        <input wire:model='pasfoto' multiple
+                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                            id="upload_files" type="file">
+
+                        @error('pasfoto.*')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
+                            <p>Upload NPWP</p>
+                        </label>
+                        <input wire:model='npwp' multiple
+                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                            id="upload_files" type="file">
+
+                        @error('npwp.*')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div>
+                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
+                            <p>Upload Paklaring</p>
+                        </label>
+                        <input wire:model='paklaring' multiple
+                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                            id="upload_files" type="file">
+
+                        @error('paklaring.*')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
+                            <p>Upload Kartu BPJS Ketenagakerjaan</p>
+                        </label>
+                        <input wire:model='bpjs' multiple
+                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                            id="upload_files" type="file">
+
+                        @error('bpjs.*')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div>
+                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
+                            <p>Upload SKCK</p>
+                        </label>
+                        <input wire:model='skck' multiple
+                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                            id="upload_files" type="file">
+
+                        @error('skck.*')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div>
+                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
+                            <p>Upload Sertifikat</p>
+                        </label>
+                        <input wire:model='sertifikat' multiple
+                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                            id="upload_files" type="file">
+
+                        @error('sertifikat.*')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div>
+                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
+                            <p>Upload Buku tabungan Bank BRI</p>
+                        </label>
+                        <input wire:model='bri' multiple
+                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
+                            id="upload_files" type="file">
+
+                        @error('bri.*')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
+
             </div>
-            <div class='px-3 w-full lg:w-1/2 mt-3'>
-                <ul class="list-group">
-                    @foreach ($errors->all() as $error)
-                        <li class="list-group-item"><span class='text-danger'>* {{ $error }}</span>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
-            <div class="flex justify-evenly w-full lg:w-1/2 mt-3">
-                <div class="md:px-0 px-3">
-                    @if ($is_update == false)
-                        <button type="submit" onClick="clear_file()"
-                            class="w-full md:mx-0 mb-5 px-5 py-2.5 md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm    text-center ">
-                            <span>Submit</span>
-                        </button>
+            <div class="flex justify-evenly w-full lg:w-1/2 ">
+                @if ($is_update)
+                    <div role="status" wire:loading wire:target='update'>
                     @else
-                        <button type="submit" onClick="clear_file()"
-                            class="w-full md:mx-0 mb-5 px-5 py-2.5 md:w-auto text-white bg-orange-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm    text-center ">
-                            <span>Update</span>
-                        </button>
-                    @endif
-                </div>
-                <div>
-                    <button type="button" wire:click='keluar'
-                        class="me-3 w-full md:mx-0 mb-5 px-5 py-2.5 md:w-auto text-white bg-black hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm    text-center ">
-                        <span>Keluar</span>
-                    </button>
+                        <div role="status" wire:loading wire:target='save'>
+                @endif
+                <div class="flex justify-evenly items-center w-full mb-2 gap-5 px-3">
+                    <p class='lg:text-xl text-normal'>Mohon ditunggu sampai proses upload selesai</p>
+
+                    <svg aria-hidden="true"
+                        class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor" />
+                        <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill" />
+                    </svg>
+
                 </div>
             </div>
 
-
-            {{-- @if ($files)
-                        @foreach ($files as $file)
-                            @if ($file->getClientOriginalExtension() != 'pdf')
-                                <div class='mb-10'>
-                                    <img src="{{ $file->temporaryUrl() }}" style="width:300px">
-                                </div>
-                            @endif
-                        @endforeach
-                    @endif --}}
-
-            </form>
-            @if ($filenames)
-                @foreach ($filenames as $fn)
-                    <div class="lg:my-5 p-3 w-full lg:w-1/2 ">
-                        <div class="d-flex justify-content-between px-1 pb-2">
-                            <p class="text-lg lg:text-xl font-medium lg:font-bold">{{ $fn->originalName }}</p>
-                            <div class="flex">
-                                <button class="bg-red-500 py-0 px-3 text-white rounded-xl"
-                                    wire:click="deleteFile('{{ $fn->id }}')" wire:loading.remove>Hapus</button>
-                            </div>
-                            <div role="status" wire:loading wire:target='deleteFile'>
-                                <svg aria-hidden="true"
-                                    class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                                    viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                        fill="currentColor" />
-                                    <path
-                                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                        fill="currentFill" />
-                                </svg>
-                            </div>
-                        </div>
-                        @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
-                            <img class="w-full rounded-xl" src="{{ getUrl($fn->filename) }}" alt="">
-                        @else
-                            <iframe class="w-full rounded-xl" src="{{ getUrl($fn->filename) }}" width="100%"
-                                height="600px"></iframe>
-                        @endif
-                    </div>
-                @endforeach
-            @endif
         </div>
-</div>
-@endif
+        <div class='px-3 w-full lg:w-1/2 mt-3'>
+            <ul class="list-group">
+                @foreach ($errors->all() as $error)
+                    <li class="list-group-item"><span class='text-danger'>* {{ $error }}</span>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+        <div class="flex justify-evenly w-full lg:w-1/2 mt-3">
+            <div class="md:px-0 px-3">
+                @if ($is_update == false)
+                    <button type="submit" onClick="clear_file()"
+                        class="w-full md:mx-0 mb-5 px-5 py-2.5 md:w-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm    text-center ">
+                        <span>Submit</span>
+                    </button>
+                @else
+                    <button type="submit" onClick="clear_file()"
+                        class="w-full md:mx-0 mb-5 px-5 py-2.5 md:w-auto text-white bg-orange-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm    text-center ">
+                        <span>Update</span>
+                    </button>
+                @endif
+            </div>
+            <div>
+                <button type="button" wire:click='keluar'
+                    class="me-3 w-full md:mx-0 mb-5 px-5 py-2.5 md:w-auto text-white bg-black hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm    text-center ">
+                    <span>Keluar</span>
+                </button>
+            </div>
+
+        </div>
+        </form>
+        @if ($filenames)
+            @foreach ($filenames as $fn)
+                <div class="lg:my-5 p-3 w-full lg:w-1/2 ">
+                    <div class="d-flex justify-content-between px-1 pb-2">
+                        {{-- <p class="text-lg lg:text-xl font-medium lg:font-bold">{{ $fn->originalName }}</p> --}}
+                        <p class="text-lg lg:text-xl font-medium lg:font-bold">{{ get_filename($fn->filename) }}
+                        </p>
+                        <div class="flex">
+                            <button class="bg-red-500 py-0 px-3 text-white rounded-xl"
+                                wire:click="deleteFile('{{ $fn->filename }}')" wire:loading.remove>Hapus</button>
+                        </div>
+                        <div role="status" wire:loading wire:target='deleteFile'>
+                            <svg aria-hidden="true"
+                                class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                    fill="currentColor" />
+                                <path
+                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                    fill="currentFill" />
+                            </svg>
+                        </div>
+                    </div>
+                    @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
+                        <img class="w-full rounded-xl" src="{{ getUrl($fn->filename) }}" alt="">
+                    @else
+                        <iframe class="w-full rounded-xl" src="{{ getUrl($fn->filename) }}" width="100%"
+                            height="600px"></iframe>
+                    @endif
+                </div>
+            @endforeach
+        @endif
+
+    @endif
 
 </div>

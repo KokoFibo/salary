@@ -5,25 +5,26 @@ namespace App\Livewire;
 use Carbon\Carbon;
 use App\Models\Ter;
 use App\Models\User;
+use App\Models\Company;
+use App\Models\Jabatan;
 use App\Models\Payroll;
 use Livewire\Component;
 use App\Models\Karyawan;
 use App\Models\Tambahan;
+use App\Models\Placement;
+use App\Models\Requester;
+use App\Models\Department;
 use App\Models\Jamkerjaid;
+use App\Models\Rekapbackup;
 use Livewire\WithPagination;
 use App\Models\Bonuspotongan;
-use App\Models\Company;
-use App\Models\Department;
-use App\Models\Jabatan;
 use App\Models\Liburnasional;
-use App\Models\Personnelrequestform;
-use App\Models\Placement;
-use App\Models\Rekapbackup;
-use App\Models\Requester;
 use App\Models\Yfrekappresensi;
-use Google\Service\YouTube\ThirdPartyLinkStatus;
 use Illuminate\Support\Facades\DB;
+use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Google\Service\YouTube\ThirdPartyLinkStatus;
 
 class Test extends Component
 {
@@ -143,16 +144,26 @@ class Test extends Component
 
   public function render()
   {
-    $data = Payroll::whereMonth('date', 12)->whereYear('date', 2024)->where('jkk', '!=', null)->orWhere('jkm', '!=', null)->get();
+    //code dibawah in iuntuk backup rekapbackup
+
+    // $data = Rekapbackup::whereBetween('date', ['2023-01-01', '2024-06-30'])->delete();
+    // $data = Rekapbackup::whereBetween('date', ['2023-01-01', '2024-06-30'])->count();
+    // $data = Rekapbackup::all();
 
 
 
+    // $data = Rekapbackup::where('date', '>', '2023-12-31')->get();
+
+    // dd($data);
 
 
 
+    $filename = 'Applicants/Nihil_nostrum_cum_ci_1991_01_04/ktp-01.png';
+    $url = Storage::url($filename);
+    // dd($url);
 
     return view('livewire.test', [
-      'data' => $data
+      'url' => $url
     ]);
   }
 }

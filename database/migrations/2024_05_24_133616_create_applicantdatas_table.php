@@ -27,8 +27,11 @@ return new class extends Migration
             $table->string('agama');
             $table->string('etnis');
             $table->string('nama_contact_darurat');
+            $table->string('nama_contact_darurat_2');
             $table->string('contact_darurat_1');
-            $table->string('contact_darurat_2')->nullable();
+            $table->string('contact_darurat_2');
+            $table->string('hubungan_1');
+            $table->string('hubungan_2');
             $table->string('jenis_identitas');
             $table->string('no_identitas');
             $table->string('alamat_identitas');
