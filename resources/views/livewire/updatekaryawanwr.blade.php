@@ -62,6 +62,7 @@
 
                 <div class="card m-3">
                     <div class="card-header">
+
                         <h4 class='pt-3'>Upload Dokumen</h4>
                         <p>Hanya menerima file png, jpg dan jpeg saja</p>
                     </div>
@@ -221,12 +222,14 @@
                     @if (!$show_arsip)
                         @if (!$is_folder_kosong)
                             <button wire:click="arsip"
-                                class="btn btn-success mx-3">{{ __('Lihat File Arsip') }}</button>
+                                class="btn btn-success mx-3">{{ __('Lihat File Dokumen') }}</button>
                         @else
-                            <button class="btn btn-success mx-3" disabled>Belum ada file arsip</button>
+                            <button class="btn btn-success mx-3" disabled>Belum ada file dokumen</button>
                         @endif
                     @else
-                        <button class="btn btn-success" wire:click='tutup_arsip'>Sembunyikan Arsip</button>
+                        @if (!$is_folder_kosong)
+                            <button class="btn btn-success" wire:click='tutup_arsip'>Tutup File Dokumen</button>
+                        @endif
                     @endif
                     @if (!$is_folder_kosong)
                         ;
@@ -297,7 +300,7 @@
                                     {{-- </li> --}}
                                 @endif
                             @endforeach
-                            <button class="btn btn-success" wire:click='tutup_arsip'>Sembunyikan Arsip</button>
+                            <button class="btn btn-success" wire:click='tutup_arsip'>Tutup File Dokumen</button>
                         @else
                             <h3>File tidak ditemukan</h3>
                         @endif

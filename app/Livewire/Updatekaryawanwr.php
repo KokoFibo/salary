@@ -55,6 +55,8 @@ class Updatekaryawanwr extends Component
     public $applicant_id;
 
 
+
+
     public function deleteFile($id)
     {
         // $id = $this->delete_id;
@@ -74,6 +76,7 @@ class Updatekaryawanwr extends Component
                         title: 'File telah di delete',
                         position: 'center'
                     );
+                    $this->check_isi_dokumen();
 
                     return 'File deleted successfully.';
                 } else {
@@ -82,6 +85,8 @@ class Updatekaryawanwr extends Component
 
 
                     // $this->dispatch('error', message: 'File GAGAL di delete');
+                    $this->check_isi_dokumen();
+
                     $this->dispatch(
                         'message',
                         type: 'error',
@@ -90,11 +95,14 @@ class Updatekaryawanwr extends Component
                     );
                 }
             } catch (\Exception $e) {
+
                 // An error occurred while deleting the file
                 return 'An error occurred: ' . $e->getMessage();
             }
         } else {
             // $this->dispatch('error', message: 'File tidak ketemu');
+            $this->check_isi_dokumen();
+
             $this->dispatch(
                 'message',
                 type: 'error',
@@ -248,6 +256,15 @@ class Updatekaryawanwr extends Component
 
             if ($isiFolder < 1) $this->is_folder_kosong = true;
         }
+    }
+
+    public function check_isi_dokumen()
+    {
+        $isiFolder = Applicantfile::where('id_karyawan', $this->applicant_id)->count();
+        if ($isiFolder < 1) {
+            return $this->is_folder_kosong = true;
+        }
+        return $this->is_folder_kosong = false;
     }
 
     public function messages()
@@ -950,7 +967,7 @@ class Updatekaryawanwr extends Component
         $this->skck = '';
         $this->sertifikat = '';
         $this->bri = '';
-
+        $this->check_isi_dokumen();
         $this->dispatch(
             'message',
             type: 'success',
