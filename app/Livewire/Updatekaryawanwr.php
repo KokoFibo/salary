@@ -48,10 +48,13 @@ class Updatekaryawanwr extends Component
     public $pilih_placement;
     public $delete_id;
     public $folder_name;
+    public $is_folder_kosong = false;
 
     public $ktp = [], $kk = [], $ijazah = [], $nilai = [], $cv = [], $pasfoto = [];
     public $npwp = [], $paklaring = [], $bpjs = [], $skck = [], $sertifikat = [], $bri = [];
     public $applicant_id;
+
+
 
 
     public function deleteFile($id)
@@ -73,6 +76,7 @@ class Updatekaryawanwr extends Component
                         title: 'File telah di delete',
                         position: 'center'
                     );
+                    $this->check_isi_dokumen();
 
                     return 'File deleted successfully.';
                 } else {
@@ -81,6 +85,8 @@ class Updatekaryawanwr extends Component
 
 
                     // $this->dispatch('error', message: 'File GAGAL di delete');
+                    $this->check_isi_dokumen();
+
                     $this->dispatch(
                         'message',
                         type: 'error',
@@ -89,11 +95,14 @@ class Updatekaryawanwr extends Component
                     );
                 }
             } catch (\Exception $e) {
+
                 // An error occurred while deleting the file
                 return 'An error occurred: ' . $e->getMessage();
             }
         } else {
             // $this->dispatch('error', message: 'File tidak ketemu');
+            $this->check_isi_dokumen();
+
             $this->dispatch(
                 'message',
                 type: 'error',
@@ -236,12 +245,26 @@ class Updatekaryawanwr extends Component
             $this->applicant_id = makeApplicationId($data->nama, $data->tanggal_lahir);
             $data->id_file_karyawan = $this->applicant_id;
             $data->save();
+            $this->is_folder_kosong = true;
+
             // DataApplicant::create([
             //     'applicant_id' => $this->applicant_id;
             // ]);
         } else {
             $this->applicant_id =  $data->id_file_karyawan;
+            $isiFolder = Applicantfile::where('id_karyawan', $this->applicant_id)->count();
+
+            if ($isiFolder < 1) $this->is_folder_kosong = true;
         }
+    }
+
+    public function check_isi_dokumen()
+    {
+        $isiFolder = Applicantfile::where('id_karyawan', $this->applicant_id)->count();
+        if ($isiFolder < 1) {
+            return $this->is_folder_kosong = true;
+        }
+        return $this->is_folder_kosong = false;
     }
 
     public function messages()
@@ -944,7 +967,7 @@ class Updatekaryawanwr extends Component
         $this->skck = '';
         $this->sertifikat = '';
         $this->bri = '';
-
+        $this->check_isi_dokumen();
         $this->dispatch(
             'message',
             type: 'success',
