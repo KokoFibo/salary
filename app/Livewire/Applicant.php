@@ -49,7 +49,7 @@ class Applicant extends Component
             $data = Applicantfile::where('filename', $filename)->firstOrFail();
 
             // Hapus file dari storage
-            if (Storage::disk('public')->delete($data->filename)) {
+            if (Storage::disk('s3')->delete($data->filename)) {
                 // Hapus record di database
                 $data->delete();
 
@@ -518,7 +518,7 @@ class Applicant extends Component
         $folderPath = "Applicants/{$this->applicant_id}/";
 
         // Ambil jumlah file yang sudah ada di storage dengan prefix yang sesuai
-        $existingFiles = Storage::disk('public')->files($folderPath);
+        $existingFiles = Storage::disk('s3')->files($folderPath);
         $existingNumbers = [];
 
         // Ambil nomor dari nama file yang ada (misal: "ktp-01.webp" → 1)
@@ -539,14 +539,18 @@ class Applicant extends Component
                 $fileName = "{$folderName}-" . str_pad($counter, 2, '0', STR_PAD_LEFT) . ".{$fileExtension}";
                 $filePath = "{$folderPath}{$fileName}";
                 $counter++;
-            } while (Storage::disk('public')->exists($filePath));
+            } while (Storage::disk('s3')->exists($filePath));
 
             // Resize dan konversi gambar ke WebP
             $image = $manager->read($file)->scale(width: 800);
             $imageData = (string) $image->toWebp(60);
 
             // Simpan ke storage
-            Storage::disk('public')->put($filePath, $imageData);
+            // Storage::disk('s3')->put($filePath, $imageData);
+            Storage::disk('s3')->put($filePath, $imageData, [
+                'visibility' => 'public'
+            ]);
+
 
             // Simpan informasi file ke database
             Applicantfile::create([
@@ -773,7 +777,21 @@ class Applicant extends Component
     public function render()
     {
         $file_data = Applicantfile::where('id_karyawan', $this->applicant_id)->get();
-        $this->filenames = $file_data;
+        // $file_data = Applicantfile::where('id_karyawan', 'john_doe_2006_07_18')->get();
+        // $this->filenames = $file_data;
+        $order = ['ktp', 'kk', 'ijazah', 'nilai', 'cv', 'pasfoto', 'npwp', 'paklaring', 'bpjs', 'skck', 'sertifikat', 'bri'];
+
+        $this->filenames = $file_data->sortBy(function ($file) use ($order) {
+            foreach ($order as $index => $keyword) {
+                if (stripos($file->filename, $keyword) !== false) {
+                    return $index;
+                }
+            }
+            return count($order); // Jika tidak ada di daftar, letakkan di akhir
+        });
+
+        // $this->filenames = $file_data;
+        // dd($this->filenames, $file_data);
 
         return view('livewire.applicant')->layout('layouts.newpolos');
     }

@@ -1,7 +1,4 @@
 <div>
-    <img src="/storage/app/public/Applicants/Nihil_nostrum_cum_ci_1991_01_04/ktp-01.png" alt="">
-    <img src="/public/images/example.png" alt="">
-
     @if ($showMenu)
         <div class='h-screen flex  flex-col  justify-center items-center px-5 mx-auto gap-10'>
             <div>
@@ -458,179 +455,41 @@
                     </div>
                 </div>
                 <p>Untuk upload hanya menerima file png, jpg dan jpeg saja</p>
-                <div class="p-3 grid grid-cols-2 gap-6 mb-6 md:grid-cols-4">
-                    <div>
-                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
-                            <p>Upload KTP <span class="text-red-500 ml-1">*</span></p>
-                        </label>
-                        <input wire:model='ktp' multiple
-                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                            id="upload_files" type="file">
+                <div class="p-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    @foreach ([
+        'ktp' => 'Upload KTP',
+        'kk' => 'Upload Kartu Keluarga',
+        'ijazah' => 'Upload Ijazah',
+        'nilai' => 'Upload Transkip Nilai/SKHUN',
+        'cv' => 'Upload CV',
+        'pasfoto' => 'Upload Pass Foto',
+        'npwp' => 'Upload NPWP',
+        'paklaring' => 'Upload Paklaring',
+        'bpjs' => 'Upload Kartu BPJS Ketenagakerjaan',
+        'skck' => 'Upload SKCK',
+        'sertifikat' => 'Upload Sertifikat',
+        'bri' => 'Upload Buku Tabungan Bank BRI',
+    ] as $field => $label)
+                        <div>
+                            <label class="block text-sm font-medium text-gray-900 mb-2">
+                                <p>{{ $label }} @if (in_array($field, ['ktp', 'kk', 'ijazah', 'nilai', 'cv', 'pasfoto']))
+                                        <span class="text-red-500">*</span>
+                                    @endif
+                                </p>
+                            </label>
+                            <input wire:model='{{ $field }}' multiple
+                                class="filepond block w-full px-3 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:ring focus:ring-blue-300"
+                                type="file">
 
-                        @error('ktp.*')
-                            <div class="text-red-500">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div>
-                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
-                            <p>Upload Kartu Keluarga <span class="text-red-500 ml-1">*</span></p>
-                        </label>
-                        <input wire:model='kk' multiple
-                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                            id="upload_files" type="file">
-
-                        @error('kk.*')
-                            <div class="text-red-500">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
-                            <p>Upload Ijazah <span class="text-red-500 ml-1">*</span></p>
-                        </label>
-                        <input wire:model='ijazah' multiple
-                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                            id="upload_files" type="file">
-
-                        @error('ijazah.*')
-                            <div class="text-red-500">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div>
-                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
-                            <p>Upload Transkip Nilai/SKHUN <span class="text-red-500 ml-1">*</span></p>
-                        </label>
-                        <input wire:model='nilai' multiple
-                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                            id="upload_files" type="file">
-
-                        @error('nilai.*')
-                            <div class="text-red-500">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div>
-                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
-                            <p>Upload CV <span class="text-red-500 ml-1">*</span></p>
-                        </label>
-                        <input wire:model='cv' multiple
-                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                            id="upload_files" type="file">
-
-                        @error('cv.*')
-                            <div class="text-red-500">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div>
-                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
-                            <p>Upload Pass Foto <span class="text-red-500 ml-1">*</span></p>
-                        </label>
-                        <input wire:model='pasfoto' multiple
-                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                            id="upload_files" type="file">
-
-                        @error('pasfoto.*')
-                            <div class="text-red-500">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
-                            <p>Upload NPWP</p>
-                        </label>
-                        <input wire:model='npwp' multiple
-                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                            id="upload_files" type="file">
-
-                        @error('npwp.*')
-                            <div class="text-red-500">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div>
-                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
-                            <p>Upload Paklaring</p>
-                        </label>
-                        <input wire:model='paklaring' multiple
-                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                            id="upload_files" type="file">
-
-                        @error('paklaring.*')
-                            <div class="text-red-500">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                    <div>
-                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
-                            <p>Upload Kartu BPJS Ketenagakerjaan</p>
-                        </label>
-                        <input wire:model='bpjs' multiple
-                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                            id="upload_files" type="file">
-
-                        @error('bpjs.*')
-                            <div class="text-red-500">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div>
-                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
-                            <p>Upload SKCK</p>
-                        </label>
-                        <input wire:model='skck' multiple
-                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                            id="upload_files" type="file">
-
-                        @error('skck.*')
-                            <div class="text-red-500">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div>
-                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
-                            <p>Upload Sertifikat</p>
-                        </label>
-                        <input wire:model='sertifikat' multiple
-                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                            id="upload_files" type="file">
-
-                        @error('sertifikat.*')
-                            <div class="text-red-500">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div>
-                        <label class="block  text-sm font-medium text-gray-900" for="upload_files">
-                            <p>Upload Buku tabungan Bank BRI</p>
-                        </label>
-                        <input wire:model='bri' multiple
-                            class="filepond block w-full px-2 py-3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50"
-                            id="upload_files" type="file">
-
-                        @error('bri.*')
-                            <div class="text-red-500">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
+                            @error($field . '.*')
+                                <div class="text-red-500 text-xs mt-2">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    @endforeach
                 </div>
+
 
             </div>
             <div class="flex justify-evenly w-full lg:w-1/2 ">
@@ -689,37 +548,59 @@
         </div>
         </form>
         @if ($filenames)
-            @foreach ($filenames as $fn)
-                <div class="lg:my-5 p-3 w-full lg:w-1/2 ">
-                    <div class="d-flex justify-content-between px-1 pb-2">
-                        {{-- <p class="text-lg lg:text-xl font-medium lg:font-bold">{{ $fn->originalName }}</p> --}}
-                        <p class="text-lg lg:text-xl font-medium lg:font-bold">{{ get_filename($fn->filename) }}
-                        </p>
-                        <div class="flex">
-                            <button class="bg-red-500 py-0 px-3 text-white rounded-xl"
-                                wire:click="deleteFile('{{ $fn->filename }}')" wire:loading.remove>Hapus</button>
+            <div class="mt-3">
+                <div class="row g-4">
+                    @foreach ($filenames as $key => $fn)
+                        <div class="col-12 col-md-6 col-lg-4">
+                            <div class="card border-0 shadow-sm hover-shadow-lg">
+                                <!-- Nama File & Tombol Hapus -->
+                                <div class="d-flex justify-content-between align-items-center p-3">
+                                    <p class="mb-0 fw-semibold text-truncate">{{ get_filename($fn->filename) }}</p>
+                                    <button class="btn btn-danger btn-sm"
+                                        wire:click="deleteFile('{{ $fn->filename }}')" wire:loading.attr="disabled">
+                                        Hapus
+                                    </button>
+                                </div>
+
+                                <!-- Gambar -->
+                                <div class="d-flex justify-content-center align-items-center p-3"
+                                    style="height: 200px; background: #f8f9fa; cursor: pointer;"
+                                    data-bs-toggle="modal" data-bs-target="#imageModal{{ $key }}">
+                                    <img src="{{ getUrl($fn->filename) }}" class="img-fluid rounded"
+                                        alt="File Image" style="max-height: 100%; object-fit: contain;">
+                                </div>
+                            </div>
                         </div>
-                        <div role="status" wire:loading wire:target='deleteFile'>
-                            <svg aria-hidden="true"
-                                class="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                                viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                    fill="currentColor" />
-                                <path
-                                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                    fill="currentFill" />
-                            </svg>
+
+                        <!-- Modal Perbesar Gambar -->
+                        <div class="modal fade" id="imageModal{{ $key }}" tabindex="-1"
+                            aria-labelledby="imageModalLabel{{ $key }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="imageModalLabel{{ $key }}">
+                                            {{ get_filename($fn->filename) }}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <img src="{{ getUrl($fn->filename) }}" class="img-fluid rounded"
+                                            alt="File Image">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
-                        <img class="w-full rounded-xl" src="{{ getUrl($fn->filename) }}" alt="">
-                    @else
-                        <iframe class="w-full rounded-xl" src="{{ getUrl($fn->filename) }}" width="100%"
-                            height="600px"></iframe>
-                    @endif
+                    @endforeach
                 </div>
-            @endforeach
+
+                <!-- Tombol Kembali -->
+                <div class="d-flex justify-content-center mt-4">
+                    {{-- <button class="btn btn-dark px-4 py-2 shadow-sm" wire:click='kembali'>
+                        ⬅ Kembali
+                    </button> --}}
+                </div>
+            </div>
+
         @endif
 
     @endif

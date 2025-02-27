@@ -115,8 +115,6 @@
 
             @endif
             @if ($show_data)
-
-
                 <div class="d-flex mt-3">
                     <ul class="list-group">
                         <li class="list-group-item">Nama</li>
@@ -161,34 +159,55 @@
                     </ul>
                 </div>
                 {{-- Tampil gambar --}}
-                <div class='col-lg-6 col-12 mt-3'>
-                    @foreach ($personal_files as $f)
-                        @if (strtolower(getFilenameExtension($f->originalName)) == 'pdf')
-                            {{-- <li class="list-group-item"> --}}
-                            <div>{{ $f->originalName }}</div>
-                            <iframe class="my-3 rounded-4" src="{{ getUrl($f->filename) }}" width="100%"
-                                height="600px"></iframe>
-
-                            {{-- </li> --}}
-                        @endif
-                    @endforeach
-                    @foreach ($personal_files as $key => $fn)
-                        @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
-                            {{-- <li class="list-group-item"> --}}
-                            <div class="flex flex-col">
-                                <div class='responsive-container'>
-                                    <div> {{ $fn->originalName }}</div>
-                                    <img class="my-3 rounded-4" src="{{ getUrl($fn->filename) }}" alt="">
+                <div class="mt-3">
+                    <div class="row g-4">
+                        @foreach ($personal_files as $key => $fn)
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <div class="card border-0 shadow-sm hover-shadow-lg">
+                                    <div class="d-flex justify-content-center align-items-center p-3"
+                                        style="height: 180px; background: #f8f9fa; cursor: pointer;"
+                                        data-bs-toggle="modal" data-bs-target="#imageModal{{ $key }}">
+                                        <img src="{{ getUrl($fn->filename) }}" class="img-fluid" alt="File Image"
+                                            style="max-height: 100%; object-fit: contain;">
+                                    </div>
+                                    <div class="card-body text-center">
+                                        <p class="card-text text-dark fw-semibold text-truncate">
+                                            {{ get_filename($fn->filename) }}</p>
+                                    </div>
                                 </div>
                             </div>
-                            {{-- </li> --}}
-                        @endif
-                    @endforeach
 
-                    <div class='w-1/5 text-center mb-5 '>
-                        <button class="btn btn-dark" wire:click='kembali'>Kembali</button>
+                            <!-- Modal untuk Perbesar Gambar -->
+                            <div class="modal fade" id="imageModal{{ $key }}" tabindex="-1"
+                                aria-labelledby="imageModalLabel{{ $key }}" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="imageModalLabel{{ $key }}">
+                                                {{ get_filename($fn->filename) }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            <img src="{{ getUrl($fn->filename) }}" class="img-fluid rounded"
+                                                alt="File Image">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    {{-- Tombol Kembali --}}
+                    <div class="d-flex justify-content-center mt-4">
+                        <button class="btn btn-dark px-4 py-2 shadow-sm" wire:click='kembali'>
+                            ⬅ Kembali
+                        </button>
                     </div>
                 </div>
+
+
+
 
             @endif
 

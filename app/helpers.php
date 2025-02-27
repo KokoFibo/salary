@@ -24,6 +24,15 @@ use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+
+
+function files($ktp_count)
+{
+    if ($ktp_count == 0) return '';
+    if ($ktp_count == 1) return 'file';
+    if ($ktp_count > 1) return 'files';
+}
+
 function get_filename($filename)
 {
     if ($filename == '') {

@@ -16,13 +16,13 @@
                         </div>
 
                         {{-- @endif --}}
+                        {{-- sementara di disabled --}}
                         @if (auth()->user()->language == 'Cn')
                             <div class="flex items-end mb-2">
                                 @if (app()->getLocale() == 'id')
                                     <a class="nav-link" href="{{ url('locale/cn') }}"><button
                                             class="text-white text-sm bg-red-500 py-1 rounded-xl px-3">{{ __('中文') }}</button></a>
                                 @endif
-
                                 @if (app()->getLocale() == 'cn')
                                     <a class="nav-link" href="{{ url('locale/id') }}"><button
                                             class="text-white text-sm bg-red-500 py-1 rounded-xl px-3">{{ __('英语') }}</button></a>
@@ -30,8 +30,22 @@
                             </div>
                         @endif
 
+
+
                         <div class="flex flex-col p-3 gap-5 items-end">
-                            @if (auth()->user()->role < 4)
+                            <div>
+                                <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                 document.getElementById('logout-form').submit();">
+
+                                    <button class="rounded-xl shadow bg-purple-500  text-white px-3 py-1"><i
+                                            class="fa-solid fa-power-off"></i></button>
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            </div>
+                            {{-- @if (auth()->user()->role < 4)
                                 <div>
                                     <a href="{{ route('logout') }}"
                                         onclick="event.preventDefault();
@@ -50,7 +64,7 @@
                                             class="rounded-xl shadow bg-green-500 text-sm text-white px-3 py-1">{{ __('Dasboard') }}</button>
                                     </a>
                                 </div>
-                            @endif
+                            @endif --}}
                             @if ($is_slipGaji != true)
                                 <div>
                                     <h1 class="text-white text-sm">Hello, {{ auth()->user()->name }}</h1>
@@ -169,6 +183,7 @@
                     </div>
                     {{-- End Summary --}}
                 @endif
+
 
             </div>
             @if ($show)
@@ -651,50 +666,11 @@
 
             <div class="mt-10"></div>
             {{-- Footer --}}
-            <div class="footer w-screen flex justify-between h-16 items-center bg-gray-800 fixed bottom-0">
-                <a wire:navigate href="userregulation"><button
-                        class="{{ 'userregulation' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl"><i
-                            class="fa-solid fa-list-check"></i></button></a>
+            @include('mobile-footer')
 
-                {{-- @endif --}}
-                {{-- href="/profile" --}}
-                <a wire:navigate href="profile"><button
-                        class="{{ 'profile' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl"><i
-                            class="fa-solid fa-user"></i>
-                    </button></a>
-                <a wire:navigate href="usermobile"><button
-                        class="{{ 'usermobile' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl"><i
-                            class="fa-solid fa-house"></i>
-                    </button></a>
-                @if (is_perbulan())
-                    <a href="timeoff"><button
-                            class="{{ 'timeoff' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl "><i
-                                class="fa-brands fa-wpforms"></i>
-                        </button></a>
-                @else
-                    {{-- href="/userinformation" --}}
-                    <a wire:navigate href="userinformation"><button
-                            class="{{ 'userinformation' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl "><i
-                                class="fa-solid fa-circle-info"></i>
-                        </button></a>
-                @endif
-
-                <div>
-                    <a href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();">
-
-                        <button class="text-purple-200 px-4 py-4 rounded text-2xl "><i
-                                class="fa-solid fa-power-off"></i></button>
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                </div>
-
-
-            </div>
             {{--  end footer --}}
+            <livewire:uploadpopup />
+
         </div>
     </div>
 </div>
