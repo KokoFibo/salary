@@ -142,18 +142,12 @@ class Test extends Component
     return $cx;
   }
 
+
+
   public function render()
   {
-    $user_kosong = [];
-    $user = User::select('username')->get(); // Fix dari all() ke get()
 
-    foreach ($user as $k) {
-      if (!Karyawan::where('id_karyawan', $k->username)->exists()) {
-        // dd('User tidak ada', $k->id_karyawan); // Menampilkan ID karyawan yang tidak punya user
-        $user_kosong[] = $k->username;
-      }
-    }
-    dd($user_kosong);
+
     return view('livewire.test');
   }
 }

@@ -7,6 +7,7 @@ use App\Livewire\DataLog;
 use App\Livewire\Profile;
 use App\Livewire\Rubahid;
 use App\Livewire\UserLog;
+use App\Livewire\ChangeID;
 use App\Livewire\Gajibpjs;
 use App\Livewire\Moveback;
 use App\Livewire\Movedata;
@@ -25,6 +26,7 @@ use App\Livewire\BankReport;
 use App\Livewire\Karyawanwr;
 use App\Livewire\Tambahanwr;
 use App\Livewire\UserMobile;
+use App\Livewire\Adddocument;
 use App\Livewire\AddPresensi;
 use App\Livewire\AddTambahan;
 use App\Livewire\ChangeField;
@@ -90,7 +92,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Livewire\ChangeID;
 
 // Middleware
 Auth::routes([
@@ -138,7 +139,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/userslipgaji', function () {
             return view('user_slipgaji');
         });
-
+        Route::get('/adddocument', Adddocument::class);
         Route::get('/usermobile', UserMobile::class);
         Route::get('/profile', Profile::class);
         Route::get('/userinformation', UserInformation::class);

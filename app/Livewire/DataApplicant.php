@@ -6,11 +6,13 @@ use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use App\Models\Applicantdata;
 use App\Models\Applicantfile;
 use Illuminate\Support\Facades\Hash;
-use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Storage;
+use Google\Service\YouTube\ThirdPartyLinkStatus;
 
 
 class DataApplicant extends Component
@@ -22,6 +24,9 @@ class DataApplicant extends Component
     public  $status, $editId = null;
     public $delete_id, $terima_id;
     public $search;
+    // public $amazonUrl;
+
+
 
 
     public function terimaConfirmation($id)
@@ -73,6 +78,8 @@ class DataApplicant extends Component
         $data = Applicantdata::find($this->editId);
         $this->status = $data->status;
     }
+
+
 
     #[On('terima-confirmed')]
     public function diterima()
@@ -204,6 +211,7 @@ class DataApplicant extends Component
     {
         $this->show_table = true;
         $this->show_data = false;
+        // $this->amazonUrl = "https://yifang-payroll.s3.ap-southeast-1.amazonaws.com/";
     }
 
 
@@ -219,6 +227,7 @@ class DataApplicant extends Component
         $applicant_data->delete();
         foreach ($applicant_files as $d) {
             $d->delete();
+            Storage::disk('s3')->delete($d->filename);
         }
         // $this->dispatch('success', message: 'Data telah di hapus');
         $this->dispatch(
@@ -230,9 +239,16 @@ class DataApplicant extends Component
     public function show($id)
     {
         $this->personal_data = Applicantdata::find($id);
-        $this->personal_files = Applicantfile::where('id_karyawan', $this->personal_data->applicant_id)->get();
         $this->show_data = true;
         $this->show_table = false;
+        // $this->personal_files = Applicantfile::where('id_karyawan', $this->personal_data->applicant_id)->get();
+        $order = ['ktp', 'kk', 'ijazah', 'nilai', 'cv', 'pasfoto', 'npwp', 'paklaring', 'bpjs', 'skck', 'sertifikat', 'bri'];
+
+        $this->personal_files = Applicantfile::where('id_karyawan', $this->personal_data->applicant_id)
+            ->get()
+            ->sortBy(function ($file) use ($order) {
+                return array_search($file->file_category, $order);
+            });
     }
 
 

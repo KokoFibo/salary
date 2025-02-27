@@ -1,7 +1,7 @@
 <div>
     @section('title', 'Update Karyawan')
-    <div class="container ">
 
+    <div class="container ">
         <div class="card mt-3 ">
             <div class="card-header bg-secondary">
                 <h5 class="text-light py-2">{{ __('Update Data Karyawan') }}</h5>
@@ -59,142 +59,36 @@
 
                 </div>
 
-
                 <div class="card m-3">
                     <div class="card-header">
-
                         <h4 class='pt-3'>Upload Dokumen</h4>
                         <p>Hanya menerima file png, jpg dan jpeg saja</p>
                     </div>
                     <div class="card-body">
-
-
-
                         {{-- upload files  --}}
-                        <div class="p-3 row row-cols-2 row-cols-md-4 g-4 mb-4">
-                            <div class="col">
-                                <label class="form-label" for="upload_ktp">
-                                    <p>KTP <span class="text-danger">*</span></p>
-                                </label>
-                                <input wire:model='ktp' multiple class="form-control" id="upload_ktp" type="file">
-                                @error('ktp.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="upload_kk">
-                                    <p>Kartu Keluarga <span class="text-danger">*</span></p>
-                                </label>
-                                <input wire:model='kk' multiple class="form-control" id="upload_kk" type="file">
-                                @error('kk.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="upload_ijazah">
-                                    <p>Ijazah <span class="text-danger">*</span></p>
-                                </label>
-                                <input wire:model='ijazah' multiple class="form-control" id="upload_ijazah"
-                                    type="file">
-                                @error('ijazah.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="upload_nilai">
-                                    <p>Transkip Nilai/SKHUN <span class="text-danger">*</span></p>
-                                </label>
-                                <input wire:model='nilai' multiple class="form-control" id="upload_nilai"
-                                    type="file">
-                                @error('nilai.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="upload_cv">
-                                    <p>CV <span class="text-danger">*</span></p>
-                                </label>
-                                <input wire:model='cv' multiple class="form-control" id="upload_cv" type="file">
-                                @error('cv.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="upload_pasfoto">
-                                    <p>Pass Foto <span class="text-danger">*</span></p>
-                                </label>
-                                <input wire:model='pasfoto' multiple class="form-control" id="upload_pasfoto"
-                                    type="file">
-                                @error('pasfoto.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="upload_npwp">
-                                    <p>NPWP</p>
-                                </label>
-                                <input wire:model='npwp' multiple class="form-control" id="upload_npwp"
-                                    type="file">
-                                @error('npwp.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="upload_paklaring">
-                                    <p>Paklaring</p>
-                                </label>
-                                <input wire:model='paklaring' multiple class="form-control" id="upload_paklaring"
-                                    type="file">
-                                @error('paklaring.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="upload_bpjs">
-                                    <p>Kartu BPJS Ketenagakerjaan</p>
-                                </label>
-                                <input wire:model='bpjs' multiple class="form-control" id="upload_bpjs"
-                                    type="file">
-                                @error('bpjs.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="upload_skck">
-                                    <p>SKCK</p>
-                                </label>
-                                <input wire:model='skck' multiple class="form-control" id="upload_skck"
-                                    type="file">
-                                @error('skck.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="upload_sertifikat">
-                                    <p>Sertifikat</p>
-                                </label>
-                                <input wire:model='sertifikat' multiple class="form-control" id="upload_sertifikat"
-                                    type="file">
-                                @error('sertifikat.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="upload_bri">
-                                    <p>Buku Tabungan Bank BRI</p>
-                                </label>
-                                <input wire:model='bri' multiple class="form-control" id="upload_bri"
-                                    type="file">
-                                @error('bri.*')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                        <div class="container">
+                            <div class="row g-3">
+                                @foreach (['ktp' => 'KTP', 'kk' => 'Kartu Keluarga', 'ijazah' => 'Ijazah', 'nilai' => 'Transkip Nilai/SKHUN', 'cv' => 'CV', 'pasfoto' => 'Pass Foto', 'npwp' => 'NPWP', 'paklaring' => 'Paklaring', 'bpjs' => 'Kartu BPJS Ketenagakerjaan', 'skck' => 'SKCK', 'sertifikat' => 'Sertifikat', 'bri' => 'Buku Tabungan Bank BRI'] as $key => $label)
+                                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                                        <label class="form-label" for="upload_{{ $key }}">
+                                            <p class="mb-1">{{ $label }}
+                                                @if (in_array($key, ['ktp', 'kk', 'ijazah', 'nilai', 'cv', 'pasfoto']))
+                                                    <span class="text-danger">*</span>
+                                                @endif
+                                            </p>
+                                        </label>
+                                        <input wire:model="{{ $key }}" multiple class="form-control"
+                                            id="upload_{{ $key }}" type="file">
+                                        @error("{{ $key }}.*")
+                                            <div class="text-danger small">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
+
                     </div>
                 </div>
-
-
-
 
                 {{-- Show Errors --}}
                 <ul>
@@ -213,34 +107,36 @@
                     </div>
                 </div>
 
-                <div class="d-flex gap-3 pb-3 px-3" wire:loading.remove>
+                <div class="d-flex flex-wrap gap-2 pb-3 px-3 justify-content-center" wire:loading.remove>
                     @if ($status_karyawan != 'Resigned' && $status_karyawan != 'Blacklist')
-                        <button wire:click="update1" class="btn btn-primary mx-3">{{ __('Update') }}</button>
+                        <button wire:click="update1" class="btn btn-primary">{{ __('Update') }}</button>
                     @endif
 
-                    <button wire:click="exit" class="btn btn-dark mx-3">{{ __('Exit') }}</button>
+                    <button wire:click="exit" class="btn btn-dark">{{ __('Exit') }}</button>
+
                     @if (!$show_arsip)
                         @if (!$is_folder_kosong)
-                            <button wire:click="arsip"
-                                class="btn btn-success mx-3">{{ __('Lihat File Dokumen') }}</button>
+                            <button wire:click="arsip" class="btn btn-success">{{ __('Lihat File Dokumen') }}</button>
                         @else
-                            <button class="btn btn-success mx-3" disabled>Belum ada file dokumen</button>
+                            <button class="btn btn-success" disabled>Belum ada file dokumen</button>
                         @endif
                     @else
                         @if (!$is_folder_kosong)
                             <button class="btn btn-success" wire:click='tutup_arsip'>Tutup File Dokumen</button>
                         @endif
                     @endif
-                    @if (!$is_folder_kosong)
-                        ;
-                        <a href="{{ route('download.zip', ['folder' => $folder_name]) }}"
-                            class="btn btn-primary">Download
-                            All</a>
-                        <a href="{{ route('download.merged.pdf', ['folder' => $folder_name]) }}"
-                            class="btn btn-danger">Download PDF</a>
-                    @endif
 
+                    @if (!$is_folder_kosong)
+                        <a href="{{ route('download.zip', ['folder' => $folder_name]) }}" class="btn btn-primary">
+                            Download All Files
+                        </a>
+                        <a href="{{ route('download.merged.pdf', ['folder' => $folder_name]) }}"
+                            class="btn btn-danger">
+                            ALl files PDF
+                        </a>
+                    @endif
                 </div>
+
             </div>
 
 
@@ -251,64 +147,69 @@
                     </div>
                     <div class="card-body">
                         @if ($personal_files->isNotEmpty())
-
-
-                            @foreach ($personal_files as $fn)
-                                @if (strtolower(getFilenameExtension($fn->originalName)) == 'pdf')
-                                    {{-- <li class="list-group-item "> --}}
-                                    <div class="d-flex flex-row justify-content-between align-items-center">
-                                        {{-- <h4> {{ $fn->originalName }}</h4> --}}
-                                        <h4> {{ get_filename($fn->filename) }}</h4>
-                                        <button class="btn btn-danger" wire:confirm='Yakin mau di delete?'
-                                            wire:click="deleteFile('{{ $fn->id }}')">Remove</button>
-                                    </div>
-                                    <div>
-                                        <iframe class="mt-1 mb-3 rounded-4" src="{{ getUrl($fn->filename) }}"
-                                            width="100%" height="600px"></iframe>
-                                    </div>
-
-                                    {{-- </li> --}}
-                                @endif
-                            @endforeach
-                            @foreach ($personal_files as $key => $fn)
-                                @if (strtolower(getFilenameExtension($fn->originalName)) != 'pdf')
-                                    {{-- <li class="list-group-item"> --}}
-                                    <div class="d-flex flex-column-reverse flex-lg-row   ">
-                                        <div class="flex flex-col">
-                                            <div class="responsive-container">
-
-                                                <div
-                                                    class="d-flex flex-row justify-content-between align-items-center mt-3 px-2">
-                                                    {{-- <h4> {{ $fn->originalName }}</h4> --}}
-                                                    <h4> {{ get_filename($fn->filename) }} </h4>
+                            <div class="row">
+                                @foreach ($personal_files as $key => $fn)
+                                    <div class="col-12 col-md-6 col-lg-4 mb-4">
+                                        <div class="card h-100 shadow-sm">
+                                            <div class="card-body d-flex flex-column">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h5 class="card-title">{{ get_filename($fn->filename) }}</h5>
                                                     <div>
-                                                        <button class="btn btn-danger"
+                                                        <button class="btn btn-danger btn-sm"
                                                             wire:confirm='Yakin mau di delete?'
-                                                            wire:click="deleteFile('{{ $fn->id }}')">Remove</button>
-
+                                                            wire:click="deleteFile('{{ $fn->id }}')">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
                                                     </div>
-
-
                                                 </div>
-
-                                                <img class="mt-1 mb-3 rounded-4" src="{{ getUrl($fn->filename) }}"
-                                                    alt="">
+                                                <div class="flex-grow-1 text-center">
+                                                    <!-- Gunakan Alpine.js untuk mengelola state -->
+                                                    <img x-data="{ zoomed: false }" :class="zoomed ? 'zoomed' : ''"
+                                                        class="img-fluid rounded-4 zoomable"
+                                                        src="{{ getUrl($fn->filename) }}"
+                                                        alt="{{ get_filename($fn->filename) }}"
+                                                        @click="zoomed = !zoomed" @click.away="zoomed = false">
+                                                </div>
                                             </div>
                                         </div>
-
                                     </div>
-                                    {{-- </li> --}}
-                                @endif
-                            @endforeach
-                            <button class="btn btn-success" wire:click='tutup_arsip'>Tutup File Dokumen</button>
+                                @endforeach
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-success" wire:click='tutup_arsip'>Tutup File Dokumen</button>
+                            </div>
                         @else
-                            <h3>File tidak ditemukan</h3>
+                            <h3 class="text-center">File tidak ditemukan</h3>
                         @endif
                     </div>
                 </div>
             @endif
         </div>
     </div>
+    <style>
+        .zoomable {
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .zoomable.zoomed {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            max-width: 80vw;
+            /* Maksimal 80% lebar layar */
+            max-height: 80vh;
+            /* Maksimal 80% tinggi layar */
+            width: auto;
+            /* Menjaga rasio aspek */
+            height: auto;
+            /* Menjaga rasio aspek */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+
     <style>
         /* Container for the responsive image */
         .responsive-container {

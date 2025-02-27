@@ -17,10 +17,10 @@ use Livewire\WithFileUploads;
 use App\Livewire\Karyawanindexwr;
 use App\Rules\AllowedFileExtension;
 use Illuminate\Support\Facades\Hash;
-use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\RequiredIf;
 use Google\Service\YouTube\ThirdPartyLinkStatus;
+use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class Updatekaryawanwr extends Component
@@ -65,7 +65,7 @@ class Updatekaryawanwr extends Component
         if ($data != null) {
             try {
                 // $result = Storage::disk('google')->delete($data->filename);
-                $result = Storage::disk('public')->delete($data->filename);
+                $result = Storage::disk('s3')->delete($data->filename);
                 if ($result) {
                     // File was deleted successfully
                     $data->delete();
@@ -238,7 +238,7 @@ class Updatekaryawanwr extends Component
         $this->id_file_karyawan = $data->id_file_karyawan;
 
         // data Applicant files
-        $this->personal_files = Applicantfile::where('id_karyawan', $this->id_file_karyawan)->get();
+        // $this->personal_files = Applicantfile::where('id_karyawan', $this->id_file_karyawan)->get();
         // Cek applicant id apakah sudah ada 
         // ggg
         if ($data->id_file_karyawan == '') {
@@ -251,6 +251,7 @@ class Updatekaryawanwr extends Component
             //     'applicant_id' => $this->applicant_id;
             // ]);
         } else {
+
             $this->applicant_id =  $data->id_file_karyawan;
             $isiFolder = Applicantfile::where('id_karyawan', $this->applicant_id)->count();
 
@@ -634,7 +635,7 @@ class Updatekaryawanwr extends Component
         $folderPath = "Applicants/{$this->applicant_id}/";
 
         // Ambil jumlah file yang sudah ada di storage dengan prefix yang sesuai
-        $existingFiles = Storage::disk('public')->files($folderPath);
+        $existingFiles = Storage::disk('s3')->files($folderPath);
         $existingNumbers = [];
 
         // Ambil nomor dari nama file yang ada (misal: "ktp-01.webp" → 1)
@@ -655,14 +656,17 @@ class Updatekaryawanwr extends Component
                 $fileName = "{$folderName}-" . str_pad($counter, 2, '0', STR_PAD_LEFT) . ".{$fileExtension}";
                 $filePath = "{$folderPath}{$fileName}";
                 $counter++;
-            } while (Storage::disk('public')->exists($filePath));
+            } while (Storage::disk('s3')->exists($filePath));
 
             // Resize dan konversi gambar ke WebP
             $image = $manager->read($file)->scale(width: 800);
             $imageData = (string) $image->toWebp(60);
 
             // Simpan ke storage
-            Storage::disk('public')->put($filePath, $imageData);
+            // Storage::disk('s3')->put($filePath, $imageData);
+            Storage::disk('s3')->put($filePath, $imageData, [
+                'visibility' => 'public'
+            ]);
 
             // Simpan informasi file ke database
             Applicantfile::create([
@@ -687,6 +691,7 @@ class Updatekaryawanwr extends Component
                 $this->id_file_karyawan = makeApplicationId($this->nama, convertTgl($this->tanggal_lahir));
                 $data = Karyawan::find($this->id);
                 $data->id_file_karyawan = $this->id_file_karyawan;
+                dd($this->id_file_karyawan);
                 $data->save();
             }
 
@@ -723,6 +728,7 @@ class Updatekaryawanwr extends Component
             }
             $this->files = [];
             // $this->dispatch('success', message: 'file berhasil di upload');
+            $this->is_folder_kosong = false;
             $this->dispatch(
                 'message',
                 type: 'success',
@@ -753,29 +759,7 @@ class Updatekaryawanwr extends Component
         $this->tanggal_bergabung = date('Y-m-d', strtotime($this->tanggal_bergabung));
         $data = Karyawan::find($this->id);
 
-        // Ini untuk merubah nama folder menyesuaikan dengan nama dan tanggal lahir yang dirubah
-        // if ((strtolower($data->nama) != strtolower($this->nama)) || ($data->tanggal_lahir != $this->tanggal_lahir)) {
-        //     // rubah folder storage
-        //     $old_folder = 'Applicants/' . $data->id_file_karyawan;
-        //     $new_applicant_id = makeApplicationId($this->nama, $this->tanggal_lahir);
-        //     $new_folder = 'Applicants/' . $new_applicant_id;
-        //     Storage::disk('public')->move($old_folder, $new_folder);
-        //     // Storage::disk('google')->move($old_folder, $new_folder);
-        //     $this->id_file_karyawan = $new_applicant_id;
-        //     // rubah id karyawan di appplicantfile
-
-        //     $data_files = Applicantfile::where('id_karyawan', $data->id_file_karyawan)->get();
-        //     if ($data_files != null) {
-        //         foreach ($data_files as $df) {
-        //             $df->id_karyawan = $new_applicant_id;
-        //             $df->filename = $new_folder . '/' . getFilename($df->filename);
-        //             $df->save();
-        //         }
-        //     } else {
-        //         dd('not found', $data->id_file_karyawan);
-        //     }
-        // }
-        $data->id_karyawan = $this->id_karyawan;
+        // $data->id_karyawan = $this->id_karyawan;
         $data->nama = titleCase($this->nama);
         $data->email = trim($this->email, ' ');
         $data->hp = $this->hp;
@@ -848,7 +832,11 @@ class Updatekaryawanwr extends Component
         $data->no_npwp = $this->no_npwp;
         $data->ptkp = $this->ptkp;
         $data->denda = $this->denda;
-        $data->id_file_karyawan = $this->id_file_karyawan;
+        // $this->id_file_karyawan = makeApplicationId($this->nama, convertTgl($this->tanggal_lahir));
+        if ($data->id_file_karyawan == '') {
+            $data->id_file_karyawan = makeApplicationId($data->nama, convertTgl($data->tanggal_lahir));
+        }
+        $this->id_file_karyawan = $data->id_file_karyawan;
 
         $data->save();
 
@@ -880,52 +868,6 @@ class Updatekaryawanwr extends Component
                 position: 'center'
             );
         }
-
-        // if ($this->files) {
-        //     if (!$this->id_file_karyawan) {
-        //         // convertTgl adalah fungsi untuk merubah format tanggal menjadi format sesuai system
-        //         $this->id_file_karyawan = makeApplicationId($this->nama, convertTgl($this->tanggal_lahir));
-        //         $data = Karyawan::find($this->id);
-        //         $data->id_file_karyawan = $this->id_file_karyawan;
-        //         $data->save();
-        //     }
-
-        //     foreach ($this->files as $file) {
-        //         $folder = 'Applicants/' . $this->id_file_karyawan;
-        //         $fileExension = $file->getClientOriginalExtension();
-
-        //         if ($fileExension != 'pdf') {
-        //             $folder = 'Applicants/' . $this->id_file_karyawan . '/' . random_int(1000, 9000) . '.' . $fileExension;
-
-        //             $manager = ImageManager::gd();
-
-        //             // resize gif image
-        //             $image = $manager
-        //                 ->read($file)
-        //                 ->scale(width: 800);
-        //             // $imagedata = (string) $image->toJpeg();
-        //             $imagedata = (string) $image->toWebp(60);
-
-        //             // Storage::disk('google')->put($folder, $imagedata);
-        //             Storage::disk('public')->put($folder, $imagedata);
-        //             $this->path = $folder;
-        //         } else {
-        //             // $this->path = Storage::disk('google')->put($folder, $file);
-        //             $this->path = Storage::disk('public')->put($folder, $file);
-        //         }
-
-        //         $this->originalFilename = $file->getClientOriginalName();
-        //         Applicantfile::create([
-        //             'id_karyawan' => $this->id_file_karyawan,
-        //             'originalName' => clear_dot($this->originalFilename, $fileExension),
-
-        //             'filename' => $this->path,
-        //         ]);
-        //     }
-        //     $this->files = [];
-        //     // $this->dispatch('success', message: 'Data berhasil di update');
-        // }
-        // get_data_karyawan();
 
 
         // upload dokumen
@@ -968,6 +910,8 @@ class Updatekaryawanwr extends Component
         $this->sertifikat = '';
         $this->bri = '';
         $this->check_isi_dokumen();
+        $this->personal_files = Applicantfile::where('id_karyawan', $this->id_file_karyawan)->get();
+
         $this->dispatch(
             'message',
             type: 'success',
@@ -990,15 +934,33 @@ class Updatekaryawanwr extends Component
 
         $this->personal_files = Applicantfile::where('id_karyawan', $this->id_file_karyawan)->get();
 
+
+        $order = ['ktp', 'kk', 'ijazah', 'nilai', 'cv', 'pasfoto', 'npwp', 'paklaring', 'bpjs', 'skck', 'sertifikat', 'bri'];
+
+
+
+        $this->personal_files = $this->personal_files->sortBy(function ($file) use ($order) {
+            foreach ($order as $index => $keyword) {
+                if (stripos($file->filename, $keyword) !== false) {
+                    return $index;
+                }
+            }
+            return count($order); // Jika tidak ada di daftar, letakkan di akhir
+        });
+
+
+
+
         $data = Applicantfile::where('id_karyawan', $this->id_file_karyawan)->first();
 
         if ($data) {
             $this->folder_name = $data->id_karyawan;
         } else {
             $this->folder_name = 'default-folder'; // Atau beri nilai default
+
         }
 
         return view('livewire.updatekaryawanwr')
-            ->layout('layouts.appeloe');
+            ->layout('layouts.appeloealpine');
     }
 }

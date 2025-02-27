@@ -4,7 +4,9 @@
         <div class="flex flex-col h-screen">
 
             <div class=header>
-                <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
+                @include('mobile-header')
+
+                {{-- <div class="w-screen bg-gray-800 h-24 shadow-xl rounded-b-3xl   ">
                     <div class="flex justify-between items-center">
                         <div>
                             <img src="{{ asset('images/logo-only.png') }}" class="ml-3"alt="Yifang Logo"
@@ -39,7 +41,7 @@
 
                         </div>
                     </div>
-                </div>
+                </div> --}}
                 <div>
                     <h2 class="bg-green-500 text-center text-white text-xl py-2 px-5 mt-3">
                         {{ __('Form Ijin/Cuti') }}</h2>
@@ -240,8 +242,7 @@
                                         Surat
                                         Keterangan</label>
                                     <span class='text-xs '>Hanya menerima file png dan jpg</span>
-                                    <input id="file_upload" name="files" type="file" wire:model='files'
-                                        multiple
+                                    <input id="file_upload" name="files" type="file" wire:model='files' multiple
                                         class="mt-2 shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                                     @error('files.*')
                                         <div class="text-red-500">
@@ -327,59 +328,8 @@
 
 
             {{-- Footer --}}
-            <div class="footer flex justify-between h-16 items-center bg-gray-800 ">
+            @include('mobile-footer')
 
-
-                {{-- @if ($data->currentPage() > 1) --}}
-                {{-- <a wire:navigate href="{{ $data->previousPageUrl() }}"><button
-                    class="text-purple-200 px-4 py-4 rounded  text-2xl"><i class="fa-solid fa-left-long"></i>
-                </button></a> --}}
-                <a wire:navigate href="userregulation"><button
-                        class="{{ 'userregulation' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl"><i
-                            class="fa-solid fa-list-check"></i></button></a>
-
-                {{-- @endif --}}
-                {{-- href="/profile" --}}
-                <a wire:navigate href="profile"><button
-                        class="{{ 'profile' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl"><i
-                            class="fa-solid fa-user"></i>
-                    </button></a>
-                <a wire:navigate href="usermobile"><button
-                        class="{{ 'usermobile' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl"><i
-                            class="fa-solid fa-house"></i>
-                    </button></a>
-                @if (is_perbulan())
-                    <a href="timeoff"><button
-                            class="{{ 'timeoff' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl "><i
-                                class="fa-brands fa-wpforms"></i>gg
-                        </button></a>
-                @else
-                    {{-- href="/userinformation" --}}
-                    <a wire:navigate href="userinformation"><button
-                            class="{{ 'userinformation' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl "><i
-                                class="fa-solid fa-circle-info"></i>
-                        </button></a>
-                @endif
-                {{-- @if ($data->hasMorePages()) --}}
-                {{-- <a wire:navigate href="{{ $data->nextPageUrl() }}"><button
-                    class="text-purple-200 px-4 py-4 rounded text-2xl "><i
-                        class="fa-solid fa-right-long"></i></button></a> --}}
-
-                <div>
-                    <a href="{{ route('logout') }}"
-                        onclick="event.preventDefault();
-                                 document.getElementById('logout-form').submit();">
-
-                        <button class="text-purple-200 px-4 py-4 rounded text-2xl "><i
-                                class="fa-solid fa-power-off"></i></button>
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                        @csrf
-                    </form>
-                </div>
-
-
-            </div>
         </div>
     </div>
     @script
