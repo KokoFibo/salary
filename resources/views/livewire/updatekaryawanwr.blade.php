@@ -121,9 +121,9 @@
                             <button class="btn btn-success" disabled>Belum ada file dokumen</button>
                         @endif
                     @else
-                        @if (!$is_folder_kosong)
-                            <button class="btn btn-success" wire:click='tutup_arsip'>Tutup File Dokumen</button>
-                        @endif
+                        {{-- @if (!$is_folder_kosong) --}}
+                        <button class="btn btn-success" wire:click='tutup_arsip'>Tutup File Dokumen</button>
+                        {{-- @endif --}}
                     @endif
 
                     @if (!$is_folder_kosong)
