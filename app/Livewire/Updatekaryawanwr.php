@@ -57,6 +57,7 @@ class Updatekaryawanwr extends Component
 
 
 
+
     public function deleteFile($id)
     {
         // $id = $this->delete_id;
