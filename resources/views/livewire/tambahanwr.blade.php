@@ -20,7 +20,7 @@
                         <span class="visually-hidden">Loading...</span>
                     </div>
                     {{-- end spinner --}}
-                    @if (!auth()->user()->username == '8217')
+                    @if (auth()->user()->username != '8217')
                         <div class="">
                             <a href="/addtambahan"> <button
                                     class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"
@@ -243,7 +243,7 @@
                                                             type="button"
                                                             class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                                 class="fa-regular fa-pen-to-square"></i></button> --}}
-                                                        @if (!auth()->user()->username == '8217')
+                                                        @if (auth()->user()->username != '8217')
                                                             <a href="/updatetambahan/{{ $d->id }}"><button
                                                                     type="button"
                                                                     class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i

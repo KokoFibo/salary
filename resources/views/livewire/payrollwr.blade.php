@@ -194,7 +194,7 @@
                             {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild without queue') }}</button>
                     @endif
-                    @if (!auth()->user()->username == '8217')
+                    @if (auth()->user()->username != '8217')
                         <a href="/ter"><button
                                 class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
                         <button class="btn btn-success nightowl-daylight"

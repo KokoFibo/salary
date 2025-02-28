@@ -37,7 +37,7 @@ with font-awesome or any other icon font library -->
                 </a>
             </li>
         @endif
-        @if (!auth()->user()->username == '8217')
+        @if (auth()->user()->username != '8217')
             @if (Auth::user()->role > 5 || Auth::user()->role == 2)
                 @if (isRequester(auth()->user()->username) || Auth::user()->role > 5)
                     <li
@@ -63,7 +63,7 @@ with font-awesome or any other icon font library -->
             {{-- username 1146 = Mega --}}
             @if (Auth::user()->role > 5 ||
                     Auth::user()->role == 2 ||
-                    (auth()->user()->username == '1146' && !auth()->user()->username == '8217'))
+                    (auth()->user()->username == '1146' && auth()->user()->username != '8217'))
                 @if (isTimeoff(auth()->user()->username) || Auth::user()->role > 5 || auth()->user()->username == '1146')
                     <li class="nav-item {{ 'timeoff-approve' == request()->path() ? 'bg-secondary rounded' : '' }}">
                         <a href="/timeoff-approve" class="nav-link">
@@ -188,7 +188,7 @@ with font-awesome or any other icon font library -->
                     </a>
                 </li>
             @endif
-            @if (!auth()->user()->username == '8217')
+            @if (auth()->user()->username != '8217')
 
                 <li class="nav-item">
                     <a href="#" class="nav-link">

@@ -106,7 +106,7 @@
                         </div>
                     </div>
                 </div>
-                @if (!auth()->user()->username == '8217')
+                @if (auth()->user()->username != '8217')
                     <div class="d-flex flex-wrap gap-2 pb-3 px-3 justify-content-center" wire:loading.remove>
                         @if ($status_karyawan != 'Resigned' && $status_karyawan != 'Blacklist')
                             <button wire:click="update1" class="btn btn-primary">{{ __('Update') }}</button>
@@ -114,7 +114,7 @@
                 @endif
 
                 <button wire:click="exit" class="btn btn-dark">{{ __('Exit') }}</button>
-                @if (!auth()->user()->username == '8217')
+                @if (auth()->user()->username != '8217')
 
                     @if (!$show_arsip)
                         @if (!$is_folder_kosong)

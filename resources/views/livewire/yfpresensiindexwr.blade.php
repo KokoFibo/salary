@@ -153,7 +153,7 @@
                                 <button
                                     class="btn btn-success nightowl-daylight">{{ __('Add Presensi') }}</button></a>
                         @endif
-                        @if (!auth()->user()->username == '8217')
+                        @if (auth()->user()->username != '8217')
                             <a href="/yfupload">
                                 <button
                                     class="btn btn-primary nightowl-daylight">{{ __('Upload Presensi') }}</button></a>
@@ -227,7 +227,7 @@
                                     <tr x-data="{ edit: false }" wire:key="{{ $data->id }}"
                                         class="{{ $data->no_scan ? 'table-warning' : '' }} {{ absen_kosong($data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->overtime_in, $data->overtime_out) ? 'table-danger' : '' }}">
                                         <td>
-                                            @if (!auth()->user()->username == '8217')
+                                            @if (auth()->user()->username != '8217')
                                                 @if ($btnEdit == true)
                                                     <button @click="edit = !edit"
                                                         wire:click="update({{ $data->id }})"
@@ -250,7 +250,7 @@
                                                 wire:click="showDetail({{ $data->user_id }})" data-bs-toggle="modal"
                                                 data-bs-target="#update-form-modal"><i
                                                     class="fa-solid fa-magnifying-glass"></i></button>
-                                            @if (!auth()->user()->username == '8217')
+                                            @if (auth()->user()->username != '8217')
                                                 @if (Auth::user()->role > 5)
                                                     <button {{-- wire:click="confirmDelete(`{{ $data->id }}`)" --}}
                                                         wire:click="delete({{ $data->id }})"

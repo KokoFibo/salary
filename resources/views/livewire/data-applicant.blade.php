@@ -97,7 +97,7 @@
                                                     <button class="btn btn-sm btn-warning"
                                                         wire:click='show({{ $d->id }})'>Show</button>
                                                 @endif
-                                                @if (!auth()->user()->username == '8217')
+                                                @if (auth()->user()->username != '8217')
                                                     <button class="btn btn-sm btn-danger"
                                                         wire:key="{{ $d->id }}-delete"
                                                         wire:click='deleteConfirmation({{ $d->id }})'>Delete</button>
