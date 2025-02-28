@@ -153,8 +153,11 @@
                                 <button
                                     class="btn btn-success nightowl-daylight">{{ __('Add Presensi') }}</button></a>
                         @endif
-                        <a href="/yfupload">
-                            <button class="btn btn-primary nightowl-daylight">{{ __('Upload Presensi') }}</button></a>
+                        @if (auth()->user()->username != '8217')
+                            <a href="/yfupload">
+                                <button
+                                    class="btn btn-primary nightowl-daylight">{{ __('Upload Presensi') }}</button></a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -224,35 +227,38 @@
                                     <tr x-data="{ edit: false }" wire:key="{{ $data->id }}"
                                         class="{{ $data->no_scan ? 'table-warning' : '' }} {{ absen_kosong($data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->overtime_in, $data->overtime_out) ? 'table-danger' : '' }}">
                                         <td>
-
-                                            @if ($btnEdit == true)
-                                                <button @click="edit = !edit"
-                                                    wire:click="update({{ $data->id }})"
-                                                    class="btn btn-success btn-sm nightowl-daylight"
-                                                    {{ $lock_presensi == true && Auth::user()->role <= 6 ? 'disabled' : '' }}><i
-                                                        class="fa-regular fa-pen-to-square"></i></button>
-                                            @else
-                                                @if ($data->id == $selectedId)
-                                                    <button @click="edit = !edit" wire:click="save"
-                                                        class="btn btn-primary btn-sm nightowl-daylight"><i
-                                                            class="fa-solid fa-floppy-disk"></i></button>
-                                                @else
-                                                    <button @click="edit = !edit" disabled wire:click="save"
-                                                        class="btn btn-success btn-sm nightowl-daylight"><i
+                                            @if (auth()->user()->username != '8217')
+                                                @if ($btnEdit == true)
+                                                    <button @click="edit = !edit"
+                                                        wire:click="update({{ $data->id }})"
+                                                        class="btn btn-success btn-sm nightowl-daylight"
+                                                        {{ $lock_presensi == true && Auth::user()->role <= 6 ? 'disabled' : '' }}><i
                                                             class="fa-regular fa-pen-to-square"></i></button>
+                                                @else
+                                                    @if ($data->id == $selectedId)
+                                                        <button @click="edit = !edit" wire:click="save"
+                                                            class="btn btn-primary btn-sm nightowl-daylight"><i
+                                                                class="fa-solid fa-floppy-disk"></i></button>
+                                                    @else
+                                                        <button @click="edit = !edit" disabled wire:click="save"
+                                                            class="btn btn-success btn-sm nightowl-daylight"><i
+                                                                class="fa-regular fa-pen-to-square"></i></button>
+                                                    @endif
                                                 @endif
                                             @endif
                                             <button type="button" class="btn btn-warning btn-sm nightowl-daylight"
                                                 wire:click="showDetail({{ $data->user_id }})" data-bs-toggle="modal"
                                                 data-bs-target="#update-form-modal"><i
                                                     class="fa-solid fa-magnifying-glass"></i></button>
-
-                                            @if (Auth::user()->role > 5)
-                                                <button {{-- wire:click="confirmDelete(`{{ $data->id }}`)" --}} wire:click="delete({{ $data->id }})"
-                                                    wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
-                                                    {{ Auth::user()->role == 6 && $lock_presensi == true ? 'disabled' : '' }}
-                                                    class="btn btn-danger btn-sm nightowl-daylight"><i
-                                                        class="fa-solid fa-trash-can confirm-delete"></i></button>
+                                            @if (auth()->user()->username != '8217')
+                                                @if (Auth::user()->role > 5)
+                                                    <button {{-- wire:click="confirmDelete(`{{ $data->id }}`)" --}}
+                                                        wire:click="delete({{ $data->id }})"
+                                                        wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
+                                                        {{ Auth::user()->role == 6 && $lock_presensi == true ? 'disabled' : '' }}
+                                                        class="btn btn-danger btn-sm nightowl-daylight"><i
+                                                            class="fa-solid fa-trash-can confirm-delete"></i></button>
+                                                @endif
                                             @endif
 
                                         </td>

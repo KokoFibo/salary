@@ -37,47 +37,51 @@ with font-awesome or any other icon font library -->
                 </a>
             </li>
         @endif
-        @if (Auth::user()->role > 5 || Auth::user()->role == 2)
-            @if (isRequester(auth()->user()->username) || Auth::user()->role > 5)
-                <li class="nav-item {{ 'permohonan-personnel' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/permohonan-personnel" class="nav-link">
-                        <i class="nav-icon fa-solid fa-people-arrows"></i>
-                        <p class="personnel-request">
-                            {{ __('Personnel Request') }}
-                            @if (auth()->user()->role >= 6 && check_for_new_approved_request() != 0)
-                                <span class="badge">{{ check_for_new_approved_request() }}
-                                </span>
-                            @endif
-                            @if (auth()->user()->role == 2 && check_for_new_applyingrequest() != 0)
-                                <span class="badge">{{ check_for_new_applyingrequest() }}
-                                </span>
-                            @endif
+        @if (auth()->user()->username != '8217')
+            @if (Auth::user()->role > 5 || Auth::user()->role == 2)
+                @if (isRequester(auth()->user()->username) || Auth::user()->role > 5)
+                    <li
+                        class="nav-item {{ 'permohonan-personnel' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                        <a href="/permohonan-personnel" class="nav-link">
+                            <i class="nav-icon fa-solid fa-people-arrows"></i>
+                            <p class="personnel-request">
+                                {{ __('Personnel Request') }}
+                                @if (auth()->user()->role >= 6 && check_for_new_approved_request() != 0)
+                                    <span class="badge">{{ check_for_new_approved_request() }}
+                                    </span>
+                                @endif
+                                @if (auth()->user()->role == 2 && check_for_new_applyingrequest() != 0)
+                                    <span class="badge">{{ check_for_new_applyingrequest() }}
+                                    </span>
+                                @endif
 
-                        </p>
-                    </a>
-                </li>
+                            </p>
+                        </a>
+                    </li>
+                @endif
             @endif
-
-        @endif
-        {{-- username 1146 = Mega --}}
-        @if (Auth::user()->role > 5 || Auth::user()->role == 2 || auth()->user()->username == '1146')
-            @if (isTimeoff(auth()->user()->username) || Auth::user()->role > 5 || auth()->user()->username == '1146')
-                <li class="nav-item {{ 'timeoff-approve' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                    <a href="/timeoff-approve" class="nav-link">
-                        <i class="nav-icon fa-regular fa-calendar"></i>
-                        <p class="personnel-request">
-                            {{ __('Time off Approval') }}
-                            @if ((auth()->user()->role >= 6 || auth()->user()->username == '1146') && check_for_new_Timeoff_request() != 0)
-                                <span class="badge">{{ check_for_new_Timeoff_request() }}
-                                </span>
-                            @endif
-                            @if (auth()->user()->role == 2 && check_for_menunggu_approval_Timeoff_request() != 0)
-                                <span class="badge">{{ check_for_menunggu_approval_Timeoff_request() }}
-                                </span>
-                            @endif
-                        </p>
-                    </a>
-                </li>
+            {{-- username 1146 = Mega --}}
+            @if (Auth::user()->role > 5 ||
+                    Auth::user()->role == 2 ||
+                    (auth()->user()->username == '1146' && auth()->user()->username != '8217'))
+                @if (isTimeoff(auth()->user()->username) || Auth::user()->role > 5 || auth()->user()->username == '1146')
+                    <li class="nav-item {{ 'timeoff-approve' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                        <a href="/timeoff-approve" class="nav-link">
+                            <i class="nav-icon fa-regular fa-calendar"></i>
+                            <p class="personnel-request">
+                                {{ __('Time off Approval') }}
+                                @if ((auth()->user()->role >= 6 || auth()->user()->username == '1146') && check_for_new_Timeoff_request() != 0)
+                                    <span class="badge">{{ check_for_new_Timeoff_request() }}
+                                    </span>
+                                @endif
+                                @if (auth()->user()->role == 2 && check_for_menunggu_approval_Timeoff_request() != 0)
+                                    <span class="badge">{{ check_for_menunggu_approval_Timeoff_request() }}
+                                    </span>
+                                @endif
+                            </p>
+                        </a>
+                    </li>
+                @endif
             @endif
         @endif
 
@@ -184,38 +188,41 @@ with font-awesome or any other icon font library -->
                     </a>
                 </li>
             @endif
+            @if (auth()->user()->username != '8217')
 
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fa-solid fa-gear nav-icon"></i>
-                    <p>{{ __('Settings') }}<i class="right fas fa-angle-left"></i></p>
-                </a>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa-solid fa-gear nav-icon"></i>
+                        <p>{{ __('Settings') }}<i class="right fas fa-angle-left"></i></p>
+                    </a>
 
-                <ul class="nav nav-treeview">
-                    <li class="nav-item {{ 'changeprofilewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                        <a href="/changeprofilewr" class="nav-link">
-                            <i class="fa-solid fa-address-card nav-icon"></i>
-                            <p>{{ __('Change Profile') }}</p>
-                        </a>
-                    </li>
-                    <li class="nav-item {{ 'karyawansettingwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                        <a href="/karyawansettingwr" class="nav-link">
-                            <i class="fa-solid fa-users-gear nav-icon"></i>
-                            <p>{{ __('Karyawan Settings') }}</p>
-                        </a>
-                    </li>
-                    @if (Auth::user()->role > 6)
+                    <ul class="nav nav-treeview">
                         <li
-                            class="nav-item {{ 'changeuserrolewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                            <a href="/changeuserrolewr" class="nav-link">
-                                <i class="fa-solid fa-user-check nav-icon"></i>
-                                <p>{{ __('Change User Role') }}</p>
+                            class="nav-item {{ 'changeprofilewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                            <a href="/changeprofilewr" class="nav-link">
+                                <i class="fa-solid fa-address-card nav-icon"></i>
+                                <p>{{ __('Change Profile') }}</p>
                             </a>
                         </li>
-                    @endif
-                </ul>
-            </li>
-
+                        <li
+                            class="nav-item {{ 'karyawansettingwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                            <a href="/karyawansettingwr" class="nav-link">
+                                <i class="fa-solid fa-users-gear nav-icon"></i>
+                                <p>{{ __('Karyawan Settings') }}</p>
+                            </a>
+                        </li>
+                        @if (Auth::user()->role > 6)
+                            <li
+                                class="nav-item {{ 'changeuserrolewr' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                                <a href="/changeuserrolewr" class="nav-link">
+                                    <i class="fa-solid fa-user-check nav-icon"></i>
+                                    <p>{{ __('Change User Role') }}</p>
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+            @endif
 
             @if (Auth::user()->role > 7)
                 <li class="nav-item {{ 'applicantditerima' == request()->path() ? 'bg-secondary rounded' : '' }}">

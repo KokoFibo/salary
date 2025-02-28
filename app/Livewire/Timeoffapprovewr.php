@@ -252,6 +252,8 @@ class Timeoffapprovewr extends Component
     }
     public function render()
     {
+        // ini code lama 
+
         if (auth()->user()->username == 58 || auth()->user()->username == 1146) {
             $data = Timeoff::whereIn('status', ['Confirmed', 'Done'])->orderBy('id', 'desc')->paginate(5);
         } else {
@@ -260,6 +262,14 @@ class Timeoffapprovewr extends Component
             // dibawah ini utk test buat yg data 80000
             if (auth()->user()->username >= 60000) $data = Timeoff::orderBy('id', 'desc')->paginate(5);
         }
+        if (
+            $data->isEmpty()
+        ) {
+            $data = collect([]); // Mengembalikan koleksi kosong agar tidak error saat ditampilkan di view
+        }
+
+
+
         return view('livewire.timeoffapprovewr', [
             'data' => $data
         ]);

@@ -151,8 +151,8 @@ Route::middleware(['auth'])->group(function () {
 
         // Junior Admin
         Route::middleware(['JuniorAdmin'])->group(function () {
-            Route::get('/dataapplicant', DataApplicant::class);
 
+            Route::get('/dataapplicant', DataApplicant::class);
 
             Route::middleware(['Admin'])->group(function () {
 
