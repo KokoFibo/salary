@@ -97,11 +97,13 @@
                                                     <button class="btn btn-sm btn-warning"
                                                         wire:click='show({{ $d->id }})'>Show</button>
                                                 @endif
-                                                <button class="btn btn-sm btn-danger"
-                                                    wire:key="{{ $d->id }}-delete"
-                                                    wire:click='deleteConfirmation({{ $d->id }})'>Delete</button>
-                                                <button class="btn btn-sm btn-primary"
-                                                    wire:click='edit({{ $d->id }})'>Rubah Status</button>
+                                                @if (!auth()->user()->username == '8217')
+                                                    <button class="btn btn-sm btn-danger"
+                                                        wire:key="{{ $d->id }}-delete"
+                                                        wire:click='deleteConfirmation({{ $d->id }})'>Delete</button>
+                                                    <button class="btn btn-sm btn-primary"
+                                                        wire:click='edit({{ $d->id }})'>Rubah Status</button>
+                                                @endif
                                             @endif
                                         </td>
                                     </tr>

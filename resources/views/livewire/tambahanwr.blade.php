@@ -20,18 +20,16 @@
                         <span class="visually-hidden">Loading...</span>
                     </div>
                     {{-- end spinner --}}
-                    <div class="">
-                        {{-- <button wire:click="add"
-                            class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"
-                            {{ is_data_locked() ? 'disabled' : '' }}>
-                            {{ __('Add New') }}
-                        </button> --}}
-                        <a href="/addtambahan"> <button
-                                class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"
-                                {{ is_data_locked() ? 'disabled' : '' }}>
-                                {{ __('Add New') }}
-                            </button></a>
-                    </div>
+                    @if (!auth()->user()->username == '8217')
+                        <div class="">
+                            <a href="/addtambahan"> <button
+                                    class="btn btn-primary col-12 {{ is_data_locked() ? 'd-none' : '' }} nightowl-daylight"
+                                    {{ is_data_locked() ? 'disabled' : '' }}>
+                                    {{ __('Add New') }}
+                                </button></a>
+                        </div>
+                    @endif
+
                 </div>
             </div>
             @if ($modal == true)
@@ -245,15 +243,18 @@
                                                             type="button"
                                                             class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
                                                                 class="fa-regular fa-pen-to-square"></i></button> --}}
-                                                        <a href="/updatetambahan/{{ $d->id }}"><button
+                                                        @if (!auth()->user()->username == '8217')
+                                                            <a href="/updatetambahan/{{ $d->id }}"><button
+                                                                    type="button"
+                                                                    class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
+                                                                        class="fa-regular fa-pen-to-square"></i></button></a>
+                                                            <button
+                                                                wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE""
+                                                                wire:click="delete({{ $d->id }})"
                                                                 type="button"
-                                                                class="btn btn-warning btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
-                                                                    class="fa-regular fa-pen-to-square"></i></button></a>
-                                                        <button
-                                                            wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE""
-                                                            wire:click="delete({{ $d->id }})" type="button"
-                                                            class="btn btn-danger btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
-                                                                class="fa-solid fa-trash-can"></i></button>
+                                                                class="btn btn-danger btn-sm {{ is_data_locked() ? 'd-none' : '' }}"><i
+                                                                    class="fa-solid fa-trash-can"></i></button>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             </td>
