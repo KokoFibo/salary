@@ -143,27 +143,27 @@
                     <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
 
                     @php
-                        if ($d->metode_penggajian == 'Perjam') {
-                            $gaji_bulan_ini = total_gaji_perjam($d->gaji_pokok, $d->jam_kerja);
-                        } else {
-                            $gaji_bulan_ini = total_gaji_bulanan(
-                                $d->gaji_pokok,
-                                $d->hari_kerja,
-                                $total_n_hari_kerja,
-                                $jumlah_libur_nasional,
-                                $d->date,
-                                $d->id_karyawan,
-                                $d->status_karyawan,
-                            );
-                        }
-                        if ($d->gaji_pokok != 0) {
-                            // $gaji_bpjs_adjust = $d->gaji_bpjs * $total_gaji_sebelum_tax / $d->gaji_pokok;
-                            $gaji_bpjs_adjust = ($d->gaji_bpjs * $gaji_bulan_ini) / $d->gaji_pokok;
-                        } else {
-                            // Handle the case where gaji_pokok is zero (e.g., log an error or assign a default value)
-                            $gaji_bpjs_adjust = 0; // or another fallback value
-                            error_log('Division by zero error: gaji_pokok is zero for karyawan ID: ' . $d->id);
-                        }
+                        // if ($d->metode_penggajian == 'Perjam') {
+                        //     $gaji_bulan_ini = total_gaji_perjam($d->gaji_pokok, $d->jam_kerja);
+                        // } else {
+                        //     $gaji_bulan_ini = total_gaji_bulanan(
+                        //         $d->gaji_pokok,
+                        //         $d->hari_kerja,
+                        //         $total_n_hari_kerja,
+                        //         $jumlah_libur_nasional,
+                        //         $d->date,
+                        //         $d->id_karyawan,
+                        //         $d->status_karyawan,
+                        //     );
+                        // }
+                        // if ($d->gaji_pokok != 0) {
+                        //     // $gaji_bpjs_adjust = $d->gaji_bpjs * $total_gaji_sebelum_tax / $d->gaji_pokok;
+                        //     $gaji_bpjs_adjust = ($d->gaji_bpjs * $gaji_bulan_ini) / $d->gaji_pokok;
+                        // } else {
+                        //     // Handle the case where gaji_pokok is zero (e.g., log an error or assign a default value)
+                        //     $gaji_bpjs_adjust = 0; // or another fallback value
+                        //     error_log('Division by zero error: gaji_pokok is zero for karyawan ID: ' . $d->id);
+                        // }
 
                         if ($d->gaji_bpjs >= 12000000) {
                             $gaji_bpjs_max = 12000000;
@@ -208,7 +208,7 @@
 
                         $total_tax = 0;
                         $total_tax =
-                            $gaji_bpjs_adjust +
+                            $d->bpjs_adjustment +
                             // $d->gaji_bpjs +
                             $jkk_company +
                             $jkm_company +
@@ -247,7 +247,7 @@
                         }
 
                         $rate_pph21 = get_rate_ter_pph21($d->ptkp, $total_tax);
-                        $pph21 = ($total_tax * $rate_pph21) / 100;
+                        // $pph21 = ($total_tax * $rate_pph21) / 100;
                         // if ($d->id_karyawan == 1662) {
                         //     dd(
                         //         $total_tax,
@@ -271,7 +271,8 @@
                     @else
                         <td style="text-align: right"> {{ $d->gaji_pokok / $total_n_hari_kerja }}</td>
                     @endif
-                    <td style="text-align: right"> {{ $gaji_bulan_ini }}</td>
+                    {{-- <td style="text-align: right"> {{ $gaji_bulan_ini }}</td> --}}
+                    <td style="text-align: right"> {{ $d->gaji_bulan_ini }}</td>
                     <td style="text-align: right"> {{ $d->gaji_lembur }}</td>
                     <td style="text-align: right"> {{ $d->gaji_lembur * $d->jam_lembur }}</td>
                     <td style="text-align: right"> {{ $d->gaji_libur }}</td>
@@ -287,7 +288,7 @@
                     <td style="text-align: center"> {{ $d->status_karyawan }}</td>
 
 
-                    <td style="text-align: right"> {{ $gaji_bpjs_adjust }}</td>
+                    <td style="text-align: right"> {{ $d->bpjs_adjustment }}</td>
                     <td style="text-align: right"> {{ $d->gaji_bpjs }}</td>
                     <td style="text-align: right"> {{ $d->jht }}</td>
                     <td style="text-align: right"> {{ $d->jp }}</td>
@@ -343,8 +344,7 @@
                     <td style="text-align: right"> {{ $d->ptkp }}</td>
                     <td style="text-align: right"> {{ $ter }}</td>
                     <td style="text-align: right"> {{ $rate_pph21 }}</td>
-                    {{-- <td style="text-align: right"> {{ $d->pph21 }}</td> --}}
-                    <td style="text-align: right"> {{ $pph21 }}</td>
+                    <td style="text-align: right"> {{ $d->pph21 }}</td>
 
                     <td style="text-align: right"> {{ no_npwp($d->id_karyawan) }}</td>
                     <td style="text-align: right"> {{ $d->total }}</td>
