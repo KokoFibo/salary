@@ -114,7 +114,7 @@ function total_gaji_bulanan(
     $month = date('m', strtotime($date));
     $year = date('Y', strtotime($date));
     $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)->whereYear('tanggal_mulai_hari_libur', $year)->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
-    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24,  26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 800, 900, 5576, 6566, 7511, 6576, 6577, 6578, 6579, 8127]; //TKA hanya 3 no didepan
+    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24,  26,  28, 29, 30, 31, 32, 33, 34, 35, 800, 5576, 6566, 7511, 6576, 6577, 6578, 6579, 8127]; //TKA hanya 3 no didepan
 
     $gajiPerHari = $gaji_pokok / $total_n_hari_kerja;
 
