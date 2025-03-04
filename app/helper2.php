@@ -790,7 +790,7 @@ function build_payroll($month, $year)
 
 
 
-        // $pph21_lama = $kb->pph21;
+        // $pph21_lama = $kb->pph21;'total'ok5
         // $pph21simple = hitung_pph21_simple($total_bpjs_company, $kb->ptkp, $kb->gaji_bpjs);
         // $total_lama = $kb->total;
         // $kb->pph21 = $pph21simple;
