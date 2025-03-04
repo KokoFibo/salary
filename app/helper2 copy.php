@@ -485,9 +485,9 @@ function build_payroll($month, $year)
 
 
 
-        // $total_bpjs = $data->karyawan->gaji_bpjs +
-        $total_bpjs = $gaji_bpjs_adjust +
-
+        // $total_tax = $data->karyawan->gaji_bpjs +
+        $total_tax =
+            $gaji_bpjs_adjust +
             $jkk_company +
             $jkm_company +
             $kesehatan_company +
@@ -497,12 +497,13 @@ function build_payroll($month, $year)
 
 
         // if ($data->karyawan->id_karyawan  == 5794) {
-        //     dd($total_bpjs);
+        //     dd($total_tax);
         // }
 
         if ($data->karyawan->metode_penggajian == '') {
             dd('metode penggajian belum diisi', $data->karyawan->id_karyawan);
         }
+        $total = $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen - $pph21;
 
         Payroll::create([
             'jp' => $jp,
@@ -560,13 +561,14 @@ function build_payroll($month, $year)
             'subtotal' => $subtotal,
             'date' => buatTanggal($data->date),
             'pph21' => $pph21,
-            'total' => $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen - $pph21,
-            'total_bpjs' => $total_bpjs,
+
+            'total' => $total,
+            'total_bpjs' => $total_tax,
             // 'created_at' => now()->toDateTimeString(),
             // 'updated_at' => now()->toDateTimeString()
         ]);
         // if ($data->karyawan->id_karyawan == 1662) {
-        //     dd('t', $total_bpjs);
+        //     dd('t', $total_tax, $total);
         // }
     }
 
@@ -576,7 +578,7 @@ function build_payroll($month, $year)
     // }
 
     // dd('payroll done');
-    // ok 3
+    // ok3
     // Bonus dan Potongan
 
     $bonus = 0;
@@ -588,119 +590,229 @@ function build_payroll($month, $year)
         ->get();
 
     foreach ($bonuspotongan as $d) {
-        $all_bonus = $d->uang_makan + $d->bonus_lain;
-        $all_potongan = $d->baju_esd + $d->gelas + $d->sandal + $d->seragam + $d->sport_bra + $d->hijab_instan + $d->id_card_hilang + $d->masker_hijau + $d->potongan_lain;
-        $id_payroll = Payroll::whereMonth('date', $month)
+        // Pastikan setiap nilai tidak null
+        $all_bonus = ($d->uang_makan ?? 0) + ($d->bonus_lain ?? 0);
+        $all_potongan =
+            ($d->baju_esd ?? 0) + ($d->gelas ?? 0) + ($d->sandal ?? 0) +
+            ($d->seragam ?? 0) + ($d->sport_bra ?? 0) + ($d->hijab_instan ?? 0) +
+            ($d->id_card_hilang ?? 0) + ($d->masker_hijau ?? 0) + ($d->potongan_lain ?? 0);
+
+        $payroll = Payroll::whereMonth('date', $month)
             ->whereYear('date', $year)
             ->where('id_karyawan', $d->user_id)
             ->first();
-        if ($id_payroll != null) {
-            $payroll = Payroll::find($id_payroll->id);
-            $payroll->bonus1x = $payroll->bonus1x + $all_bonus;
-            $payroll->potongan1x = $payroll->potongan1x + $all_potongan;
-            $payroll->total = $payroll->total + $all_bonus - $all_potongan;
-            $payroll->total_bpjs = $payroll->total_bpjs + $payroll->bonus1x;
-            $payroll->save();
-            // if ($payroll->id_karyawan  == 5794) {
-            //     dd(
-            //         $payroll->total_bpjs,
-            //         $payroll->bonus1x
-            //     );
+
+        if ($payroll) {
+            $bonus1x_new = $payroll->bonus1x + $all_bonus;
+            $potongan1x_new = $payroll->potongan1x + $all_potongan;
+            $total_new = $payroll->total + $all_bonus - $all_potongan;
+            $total_bpjs_new = $payroll->total_bpjs + $bonus1x_new;
+
+            // Update payroll langsung
+            $payroll->update([
+                'bonus1x' => $bonus1x_new,
+                'potongan1x' => $potongan1x_new,
+                'total' => $total_new,
+                'total_bpjs' => $total_bpjs_new,
+            ]);;
             // }
         }
     }
 
-    // hitung ulang PPH21 utk karyawan bulanan yang ada bonus tambahan
 
-    // $karyawanWithBonus = Payroll::whereMonth('date', $month)
-    //     ->whereYear('date', $year)
-    //     ->where('bonus1x', '>', 0)->get();
+    // foreach ($bonuspotongan as $d) {
+    //     $all_bonus = $d->uang_makan + $d->bonus_lain;
+    //     $all_potongan = $d->baju_esd + $d->gelas + $d->sandal + $d->seragam + $d->sport_bra + $d->hijab_instan + $d->id_card_hilang + $d->masker_hijau + $d->potongan_lain;
+    //     $id_payroll = Payroll::whereMonth('date', $month)
+    //         ->whereYear('date', $year)
+    //         ->where('id_karyawan', $d->user_id)
+    //         ->first();
+    //     if ($id_payroll != null) {
+    //         $payroll = Payroll::find($id_payroll->id);
+    //         $payroll->bonus1x = $payroll->bonus1x + $all_bonus;
+    //         $payroll->potongan1x = $payroll->potongan1x + $all_potongan;
+    //         $payroll->total = $payroll->total + $all_bonus - $all_potongan;
+    //         $payroll->total_bpjs = $payroll->total_bpjs + $payroll->bonus1x;
+    //         $payroll->save();
 
-    // foreach ($karyawanWithBonus as $kb) {
-
-    //     $total_bpjs_company = 0;
-    //     $total_bpjs_lama = $kb->total_bpjs;
-    //     $total_bpjs_company = $total_bpjs_lama;
-
-    //     // kore
-
-    //     if ($kb->metode_penggajian == "Perjam") {
-    //         $gaji_bulan_ini = total_gaji_perjam($kb->gaji_pokok, $data->jumlah_jam_kerja);
-    //     } else {
-    //         $gaji_bulan_ini = total_gaji_bulanan(
-    //             $kb->gaji_pokok,
-    //             $kb->total_hari_kerja,
-    //             $total_n_hari_kerja,
-    //             $kb->jumlah_libur_nasional,
-    //             $kb->date,
-    //             $kb->id_karyawan,
-    //             $kb->status_karyawan
-    //         );
+    //         if ($payroll->id_karyawan == 1662) dd('total tax: ', $payroll->total_bpjs, $payroll->total_bpjs, $payroll->bonus1x);
+    //         // if ($payroll->id_karyawan  == 5794) {
+    //         //     dd(
+    //         //         $payroll->total_bpjs,
+    //         //         $payroll->bonus1x
+    //         //     );
+    //         // }
     //     }
-    //     // if ($kb->id_karyawan == 1662) {
-    //     //     dd(
-    //     //         'gaji bulan ini 1',
-    //     //         $gaji_bulan_ini,
-    //     //         $kb->gaji_pokok,
-    //     //         $kb->hari_kerja,
-    //     //         $total_n_hari_kerja,
-    //     //         $jumlah_libur_nasional,
-    //     //         $kb->date,
-    //     //         $kb->id_karyawan,
-    //     //         $kb->status_karyawan
-    //     //     );
-    //     // }
-
-
-    //     if ($kb->gaji_pokok != 0) {
-    //         $gaji_bpjs_adjust = $kb->gaji_bpjs * $gaji_bulan_ini / $kb->gaji_pokok;
-    //     } else {
-    //         // Handle the case where gaji_pokok is zero (e.g., log an error or assign a default value)
-    //         $gaji_bpjs_adjust = 0; // or another fallback value
-    //         error_log("Division by zero error: gaji_pokok is zero for karyawan ID: " . $kb->id);
-    //     }
-
-    //     $total_bpjs_company =
-    //         $gaji_bpjs_adjust +
-    //         // $d->gaji_bpjs +
-    //         $kb->jkk_company +
-    //         $kb->jkm_company +
-    //         $kb->kesehatan_company +
-    //         $kb->gaji_lembur * $kb->jam_lembur +
-    //         $kb->gaji_libur +
-    //         $kb->bonus1x +
-    //         $kb->tambahan_shift_malam;
-
-    //     if ($kb->id_karyawan == 1662) {
-    //         dd(
-    //             $gaji_bulan_ini,
-    //             $gaji_bpjs_adjust,
-    //             $kb->jkk_company,
-    //             $kb->jkm_company,
-    //             $kb->kesehatan_company,
-    //             $kb->gaji_lembur * $kb->jam_lembur,
-    //             $kb->gaji_libur,
-    //             $kb->bonus1x,
-    //             $kb->tambahan_shift_malam
-    //         );
-    //     }
-    //     $pph21_lama = $kb->pph21;
-    //     $pph21simple = hitung_pph21_simple($total_bpjs_company, $kb->ptkp, $kb->gaji_bpjs);
-    //     $total_lama = $kb->total;
-    //     $kb->pph21 = $pph21simple;
-    //     $kb->total = $total_lama + $pph21_lama - $pph21simple;
-    //     $kb->total_bpjs = $total_bpjs_company;
-    //     $kb->save();
-
-
-
-    //     // if ($kb->id_karyawan == 5794) {
-    //     //     dd($kb->total_bpjs);
-    //     // }
     // }
 
 
-    // ok 4
+
+
+    //  ok4
+    // hitung ulang PPH21 utk karyawan bulanan yang ada bonus tambahan
+
+    $karyawanWithBonus = Payroll::whereMonth('date', $month)
+        ->whereYear('date', $year)
+        ->where('bonus1x', '>', 0)->get();
+
+    foreach ($karyawanWithBonus as $kb) {
+
+        $total_bpjs_company = 0;
+        $total_bpjs_lama = $kb->total_bpjs;
+        $total_bpjs_company = $total_bpjs_lama;
+
+        // kore
+
+        if ($kb->metode_penggajian == "Perjam") {
+            $gaji_bulan_ini = total_gaji_perjam($kb->gaji_pokok, $data->jumlah_jam_kerja);
+        } else {
+
+            $gaji_bulan_ini = total_gaji_bulanan(
+                $kb->gaji_pokok,
+                $kb->hari_kerja,
+                $total_n_hari_kerja,
+                $jumlah_libur_nasional,
+                $kb->date,
+                $kb->id_karyawan,
+                $kb->status_karyawan
+            );
+        }
+        // if ($kb->id_karyawan == 1662) {
+        //     dd(
+        //         'gaji bulan ini 1',
+        //         $gaji_bulan_ini,
+        //         $kb->gaji_pokok,
+        //         $kb->hari_kerja,
+        //         $total_n_hari_kerja,
+        //         $jumlah_libur_nasional,
+        //         $kb->date,
+        //         $kb->id_karyawan,
+        //         $kb->status_karyawan
+        //     );
+        // }
+
+
+        if ($kb->gaji_pokok != 0) {
+            $gaji_bpjs_adjust = $kb->gaji_bpjs * $gaji_bulan_ini / $kb->gaji_pokok;
+        } else {
+            // Handle the case where gaji_pokok is zero (e.g., log an error or assign a default value)
+            $gaji_bpjs_adjust = 0; // or another fallback value
+            error_log("Division by zero error: gaji_pokok is zero for karyawan ID: " . $kb->id);
+        }
+        // perhitung jkk jkm kesehatan
+
+        $data_karyawan = Karyawan::where('id_karyawan', $kb->id_karyawan)->first();
+
+        if (
+            $data_karyawan->potongan_kesehatan != 0
+        ) {
+            $kesehatan_company = ($gaji_bpjs_max * 4) / 100;
+        } else {
+            $kesehatan_company = 0;
+        }
+
+        if ($data_karyawan->potongan_JKK) {
+            $jkk_company = ($data_karyawan->gaji_bpjs * 0.24) / 100;
+        } else {
+            $jkk_company = 0;
+        }
+
+        if ($data_karyawan->potongan_JKM) {
+            $jkm_company = ($data_karyawan->gaji_bpjs * 0.3) / 100;
+        } else {
+            $jkm_company = 0;
+        }
+
+        // perhitung jkk jkm end
+
+
+        $total_bpjs_company =
+            $gaji_bpjs_adjust +
+            // $d->gaji_bpjs +
+            $jkk_company +
+            $jkm_company +
+            $kb->kesehatan_company +
+            $kb->gaji_lembur * $kb->jam_lembur +
+            $kb->gaji_libur +
+            $kb->bonus1x +
+            $kb->tambahan_shift_malam;
+
+        // if ($kb->id_karyawan == 1662) {
+        //     dd(
+        //         $gaji_bulan_ini,
+        //         $gaji_bpjs_adjust,
+        //         $jkk_company,
+        //         $jkm_company,
+        //         $kb->kesehatan_company,
+        //         $kb->gaji_lembur * $kb->jam_lembur,
+        //         $kb->gaji_libur,
+        //         $kb->bonus1x,
+        //         $kb->tambahan_shift_malam,
+        //         $total_bpjs_company
+        //     );
+        // }
+        // if ($kb->id_karyawan == 1662) {
+        //     dd(
+        //         'data pph',
+        //         $gaji_bpjs_adjust,
+        //         $data_karyawan->ptkp,
+        //         $data_karyawan->potongan_JHT,
+        //         $data_karyawan->potongan_JP,
+        //         $data_karyawan->potongan_JKK,
+        //         $data_karyawan->potongan_JKM,
+        //         $data_karyawan->potongan_kesehatan,
+        //         $total_gaji_lembur,
+        //         $gaji_libur,
+        //         $kb->bonus1x,
+        //         $kb->tambahan_shift_malam
+        //     );
+        // }
+        $pph21_bonus = hitung_pph21(
+            // $data->karyawan->gaji_bpjs,
+            $gaji_bpjs_adjust,
+            $data->karyawan->ptkp,
+            $data->karyawan->potongan_JHT,
+            $data->karyawan->potongan_JP,
+            $data->karyawan->potongan_JKK,
+            $data->karyawan->potongan_JKM,
+            $data->karyawan->potongan_kesehatan,
+            $total_gaji_lembur,
+            $gaji_libur,
+            $kb->bonus1x,
+            $kb->tambahan_shift_malam
+        );
+
+
+
+
+
+        // $pph21_lama = $kb->pph21;
+        // $pph21simple = hitung_pph21_simple($total_bpjs_company, $kb->ptkp, $kb->gaji_bpjs);
+        // $total_lama = $kb->total;
+        // $kb->pph21 = $pph21simple;
+        // $kb->total = $total_lama + $pph21_lama - $pph21simple;
+        // $kb->total_bpjs = $total_bpjs_company;
+        $pph21_lama = $kb->pph21;
+        $total_lama = $kb->total;
+
+        $kb->pph21 = $pph21_bonus;
+        $kb->total = $total_lama + $pph21_lama - $pph21_bonus;
+        $kb->total_bpjs = $total_bpjs_company;
+        $kb->save();
+        // if ($kb->id_karyawan == 1662) {
+
+        //     dd('final', $total_bpjs_company, $pph21_lama, $pph21_bonus);
+        // }
+
+
+
+        // if ($kb->id_karyawan == 5794) {
+        //     dd($kb->total_bpjs);
+        // }
+    }
+
+
+    // ok5
     // perhitungan untuk karyawan yg resign sebelum 3 bulan
 
     $data = Karyawan::where('tanggal_resigned', '!=', null)
@@ -737,7 +849,7 @@ function build_payroll($month, $year)
         }
     }
 
-    // ok 5
+    // ok 6
     //  Zheng Guixin 1
     // Eddy Chan 2
     // Yang Xiwen 3
@@ -855,7 +967,7 @@ function build_payroll($month, $year)
 
 
 
-        $total_bpjs = $gaji_bpjs_adjust + $jkk_company + $jkm_company + $kesehatan_company;
+        $total_tax = $gaji_bpjs_adjust + $jkk_company + $jkm_company + $kesehatan_company;
 
 
 
@@ -910,7 +1022,7 @@ function build_payroll($month, $year)
             $data->hari_kerja = $total_n_hari_kerja - $jumlah_libur_nasional;
             $data->jam_kerja = 0;
             $data->jam_lembur = 0;
-            $data->total_bpjs = $total_bpjs;
+            $data->total_bpjs = $total_tax;
             $data->save();
         } else {
 
@@ -949,8 +1061,8 @@ function build_payroll($month, $year)
             $data->hari_kerja = $total_n_hari_kerja - $jumlah_libur_nasional;
             $data->jam_kerja = 0;
             $data->jam_lembur = 0;
-            $data->total_bpjs = $total_bpjs;
-            // dd($total_bpjs, $data_karyawan->id_karyawan);
+            $data->total_bpjs = $total_tax;
+            // dd($total_tax, $data_karyawan->id_karyawan);
             $data->save();
         }
     }
