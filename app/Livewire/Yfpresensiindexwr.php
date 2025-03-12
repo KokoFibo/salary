@@ -60,6 +60,9 @@ class Yfpresensiindexwr extends Component
     public $lock_presensi;
     public $data_kosong;
     public $is_noscan, $is_kosong;
+
+
+
     public $totalHadir, $totalHadirPagi, $overallNoScan, $totalNoScan;
     public $totalNoScanPagi, $totalLate, $totalLatePagi, $overtime, $overtimePagi, $absensiKosong;
 
@@ -244,13 +247,6 @@ class Yfpresensiindexwr extends Component
                     $tgl = tgl_doang($d->date);
                     $jam_kerja = hitung_jam_kerja($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->late, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
                     $terlambat = late_check_jam_kerja_only($d->first_in, $d->first_out, $d->second_in, $d->second_out, $d->shift, $d->date, $d->karyawan->jabatan_id, get_placement($d->user_id));
-                    //evaluasi ini
-                    // if ($d->karyawan->jabatan_id === 17) {
-                    //     $jam_kerja = ($terlambat >= 6) ? 0.5 : $jam_kerja;
-                    // }
-                    // if ($d->user_id == '2610' && $d->date == '2024-03-31') {
-                    //     dd($jam_kerja, $terlambat);
-                    // }
 
                     $langsungLembur = langsungLembur($d->second_out, $d->date, $d->shift, $d->karyawan->jabatan_id, $d->karyawan->placement_id);
                     if (is_sunday($d->date)) {
@@ -445,6 +441,7 @@ class Yfpresensiindexwr extends Component
         $data->late = late_check_detail($this->first_in, $this->first_out, $this->second_in, $this->second_out, $this->overtime_in, $this->shift, $this->date, $this->late_user_id);
         $data->late_history = $data->late;
 
+        // jadwal puasa
         // dd($data->late);
         // ================================
         $is_saturday = is_saturday($data->date);
@@ -485,6 +482,23 @@ class Yfpresensiindexwr extends Component
                 }
             }
         }
+        $dataKaryawan = Karyawan::where('id_karyawan', $data->user_id)->first();
+        $hasil = saveDetail($data->user_id, $data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->late, $data->shift, $data->date, $dataKaryawan->jabatan_id, $data->no_scan, $dataKaryawan->placement_id, $data->overtime_in, $data->overtime_out);
+        // dd($hasil['jam_kerja']);
+        $data->total_hari_kerja = 0;
+        $data->total_jam_kerja = 0;
+        $data->total_jam_lembur = 0;
+
+        if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] > 4) {
+            $data->total_hari_kerja = 1;
+        }
+
+        if (isset($hasil['jam_kerja'])) {
+            $data->total_jam_kerja = $hasil['jam_kerja'];
+        }
+        if (isset($hasil['jam_lembur'])) {
+            $data->total_jam_lembur = $hasil['jam_lembur'];
+        }
 
         $data->save();
         $this->btnEdit = true;
@@ -519,7 +533,6 @@ class Yfpresensiindexwr extends Component
     public function render()
     {
 
-
         // $this->tanggal = date( 'Y-m-d', strtotime( $this->tanggal ) );
 
         if ($this->tanggal == null) {
@@ -549,7 +562,7 @@ class Yfpresensiindexwr extends Component
 
 
 
-        // fil
+        // fill
 
         if ($this->is_noscan) {
             $datas = Yfrekappresensi::select(['yfrekappresensis.*', 'karyawans.nama', 'karyawans.department_id', 'karyawans.jabatan_id'])
@@ -586,9 +599,6 @@ class Yfpresensiindexwr extends Component
                         ->whereMonth('date', $this->bulan)
                         ->whereYear('date', $this->tahun);
                 })
-
-
-
                 ->where(function ($query) {
                     $query->when($this->search, function ($subQuery) {
                         $subQuery
@@ -608,12 +618,8 @@ class Yfpresensiindexwr extends Component
                 ->paginate($this->perpage);
         }
 
-        // dd($datas[0]->user_id);
-        // $this->is_noscan = false;
-
         return view('livewire.yfpresensiindexwr', compact([
             'datas'
-
         ]));
     }
 }

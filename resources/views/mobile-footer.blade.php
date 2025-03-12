@@ -26,12 +26,12 @@
                     class="fa-solid fa-circle-info"></i>
             </button></a>
     @endif
-    @if (auth()->user()->role >= 5)
-        <a wire:navigate href="adddocument"><button
-                class="{{ 'adddocument' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl"><i
-                    class="fa-solid fa-folder-plus"></i>
-            </button></a>
-    @endif
+    {{-- @if (auth()->user()->role >= 5) --}}
+    <a wire:navigate href="adddocument"><button
+            class="{{ 'adddocument' == request()->path() ? 'bg-red-500 ' : '' }} text-purple-200 px-4 py-4 rounded  text-2xl"><i
+                class="fa-solid fa-folder-plus"></i>
+        </button></a>
+    {{-- @endif --}}
 
     {{-- <div>
         <a href="{{ route('logout') }}"
