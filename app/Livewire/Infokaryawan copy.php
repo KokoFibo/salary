@@ -4,8 +4,6 @@ namespace App\Livewire;
 
 use App\Models\Karyawan;
 use App\Models\Yfrekappresensi;
-use App\Models\Applicantfile;
-
 use Livewire\Component;
 
 class Infokaryawan extends Component
@@ -24,12 +22,6 @@ class Infokaryawan extends Component
         $dirumahkan = Karyawan::where('status_karyawan', 'Dirumahkan')->count();
         $resigned = Karyawan::where('status_karyawan', 'Resigned')->count();
         $blacklist = Karyawan::where('status_karyawan', 'Blacklist')->count();
-        $data = Karyawan::whereNotNull('id_file_karyawan')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->get();
-        $karyawan_berdokumen = 0;
-        foreach ($data as $d) {
-            $applicanteFiles = Applicantfile::where('id_karyawan', $d->id_file_karyawan)->count();
-            if ($applicanteFiles > 0) $karyawan_berdokumen++;
-        }
         return view('livewire.infokaryawan', [
             'total_karyawan_aktif' => $total_karyawan_aktif,
             'total_karyawan_hadir_hari_ini' => $total_karyawan_hadir_hari_ini,
@@ -40,8 +32,6 @@ class Infokaryawan extends Component
             'dirumahkan' => $dirumahkan,
             'resigned' => $resigned,
             'blacklist' => $blacklist,
-            'karyawan_berdokumen' => $karyawan_berdokumen,
-
         ]);
     }
 }
