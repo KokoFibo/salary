@@ -25,13 +25,6 @@ use PhpOffice\PhpSpreadsheet\Reader\Exception;
 class YfpresensiController extends Controller
 {
 
-    public function clear_upload_lock()
-    {
-        $lock = Lock::find(1);
-        $lock->upload = false;
-        $lock->save();
-    }
-
     public function compare(Request $request)
     {
         dd('compare');
@@ -274,14 +267,31 @@ class YfpresensiController extends Controller
 
     public function store(Request $request)
     {
+
+        // disini
+        // $missingArray = [];
+        // $missingArray = checkNonRegisterUser();
+        // if ($missingArray != null) {
+        //     $missingUserId = null;
+        //     foreach ($missingArray as $arr) {
+        //         $missingUserId = $missingUserId . $arr['Karyawan_id'] . ', ';
+        //     }
+        //     clear_locks();
+        //     return back()->with('error', 'Ada ' . count($missingArray) . ' Id karyawan yang tidak terdaftar di Database Karyawan (' . $missingUserId . ') - Data Tidak di Upload');
+        // }
+
+
         $lock = Lock::find(1);
         if ($lock->upload) {
-            $this->clear_upload_lock();
+            // dd('$lock->upload', $lock->upload);
+            $lock->upload = false;
+            $lock->save();
             return back()->with('error', 'Mohon dicoba sebentar lagi ya');
         } else {
             $lock->upload = true;
             $lock->save();
         }
+
         Yfpresensi::query()->truncate();
 
         $request->validate([
@@ -298,8 +308,7 @@ class YfpresensiController extends Controller
         $tgl1 = trim(explode('~', $importedData->getCell('A2')->getValue())[0]);
         $tgl2 = trim(explode(':', $tgl1)[1]);
         if ($tgl != $tgl2) {
-            $this->clear_upload_lock();
-
+            clear_locks();
             return back()->with('error', 'Gagal Upload Tanggal harus dihari yang sama');
         }
         $user_id = '';
@@ -349,14 +358,11 @@ class YfpresensiController extends Controller
                     $formattedIds[] = $d['user_id'];
                 }
                 if (count($formattedIds) > 50) {
-
                     $msg = 'Data Presensi ini sudah di pernah di upload';
                 } else {
                     $msg = 'Data tidak bisa diupload karena terdapat user id yang sama: ' . implode(', ', $formattedIds);
                 }
-                $this->clear_upload_lock();
-
-
+                clear_locks();
                 return back()->with('error', $msg);
             }
         }
@@ -372,8 +378,7 @@ class YfpresensiController extends Controller
                 if ($tgl_sama->isNotEmpty()) {
                     foreach ($tgl_sama as $data) {
                         if ($user_id == $data->user_id && $time != '') {
-                            $this->clear_upload_lock();
-
+                            clear_locks();
                             return back()->with('error', 'Gagal Upload, User ID kembar : ' . $data->user_id);
                         }
                     }
@@ -387,7 +392,12 @@ class YfpresensiController extends Controller
                     $time = date('H:i', strtotime($str));
                 }
 
-
+                // Yfpresensi::create([
+                //     'user_id' => $user_id,
+                //     'date' => $tgl,
+                //     'time' => $time,
+                //     'day_number' => date('w', strtotime($tgl)),
+                // ]);
 
                 //  pakai Chunk
                 $Yfpresensidata[] = [
@@ -399,17 +409,28 @@ class YfpresensiController extends Controller
                 ];
             }
         }
-        // dd($Yfpresensidata[0]);
         try {
             foreach (array_chunk($Yfpresensidata, 200) as $item) {
                 Yfpresensi::insert($item);
             }
         } catch (\Exception $e) {
-            $this->clear_upload_lock();
-
+            clear_locks();
             return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
         }
 
+        // Check apakah ada ID yang belum terdaftar
+        // dd('stop');
+
+        // $data_id = check_id_presensi();
+        // if ($data_id != null) {
+        //     Yfpresensi::query()->truncate();
+        //     return view('no-id', [
+        //         'data_id' => $data_id
+        //     ]);
+        // }
+
+        // dd( 'ok' );
+        // mulai rekap data dari tabel Yfpresensi
 
         $data_yfpresensi = Yfpresensi::select('user_id')->get();
 
@@ -419,6 +440,8 @@ class YfpresensiController extends Controller
                 Yfpresensi::where('user_id', $dyf->user_id)->delete();
             }
         }
+        // dd('stop');
+
 
 
         $jumlahKaryawanHadir = DB::table('yfpresensis')
@@ -453,124 +476,62 @@ class YfpresensiController extends Controller
 
             // ok2 selama puasa jam kerja sabtu disamakan dengan hari biasa khusus utk YCME
             //plk
-            // if (is_puasa($kh->date) && get_placement($kh->user_id) == 'YCME') {
-            if (is_puasa($kh->date)) {
-                if ($is_saturday) {
-                    // JIKA HARI SABTU kkk
-                    if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '13:00')) {
-                        $shift = 'Pagi';
-                    } else {
-                        $shift = 'Malam';
-                    }
-                    if ($shift == 'Pagi') {
-                        // SHIFT PAGI
-                        $flag = 0;
-                        foreach ($tablePresensi as $tp) {
-                            if (Carbon::parse($tp->time)->betweenIncluded('05:30', '10:00')) {
-                                if ($first_in == '') $first_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('10:01', '12:30')) {
-                                if ($first_out == '') $first_out = $tp->time;
-                                else $second_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '14:00')) {
-                                if ($second_in == '') $second_in = $tp->time;
-                                // perubahan second_out dan overtime_in yg tidak terdeteksi,  untuk jam kerja sabtu 
-                                // } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '17:30')) {
-                                //     $second_out = $tp->time;
-
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '16:59') && $second_out == null) {
-                                $second_out = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '18:59') && $second_out != null) {
-                                $overtime_in = $tp->time;
-                            } else {
-                                $overtime_out = $tp->time;
-                            }
-                        }
-                    }
-                    if ($shift == 'Malam') {
-                        foreach ($tablePresensi as $tp) {
-                            switch ($tp->time) {
-                                case Carbon::parse($tp->time)->betweenIncluded('15:00', '20:00'):
-                                    if ($first_in == '') $first_in = $tp->time;
-                                    break;
-                                case Carbon::parse($tp->time)->betweenIncluded('17:01', '19:30'):
-                                    if ($first_out == null) {
-                                        $first_out = $tp->time;
-                                    } else {
-                                        $second_in = $tp->time;
-                                    }
-                                    break;
-                                case Carbon::parse($tp->time)->betweenIncluded('17:30', '19:30'):
-                                    if ($second_in == '') $second_in = $tp->time;
-                                    break;
-
-                                default:
-                                    $second_out = $tp->time;
-                                    break;
-                            }
-                        }
-                    }
-                    if ($shift == 'Pagi') {
-                        if ($second_out == null && $overtime_out == null && $overtime_in != null) {
-                            $second_out = $overtime_in;
-                            $overtime_in = null;
-                        }
-                        if ($second_out == null && $overtime_in == null && $overtime_out != null) {
-                            $second_out = $overtime_out;
-                            $overtime_out = null;
-                        }
-                    }
+            if (is_puasa($kh->date) && get_placement($kh->user_id) == 'YCME') {
+                // JIKA BUKAN HARI SABTU
+                if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '15:00')) {
+                    $shift = 'Pagi';
                 } else {
-                    // JIKA BUKAN HARI SABTU
-                    if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '15:00')) {
-                        $shift = 'Pagi';
-                    } else {
-                        $shift = 'Malam';
-                    }
+                    $shift = 'Malam';
+                }
 
-                    if ($shift == 'Pagi') {
-                        // SHIFT PAGI
-                        $flag = 0;
-                        foreach ($tablePresensi as $tp) {
-                            if (Carbon::parse($tp->time)->betweenIncluded('05:30', '10:00')) {
-                                if ($first_in == '') $first_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('10:01', '12:30')) {
-                                if ($first_out == '') $first_out = $tp->time;
-                                else $second_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '15:00')) {
-                                $second_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:59') && $second_out == null) {
-                                $second_out = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '18:59') && $second_out != null) {
-                                $overtime_in = $tp->time;
-                            } else {
-                                $overtime_out = $tp->time;
-                            }
+                if ($shift == 'Pagi') {
+                    // SHIFT PAGI
+                    $flag = 0;
+                    foreach ($tablePresensi as $tp) {
+                        if (Carbon::parse($tp->time)->betweenIncluded('05:30', '10:00')) {
+                            if ($first_in == '') $first_in = $tp->time;
+                        } elseif (Carbon::parse($tp->time)->betweenIncluded('10:01', '12:30')) {
+                            if ($first_out == '') $first_out = $tp->time;
+                            else $second_in = $tp->time;
+                            // if ($flag == 0) {
+                            //     $first_out = $tp->time;
+                            //     if (Carbon::parse($tp->time)->betweenIncluded('10:01', '11:59')) {
+                            //         $flag = 1;
+                            //     } else {
+                            //         $flag = 2;
+                            //     }
+                            // }
+                            // if ($flag == 1) {
+                            //     $second_in = $tp->time;
+                            // }
+                        } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '15:00')) {
+                            if ($second_in == '') $second_in = $tp->time;
+                        } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:59') && $second_out == null) {
+                            $second_out = $tp->time;
+                        } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '18:59') && $second_out != null) {
+                            $overtime_in = $tp->time;
+                        } else {
+                            // } else ( Carbon::parse( $tp->time )->betweenIncluded( '19:16', '23:00' ) ) {
+                            $overtime_out = $tp->time;
                         }
                     }
-                    // shift malam
-                    if ($shift == 'Malam') {
-                        // SHIFT Malam
-                        $flag = 0;
-                        foreach ($tablePresensi as $tp) {
-                            if (Carbon::parse($tp->time)->betweenIncluded('17:30', '22:00')) {
-                                if ($first_in == '') $first_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('01:30', '04:30')) {
-
-                                if ($first_out == '') $first_out = $tp->time;
-                                else $second_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('03:31', '04:30')) {
-                                if ($second_in == '') $second_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('04:01', '05:59') && $second_out == null) {
-                                $second_out = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '04:59') && $second_out != null) {
-                                $overtime_in = $tp->time;
-                            } else {
-                                $overtime_out = $tp->time;
-                            }
+                }
+                if ($shift == 'Malam') {
+                    // SHIFT MALAM
+                    foreach ($tablePresensi as $tp) {
+                        if (Carbon::parse($tp->time)->betweenIncluded('16:00', '22:00')) {
+                            if ($first_in == '') $first_in = $tp->time;
+                        } elseif (Carbon::parse($tp->time)->betweenIncluded('01:01', '03:15')) {
+                            $first_out = $tp->time;
+                        } elseif (Carbon::parse($tp->time)->betweenIncluded('03:16', '04:00')) {
+                            $second_in = $tp->time;
+                        } else {
+                            // } else if ( Carbon::parse( $tp->time )->betweenIncluded( '03:01', '08:30' ) ) {
+                            $second_out = $tp->time;
                         }
                     }
-
-                    // if ($shift == 'Pagi') {
+                }
+                if ($shift == 'Pagi') {
                     if ($second_out == null && $overtime_out == null && $overtime_in != null) {
                         $second_out = $overtime_in;
                         $overtime_in = null;
@@ -579,13 +540,9 @@ class YfpresensiController extends Controller
                         $second_out = $overtime_out;
                         $overtime_out = null;
                     }
-
-
-
-
-                    // }
                 }
             } else {
+
                 if ($is_saturday) {
                     // JIKA HARI SABTU kkk
                     if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '13:00')) {
@@ -744,29 +701,6 @@ class YfpresensiController extends Controller
             // if(Carbon::parse( $second_in )->betweenIncluded( '11:01', '14:00' ))   $shift = 'Pagi';
             // ook
             if ($no_scan != null) $late = null;
-            // lanjutkan
-            $hasil = saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl, $dataKaryawan->jabatan_id, $no_scan, $dataKaryawan->placement_id, $overtime_in, $overtime_out);
-            // dd($hasil['jam_kerja']);
-            $total_hari_kerja = 0;
-            $total_jam_kerja = 0;
-            $total_jam_lembur = 0;
-
-            if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] > 4) {
-                $total_hari_kerja = 1;
-            }
-
-            if (isset($hasil['jam_kerja'])) {
-                $total_jam_kerja = $hasil['jam_kerja'];
-            }
-            if (isset($hasil['jam_lembur'])) {
-                $total_jam_lembur = $hasil['jam_lembur'];
-            }
-
-            //   'tgl' => $tgl,
-            //             'jam_kerja' => $jam_kerja,
-            //             'terlambat' => $terlambat,
-            //             'jam_lembur' => $jam_lembur,
-            //             'tambahan_shift_malam' => $tambahan_shift_malam
             Yfrekappresensi::create([
                 'user_id' => $user_id,
                 'karyawan_id' => $id_karyawan,
@@ -778,10 +712,6 @@ class YfpresensiController extends Controller
                 'second_out' => $second_out,
                 'overtime_in' => $overtime_in,
                 'overtime_out' => $overtime_out,
-                'total_jam_kerja' => $total_jam_kerja,
-                'total_hari_kerja' => $total_hari_kerja,
-                'total_jam_lembur' => $total_jam_lembur,
-
                 'shift' => $shift,
                 'late' => $late,
                 'no_scan' => $no_scan,
@@ -792,9 +722,8 @@ class YfpresensiController extends Controller
 
 
         Yfpresensi::query()->truncate();
-        $this->clear_upload_lock();
-
-        return back()->with('info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data');
+        clear_locks();
+        return redirect()->back()->with('info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data');
     }
     // end
 }

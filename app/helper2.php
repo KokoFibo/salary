@@ -734,6 +734,11 @@ function build_payroll($month, $year)
         // perhitung jkk jkm kesehatan
 
         $data_karyawan = Karyawan::where('id_karyawan', $kb->id_karyawan)->first();
+        if ($data_karyawan->gaji_bpjs >= 12000000) {
+            $gaji_bpjs_max = 12000000;
+        } else {
+            $gaji_bpjs_max = $data_karyawan->gaji_bpjs;
+        }
 
         if (
             $data_karyawan->potongan_kesehatan != 0
@@ -742,6 +747,11 @@ function build_payroll($month, $year)
         } else {
             $kesehatan_company = 0;
         }
+        // if ($data_karyawan->id_karyawan == 106) dd(
+        //     $data_karyawan->potongan_kesehatan,
+        //     $kesehatan_company,
+        //     $gaji_bpjs_max
+        // );
 
         if ($data_karyawan->potongan_JKK) {
             $jkk_company = ($data_karyawan->gaji_bpjs * 0.24) / 100;
@@ -763,7 +773,8 @@ function build_payroll($month, $year)
             // $d->gaji_bpjs +
             $jkk_company +
             $jkm_company +
-            $kb->kesehatan_company +
+            // $kb->kesehatan_company +
+            $kesehatan_company +
             $kb->gaji_lembur * $kb->jam_lembur +
             $kb->gaji_libur +
             $kb->bonus1x +
@@ -787,7 +798,15 @@ function build_payroll($month, $year)
         $pph21_bonus = ($total_bpjs_company * $rate_pph21) / 100;
 
 
-
+        // if ($data_karyawan->id_karyawan == 106) dd(
+        //     $rate_pph21,
+        //     $pph21_bonus,
+        //     $total_bpjs_company,
+        //     $data_karyawan->nama,
+        //     $jkk_company,
+        //     $jkm_company,
+        //     $kb->kesehatan_company
+        // );
 
 
         // $pph21_lama = $kb->pph21;'total'ok5
