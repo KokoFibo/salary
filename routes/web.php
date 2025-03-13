@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Lock;
 use App\Livewire\Test;
 use App\Livewire\Terwr;
 use App\Models\Payroll;
@@ -192,8 +193,15 @@ Route::middleware(['auth'])->group(function () {
 
                 // YF PRESENSI
                 Route::get('/yfupload', function () {
-                    return view('yfpresensi.upload');
+                    $lock = Lock::find(1);
+                    $is_uploadable = !$lock->upload;
+                    // dd('$is_uploadable', $is_uploadable);
+                    return view('yfpresensi.upload', [
+                        'is_uploadable' => $is_uploadable
+                    ]);
                 });
+
+
                 Route::get('/yfindex', [YfpresensiController::class, 'index']);
                 Route::post('/yfstore', [YfpresensiController::class, 'store']);
                 Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi']);
