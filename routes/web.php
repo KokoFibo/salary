@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Lock;
 use App\Livewire\Test;
 use App\Livewire\Terwr;
 use App\Models\Payroll;
