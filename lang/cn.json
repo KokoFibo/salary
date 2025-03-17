@@ -90,7 +90,7 @@
     "rows perpage": "每页行数",
     "Rubah Bahasa": "切换语言",
     "Rubah Email": "更改电子邮件",
-    "Rubah Password": "更改密码",
+
     "Rubah Role Karyawan": "更改员工角色",
     "Search": "搜索",
     "Second in": "晚班签到",
@@ -397,5 +397,9 @@
     "Nama Kontak Darurat 1": "第一紧急联系人的姓名",
     "Nama Kontak Darurat 2": "第二紧急联系人的姓名",
     "Nomor HP Kontak Darurat 1": "第一紧急联系人的手机号",
-    "Nomor HP Kontak Darurat 2": "第二紧急联系人的手机号"
+    "Nomor HP Kontak Darurat 2": "第二紧急联系人的手机号",
+    "Update No Handphone": "更新手机号",
+    "Update Password": "更新密码",
+    "Update Email": "更新邮箱",
+    "Update Bahasa": "更新语言"
 }

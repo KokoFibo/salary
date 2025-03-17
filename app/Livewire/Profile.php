@@ -145,6 +145,9 @@ class Profile extends Component
         $karyawan = Karyawan::where('id_karyawan', auth()->user()->username)->first();
         $karyawan->hp = $this->handphone;
         $karyawan->save();
+        if (auth()->user()->language == 'Cn')
+            $this->dispatch('success', message: '手机号已成功更新');
+        else $this->dispatch('success', message: 'Nomor Handphone berhasil di update');
     }
 
     public function mount()
@@ -156,6 +159,10 @@ class Profile extends Component
             $this->kontak_darurat = $data->kontak_darurat;
             $this->hp1 = $data->hp1;
             $this->hp2 = $data->hp2;
+            $this->kontak_darurat = $data->kontak_darurat;
+            $this->kontak_darurat2 = $data->kontak_darurat2;
+            $this->hubungan1 = $data->hubungan1;
+            $this->hubungan2 = $data->hubungan2;
             $this->id = $data->id;
             $this->etnis = $data->etnis;
             $this->handphone = $data->hp;
