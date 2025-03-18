@@ -63,13 +63,12 @@
                             <button wire:click="reset_filter"
                                 class="btn btn-success col-12">{{ __('Refresh') }}</button>
                         </div>
-                        @if (auth()->user()->username != '8217')
-                            <div class="col-12 col-xl-3">
-                                <a href="/karyawancreate"><button class="btn btn-primary col-12"><i
-                                            class="fa-solid fa-plus"></i>
-                                        {{ __('Karyawan Baru') }}</button></a>
-                            </div>
-                        @endif
+
+                        <div class="col-12 col-xl-3">
+                            <a href="/karyawancreate"><button class="btn btn-primary col-12"><i
+                                        class="fa-solid fa-plus"></i>
+                                    {{ __('Karyawan Baru') }}</button></a>
+                        </div>
                     </div>
                 </div>
 
@@ -193,7 +192,7 @@
                                     </th>
                                 @endif
 
-                                @if (auth()->user()->role >= 6 && auth()->user()->username != '8217')
+                                @if (auth()->user()->role >= 6)
                                     <th style="width: 150px; border-style: none;">
                                         <button wire:loading.remove wire:click="excel"
                                             class="btn btn-success col-12">Excel</button>
@@ -216,7 +215,7 @@
                                         <a href="/infokaryawan">
                                             <button class="btn btn-info">Informasi</button> </a>
                                     </th>
-                                    @if (auth()->user()->role >= 6 && auth()->user()->username != '8217')
+                                    @if (auth()->user()->role >= 6)
                                         <th style="width: 150px; border-style: none;">
                                             <a href="/changeid">
                                                 <button class="btn btn-warning">Ganti ID</button> </a>
