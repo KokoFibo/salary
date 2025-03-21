@@ -129,13 +129,20 @@ class Liburnasionalwr extends Component
     public function delete($id)
     {
         $data = Liburnasional::find($id);
-        $data->delete();
+
+        if ($data) {
+            $data->delete();
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'Hari libur nasional berhasil di delete',
+            );
+        } else {
+
+            dd($id, 'ID Tidak ketemu');
+        }
         // $this->dispatch('success', message: 'Hari libur nasional berhasil di delete');
-        $this->dispatch(
-            'message',
-            type: 'success',
-            title: 'Hari libur nasional berhasil di delete',
-        );
+
     }
     public function render()
     {
