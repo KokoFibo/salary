@@ -285,10 +285,10 @@ function build_payroll($month, $year)
         //   hitung BPJS
 
         if ($data->karyawan->potongan_JP == 1) {
-            if ($data->karyawan->gaji_bpjs <= 10547400) {
+            if ($data->karyawan->gaji_bpjs <= 10042300) {
                 $jp = $data->karyawan->gaji_bpjs * 0.01;
             } else {
-                $jp = 10547400 * 0.01;
+                $jp = 10042300 * 0.01;
             }
         } else {
             $jp = 0;
@@ -443,9 +443,9 @@ function build_payroll($month, $year)
         }
 
         if (
-            $data->karyawan->gaji_bpjs >= 10547400
+            $data->karyawan->gaji_bpjs >= 10042300
         ) {
-            $gaji_jp_max = 10547400;
+            $gaji_jp_max = 10042300;
         } else {
             $gaji_jp_max = $data->karyawan->gaji_bpjs;
         }
@@ -908,10 +908,10 @@ function build_payroll($month, $year)
         $data_karyawan = Karyawan::find($data_id->id);
 
         if ($data_karyawan->potongan_JP == 1) {
-            if ($data_karyawan->gaji_bpjs <= 10547400) {
+            if ($data_karyawan->gaji_bpjs <= 10042300) {
                 $jp = $data_karyawan->gaji_bpjs * 0.01;
             } else {
-                $jp = 10547400 * 0.01;
+                $jp = 10042300 * 0.01;
             }
         } else {
             $jp = 0;
