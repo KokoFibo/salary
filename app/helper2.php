@@ -294,6 +294,7 @@ function build_payroll($month, $year)
             $jp = 0;
         }
 
+
         if ($data->karyawan->potongan_JHT == 1) {
             $jht = $data->karyawan->gaji_bpjs * 0.02;
         } else {
@@ -542,7 +543,7 @@ function build_payroll($month, $year)
         //         $pph21
         //     );
         // }
-
+        // if ($data->user_id == 7508) dd('jp: ', $jp, $data->karyawan->gaji_bpjs);
         Payroll::create([
             'jp' => $jp,
             'jht' => $jht,

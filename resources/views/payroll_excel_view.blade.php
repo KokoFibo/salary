@@ -117,7 +117,7 @@
                 <th style="text-align: center;">Rate</th>
                 <th style="text-align: center;">Pph21</th>
                 <th style="text-align: center;">No NPWP</th>
-                <th style="text-align: center;">Total</th>
+                <th style="text-align: center;">Total1</th>
 
             </tr>
         </thead>
@@ -125,6 +125,7 @@
 
             @foreach ($data as $key => $d)
                 <tr>
+
                     <td style="text-align: center"> {{ $d->id_karyawan }}</td>
                     <td> {{ $d->nama }}</td>
                     <td style="text-align: center"> {{ $d->nama_bank }}</td>
