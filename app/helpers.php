@@ -543,7 +543,7 @@ function hitung_pph21(
         if ($gaji_bpjs >= 12000000) $gaji_bpjs_kesehatan = 12000000;
         else $gaji_bpjs_kesehatan = $gaji_bpjs;
 
-        if ($gaji_bpjs >= 10042300) $gaji_jp_max = 10042300;
+        if ($gaji_bpjs >= 10547400) $gaji_jp_max = 10547400;
         else $gaji_jp_max = $gaji_bpjs;
 
         // $gaji_bpjs_max = 0;

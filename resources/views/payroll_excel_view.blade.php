@@ -171,8 +171,8 @@
                             $gaji_bpjs_max = $d->gaji_bpjs;
                         }
 
-                        if ($d->gaji_bpjs >= 10042300) {
-                            $gaji_jp_max = 10042300;
+                        if ($d->gaji_bpjs >= 10547400) {
+                            $gaji_jp_max = 10547400;
                         } else {
                             $gaji_jp_max = $d->gaji_bpjs;
                         }
