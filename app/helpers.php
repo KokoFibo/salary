@@ -204,7 +204,7 @@ function total_gaji_bulanan(
     $month = date('m', strtotime($date));
     $year = date('Y', strtotime($date));
     $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)->whereYear('tanggal_mulai_hari_libur', $year)->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
-    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24,  26,  28, 29, 30, 31, 32, 33, 34, 35, 800, 5576, 6566, 7511, 6576, 6577, 6578, 6579, 8127]; //TKA hanya 3 no didepan
+    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24,  26,  28, 29, 30, 31, 32, 33, 34, 35, 800, 5576, 6566, 7511, 6576, 6577, 6578, 6579, 8127, 7613]; //TKA hanya 3 no didepan
 
     $gajiPerHari = $gaji_pokok / $total_n_hari_kerja;
 
@@ -238,6 +238,8 @@ function total_gaji_bulanan(
         ->value('tanggal_bergabung');
 
     $manfaat_libur = manfaat_libur($month, $year, $libur, $id_karyawan, $tgl_bergabung);
+    // if ($id_karyawan == 8227) dd('manfaat', $manfaat_libur, $month, $year, $libur, $id_karyawan, $tgl_bergabung);
+    // if ($id_karyawan == 8227) dd('manfaat', $manfaat_libur, $month, $year, $libur, $id_karyawan, $tgl_bergabung);
     if ($manfaat_libur > $jumlah_libur_nasional) $manfaat_libur = $jumlah_libur_nasional;
 
     $total =  $manfaat_libur + $hari_kerja;
@@ -247,7 +249,8 @@ function total_gaji_bulanan(
     if (in_array($id_karyawan, $idKhusus)) {
         $total_gaji = $gaji_pokok;
     }
-    // if ($id_karyawan == 1662) dd('hello', $total_gaji, $gaji_pokok, $total_n_hari_kerja, $total);
+    // if ($id_karyawan == 8227) dd('hello', $total_gaji, $gaji_pokok, $total_n_hari_kerja, $total, $manfaat_libur, $hari_kerja);
+
     return $total_gaji;
 }
 
@@ -893,6 +896,10 @@ function check_storage($id_karyawan)
 
 function buat_tanggal($month, $year)
 {
+    // if ($month < 10) $month = '0' . $month;
+    // return $year . '-' . $month . '-01';
+
+    $month = (int)$month; // pastikan integer dulu
     if ($month < 10) $month = '0' . $month;
     return $year . '-' . $month . '-01';
 }
@@ -1136,9 +1143,20 @@ function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
     $is_karyawan_lama = false;
 
     $beginning_date = buat_tanggal($month, $year);
-    $is_karyawan_lama = $tgl_bergabung < $beginning_date;
+    // $tgl_bergabung = '2025-01-01';
+    // $beginning_date = '2025-03-01';
+    $is_karyawan_lama = new DateTime($tgl_bergabung) <= new DateTime($beginning_date);
 
-    if ($is_karyawan_lama) return $libur->count();
+
+
+    // if ($user_id == 8227 && $is_karyawan_lama) return $libur->count();
+
+    // lll
+    // dd(new DateTime($tgl_bergabung), new DateTime($beginning_date));
+    // if ($user_id == 8230) dd($user_id, $is_karyawan_lama, $tgl_bergabung, $beginning_date);
+    if ($is_karyawan_lama) {
+        return $libur->count();
+    }
 
 
     $manfaat_libur = 0;
@@ -1150,7 +1168,10 @@ function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
         // Check if the holiday falls on the first day of the month
         $tgl_libur_obj = Carbon::parse($tgl_libur);
 
-        if ($tgl_mulai_kerja <= $tgl_libur && $tgl_akhir_kerja >= $tgl_libur) {
+        // if ($user_id == 8230) dd($user_id, $is_karyawan_lama, $tgl_bergabung, $beginning_date, $manfaat_libur, $tgl_mulai_kerja, $tgl_akhir_kerja, $tgl_libur);
+        // if ($user_id == 8230) dd($tgl_akhir_kerja >= $tgl_libur);
+        // if ($tgl_mulai_kerja <= $tgl_libur && $tgl_akhir_kerja >= $tgl_libur) {
+        if ($tgl_mulai_kerja <= $tgl_libur) {
             $manfaat_libur++;
         }
 
@@ -1165,16 +1186,17 @@ function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
 
 
 
-    if ($is_karyawan_lama) {
+    // if ($is_karyawan_lama) {
 
-        if (($is_tgl_1 && $manfaat_libur != 0) || ($is_tgl_1 && $manfaat_libur == 0)) {
-            $manfaat_libur++;
-        }
-    }
+    //     if (($is_tgl_1 && $manfaat_libur != 0) || ($is_tgl_1 && $manfaat_libur == 0)) {
+    //         $manfaat_libur++;
+    //     }
+    // }
 
     // if (($is_tgl_1 && $manfaat_libur != 0 && $is_karyawan_lama) || ($is_tgl_1 && $manfaat_libur == 0 && $is_karyawan_lama)) {
     //     $manfaat_libur++;
     // }
+
 
 
     return $manfaat_libur;
@@ -1182,8 +1204,6 @@ function manfaat_libur($month, $year, $libur, $user_id, $tgl_bergabung)
 
 function manfaat_libur_resigned($month, $year, $libur, $user_id, $tanggal_resigned)
 {
-
-
     $manfaat_libur_resigned = 0;
 
     $tgl_resigned = Carbon::parse($tanggal_resigned);
