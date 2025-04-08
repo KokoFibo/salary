@@ -420,6 +420,7 @@ function build_payroll($month, $year)
 
             );
         }
+        // if ($data->karyawan->id_karyawan == 8227) dd($gaji_bulan_ini);
 
 
         // $total_gaji_sebelum_tax = $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen;
@@ -884,8 +885,8 @@ function build_payroll($month, $year)
 
     $idArrTKA = [1, 3, 5, 25, 6];
     $idArrTionghoa = [4, 2, 6435]; // TKA hanya 3 orang
-    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24,  26,  28, 29, 30, 31, 32, 33, 34, 35, 800,  5576, 6566, 7511, 6576, 6577, 6578, 6579, 8127]; //TKA hanya 3 no didepan
-    // update juga gaji khusus yg di helper line 84
+    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24,  26,  28, 29, 30, 31, 32, 33, 34, 35, 800,  5576, 6566, 7511, 6576, 6577, 6578, 6579, 8127, 7613]; //TKA hanya 3 no didepan
+    // update juga gaji khusus yg di helpers line 84
     foreach ($idKhusus as $id) {
         // bonus dan potongan
 
