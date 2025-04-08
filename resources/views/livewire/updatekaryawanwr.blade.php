@@ -106,15 +106,13 @@
                         </div>
                     </div>
                 </div>
-                @if (auth()->user()->username != '8217')
-                    <div class="d-flex flex-wrap gap-2 pb-3 px-3 justify-content-center" wire:loading.remove>
-                        @if ($status_karyawan != 'Resigned' && $status_karyawan != 'Blacklist')
-                            <button wire:click="update1" class="btn btn-primary">{{ __('Update') }}</button>
-                        @endif
-                @endif
+                <div class="d-flex flex-wrap gap-2 pb-3 px-3 justify-content-center" wire:loading.remove>
+                    @if (($status_karyawan != 'Resigned' && $status_karyawan != 'Blacklist') || auth()->user()->role == 8)
+                        <button wire:click="update1" class="btn btn-primary">{{ __('Update') }}</button>
+                    @endif
 
-                <button wire:click="exit" class="btn btn-dark">{{ __('Exit') }}</button>
-                @if (auth()->user()->username != '8217')
+                    <button wire:click="exit" class="btn btn-dark">{{ __('Exit') }}</button>
+                    {{-- @if (auth()->user()->username != '8217') --}}
 
                     @if (!$show_arsip)
                         @if (!$is_folder_kosong)
@@ -138,118 +136,118 @@
                         </a>
                     @endif
 
-            </div>
-            @endif
-
-        </div>
-
-
-        @if ($show_arsip)
-            <div class="card mt-3">
-                <div class="card-header">
-                    <h3>File Arsip {{ $nama }}</h3>
+                    {{-- @endif --}}
                 </div>
-                <div class="card-body">
-                    @if ($personal_files->isNotEmpty())
-                        <div class="row">
-                            @foreach ($personal_files as $key => $fn)
-                                <div class="col-12 col-md-6 col-lg-4 mb-4">
-                                    <div class="card h-100 shadow-sm">
-                                        <div class="card-body d-flex flex-column">
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <h5 class="card-title">{{ get_filename($fn->filename) }}</h5>
-                                                <div>
-                                                    <button class="btn btn-danger btn-sm"
-                                                        wire:confirm='Yakin mau di delete?'
-                                                        wire:click="deleteFile('{{ $fn->id }}')">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
+
+            </div>
+
+
+            @if ($show_arsip)
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h3>File Arsip {{ $nama }}</h3>
+                    </div>
+                    <div class="card-body">
+                        @if ($personal_files->isNotEmpty())
+                            <div class="row">
+                                @foreach ($personal_files as $key => $fn)
+                                    <div class="col-12 col-md-6 col-lg-4 mb-4">
+                                        <div class="card h-100 shadow-sm">
+                                            <div class="card-body d-flex flex-column">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h5 class="card-title">{{ get_filename($fn->filename) }}</h5>
+                                                    <div>
+                                                        <button class="btn btn-danger btn-sm"
+                                                            wire:confirm='Yakin mau di delete?'
+                                                            wire:click="deleteFile('{{ $fn->id }}')">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="flex-grow-1 text-center">
-                                                <!-- Gunakan Alpine.js untuk mengelola state -->
-                                                <img x-data="{ zoomed: false }" :class="zoomed ? 'zoomed' : ''"
-                                                    class="img-fluid rounded-4 zoomable"
-                                                    src="{{ getUrl($fn->filename) }}"
-                                                    alt="{{ get_filename($fn->filename) }}" @click="zoomed = !zoomed"
-                                                    @click.away="zoomed = false">
+                                                <div class="flex-grow-1 text-center">
+                                                    <!-- Gunakan Alpine.js untuk mengelola state -->
+                                                    <img x-data="{ zoomed: false }" :class="zoomed ? 'zoomed' : ''"
+                                                        class="img-fluid rounded-4 zoomable"
+                                                        src="{{ getUrl($fn->filename) }}"
+                                                        alt="{{ get_filename($fn->filename) }}"
+                                                        @click="zoomed = !zoomed" @click.away="zoomed = false">
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            @endforeach
-                        </div>
-                        <div class="mt-3">
-                            <button class="btn btn-success" wire:click='tutup_arsip'>Tutup File Dokumen</button>
-                        </div>
-                    @else
-                        <h3 class="text-center">File tidak ditemukan</h3>
-                    @endif
+                                @endforeach
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-success" wire:click='tutup_arsip'>Tutup File Dokumen</button>
+                            </div>
+                        @else
+                            <h3 class="text-center">File tidak ditemukan</h3>
+                        @endif
+                    </div>
                 </div>
-            </div>
-        @endif
+            @endif
+        </div>
     </div>
-</div>
-<style>
-    .zoomable {
-        cursor: pointer;
-        transition: transform 0.3s ease-in-out;
-    }
+    <style>
+        .zoomable {
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
 
-    .zoomable.zoomed {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 9999;
-        max-width: 80vw;
-        /* Maksimal 80% lebar layar */
-        max-height: 80vh;
-        /* Maksimal 80% tinggi layar */
-        width: auto;
-        /* Menjaga rasio aspek */
-        height: auto;
-        /* Menjaga rasio aspek */
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-    }
-</style>
+        .zoomable.zoomed {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            max-width: 80vw;
+            /* Maksimal 80% lebar layar */
+            max-height: 80vh;
+            /* Maksimal 80% tinggi layar */
+            width: auto;
+            /* Menjaga rasio aspek */
+            height: auto;
+            /* Menjaga rasio aspek */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+    </style>
 
-<style>
-    /* Container for the responsive image */
-    .responsive-container {
-        width: 100%;
-        max-width: 800px;
-        /* Optional: Set a max-width for the container */
-        margin: 0 auto;
-        /* Center the container */
-    }
+    <style>
+        /* Container for the responsive image */
+        .responsive-container {
+            width: 100%;
+            max-width: 800px;
+            /* Optional: Set a max-width for the container */
+            margin: 0 auto;
+            /* Center the container */
+        }
 
-    /* Make the image responsive */
-    .responsive-container img {
-        width: 100%;
-        height: auto;
-        display: block;
-        /* Remove any extra space below the image */
-    }
-</style>
-@script
-    <script>
-        window.addEventListener("show-delete-confirmation", (event) => {
-            Swal.fire({
-                title: "Yakin mau delete data?",
-                // text: "You won't be able to revert this!",
-                text: event.detail.text,
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Ya, delete",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $wire.dispatch("delete-confirmed");
-                }
+        /* Make the image responsive */
+        .responsive-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            /* Remove any extra space below the image */
+        }
+    </style>
+    @script
+        <script>
+            window.addEventListener("show-delete-confirmation", (event) => {
+                Swal.fire({
+                    title: "Yakin mau delete data?",
+                    // text: "You won't be able to revert this!",
+                    text: event.detail.text,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, delete",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $wire.dispatch("delete-confirmed");
+                    }
+                });
             });
-        });
-    </script>
-@endscript
+        </script>
+    @endscript
 </div>

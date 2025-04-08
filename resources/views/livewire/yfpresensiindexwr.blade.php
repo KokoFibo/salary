@@ -183,7 +183,9 @@
                                 <th wire:click="sortColumnName('jabatan_id')">{{ __('Jabatan') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-
+                                <th wire:click="sortColumnName('date')">{{ __('Working Date') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th>
                                 <th wire:click="sortColumnName('date')">{{ __('Jam Kerja') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
@@ -194,9 +196,7 @@
                                         class="fa-solid fa-sort"></i>
                                 </th>
 
-                                <th wire:click="sortColumnName('date')">{{ __('Working Date') }} <i
-                                        class="fa-solid fa-sort"></i>
-                                </th>
+
                                 <th wire:click="sortColumnName('first_in')">{{ __('First in') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
