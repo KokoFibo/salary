@@ -204,7 +204,7 @@ function total_gaji_bulanan(
     $month = date('m', strtotime($date));
     $year = date('Y', strtotime($date));
     $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)->whereYear('tanggal_mulai_hari_libur', $year)->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
-    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24,  26,  28, 29, 30, 31, 32, 33, 34, 35, 800, 5576, 6566, 7511, 6576, 6577, 6578, 6579, 8127, 7613]; //TKA hanya 3 no didepan
+    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24,  26,  28,  30, 31, 32, 33, 34, 35, 800, 5576, 6566, 7511, 6576, 6577, 6578, 6579, 8127, 7613, 8227, 8228, 8233, 8234, 8235]; //TKA hanya 3 no didepan
 
     $gajiPerHari = $gaji_pokok / $total_n_hari_kerja;
 
@@ -1306,6 +1306,9 @@ function is_puasa($tgl)
 
 function is_libur_nasional($tanggal)
 {
+    if ($tanggal === '2025-04-18') {
+        return false;
+    }
     $data = Liburnasional::where('tanggal_mulai_hari_libur', $tanggal)->first();
     if ($data != null) return true;
     return false;
@@ -1719,6 +1722,9 @@ function absen_kosong($first_in, $first_out, $second_in, $second_out, $overtime_
 
 function is_sunday($tgl)
 {
+    if ($tgl === '2025-04-13') {
+        return false;
+    }
     if ($tgl) {
         return Carbon::parse($tgl)->isSunday();
     }
@@ -1923,10 +1929,17 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                 if ($shift == 'Pagi') {
                     // Shift Pagi
                     if (is_saturday($tgl)) {
-                        if ($t2 < strtotime('15:30:00')) {
-                            return $lembur = 0;
+                        if ($tgl == '2025-04-18') {
+                            if ($t2 < strtotime('16:00:00')) {
+                                return $lembur = 0;
+                            }
+                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:30:00')) / 60;
+                        } else {
+                            if ($t2 < strtotime('15:30:00')) {
+                                return $lembur = 0;
+                            }
+                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:00:00')) / 60;
                         }
-                        $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:00:00')) / 60;
                     } else {
                         if ($t2 < strtotime('17:30:00')) {
                             return $lembur = 0;
@@ -2397,6 +2410,9 @@ function late_check_detail($first_in, $first_out, $second_in, $second_out, $over
     // $late3 = null;
     // $late4 = null;
     // ffff
+    if ($tgl === '2025-04-18') {
+        return $late = 0;
+    }
 
     try {
         $data_jabatan = Karyawan::where('id_karyawan', $id)->first();
@@ -3163,6 +3179,9 @@ function format_jam($jam)
 
 function is_friday($tgl)
 {
+    if ($tgl === '2025-04-18') {
+        return false;
+    }
     if ($tgl) {
         return Carbon::parse($tgl)->isFriday();
     }
@@ -3170,6 +3189,9 @@ function is_friday($tgl)
 
 function is_saturday($tgl)
 {
+    if ($tgl === '2025-04-18') {
+        return true;
+    }
     if ($tgl) {
         // if ( Carbon::parse( $tgl )->isSaturday() ) {
         //     return true;

@@ -769,6 +769,7 @@ class YfpresensiController extends Controller
             //             'terlambat' => $terlambat,
             //             'jam_lembur' => $jam_lembur,
             //             'tambahan_shift_malam' => $tambahan_shift_malam
+            if ($kh->date == '2025-04-18') $late = null;
             Yfrekappresensi::create([
                 'user_id' => $user_id,
                 'karyawan_id' => $id_karyawan,
