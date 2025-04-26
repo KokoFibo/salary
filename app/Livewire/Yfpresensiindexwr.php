@@ -500,6 +500,7 @@ class Yfpresensiindexwr extends Component
             $data->total_jam_lembur = $hasil['jam_lembur'];
         }
 
+
         $data->save();
         $this->btnEdit = true;
 
