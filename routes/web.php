@@ -238,6 +238,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/addtimeoutrequester', Timeoutrequsterwr::class);
                     Route::get('/headcount', Headcount::class);
                     // Route::get('/movedata', Movedata::class);
+                    Route::get('/data-log', DataLog::class)->name('datalog');
 
 
 
@@ -298,7 +299,6 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/deletenoscan', DeleteNoscan::class);
                             Route::get('/developer-dashboard', DeveloperDashboard::class);
                             Route::get('/jabatan', Jabatanwr::class);
-                            Route::get('/data-log', DataLog::class)->name('datalog');
                             Route::get('/changefield', ChangeField::class)->name('changefield');
                             Route::get('applicantditerima', ApplicantDiterima::class)->name('applicantditerima');
                             Route::get('/department', Departmentwr::class);
