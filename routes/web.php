@@ -24,6 +24,7 @@ use App\Livewire\Rubahidwr;
 use App\Livewire\Timeoffwr;
 use App\Livewire\AddCompany;
 use App\Livewire\BankReport;
+use App\Livewire\CreateUser;
 use App\Livewire\Karyawanwr;
 use App\Livewire\Tambahanwr;
 use App\Livewire\UserMobile;
@@ -79,6 +80,7 @@ use App\Http\Controllers\TerControler;
 use App\Http\Controllers\PphController;
 use App\Livewire\TanpaEmergencyContact;
 use App\Livewire\Gantipassworddeveloper;
+use Google\Service\DriveActivity\Create;
 use App\Http\Controllers\KviewController;
 use App\Livewire\Deleteduplicatepresensi;
 use App\Http\Controllers\LogoutController;
@@ -93,7 +95,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use Google\Service\DriveActivity\Create;
 
 // Middleware
 Auth::routes([
@@ -308,7 +309,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/movedata', Movedata::class);
                             Route::get('/deleteduplicatepresensi', Deleteduplicatepresensi::class);
                             Route::get('/cekabsensitanpaid', Checkabsensitanpaid::class);
-                            Route::get('/createuser', Createuser::class);
+                            Route::get('/createuser', CreateUser::class);
 
 
 
