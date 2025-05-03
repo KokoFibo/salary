@@ -93,6 +93,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use Google\Service\DriveActivity\Create;
 
 // Middleware
 Auth::routes([
@@ -307,7 +308,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/movedata', Movedata::class);
                             Route::get('/deleteduplicatepresensi', Deleteduplicatepresensi::class);
                             Route::get('/cekabsensitanpaid', Checkabsensitanpaid::class);
-
+                            Route::get('/createuser', Createuser::class);
 
 
 

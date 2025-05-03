@@ -7,6 +7,7 @@
         <a href="/absensikosong"><button class="btn btn-primary col-12">Data Absensi Kosong</button></a>
         <a href="/usernotfound"><button class="btn btn-primary col-12">User Not Found</button></a>
         <a href="/rubahid"><button class="btn btn-primary">Rubah ID</button></a>
+        <a href="/createuser"><button class="btn btn-primary">Create User Untuk Role</button></a>
 
 
 
