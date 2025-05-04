@@ -153,7 +153,7 @@
                                 @if ($data_bulan_ini > 0)
                                     <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
                                 @endif
-                                <option value="12">Des 2024</option>
+                                <option value="4">April 2024</option>
 
                                 {{-- jika this month gak ada maka munculkan --}}
                                 {{-- @if (!in_array(now()->month, $select_month))

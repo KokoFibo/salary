@@ -201,7 +201,6 @@ function build_payroll($month, $year)
                         $jam_kerja_libur += $jam_kerja;
                     }
 
-
                     $total_jam_kerja = $total_jam_kerja + $jam_kerja;
                     $total_jam_lembur = $total_jam_lembur + $jam_lembur;
                     $total_keterlambatan = $total_keterlambatan + $terlambat;
@@ -229,6 +228,7 @@ function build_payroll($month, $year)
 
 
 
+            // if ($d->user_id == 1020) dd($d->user_id, $jam_kerja_libur, $total_hari_kerja);
 
             if ($d->karyawan->status_karyawan != 'Blacklist') {
                 $dataArr[] = [
@@ -280,7 +280,6 @@ function build_payroll($month, $year)
         ->delete();
     foreach ($datas as $data) {
 
-        // if ($data->user_id = 40) dd($data->total_hari_kerja);
 
         //   hitung BPJS
 
@@ -365,6 +364,7 @@ function build_payroll($month, $year)
         $gaji_libur = 0;
 
         $gaji_libur = ($data->jam_kerja_libur * ($data->karyawan->gaji_pokok / 198));
+        // if ($data->user_id = 1020) dd('total hk:', $data->jam_kerja_libur, $data->karyawan->gaji_pokok, $data->karyawan->gaji_pokok / 198);
         $total_bonus_dari_karyawan = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lembur_sabtu + $data->karyawan->tunjangan_lama_kerja;
         $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker;
         $pajak = 0;
