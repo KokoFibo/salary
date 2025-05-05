@@ -362,8 +362,10 @@ function build_payroll($month, $year)
         $total_bonus_dari_karyawan = 0;
         $total_potongan_dari_karyawan = 0;
         $gaji_libur = 0;
-
-        $gaji_libur = ($data->jam_kerja_libur * ($data->karyawan->gaji_pokok / 198));
+        // lbr
+        if ($data->karyawan->etnis !=  'China') {
+            $gaji_libur = ($data->jam_kerja_libur * ($data->karyawan->gaji_pokok / 198));
+        }
         // if ($data->user_id = 1020) dd('total hk:', $data->jam_kerja_libur, $data->karyawan->gaji_pokok, $data->karyawan->gaji_pokok / 198);
         $total_bonus_dari_karyawan = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lembur_sabtu + $data->karyawan->tunjangan_lama_kerja;
         $total_potongan_dari_karyawan = $data->karyawan->iuran_air + $data->karyawan->iuran_locker;
