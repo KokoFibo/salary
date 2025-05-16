@@ -885,10 +885,15 @@ function build_payroll($month, $year)
     // Chan Kai Wan 6
 
 
-    $idArrTKA = [1, 3, 5, 25, 6];
     $idArrTionghoa = [4, 2, 6435]; // TKA hanya 3 orang
-    $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24,  26,  28, 30, 31, 32, 33, 34, 35, 800,  5576, 6566, 7511, 6576, 6577, 6578, 6579, 8127, 7613, 8227, 8228, 8233, 8234, 8235]; //TKA hanya 3 no didepan
+    // $idKhusus = [4, 2, 6435, 1, 3, 5, 6, 21, 22, 23, 24,  26,  28, 30, 31, 32, 33, 34, 35, 800,  5576, 6566, 7511, 6576, 6577, 6578, 6579, 8127, 7613, 8227, 8228, 8233, 8234, 8235]; //TKA hanya 3 no didepan
     // update juga gaji khusus yg di helpers line 84
+
+    $idKhusus = Karyawan::where('etnis', 'China')
+        ->whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
+        ->pluck('id_karyawan')
+        ->toArray();
+    $idKhusus = array_merge($idKhusus, $idArrTionghoa);
     foreach ($idKhusus as $id) {
         // bonus dan potongan
 
