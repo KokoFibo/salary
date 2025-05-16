@@ -6,6 +6,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SlipgajiController;
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\LarkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,5 @@ Route::post('store/{karyawan}', [ApiController::class, 'store']);
 Route::get('slipgaji/getdata/{id}/{month}/{year}', [SlipgajiController::class, 'getData']);
 Route::post('login', [AuthController::class, 'login']);
 Route::get('/jamKerja/{user_id}/{month}/{year}', [ApiController::class, 'getDetailJamKerjaKaryawan']);
+
+Route::get('getKaryawanById/{id}', [LarkController::class, 'getKaryawanById']);
