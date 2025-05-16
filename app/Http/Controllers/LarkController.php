@@ -24,7 +24,7 @@ class LarkController extends Controller
             'status' => true,
             'id_karyawan' => $data->id_karyawan,
             'nama' => $data->nama,
-            'gaji_pokok' => $data->gaji_pokok,
+            'status_karyawan' => $data->status_karyawan,
         ]);
     }
 }
