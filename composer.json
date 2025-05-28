@@ -44,7 +44,8 @@
             "app/helpers.php",
             "app/helper2.php",
             "app/helper3.php",
-            "app/helper4.php"
+            "app/helper4.php",
+            "app/helperBaru.php"
         ]
     },
     "autoload-dev": {

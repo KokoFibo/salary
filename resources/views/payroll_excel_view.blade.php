@@ -117,7 +117,14 @@
                 <th style="text-align: center;">Rate</th>
                 <th style="text-align: center;">Pph21</th>
                 <th style="text-align: center;">No NPWP</th>
-                <th style="text-align: center;">Total1</th>
+                <th style="text-align: center;">Total</th>
+                <th style="text-align: center; background-color: #63BDF6;">PRF Salary</th>
+                <th style="text-align: center; background-color: #63BDF6;">Other Deductions</th>
+                <th style="text-align: center; background-color: #63BDF6;">BPJS Employee</th>
+                <th style="text-align: center; background-color: #63BDF6;">PPH21</th>
+                <th style="text-align: center; background-color: #63BDF6;">Internship</th>
+                <th style="text-align: center; background-color: #63BDF6;">PRF</th>
+                <th style="text-align: center; background-color: #63BDF6;">Core Cash</th>
 
             </tr>
         </thead>
@@ -349,6 +356,13 @@
 
                     <td style="text-align: right"> {{ no_npwp($d->id_karyawan) }}</td>
                     <td style="text-align: right"> {{ $d->total }}</td>
+                    <td style="text-align: right"> {{ $d->prf_salary }}</td>
+                    <td style="text-align: right"> {{ $d->other_deduction }}</td>
+                    <td style="text-align: right"> {{ $d->bpjs_employee }}</td>
+                    <td style="text-align: right"> {{ $d->pph21 }}</td>
+                    <td style="text-align: right"> {{ $d->internship }}</td>
+                    <td style="text-align: right"> {{ $d->prf }}</td>
+                    <td style="text-align: right"> {{ $d->core_cash }}</td>
                 </tr>
             @endforeach
 

@@ -78,6 +78,12 @@ return new class extends Migration
             $table->integer('total_bpjs')->nullable();
             $table->integer('bpjs_adjustment')->nullable();
             $table->integer('gaji_bulan_ini')->nullable();
+            $table->integer('prf_salary')->nullable();
+            $table->integer('other_deduction')->nullable();
+            $table->integer('bpjs_employee')->nullable();
+            $table->integer('internship')->nullable();
+            $table->integer('prf')->nullable();
+            $table->integer('core_cash')->nullable();
 
 
             $table->timestamps();

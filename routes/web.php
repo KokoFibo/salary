@@ -95,6 +95,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
+use App\Livewire\Laporan;
 
 // Middleware
 Auth::routes([
@@ -310,6 +311,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/deleteduplicatepresensi', Deleteduplicatepresensi::class);
                             Route::get('/cekabsensitanpaid', Checkabsensitanpaid::class);
                             Route::get('/createuser', CreateUser::class);
+                            Route::get('/laporan', Laporan::class);
 
 
 
