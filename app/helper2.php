@@ -1105,6 +1105,27 @@ function build_payroll($month, $year)
 
     $current_date = Jamkerjaid::orderBy('date', 'desc')->first();
 
+    // prf
+    $data = Payroll::whereMonth('date', $month)
+        ->whereYear('date', $year)->get();
+
+    foreach ($data as $d) {
+        $total_gaji_lembur = $d->gaji_lembur * $d->jam_lembur;
+        $prf_salary = $d->tambahan_shift_malam + $total_gaji_lembur + $d->gaji_libur +  $d->bonus1x + $d->bpjs_adjustment;
+        $other_deduction = $d->potongan1x + $d->denda_lupa_absen + $d->denda_resigned + $d->tanggungan + $d->iuran_air + $d->iuran_locker;
+        $bpjs_employee = $d->jht + $d->jp + $d->kesehatan;
+        $prf = $prf_salary - $other_deduction - $bpjs_employee - $d->pph21;
+        $core_cash = $d->gaji_bulan_ini - $d->bpjs_adjustment;
+        $d->prf_salary = $prf_salary;
+        $d->other_deduction = $other_deduction;
+        $d->bpjs_employee = $bpjs_employee;
+        $d->prf = $prf;
+        $d->core_cash = $core_cash;
+
+        $d->save();
+    }
+
+
     $lock = Lock::find(1);
     $lock->rebuild_done = 1;
     $lock->save();

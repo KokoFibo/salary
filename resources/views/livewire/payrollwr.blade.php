@@ -190,16 +190,17 @@
 
                         <button wire:click="clear_lock()"
                             class="btn btn-primary nightowl-daylight">{{ __('Clear Lock') }}</button>
-                        <button wire:click="buat_payroll('noQueue')"
-                            {{ is_40_days($month, $year) == true ? 'disabled' : '' }}
+                        <button wire:click="buat_payroll('noQueue')" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild without queue') }}</button>
                     @endif
                     <a href="/ter"><button
                             class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
                     <button class="btn btn-success nightowl-daylight"
                         wire:click="bankexcel">{{ __('Report for bank') }}</button>
-                    <a href="/headcount"><button
-                            class="btn btn-warning nightowl-daylight">{{ __('Headcount') }}</button></a>
+                    {{-- <a href="/headcount"><button
+                            class="btn btn-warning nightowl-daylight">{{ __('Headcount') }}</button></a> --}}
+                    <button wire:click="excelDetailReport"
+                        class="btn btn-warning nightowl-daylight">{{ __('Detail Report') }}</button>
 
                     <button wire:click="export" class="btn btn-success nightowl-daylight">Excel</button>
 
@@ -390,9 +391,21 @@
                                         class="fa-solid fa-sort"></i></th>
                                 <th>{{ __('TER') }}</th>
 
-                                <th wire:click="sortColumnName('pph21')">{{ __('Total BPJS') }} <i
+                                <th wire:click="sortColumnName('total_bpjs')">{{ __('Total BPJS') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('bpjs_adjustment')">{{ __('BPJS Adjustment') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('pph21')">{{ __('PPh21') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('prf_salary')">{{ __('PRF Salary') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('other_deduction')">{{ __('Other Deduction') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('bpjs_employee')">{{ __('BPJS Employee') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('prf')">{{ __('PRF') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('core_cash')">{{ __('Core Cash') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('total')">{{ __('Total') }} <i
                                         class="fa-solid fa-sort"></i></th>
@@ -501,7 +514,13 @@
                                                 <td class="text-end"></td>
                                             @endif
                                             <td class="text-end">{{ number_format($p->total_bpjs) }}</td>
+                                            <td class="text-end">{{ number_format($p->bpjs_adjustment) }}</td>
                                             <td class="text-end">{{ number_format($p->pph21) }}</td>
+                                            <td class="text-end">{{ number_format($p->prf_salary) }}</td>
+                                            <td class="text-end">{{ number_format($p->other_deduction) }}</td>
+                                            <td class="text-end">{{ number_format($p->bpjs_employee) }}</td>
+                                            <td class="text-end">{{ number_format($p->prf) }}</td>
+                                            <td class="text-end">{{ number_format($p->core_cash) }}</td>
                                             <td class="text-end">{{ number_format($p->total) }}</td>
 
                                         </tr>

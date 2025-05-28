@@ -21,6 +21,7 @@ use App\Models\Yfrekappresensi;
 use App\Exports\BankReportExcel;
 use App\Exports\PlacementExport;
 use App\Exports\DepartmentExport;
+use App\Exports\ExcelDetailReport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -50,6 +51,12 @@ class Payrollwr extends Component
     public $lock_slip_gaji;
     public $lock_data;
     public $select_month, $select_year;
+
+    public function excelDetailReport()
+    {
+        $nama_file = 'Non OS Detail Report ' . nama_bulan($this->month) . ' ' . $this->year . '.xlsx';
+        return Excel::download(new ExcelDetailReport($this->month, $this->year), $nama_file);
+    }
 
     public function clear_lock()
     {

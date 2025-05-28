@@ -146,23 +146,14 @@ class Test extends Component
 
   public function render()
   {
-
-    $idArrTionghoa = [4, 2, 6435];
-    // $idKaryawan = Karyawan::where('etnis', 'China')->pluck('id_karyawan')->toArray();
-    $idKaryawan = Karyawan::where('etnis', 'China')
-      ->whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
-      ->pluck('id_karyawan')
-      ->toArray();
-    $idKaryawan = array_merge($idKaryawan, $idArrTionghoa);
-    foreach ($idKaryawan as $karyawanId) {
-      $data = Karyawan::where('id_karyawan', $karyawanId)->first();
-      // lakukan sesuatu dengan $data di sini, misalnya simpan ke array
-      // contoh:
-      $listData[] = $data;
+    dd('aman');
+    $month = 4;
+    $year = 2025;
+    $data = Payroll::whereMonth('date', $month)
+      ->whereYear('date', $year)->get();
+    foreach ($data as $d) {
+      if ($d->tanggungan > 0) dd($d->id_karyawan, $d->nama,   $d->tanggungan);
     }
-
-    dd($listData);
-
     return view('livewire.test');
   }
 }

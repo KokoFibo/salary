@@ -224,6 +224,12 @@ with font-awesome or any other icon font library -->
             </li>
 
             @if (Auth::user()->role > 7)
+                <li class="nav-item {{ 'data-log' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/laporan" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>{{ __('Laporan') }}</p>
+                    </a>
+                </li>
                 <li class="nav-item {{ 'applicantditerima' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/applicantditerima" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
