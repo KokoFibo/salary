@@ -5,6 +5,7 @@ use App\Livewire\Test;
 use App\Livewire\Terwr;
 use App\Models\Payroll;
 use App\Livewire\DataLog;
+use App\Livewire\Laporan;
 use App\Livewire\Profile;
 use App\Livewire\Rubahid;
 use App\Livewire\UserLog;
@@ -39,6 +40,7 @@ use App\Livewire\AddPlacement;
 use App\Livewire\DataResigned;
 use App\Livewire\DeleteNoscan;
 use App\Livewire\Departmentwr;
+use App\Livewire\Harikhususwr;
 use App\Livewire\Infokaryawan;
 use App\Livewire\Kenaikangaji;
 use App\Livewire\UserNotFound;
@@ -95,7 +97,6 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Livewire\Laporan;
 
 // Middleware
 Auth::routes([
@@ -312,6 +313,8 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/cekabsensitanpaid', Checkabsensitanpaid::class);
                             Route::get('/createuser', CreateUser::class);
                             Route::get('/laporan', Laporan::class);
+                            Route::get('/harikhusus', Harikhususwr::class);
+
 
 
 

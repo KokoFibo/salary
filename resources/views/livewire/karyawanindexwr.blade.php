@@ -199,6 +199,10 @@
                                     </th>
                                     @if (auth()->user()->role == 8)
                                         <th style="width: 150px; border-style: none;">
+                                            <button wire:loading.remove wire:click="excelForm"
+                                                class="btn btn-success col-12">Excel Form</button>
+                                        </th>
+                                        <th style="width: 150px; border-style: none;">
                                             <a href="/usernotfound">
                                                 <button wire:loading.remove class="btn btn-primary col-12">User Not
                                                     Found</button></a>
