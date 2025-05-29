@@ -38,6 +38,8 @@ return new class extends Migration
             $table->string('shift')->nullable();
             $table->string('no_scan_history')->nullable();
             $table->string('late_history')->nullable();
+            $table->integer('shift_malam')->nullable();
+
 
             $table->timestamps();
         });

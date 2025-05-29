@@ -13,6 +13,7 @@ use Livewire\WithPagination;
 use App\Exports\KaryawanExport;
 use App\Exports\DataPelitaExport;
 use Illuminate\Support\Facades\DB;
+use App\Exports\karyawanExportForm;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\KaryawanByEtnisExport;
@@ -369,6 +370,73 @@ class Karyawanindexwr extends Component
         $nama_file = $nama_file . '.xlsx';
 
         return Excel::download(new karyawanExport($this->search_placement, $this->search_company, $this->search_department, $this->selectStatus, $this->search_etnis), $nama_file);
+    }
+    public function excelForm()
+    {
+        $nama_file = "";
+        // switch ($this->selected_company) {
+
+        //     case '0':
+        //         $nama_file = "semua_karyawan.xlsx";
+        //         break;
+        //     case '1':
+        //         $nama_file = "Karyawan_Pabrik-1.xlsx";
+        //         break;
+        //     case '2':
+        //         $nama_file = "Karyawan_Pabrik-2.xlsx";
+        //         break;
+        //     case '3':
+        //         $nama_file = "Karyawan_Kantor.xlsx";
+        //         break;
+        //     case '4':
+        //         $nama_file = "Karyawan_ASB.xlsx";
+        //         break;
+        //     case '5':
+        //         $nama_file = "Karyawan_DPA.xlsx";
+        //         break;
+        //     case '6':
+        //         $nama_file = "Karyawan_YCME.xlsx";
+        //         break;
+        //     case '7':
+        //         $nama_file = "Karyawan_YEV.xlsx";
+        //         break;
+        //     case '8':
+        //         $nama_file = "Karyawan_YIG.xlsx";
+        //         break;
+        //     case '9':
+        //         $nama_file = "Karyawan_YSM.xlsx";
+        //         break;
+        //     case '10':
+        //         $nama_file = "Karyawan_YAM.xlsx";
+        //         break;
+        // }
+
+        $placement_fn = nama_placement($this->search_placement);
+        $company_fn = nama_company($this->search_company);
+        $department_fn = nama_department($this->search_department);
+
+        // if ($placement_fn && $company_fn) {
+        //     $nama_file = "Karyawan_Company_" .  $company_fn . '_Placement_' . $placement_fn . '.xlsx';
+        // } elseif ($placement_fn) {
+        //     $nama_file = "Karyawan_Placement_" .  $placement_fn . '.xlsx';
+        // } elseif ($company_fn) {
+        //     $nama_file = "Karyawan_Company_" .  $company_fn . '.xlsx';
+        // } else {
+        //     $nama_file = 'Seluruh_Karyawan.xlsx';
+        // }
+
+        if ($placement_fn || $company_fn || $department_fn || $this->search_etnis) {
+            $nama_file = 'Karyawan';
+            if ($company_fn) $nama_file = $nama_file . ' Company ' . $company_fn;
+            if ($placement_fn) $nama_file = $nama_file . ' Placement ' . $placement_fn;
+            if ($department_fn) $nama_file = $nama_file . ' Department ' . $department_fn;
+            if ($this->search_etnis) $nama_file = $nama_file . ' Etnis ' . $this->search_etnis;
+        } else {
+            $nama_file = 'Seluruh Karyawan';
+        }
+        $nama_file = $nama_file . '.xlsx';
+
+        return Excel::download(new karyawanExportForm($this->search_placement, $this->search_company, $this->search_department, $this->selectStatus, $this->search_etnis), $nama_file);
     }
 
     public function getPayrollQuery($statuses, $search = null, $placement_id = null, $company_id = null)
