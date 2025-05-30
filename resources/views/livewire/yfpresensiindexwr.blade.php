@@ -141,6 +141,11 @@
                     <h3 class="fw-semibold fs-5 fwfs-3-xl">
                         {{ __('Data Presensi') }} {{ format_tgl_hari($tanggal) }}
                     </h3>
+                    @if ($absensiKosong > 0)
+                        <button wire:click="delete_presensi_kosong" wire:confirm="Yakin mau di delete semua?"
+                            class="btn btn-danger nightowl-daylight"
+                            type="button">{{ __('Delete Semua Presensi Kosong') }}</button>
+                    @endif
                     <div>
                         @if (auth()->user()->role == 8)
                             <a href="/deleteduplicatepresensi">

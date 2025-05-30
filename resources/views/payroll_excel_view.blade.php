@@ -151,27 +151,6 @@
                     <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
 
                     @php
-                        // if ($d->metode_penggajian == 'Perjam') {
-                        //     $gaji_bulan_ini = total_gaji_perjam($d->gaji_pokok, $d->jam_kerja);
-                        // } else {
-                        //     $gaji_bulan_ini = total_gaji_bulanan(
-                        //         $d->gaji_pokok,
-                        //         $d->hari_kerja,
-                        //         $total_n_hari_kerja,
-                        //         $jumlah_libur_nasional,
-                        //         $d->date,
-                        //         $d->id_karyawan,
-                        //         $d->status_karyawan,
-                        //     );
-                        // }
-                        // if ($d->gaji_pokok != 0) {
-                        //     // $gaji_bpjs_adjust = $d->gaji_bpjs * $total_gaji_sebelum_tax / $d->gaji_pokok;
-                        //     $gaji_bpjs_adjust = ($d->gaji_bpjs * $gaji_bulan_ini) / $d->gaji_pokok;
-                        // } else {
-                        //     // Handle the case where gaji_pokok is zero (e.g., log an error or assign a default value)
-                        //     $gaji_bpjs_adjust = 0; // or another fallback value
-                        //     error_log('Division by zero error: gaji_pokok is zero for karyawan ID: ' . $d->id);
-                        // }
 
                         if ($d->gaji_bpjs >= 12000000) {
                             $gaji_bpjs_max = 12000000;
@@ -192,6 +171,10 @@
 
                         if ($d->jkk) {
                             $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
+                            if ($d->company_id == 102) {
+                                // Company STI
+                                $jkk_company = ($d->gaji_bpjs * 0.89) / 100;
+                            }
                         } else {
                             $jkk_company = 0;
                         }
