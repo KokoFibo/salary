@@ -1311,7 +1311,7 @@ function is_puasa($tgl)
 
 function is_libur_nasional($tanggal)
 {
-    if ($tanggal === '2025-05-29') {
+    if ($tanggal === '2025-04-18') {
         return false;
     }
     $data = Liburnasional::where('tanggal_mulai_hari_libur', $tanggal)->first();
