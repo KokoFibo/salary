@@ -66,6 +66,18 @@ class Yfpresensiindexwr extends Component
     public $totalHadir, $totalHadirPagi, $overallNoScan, $totalNoScan;
     public $totalNoScanPagi, $totalLate, $totalLatePagi, $overtime, $overtimePagi, $absensiKosong;
 
+    public function delete_presensi_kosong()
+    {
+        Yfrekappresensi::whereNull('first_in')
+            ->whereNull('first_out')
+            ->whereNull('second_in')
+            ->whereNull('second_out')
+            ->whereNull('overtime_in')
+            ->whereNull('overtime_out')
+            ->delete();
+        $this->dispatch('success', message: 'Data Presensi Kosong Sudah di Delete');
+    }
+
     public function prev()
     {
         $tanggal = Carbon::createFromFormat('Y-m-d', $this->tanggal)->subDay();

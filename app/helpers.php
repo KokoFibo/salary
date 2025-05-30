@@ -544,7 +544,8 @@ function hitung_pph21(
     $total_gaji_lembur,
     $gaji_libur,
     $total_bonus_dari_karyawan,
-    $tambahan_shift_malam
+    $tambahan_shift_malam,
+    $company_id
 ) {
     if ($gaji_bpjs != '' &&  $ptkp != '') {
 
@@ -564,8 +565,12 @@ function hitung_pph21(
         if ($jp != 0) $jp_company = ($gaji_jp_max * 2) / 100;
         else $jp_company = 0;
 
-        if ($jkk) $jkk_company = ($gaji_bpjs * 0.24) / 100;
-        else $jkk_company = 0;
+        if ($jkk) {
+            $jkk_company = ($gaji_bpjs * 0.24) / 100;
+            if ($company_id == 102) { // company STI = 102
+                $jkk_company = ($gaji_bpjs * 0.89) / 100;
+            }
+        } else $jkk_company = 0;
 
         if ($jkm) $jkm_company = ($gaji_bpjs * 0.3) / 100;
         else $jkm_company = 0;
