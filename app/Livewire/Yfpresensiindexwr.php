@@ -500,6 +500,10 @@ class Yfpresensiindexwr extends Component
             $data->total_jam_lembur = $hasil['jam_lembur'];
         }
 
+        if ($data->date === '2025-05-30') {
+            $data->late == null;
+            $data->late_history = null;
+        }
 
         $data->save();
         $this->btnEdit = true;
