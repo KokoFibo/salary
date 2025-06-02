@@ -1943,10 +1943,14 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                     // Shift Pagi
                     if (is_saturday($tgl)) {
                         if ($tgl == '2025-05-30') {
-                            if ($t2 < strtotime('16:00:00')) {
+                            // if ($t2 < strtotime('16:00:00')) {
+                            // return $lembur = 0;
+                            // }
+                            // $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:30:00')) / 60;
+                            if ($t2 < strtotime('15:30:00')) {
                                 return $lembur = 0;
                             }
-                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:30:00')) / 60;
+                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:00:00')) / 60;
                         } else {
                             if ($t2 < strtotime('15:30:00')) {
                                 return $lembur = 0;
