@@ -351,6 +351,10 @@ function build_payroll($month, $year)
                 $denda_lupa_absen = ($data->total_noscan - 3) * ($data->karyawan->gaji_pokok / 198);
             }
         }
+        if ($data->karyawan->etnis == 'China') {
+            $denda_lupa_absen = 0; // TKA tidak ada denda absen
+
+        }
 
 
         // hapus ini jika sdh kelar
@@ -813,6 +817,7 @@ function build_payroll($month, $year)
 
     $idKhusus = Karyawan::where('etnis', 'China')
         ->whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
+        // ->whereNot('status_karyawan', 'Blacklist')
         ->pluck('id_karyawan')
         ->toArray();
     $idKhusus = array_merge($idKhusus, $idArrTionghoa);
@@ -973,6 +978,7 @@ function build_payroll($month, $year)
             $data->jam_kerja = 0;
             $data->jam_lembur = 0;
             $data->total_bpjs = $total_tax;
+
             $data->save();
         } else {
             $data = new Payroll();
@@ -1015,6 +1021,8 @@ function build_payroll($month, $year)
             $data->jam_lembur = 0;
             $data->total_bpjs = $total_tax;
             // dd($total_tax, $data_karyawan->id_karyawan);
+
+
             $data->save();
         }
     }

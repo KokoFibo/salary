@@ -52,6 +52,7 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
                 <th colspan="5" style="text-align: center; background-color: green; color:black">
                     <h4>Karyawan</h4>
                 </th>
@@ -60,7 +61,6 @@
                     <h4>Company</h4>
                 </th>
 
-                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
