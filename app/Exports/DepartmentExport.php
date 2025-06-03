@@ -88,6 +88,8 @@ class DepartmentExport implements FromView,  ShouldAutoSize, WithColumnFormattin
 
 
         return view('payroll_excel_view', [
+            'title' => 'Department Excel',
+
             'data' => $data,
             'header_text' => $header_text,
             'total_n_hari_kerja' => $total_n_hari_kerja,
