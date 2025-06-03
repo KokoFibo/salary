@@ -52,6 +52,38 @@ class Payrollwr extends Component
     public $lock_data;
     public $select_month, $select_year;
 
+    public function bulan()
+    {
+        $this->year ??= now()->year;
+
+        $payrollTerakhir = Payroll::latest('date')->first();
+
+        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))
+            ->whereYear('date', $this->year)
+            ->distinct()
+            ->pluck('month')
+            ->filter() // Filter null jika ada
+            ->toArray();
+
+        // Jika null tetap aman
+        $this->select_month = $this->select_month ?? [];
+
+        if ($payrollTerakhir &&  $this->year == now()->year) {
+            $tanggalTerakhir = Carbon::parse($payrollTerakhir->date);
+            $tanggalSekarang = Carbon::now();
+
+            $selisihBulan = $tanggalSekarang->diffInMonths($tanggalTerakhir);
+            if ($selisihBulan == 2) {
+                $bulanSetelah = $tanggalTerakhir->copy()->addMonth();
+                $bulanTambahan = (int) $bulanSetelah->format('m');
+
+                if (!in_array($bulanTambahan, $this->select_month)) {
+                    $this->select_month[] = $bulanTambahan;
+                }
+            }
+        }
+    }
+
     public function excelDetailReport()
     {
         $nama_file = 'Non OS Detail Report ' . nama_bulan($this->month) . ' ' . $this->year . '.xlsx';
@@ -212,7 +244,7 @@ class Payrollwr extends Component
         //     ->distinct()
         //     ->pluck('department_id')
         //     ->toArray();
-
+        $this->bulan();
         $data = Payroll::first();
         if (now()->day < 5) {
             $this->year =
@@ -438,12 +470,13 @@ class Payrollwr extends Component
 
     public function updatedYear()
     {
-        $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
-            ->distinct()
-            ->pluck('month')
-            ->toArray();
+        // $this->select_month = Payroll::select(DB::raw('MONTH(date) as month'))->whereYear('date', $this->year)
+        //     ->distinct()
+        //     ->pluck('month')
+        //     ->toArray();
 
-        $this->month = $this->select_month[0];
+        // $this->month = $this->select_month[0];
+        $this->bulan();
     }
 
     public function render()
@@ -467,17 +500,17 @@ class Payrollwr extends Component
             ->pluck('month')
             ->toArray();
 
-        $data_bulan_ini = Yfrekappresensi::whereYear('date', now()->year)
-            ->whereMonth('date', now()->month)->count();
+        // $data_bulan_ini = Yfrekappresensi::whereYear('date', now()->year)
+        //     ->whereMonth('date', now()->month)->count();
 
-        if ($data_bulan_ini > 0) {
-            $months[] = $this->month;
-        }
+        // if ($data_bulan_ini > 0) {
+        //     $months[] = $this->month;
+        // }
         // if (!in_array($this->month, $months)) {
         //     $months[] = $this->month;
         // }
 
-        $this->select_month = $months;
+        // $this->select_month = $months;
 
         if ($this->status == 1) {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
@@ -591,7 +624,7 @@ class Payrollwr extends Component
             'total',
             'last_build',
             'data_kosong',
-            'data_bulan_ini',
+            // 'data_bulan_ini',
             'companies',
             'departments',
             'placements',
