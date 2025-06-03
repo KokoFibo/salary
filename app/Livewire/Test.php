@@ -57,8 +57,8 @@ class Test extends Component
     //   ->delete();
     // dd('dane');
 
-    $payrollTerakhir = Payroll::latest('date')->first();
-    dd($payrollTerakhir->date);
+    // $payrollTerakhir = Payroll::latest('date')->first();
+    // dd($payrollTerakhir->date);
     return view('livewire.test');
   }
 }
