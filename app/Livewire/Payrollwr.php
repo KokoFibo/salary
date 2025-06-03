@@ -24,6 +24,7 @@ use App\Exports\DepartmentExport;
 use App\Exports\ExcelDetailReport;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PlacementExportUtama;
 
 
 
@@ -130,13 +131,14 @@ class Payrollwr extends Component
         $nama_file = nama_file_excel($nama_file, $this->month, $this->year);
 
 
-        if ($this->selected_company != 0) {
-            return Excel::download(new PayrollExport($this->selected_company, $this->status, $this->month, $this->year), $nama_file);
-        } else if ($this->selected_placement != 0) {
-            return Excel::download(new PlacementExport($this->selected_placement, $this->status, $this->month, $this->year), $nama_file);
-        } else {
-            return Excel::download(new DepartmentExport($this->selected_departemen, $this->status, $this->month, $this->year), $nama_file);
-        }
+        // if ($this->selected_company != 0) {
+        //     return Excel::download(new PayrollExport($this->selected_company, $this->status, $this->month, $this->year), $nama_file);
+        // } else if ($this->selected_placement != 0) {
+        //     return Excel::download(new PlacementExport($this->selected_placement, $this->status, $this->month, $this->year), $nama_file);
+        // } else {
+        //     return Excel::download(new DepartmentExport($this->selected_departemen, $this->status, $this->month, $this->year), $nama_file);
+        // }
+        return Excel::download(new PlacementExportUtama($this->selected_company, $this->selected_placement, $this->selected_departemen, $this->status, $this->month, $this->year), $nama_file);
     }
 
 

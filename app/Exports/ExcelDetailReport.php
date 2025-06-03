@@ -222,6 +222,8 @@ class ExcelDetailReport implements FromView,  ShouldAutoSize, WithColumnFormatti
             ->whereMonth('payrolls.date', $this->month)
             ->whereYear('payrolls.date', $this->year)
             ->where('payrolls.company_id', $companies['YCME'])
+            ->where('payrolls.placement_id', $placements['YCME'])
+
             ->where('karyawans.etnis', 'China')
             ->sum('payrolls.total');
 
@@ -239,7 +241,7 @@ class ExcelDetailReport implements FromView,  ShouldAutoSize, WithColumnFormatti
             ->whereYear('payrolls.date', $this->year)
             ->where('payrolls.company_id', $companies['YCME'])
             ->where('payrolls.placement_id', $placements['EXIM'])
-            ->whereNot('karyawans.etnis', 'China')
+            // ->whereNot('karyawans.etnis', 'China')
             ->sum('payrolls.total');
 
         $YCME_XIN_XUN = DB::table('payrolls')
@@ -535,18 +537,18 @@ class ExcelDetailReport implements FromView,  ShouldAutoSize, WithColumnFormatti
             ->where('payrolls.placement_id', $placements['TDB'])
             ->sum('payrolls.total');
         //  khusus API
-        $YAM_WP = $this->fetchData(4, 2025, $placements['YAM'])['data'];
-        $YSM_WP = $this->fetchData(4, 2025, $placements['YSM'])['data'];
-        $YIG_WP = $this->fetchData(4, 2025, $placements['YIG'])['data'];
-        $Pabrik1_WP = $this->fetchData(4, 2025, $placements['Pabrik 1'])['data'];
-        $Pabrik2_WP = $this->fetchData(4, 2025, $placements['Pabrik 2'])['data'];
-        $Pabrik3_WP = $this->fetchData(4, 2025, $placements['Pabrik 3'])['data'];
-        $Pabrik4_WP = $this->fetchData(4, 2025, $placements['Pabrik 4'])['data'];
-        $Pabrik5_WP = $this->fetchData(4, 2025, $placements['Pabrik 5'])['data'];
-        $YEV_SUNRA_WP = $this->fetchData(4, 2025, $placements['YEV SUNRA'])['data'];
-        $STI_WP = $this->fetchData(4, 2025, $placements['STI'])['data'];
-        $TDB_WP = $this->fetchData(4, 2025, $placements['TDB'])['data'];
-        $EXIM_WP = $this->fetchData(4, 2025, $placements['EXIM'])['data'];
+        $YAM_WP = $this->fetchData($this->month, $this->year, $placements['YAM'])['data'];
+        $YSM_WP = $this->fetchData($this->month, $this->year, $placements['YSM'])['data'];
+        $YIG_WP = $this->fetchData($this->month, $this->year, $placements['YIG'])['data'];
+        $Pabrik1_WP = $this->fetchData($this->month, $this->year, $placements['Pabrik 1'])['data'];
+        $Pabrik2_WP = $this->fetchData($this->month, $this->year, $placements['Pabrik 2'])['data'];
+        $Pabrik3_WP = $this->fetchData($this->month, $this->year, $placements['Pabrik 3'])['data'];
+        $Pabrik4_WP = $this->fetchData($this->month, $this->year, $placements['Pabrik 4'])['data'];
+        $Pabrik5_WP = $this->fetchData($this->month, $this->year, $placements['Pabrik 5'])['data'];
+        $YEV_SUNRA_WP = $this->fetchData($this->month, $this->year, $placements['YEV SUNRA'])['data'];
+        $STI_WP = $this->fetchData($this->month, $this->year, $placements['STI'])['data'];
+        $TDB_WP = $this->fetchData($this->month, $this->year, $placements['TDB'])['data'];
+        $EXIM_WP = $this->fetchData($this->month, $this->year, $placements['EXIM'])['data'];
         return view('payroll_excel_detail_report_view', [
 
             // data report

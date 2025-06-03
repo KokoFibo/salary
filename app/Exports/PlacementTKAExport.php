@@ -13,8 +13,7 @@ use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-
-class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting, WithStyles
+class PlacementTKAExport implements FromView,  ShouldAutoSize, WithColumnFormatting, WithStyles
 {
     /**
      * @return \Illuminate\Support\Collection
@@ -23,14 +22,17 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
 
     protected $data;
 
-    protected $selected_placement, $status, $month, $year;
-    public function __construct($selected_placement, $status, $month, $year)
+    protected $selected_company, $selected_placement, $selected_department, $status, $month, $year;
+    public function __construct($selected_company, $selected_placement, $selected_department, $status, $month, $year)
     {
+        $this->selected_company = $selected_company;
         $this->selected_placement = $selected_placement;
+        $this->selected_department = $selected_department;
         $this->status = $status;
         $this->month = $month;
         $this->year = $year;
     }
+
     public function styles(Worksheet $sheet)
     {
         return [
@@ -47,6 +49,7 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
         ];
     }
 
+
     public function view(): View
     {
         if ($this->status == 1) {
@@ -56,55 +59,79 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
-        if ($this->status == 1) {
-            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned'];
-        } elseif ($this->status == 2) {
-            $statuses = ['Blacklist'];
+
+        if ($this->selected_company != 0) {
+            $data = Payroll::join('karyawans', 'karyawans.id_karyawan', '=', 'payrolls.id_karyawan')
+                ->select('payrolls.*', 'karyawans.etnis')
+                ->where('karyawans.etnis', 'China')
+
+                ->whereIn('payrolls.status_karyawan', $statuses)
+                ->where('payrolls.company_id', $this->selected_company)
+                ->whereMonth('payrolls.date', $this->month)
+                ->whereYear('payrolls.date', $this->year)
+                ->orderBy('payrolls.id_karyawan', 'asc')->get();
+            $title = 'Payroll By Company (TKA)';
+            $header_text = 'Perincian Payroll by Company (TKA) ' . nama_company($this->selected_company) . ' ' . nama_bulan($this->month) . ' ' . $this->year;
+        } else if ($this->selected_placement != 0) {
+            $data = Payroll::join('karyawans', 'karyawans.id_karyawan', '=', 'payrolls.id_karyawan')
+                ->select('payrolls.*', 'karyawans.etnis')
+                ->where('karyawans.etnis', 'China')
+
+                ->whereIn('payrolls.status_karyawan', $statuses)
+                ->where('payrolls.placement_id', $this->selected_placement)
+                ->whereMonth('payrolls.date', $this->month)
+                ->whereYear('payrolls.date', $this->year)
+                ->orderBy('payrolls.id_karyawan', 'asc')->get();
+            $title = 'Payroll By Placement (TKA)';
+            $header_text = 'Perincian Payroll by Placement (TKA) ' . nama_placement($this->selected_placement) . ' ' . nama_bulan($this->month) . ' ' . $this->year;
+        } else if ($this->selected_department != 0) {
+            $data = Payroll::join('karyawans', 'karyawans.id_karyawan', '=', 'payrolls.id_karyawan')
+                ->select('payrolls.*', 'karyawans.etnis')
+                ->where('karyawans.etnis', 'China')
+
+                ->whereIn('payrolls.status_karyawan', $statuses)
+                ->where('payrolls.department_id', $this->selected_department)
+                ->whereMonth('payrolls.date', $this->month)
+                ->whereYear('payrolls.date', $this->year)
+                ->orderBy('payrolls.id_karyawan', 'asc')->get();
+            $title = 'Payroll By Department (TKA)';
+            $header_text = 'Perincian Payroll by Department (TKA) ' . nama_department($this->selected_department) . ' ' . nama_bulan($this->month) . ' ' . $this->year;
         } else {
-            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
+            $data = Payroll::join('karyawans', 'karyawans.id_karyawan', '=', 'payrolls.id_karyawan')
+                ->select('payrolls.*', 'karyawans.etnis')
+                ->where('karyawans.etnis', 'China')
+
+                ->whereIn('payrolls.status_karyawan', $statuses)
+                ->whereMonth('payrolls.date', $this->month)
+                ->whereYear('payrolls.date', $this->year)
+                ->orderBy('payrolls.id_karyawan', 'asc')->get();
+            $title = 'Payroll All (TKA)';
+            $header_text = 'Perincian Seluruh Payroll (TKA) ' . nama_bulan($this->month) . ' ' . $this->year;
         }
-        // if ($this->selected_placement == 0) {
+
+        // if ($this->selected_company == 0) {
         //     $data = Payroll::whereIn('status_karyawan', $statuses)
         //         ->whereMonth('date', $this->month)
         //         ->whereYear('date', $this->year)
         //         ->orderBy('id_karyawan', 'asc')->get();
         // } else {
         //     $data = Payroll::whereIn('status_karyawan', $statuses)
-        //         ->where('placement_id', $this->selected_placement)
+        //         ->where('company_id', $this->selected_company)
         //         ->whereMonth('date', $this->month)
         //         ->whereYear('date', $this->year)
         //         ->orderBy('id_karyawan', 'asc')->get();
         // }
 
-        if ($this->selected_placement == 0) {
-            $data = Payroll::join('karyawans', 'karyawans.id_karyawan', '=', 'payrolls.id_karyawan')
-                ->select('payrolls.*', 'karyawans.etnis')
-                ->whereNot('karyawans.etnis', 'China')
-                ->whereIn('payrolls.status_karyawan', $statuses)
-                ->whereMonth('payrolls.date', $this->month)
-                ->whereYear('payrolls.date', $this->year)
-                ->orderBy('payrolls.id_karyawan', 'asc')->get();
-        } else {
-            $data = Payroll::join('karyawans', 'karyawans.id_karyawan', '=', 'payrolls.id_karyawan')
-                ->select('payrolls.*', 'karyawans.etnis')
-                ->whereNot('karyawans.etnis', 'China')
-                ->whereIn('payrolls.status_karyawan', $statuses)
-                ->where('payrolls.placement_id', $this->selected_placement)
-                ->whereMonth('payrolls.date', $this->month)
-                ->whereYear('payrolls.date', $this->year)
-                ->orderBy('payrolls.id_karyawan', 'asc')->get();
-        }
-
-        $header_text = 'Perincian Payroll untuk Placement ' . nama_placement($this->selected_placement) . ' ' .  nama_bulan($this->month) . ' ' . $this->year;
         $total_n_hari_kerja = getTotalWorkingDays($this->year, $this->month);
         $jumlah_libur_nasional = jumlah_libur_nasional($this->month, $this->year);
-        return view('payroll_excel_view', [
-            'title' => 'Placement Non TKA',
 
+        return view('payroll_excel_view', [
+            'title' => $title,
             'data' => $data,
             'header_text' => $header_text,
             'total_n_hari_kerja' => $total_n_hari_kerja,
             'jumlah_libur_nasional' => $jumlah_libur_nasional
+
 
         ]);
     }
