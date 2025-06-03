@@ -1943,6 +1943,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                     // Shift Pagi
                     if (is_saturday($tgl)) {
                         if ($tgl == '2025-05-30') {
+                            // rubah disini jika ada perubahan jam lembur
                             // if ($t2 < strtotime('16:00:00')) {
                             // return $lembur = 0;
                             // }
