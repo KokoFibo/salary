@@ -176,9 +176,11 @@ class ExcelDetailReport implements FromView,  ShouldAutoSize, WithColumnFormatti
             ->join('karyawans', 'payrolls.id_karyawan', '=', 'karyawans.id_karyawan')
             ->whereMonth('payrolls.date', $this->month)
             ->whereYear('payrolls.date', $this->year)
-            ->where('payrolls.company_id', $companies['YSM'])
+            // ->where('payrolls.company_id', $companies['YSM'])
+            ->where('payrolls.placement_id', $placements['YSM'])
             ->where('karyawans.etnis', 'China')
             ->sum('payrolls.total');
+        // dd($YSM_CF);
 
         // $YSM_Wanto = DB::table('payrolls')
         //     ->join('karyawans', 'payrolls.id_karyawan', '=', 'karyawans.id_karyawan')
