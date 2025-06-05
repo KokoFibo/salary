@@ -176,6 +176,7 @@
                 </td>
                 <td style="border: 1px solid black; text-align: center;">YIG</td>
             </tr>
+
             {{-- YCME --}}
             <tr>
                 <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="14">YCME</td>
@@ -432,11 +433,11 @@
                     {{ $placement_YCME }}
                 </td>
                 <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="2">
-                    {{ $placement_YCME + $placement_YCME_CF + $placement_YCME_XIN_XUN + $placement_YCME_EXIM + $EXIM_WP }}
+                    {{ $placement_YCME + $placement_YCME_CF }}
 
                 </td>
                 <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="2">
-                    {{ $placement_YCME + $placement_YCME_CF + $placement_YCME_XIN_XUN + $placement_YCME_EXIM }}
+                    {{ $placement_YCME + $placement_YCME_CF }}
                 </td>
             </tr>
             <tr>
@@ -598,12 +599,11 @@
                 </td>
             </tr>
 
-            {{-- Pabrik 5 --}}
+            {{-- YNE dahulu Pabrik 5 --}}
             <tr>
-                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="2">Pabrik
-                    5
+                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="2">YNE
                 </td>
-                <td style="border: 1px solid black;text-align: center">STI</td>
+                <td style="border: 1px solid black;text-align: center">YNE</td>
                 <td style="border: 1px solid black;text-align: center">
                     {{ $placement_Pabrik5_YNE }}
                 </td>
@@ -615,7 +615,7 @@
                 </td>
             </tr>
             <tr>
-                <td style="border: 1px solid black;text-align: center">Pabrik 5 外包</td>
+                <td style="border: 1px solid black;text-align: center">YNE 外包</td>
                 <td style="border: 1px solid black;text-align: center">
                     {{ $Pabrik5_WP }}
                 </td>
@@ -676,6 +676,13 @@
                 <td style="border: 1px solid black; text-align: center;">
                     {{ $placement_YCME_XIN_XUN }}
                 </td>
+                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="1">
+                    {{ $placement_YCME_XIN_XUN }}
+
+                </td>
+                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="1">
+                    {{ $placement_YCME_XIN_XUN }}
+                </td>
             </tr>
 
             {{--   Exim --}}
@@ -688,6 +695,13 @@
                 <td style="border: 1px solid black; text-align: center;">
                     {{ $placement_YCME_EXIM }}
                 </td>
+                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="2">
+                    {{ $placement_YCME_EXIM + $EXIM_WP }}
+
+                </td>
+                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="2">
+                    {{ $placement_YCME_EXIM }}
+                </td>
             </tr>
             <tr>
                 <!-- kolom pertama dan terakhir sudah digabung, jadi cukup isi kolom tengah -->
@@ -696,6 +710,8 @@
                     {{ $EXIM_WP }}
                 </td>
             </tr>
+
+
 
 
 
@@ -739,6 +755,7 @@
                         $STI_WP +
                         $TDB_WP +
                         $EXIM_WP;
+
                 @endphp
                 <td style="border: 4px solid black; text-align: center; font-weight: bold;" colspan=2>Total
                 </td>
