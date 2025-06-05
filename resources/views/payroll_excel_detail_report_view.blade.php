@@ -425,17 +425,17 @@
 
             {{-- YCME --}}
             <tr>
-                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="5">YCME
+                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="2">YCME
                 </td>
                 <td style="border: 1px solid black; text-align: center;">YCME</td>
                 <td style="border: 1px solid black; text-align: center;">
                     {{ $placement_YCME }}
                 </td>
-                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="5">
+                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="2">
                     {{ $placement_YCME + $placement_YCME_CF + $placement_YCME_XIN_XUN + $placement_YCME_EXIM + $EXIM_WP }}
 
                 </td>
-                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="5">
+                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="2">
                     {{ $placement_YCME + $placement_YCME_CF + $placement_YCME_XIN_XUN + $placement_YCME_EXIM }}
                 </td>
             </tr>
