@@ -427,7 +427,6 @@ function build_payroll($month, $year)
         // if ($data->karyawan->id_karyawan == 8227) dd($gaji_bulan_ini);
 
 
-        // $total_gaji_sebelum_tax = $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen;
         if ($data->karyawan->gaji_pokok != 0) {
             // $gaji_bpjs_adjust = $data->karyawan->gaji_bpjs * $total_gaji_sebelum_tax / $data->karyawan->gaji_pokok;
             $gaji_bpjs_adjust = $data->karyawan->gaji_bpjs * $gaji_bulan_ini / $data->karyawan->gaji_pokok;
@@ -502,7 +501,6 @@ function build_payroll($month, $year)
         if ($data->karyawan->metode_penggajian == '') {
             dd('metode penggajian belum diisi', $data->karyawan->id_karyawan);
         }
-        // $total = $subtotal + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen - $pph21;
         $total = $gaji_bulan_ini + $total_gaji_lembur + $gaji_libur + $total_bonus_dari_karyawan + $libur_nasional + $tambahan_shift_malam - $total_potongan_dari_karyawan - $pajak - $jp - $jht - $kesehatan - $tanggungan - $denda_lupa_absen - $pph21;
 
 

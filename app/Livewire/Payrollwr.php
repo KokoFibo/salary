@@ -53,6 +53,11 @@ class Payrollwr extends Component
     public $lock_data;
     public $select_month, $select_year;
 
+    public function buat_payroll_baru()
+    {
+        build_payroll_os_new($this->month, $this->year);
+    }
+
     public function bulan()
     {
         $this->year ??= now()->year;

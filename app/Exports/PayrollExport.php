@@ -85,7 +85,7 @@ class PayrollExport implements FromView,  ShouldAutoSize, WithColumnFormatting, 
                 ->whereYear('payrolls.date', $this->year)
                 ->orderBy('payrolls.id_karyawan', 'asc')->get();
             $title = 'Payroll By Placement';
-            $header_text = 'Perincian Payroll by Placement ' . nama_company($this->selected_placement) . ' ' . nama_bulan($this->month) . ' ' . $this->year;
+            $header_text = 'Perincian Payroll by Placement ' . nama_placement($this->selected_placement) . ' ' . nama_bulan($this->month) . ' ' . $this->year;
         } else if ($this->selected_department != 0) {
             $data = Payroll::join('karyawans', 'karyawans.id_karyawan', '=', 'payrolls.id_karyawan')
                 ->select('payrolls.*', 'karyawans.etnis')
