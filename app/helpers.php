@@ -220,8 +220,6 @@ function total_gaji_bulanan(
     }
     if ($status_karyawan == 'Resigned') {
         $jumlah_libur_nasional_resigned = 0;
-
-
         $jumlah_libur_nasional_resigned = get_jumlah_hari_libur_resigned(
             $month,
             $year,

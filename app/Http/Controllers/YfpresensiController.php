@@ -734,6 +734,7 @@ class YfpresensiController extends Controller
             }
             // Batasana Akhir Puasa
 
+
             $no_scan = noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out);
             $late = late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $kh->user_id);
             $dataKaryawan = Karyawan::where('id_karyawan', $user_id)->first();
@@ -770,6 +771,27 @@ class YfpresensiController extends Controller
             //             'jam_lembur' => $jam_lembur,
             //             'tambahan_shift_malam' => $tambahan_shift_malam
             if ($kh->date == '2025-05-30') $late = null;
+
+            // tambahan_shift_malam
+
+            if ($kh->shift == 'Malam') {
+                if (is_saturday($kh->date)) {
+                    if ($total_jam_kerja >= 6) {
+                        $tambahan_shift_malam = 1;
+                    }
+                } elseif (is_sunday($kh->date)) {
+                    if ($total_jam_kerja >= 16) {
+                        // $jam_lembur = $jam_lembur + 2;
+                        $tambahan_shift_malam = 1;
+                    }
+                } else {
+                    if ($total_jam_kerja >= 8) {
+                        // $jam_lembur = $jam_lembur + 1;
+                        $tambahan_shift_malam = 1;
+                    }
+                }
+            }
+            // end tambahan_shift_malam
             Yfrekappresensi::create([
                 'user_id' => $user_id,
                 'karyawan_id' => $id_karyawan,
@@ -790,6 +812,7 @@ class YfpresensiController extends Controller
                 'no_scan' => $no_scan,
                 'no_scan_history' => $no_scan,
                 'late_history' => $late,
+                'shift_malam' => $tambahan_shift_malam,
             ]);
         }
 

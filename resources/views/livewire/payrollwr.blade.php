@@ -166,6 +166,7 @@
                         </div>
                     </div>
                     <div>
+
                         <button wire:loading wire:target='buat_payroll' class="btn btn-primary" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                             <span
@@ -192,6 +193,8 @@
                             class="btn btn-primary nightowl-daylight">{{ __('Clear Lock') }}</button>
                         <button wire:click="buat_payroll('noQueue')" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild without queue') }}</button>
+                        <button wire:click="buat_payroll_baru" {{-- {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }} --}}
+                            class="btn btn-primary nightowl-daylight">{{ __('Rebuild Baru') }}</button>
                     @endif
                     <a href="/ter"><button
                             class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
@@ -207,6 +210,8 @@
                     <button wire:click="buat_payroll('queue')"
                         {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
                         class="btn btn-primary nightowl-daylight">{{ __('Rebuild') }}</button>
+
+
                 </div>
             </div>
             @if (isDataUtamaLengkap() > 0)
@@ -300,6 +305,8 @@
                                 <th wire:click="sortColumnName('id_karyawan')">
                                     {{ __('Date') }} <i class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
+                                        class="fa-solid fa-sort"></i></th>
+                                <th wire:click="sortColumnName('status_karyawan')">{{ __('test field') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 <th wire:click="sortColumnName('status_karyawan')">{{ __('Status') }} <i
                                         class="fa-solid fa-sort"></i></th>
@@ -432,6 +439,7 @@
                                             {{-- <td>{{ format_tgl($p->date) }}</td> --}}
                                             <td>{{ month_year($p->date) }}</td>
                                             <td>{{ $p->nama }}</td>
+                                            <td>{{ number_format($p->pph21) }}</td>
                                             <td>{{ $p->status_karyawan }}</td>
                                             <td>{{ nama_jabatan($p->jabatan_id) }}</td>
                                             <td>{{ nama_placement($p->placement_id) }}</td>
@@ -459,7 +467,7 @@
                                                 {{ $p->tambahan_shift_malam ? number_format($p->tambahan_shift_malam) : '' }}
                                             </td>
                                             <td class="text-end">
-                                                {{ $p->bonus1x ? number_format($p->bonus1x) : '' }}
+                                                {{ $p->bonus1x ? number_format($p->bonus1x) : '' }} bonus1x
                                             </td>
                                             @php
                                                 $total_potongan_dari_karyawan = 0;

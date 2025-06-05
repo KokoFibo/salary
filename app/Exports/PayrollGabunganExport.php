@@ -76,7 +76,7 @@ class PayrollGabunganExport implements FromView,  ShouldAutoSize, WithColumnForm
                 ->whereYear('date', $this->year)
                 ->orderBy('id_karyawan', 'asc')->get();
             $title = 'Payroll By Placement Gabungan';
-            $header_text = 'Perincian Payroll by Placement ' . nama_company($this->selected_placement) . ' ' . nama_bulan($this->month) . ' ' . $this->year;
+            $header_text = 'Perincian Payroll by Placement ' . nama_placement($this->selected_placement) . ' ' . nama_bulan($this->month) . ' ' . $this->year;
         } else if ($this->selected_department != 0) {
             $data = Payroll::whereIn('status_karyawan', $statuses)
                 ->where('department_id', $this->selected_department)

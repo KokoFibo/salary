@@ -178,8 +178,7 @@
             </tr>
             {{-- YCME --}}
             <tr>
-                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="14">YCME 中方
-                </td>
+                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="14">YCME</td>
                 <td style="border: 1px solid black; text-align: center;">
                     {{ $YCME_CF }}
                 </td>
@@ -312,11 +311,8 @@
     {{-- Pembagian by Placement --}}
     <table class="table">
         <thead>
-
             <tr>
-
                 <th colspan="5" style="font-size:20px;  text-align:center">
-
                 </th>
             </tr>
             <tr>
@@ -450,27 +446,7 @@
                     {{ $placement_YCME_CF }}
                 </td>
             </tr>
-            <tr>
-                <!-- kolom pertama dan terakhir sudah digabung, jadi cukup isi kolom tengah -->
-                <td style="border: 1px solid black; text-align: center;">YCME 新讯</td>
-                <td style="border: 1px solid black; text-align: center;">
-                    {{ $placement_YCME_XIN_XUN }}
-                </td>
-            </tr>
-            <tr>
-                <!-- kolom pertama dan terakhir sudah digabung, jadi cukup isi kolom tengah -->
-                <td style="border: 1px solid black; text-align: center;">YCME 关务</td>
-                <td style="border: 1px solid black; text-align: center;">
-                    {{ $placement_YCME_EXIM }}
-                </td>
-            </tr>
-            <tr>
-                <!-- kolom pertama dan terakhir sudah digabung, jadi cukup isi kolom tengah -->
-                <td style="border: 1px solid black; text-align: center;">YCME 关务外包</td>
-                <td style="border: 1px solid black; text-align: center;">
-                    {{ $EXIM_WP }}
-                </td>
-            </tr>
+
 
             {{-- Pabrik 1 一厂 --}}
             <tr>
@@ -691,6 +667,35 @@
 
             </tr>
 
+            {{--  新讯  --}}
+            <tr>
+                <td style="border: 1px solid black; text-align: center;vertical-align: middle;">新讯
+                </td>
+
+                <td style="border: 1px solid black; text-align: center;">新讯</td>
+                <td style="border: 1px solid black; text-align: center;">
+                    {{ $placement_YCME_XIN_XUN }}
+                </td>
+            </tr>
+
+            {{--   Exim --}}
+
+            <tr>
+
+                <td style="border: 1px solid black; text-align: center;vertical-align: middle;" rowspan="2">关务 Exim
+                </td>
+                <td style="border: 1px solid black; text-align: center;"> 关务</td>
+                <td style="border: 1px solid black; text-align: center;">
+                    {{ $placement_YCME_EXIM }}
+                </td>
+            </tr>
+            <tr>
+                <!-- kolom pertama dan terakhir sudah digabung, jadi cukup isi kolom tengah -->
+                <td style="border: 1px solid black; text-align: center;">关务外包</td>
+                <td style="border: 1px solid black; text-align: center;">
+                    {{ $EXIM_WP }}
+                </td>
+            </tr>
 
 
 
