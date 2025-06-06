@@ -202,7 +202,9 @@
                         wire:click="bankexcel">{{ __('Report for bank') }}</button>
                     {{-- <a href="/headcount"><button
                             class="btn btn-warning nightowl-daylight">{{ __('Headcount') }}</button></a> --}}
-                    <button wire:click="excelDetailReport"
+                    {{-- <button wire:click="excelDetailReport"
+                        class="btn btn-warning nightowl-daylight">{{ __('Detail Report') }}</button> --}}
+                    <button wire:click="excelDetailReport2"
                         class="btn btn-warning nightowl-daylight">{{ __('Detail Report') }}</button>
 
                     <button wire:click="export" class="btn btn-success nightowl-daylight">Excel</button>

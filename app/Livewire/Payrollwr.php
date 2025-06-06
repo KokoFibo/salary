@@ -23,6 +23,7 @@ use App\Exports\PlacementExport;
 use App\Exports\DepartmentExport;
 use App\Exports\ExcelDetailReport;
 use Illuminate\Support\Facades\DB;
+use App\Exports\ExcelDetailReport2;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\PlacementExportUtama;
 
@@ -94,6 +95,11 @@ class Payrollwr extends Component
     {
         $nama_file = 'Non OS Detail Report ' . nama_bulan($this->month) . ' ' . $this->year . '.xlsx';
         return Excel::download(new ExcelDetailReport($this->month, $this->year), $nama_file);
+    }
+    public function excelDetailReport2()
+    {
+        $nama_file = 'Non OS Detail Report ' . nama_bulan($this->month) . ' ' . $this->year . '.xlsx';
+        return Excel::download(new ExcelDetailReport2($this->month, $this->year), $nama_file);
     }
 
     public function clear_lock()
