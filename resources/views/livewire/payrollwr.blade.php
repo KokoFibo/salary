@@ -150,17 +150,6 @@
                                     <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                                 @endforeach
 
-                                {{-- @if ($data_bulan_ini > 0)
-                                    <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
-                                @endif --}}
-                                {{-- <option value="5">Mei 2024</option> --}}
-
-                                {{-- jika this month gak ada maka munculkan --}}
-                                {{-- @if (!in_array(now()->month, $select_month))
-                                    <option value="{{ now()->month }}">{{ monthName(now()->month) }}</option>
-                                @endif --}}
-                                {{-- <option value="9">Sept 9</option> --}}
-
                             </select>
 
                         </div>
@@ -179,6 +168,11 @@
                         <button wire:loading wire:target='bankexcel' class="btn btn-primary" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                             <span role="status">{{ __('Building Excel for bank ... PLease wait') }}</span>
+                        </button>
+                        <button wire:loading wire:target='excelDetailReport2' class="btn btn-primary" type="button"
+                            disabled>
+                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                            <span role="status">{{ __('Building detail report ... PLease wait') }}</span>
                         </button>
 
                     </div>
