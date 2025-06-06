@@ -539,7 +539,6 @@ class ExcelDetailReport implements FromView,  ShouldAutoSize, WithColumnFormatti
             ->whereYear('payrolls.date', $this->year)
             ->where('payrolls.placement_id', $placements['TDB'])
             ->sum('payrolls.total');
-
         //  khusus API
         $YAM_WP = $this->fetchData($this->month, $this->year, $placements['YAM'])['data'];
         $YSM_WP = $this->fetchData($this->month, $this->year, $placements['YSM'])['data'];
