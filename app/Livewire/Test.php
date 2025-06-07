@@ -52,10 +52,21 @@ class Test extends Component
   public function render()
   {
 
-    $data = Payroll::whereYear('date', $this->year)
-      ->whereMonth('date', $this->month)
-      ->where('denda_lupa_absen', '>', 0)->get();
-    dd($data);
-    return view('livewire.test');
+    $data = Yfrekappresensi::where('date', '2025-05-30')
+      // ->whereMonth('date', 5)
+      //   ->whereYear('date', 2025)
+      ->where(function ($query) {
+        $query->where(function ($q) {
+          $q->whereNull('first_in')
+            ->whereNull('first_out');
+        })->orWhere(function ($q) {
+          $q->whereNull('second_in')
+            ->whereNull('second_out');
+        });
+      })
+      ->get();
+    return view('livewire.test', [
+      'data' => $data
+    ]);
   }
 }

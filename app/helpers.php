@@ -2426,7 +2426,12 @@ function late_check_detail($first_in, $first_out, $second_in, $second_out, $over
     // $late3 = null;
     // $late4 = null;
     // ffff
-    if ($tgl === '2025-05-30') {
+    $setengah_hari = (
+        ($first_in === null && $first_out !== null) ||
+        ($second_in === null && $second_out === null)
+    );
+
+    if ($tgl === '2025-05-30' && !$setengah_hari) {
         return $late = 0;
     }
 
