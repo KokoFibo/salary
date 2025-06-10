@@ -83,6 +83,7 @@ use App\Http\Controllers\PphController;
 use App\Livewire\TanpaEmergencyContact;
 use App\Livewire\Gantipassworddeveloper;
 use Google\Service\DriveActivity\Create;
+use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\KviewController;
 use App\Livewire\Deleteduplicatepresensi;
 use App\Http\Controllers\LogoutController;
@@ -256,6 +257,8 @@ Route::middleware(['auth'])->group(function () {
                         Route::post('/createexcel', [ReportController::class, 'createExcel']);
                         Route::get('/bankreport', BankReport::class);
                         Route::get('/kenaikangaji', Kenaikangaji::class);
+                        Route::get('/template-gaji-form', [ExcelController::class, 'template_gaji']);
+
 
 
                         // Route::get('/karyawan/excel', [KaryawanExcelController::class, 'index']);
