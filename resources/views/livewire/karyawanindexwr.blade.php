@@ -197,6 +197,11 @@
                                         <button wire:loading.remove wire:click="excel"
                                             class="btn btn-success col-12">Excel</button>
                                     </th>
+
+                                    <th style="width: 150px; border-style: none;">
+                                        <a href="/template-gaji-form"> <button wire:loading.remove
+                                                class="btn btn-success col-12">Excel Template</button></a>
+                                    </th>
                                     @if (auth()->user()->role == 8)
                                         <th style="width: 150px; border-style: none;">
                                             <button wire:loading.remove wire:click="excelForm"
