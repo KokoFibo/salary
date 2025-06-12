@@ -96,6 +96,7 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
+use App\Http\Controllers\SalaryAdjustController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
 
@@ -259,6 +260,16 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/kenaikangaji', Kenaikangaji::class);
                         Route::get('/template-gaji-form', [ExcelController::class, 'template_gaji']);
                         Route::get('/template-gaji-form-placement', [ExcelController::class, 'template_gaji_placement']);
+
+                        Route::get('/bulk-upload-salary-adjust', function () {
+                            $lock = Lock::find(1);
+                            $is_uploadable = !$lock->upload;
+                            // dd('$is_uploadable', $is_uploadable);
+                            return view('upload-form-salary-adjust', [
+                                'is_uploadable' => $is_uploadable
+                            ]);
+                        });
+                        Route::post('/yfstore', [SalaryAdjustController::class, 'import']);
 
 
 
