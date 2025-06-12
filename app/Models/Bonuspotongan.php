@@ -9,8 +9,10 @@ class Bonuspotongan extends Model
 {
     use HasFactory;
 
-    public function karyawan () {
+    protected $guarded = [];
+
+    public function karyawan()
+    {
         return $this->belongsTo(Karyawan::class);
     }
-    
 }

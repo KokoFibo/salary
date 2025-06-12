@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Karyawan;
 use Livewire\WithPagination;
@@ -34,9 +35,22 @@ class AddTambahan extends Component
 
             // Ambil data karyawan berdasarkan ID yang dimasukkan
             $user = Karyawan::where('id_karyawan', $value)->first();
+            $is_exist = Bonuspotongan::where('user_id', $value)
+                ->whereMonth('tanggal',  Carbon::parse($this->tanggal))
+                ->whereYear('tanggal',  Carbon::parse($this->tanggal))
+                ->count();
 
             // Update nama_karyawan di array berdasarkan index
-            $this->karyawan[$index]['nama_karyawan'] = $user ? $user->nama : 'Tidak ditemukan';
+            if ($user) {
+                if ($is_exist > 0) {
+                    $msg = $user->nama . " - Data ini sudah ada";
+                } else {
+                    $msg = $user->nama;
+                }
+            } else {
+                $msg = "User tidak ditemukan";
+            }
+            $this->karyawan[$index]['nama_karyawan'] = $user ? $msg : "Tidak ditemukan";
         }
     }
 
@@ -67,6 +81,23 @@ class AddTambahan extends Component
 
     public function save()
     {
+        foreach ($this->karyawan as $data) {
+            $is_exist = Bonuspotongan::where('user_id', $data['user_id'])
+                ->whereMonth('tanggal',  Carbon::parse($this->tanggal))
+                ->whereYear('tanggal',  Carbon::parse($this->tanggal))
+                ->count();
+            if ($is_exist > 0) {
+                $namaBulan = Carbon::parse($this->tanggal)->translatedFormat('F');
+                $namaTahun = Carbon::parse($this->tanggal)->format('Y');
+                $this->dispatch(
+                    'message',
+                    type: 'error',
+                    title: 'ID : ' . $data['user_id'] . ' sudah terdapat pada database bulan ' . $namaBulan . ' ' . $namaTahun,
+                    //  . nama_bulan($this->tanggal) . tahun($this->tanggal)
+                );
+                return;
+            }
+        }
         $this->uang_makan = convert_numeric($this->uang_makan);
         $this->bonus_lain = convert_numeric($this->bonus_lain);
         $this->baju_esd = convert_numeric($this->baju_esd);
