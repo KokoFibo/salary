@@ -258,6 +258,7 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/bankreport', BankReport::class);
                         Route::get('/kenaikangaji', Kenaikangaji::class);
                         Route::get('/template-gaji-form', [ExcelController::class, 'template_gaji']);
+                        Route::get('/template-gaji-form-placement', [ExcelController::class, 'template_gaji_placement']);
 
 
 
