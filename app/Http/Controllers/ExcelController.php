@@ -28,7 +28,7 @@ class ExcelController extends Controller
 
 
 
-        $zipFilename = 'exports/Template Form Salary Adjust For Non OS.zip';
+        $zipFilename = 'exports/Template Form Salary Adjust by Placement - Department For Non OS.zip';
         $zipPath = storage_path("app/{$zipFilename}");
 
         $zip = new ZipArchive;
