@@ -110,6 +110,24 @@ class HomeController extends Controller
         $jumlah_karyawan_Resigned_hari_ini = Karyawan::whereDate('tanggal_resigned', Carbon::today())->count();
         $jumlah_karyawan_blacklist_hari_ini = Karyawan::whereDate('tanggal_blacklist', Carbon::today())->count();
 
+        $startOfLastWeek = Carbon::now()->subWeek()->startOfWeek(); // Senin minggu lalu
+        $endOfLastWeek = Carbon::now()->subWeek()->endOfWeek();     // Minggu minggu lalu
+
+        $jumlah_karyawan_baru_minggu_lalu = Karyawan::whereBetween('tanggal_bergabung', [
+            $startOfLastWeek,
+            $endOfLastWeek
+        ])->count();
+
+        $jumlah_karyawan_resign_minggu_lalu = Karyawan::whereBetween('tanggal_resigned', [
+            $startOfLastWeek,
+            $endOfLastWeek
+        ])->count();
+
+        $jumlah_karyawan_blacklist_minggu_lalu = Karyawan::whereBetween('tanggal_blacklist', [
+            $startOfLastWeek,
+            $endOfLastWeek
+        ])->count();
+
         $karyawan_baru_mtd =  Karyawan::whereBetween('tanggal_bergabung', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
         $karyawan_resigned_mtd =  Karyawan::whereBetween('tanggal_resigned', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
         $karyawan_blacklist_mtd =  Karyawan::whereBetween('tanggal_blacklist', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
@@ -132,8 +150,18 @@ class HomeController extends Controller
 
 
                 return view('dashboard', compact([
-                    'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
-                    'jumlah_karyawan_baru_hari_ini', 'jumlah_karyawan_Resigned_hari_ini', 'jumlah_karyawan_blacklist_hari_ini', 'belum_isi_etnis', 'belum_isi_kontak_darurat'
+                    'karyawan_baru_mtd',
+                    'karyawan_resigned_mtd',
+                    'karyawan_blacklist_mtd',
+                    'karyawan_aktif_mtd',
+                    'jumlah_karyawan_baru_hari_ini',
+                    'jumlah_karyawan_Resigned_hari_ini',
+                    'jumlah_karyawan_blacklist_hari_ini',
+                    'belum_isi_etnis',
+                    'belum_isi_kontak_darurat',
+                    'jumlah_karyawan_baru_minggu_lalu',
+                    'jumlah_karyawan_resign_minggu_lalu',
+                    'jumlah_karyawan_blacklist_minggu_lalu'
                 ]));
             } else {
                 return view('user_dashboard');
@@ -147,8 +175,18 @@ class HomeController extends Controller
 
 
                 return view('dashboard', compact([
-                    'karyawan_baru_mtd', 'karyawan_resigned_mtd', 'karyawan_blacklist_mtd', 'karyawan_aktif_mtd',
-                    'jumlah_karyawan_baru_hari_ini', 'jumlah_karyawan_Resigned_hari_ini', 'jumlah_karyawan_blacklist_hari_ini', 'belum_isi_etnis', 'belum_isi_kontak_darurat'
+                    'karyawan_baru_mtd',
+                    'karyawan_resigned_mtd',
+                    'karyawan_blacklist_mtd',
+                    'karyawan_aktif_mtd',
+                    'jumlah_karyawan_baru_hari_ini',
+                    'jumlah_karyawan_Resigned_hari_ini',
+                    'jumlah_karyawan_blacklist_hari_ini',
+                    'belum_isi_etnis',
+                    'belum_isi_kontak_darurat',
+                    'jumlah_karyawan_baru_minggu_lalu',
+                    'jumlah_karyawan_resign_minggu_lalu',
+                    'jumlah_karyawan_blacklist_minggu_lalu'
                 ]));
             }
             $user->device = 0;
