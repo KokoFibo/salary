@@ -58,6 +58,36 @@
                 </div>
             </div>
         </div>
+
+        <div class="container pt-5">
+            <div class="row align-items-stretch">
+                <div class="c-dashboardInfo col-lg-4 col-md-6">
+                    <div class="wrap">
+                        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
+                            {{ __('Karyawan Baru Minggu Lalu') }}
+                        </h4><span
+                            class="hind-font caption-12 c-dashboardInfo__count">{{ $jumlah_karyawan_baru_minggu_lalu }}</span>
+                    </div>
+                </div>
+                <div class="c-dashboardInfo col-lg-4 col-md-6">
+                    <div class="wrap">
+                        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title">
+                            {{ __('Karyawan Resigned Minggu Lalu') }}</h4>
+                        <span
+                            class="hind-font caption-12 c-dashboardInfo__count">{{ $jumlah_karyawan_resign_minggu_lalu }}</span>
+                        {{-- <span class="hind-font caption-12 c-dashboardInfo__subInfo">Last month: €30</span> --}}
+                    </div>
+                </div>
+                <div class="c-dashboardInfo col-lg-4 col-md-6">
+                    <div class="wrap">
+                        <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title text-center">
+                            {{ __('Karyawan Blacklist Minggu Lalu') }}</h4><span
+                            class="hind-font caption-12 c-dashboardInfo__count">{{ $jumlah_karyawan_blacklist_minggu_lalu }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="container pt-5">
             <div class="row align-items-stretch">
                 <div class="c-dashboardInfo col-lg-3 col-md-6">
