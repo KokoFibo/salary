@@ -7,7 +7,7 @@
                 <h1 class="modal-title fs-5" id="exampleModalLabel">Slip Gaji</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+            <div class="modal-body">
                 <div>
                     <div class="card">
                         <div class="card-header">
