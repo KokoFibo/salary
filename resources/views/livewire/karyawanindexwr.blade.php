@@ -315,6 +315,9 @@
                                 <th class="text-center" wire:click="sortColumnName('gaji_overtime')">
                                     {{ __('Overtime') }}
                                 </th>
+                                <th class="text-center" wire:click="sortColumnName('tanggal_update')">
+                                    {{ __('Last Adjust') }}
+                                </th>
                                 <th class="text-center" wire:click="sortColumnName('iuran_air')">
                                     {{ __('Iuran Air') }}
                                 </th>
@@ -387,6 +390,7 @@
                                         <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_bpjs) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>
+                                        <td class="text-center">{{ format_tgl($data->tanggal_update) }}</td>
                                         <td class="text-center">{{ number_format($data->iuran_air) }}</td>
                                         <td class="text-center">{{ number_format($data->iuran_locker) }}</td>
                                         {{-- <td class="text-center">{{ format_tgl($data->tanggal_bergabung) }}</td> --}}
