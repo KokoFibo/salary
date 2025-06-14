@@ -206,12 +206,15 @@
                                         <a href="/template-gaji-form-placement"> <button wire:loading.remove
                                                 class="btn btn-success col-12">Excel Template Placement</button></a>
                                     </th>
-                                    @if (auth()->user()->role == 8)
+                                    {{-- @endif --}}
+                                    @if (auth()->user()->role >= 6 || auth()->user()->username == 1146)
                                         <th>
                                             <a href="/bulk-upload-salary-adjust">
                                                 <button
                                                     class="btn btn-primary nightowl-daylight">{{ __('Bulk Update Salary Adjust') }}</button></a>
                                         </th>
+                                    @endif
+                                    @if (auth()->user()->role == 8)
                                         <th style="width: 150px; border-style: none;">
                                             <button wire:loading.remove wire:click="excelForm"
                                                 class="btn btn-success col-12">Excel Form</button>

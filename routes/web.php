@@ -231,6 +231,16 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('timeoff-approve', Timeoffapprovewr::class);
 
 
+                Route::get('/bulk-upload-salary-adjust', function () {
+                    $lock = Lock::find(1);
+                    $is_uploadable = !$lock->upload;
+                    // dd('$is_uploadable', $is_uploadable);
+                    return view('upload-form-salary-adjust', [
+                        'is_uploadable' => $is_uploadable
+                    ]);
+                });
+
+
                 //Khusus Senior Admin
                 Route::middleware(['SeniorAdmin'])->group(function () {
                     Route::get('/changeid', ChangeID::class);
@@ -249,6 +259,8 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+
+
                     // KHUSUS Super Admin
                     Route::middleware(['SuperAdmin'])->group(function () {
                         Route::get('/yfdeletetanggalpresensiwr', Yfdeletetanggalpresensiwr::class);
@@ -261,14 +273,7 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/template-gaji-form', [ExcelController::class, 'template_gaji']);
                         Route::get('/template-gaji-form-placement', [ExcelController::class, 'template_gaji_placement']);
 
-                        Route::get('/bulk-upload-salary-adjust', function () {
-                            $lock = Lock::find(1);
-                            $is_uploadable = !$lock->upload;
-                            // dd('$is_uploadable', $is_uploadable);
-                            return view('upload-form-salary-adjust', [
-                                'is_uploadable' => $is_uploadable
-                            ]);
-                        });
+
                         Route::post('/yfstore', [SalaryAdjustController::class, 'import']);
 
 

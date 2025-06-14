@@ -53,7 +53,7 @@
                             <div x-show="open" class="bg-warning text-light p-2">Mohon di tunggu sampai proses upload
                                 selesai
                             </div>
-                            <a href="/yfpresensiindexwr" wire:navigate><button x-show="!open" type="button" id="exit-btn"
+                            <a href="/karyawanindex" wire:navigate><button x-show="!open" type="button" id="exit-btn"
                                     class="btn btn-primary">Exit</button></a>
 
                             <div x-show="open" class="spinner-grow text-success" role="status" id="loading">
