@@ -15,7 +15,7 @@
                 @if ($is_uploadable == false)
                     <p>Harap kembali sebentar lagi...</p>
                 @else
-                    <form action="/yfstore" method="POST" enctype="multipart/form-data">
+                    <form action="/bulk-upload" method="POST" enctype="multipart/form-data">
                         @csrf
 
                         <div class="mb-3">

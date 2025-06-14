@@ -274,7 +274,7 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/template-gaji-form-placement', [ExcelController::class, 'template_gaji_placement']);
 
 
-                        Route::post('/yfstore', [SalaryAdjustController::class, 'import']);
+                        Route::post('/bulk-upload', [SalaryAdjustController::class, 'import']);
 
 
 
