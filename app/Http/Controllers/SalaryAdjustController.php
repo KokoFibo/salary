@@ -146,14 +146,16 @@ class SalaryAdjustController extends Controller
             'Perubahan Lemburan',
             'Bonus'
         ];
-        $actualHeader = $rows[4] ?? [];
+        // $actualHeader = $rows[4] ?? [];
 
-        if (array_diff($expectedHeader, $actualHeader)) {
-            return back()->withErrors(['file' => 'Header file tidak sesuai format yang diharapkan.']);
-        }
+        // if (array_diff($expectedHeader, $actualHeader)) {
+        //     return back()->withErrors(['file' => 'Header file tidak sesuai format yang diharapkan.']);
+        // }
 
-        $tanggal = $this->extractTanggal($rows[2][1]);
+        // $tanggal = $this->extractTanggal($rows[2][1]);
         // dd($rows[2][1], $tanggal);
+        $tanggal = Carbon::today()->toDateString();
+
         $jumlahUpdate = 0;
 
         foreach ($rows as $index => $row) {
@@ -196,7 +198,7 @@ class SalaryAdjustController extends Controller
                 }
             }
             // Skip jika ID kosong atau tidak ada data gaji/lembur
-            if (!$id_karyawan || ($gaji_sesudah === null && $lembur_baru === null)) {
+            if (!$id_karyawan || ($gaji_sesudah === null && $lembur_baru === null && $bonus_baru === null)) {
                 continue;
             }
 
@@ -211,6 +213,13 @@ class SalaryAdjustController extends Controller
                 // Update gaji_pokok jika berbeda atau meskipun 0
                 if ($gaji_sesudah !== null && $karyawan->gaji_pokok != $gaji_sesudah) {
                     $karyawan->gaji_pokok = $gaji_sesudah;
+                    $min_BPJS = 0;
+                    // dd($karyawan->gaji_bpjs, $karyawan->potongan_kesehatan);
+                    if ($karyawan->potongan_kesehatan) {
+                        $min_BPJS = 4901117;
+                    } else  $min_BPJS = 3850000;
+                    if ($gaji_sesudah <= $min_BPJS) $karyawan->gaji_bpjs = $min_BPJS;
+                    else $karyawan->gaji_bpjs = $gaji_sesudah;
                     $updated = true;
                 }
 
@@ -222,6 +231,7 @@ class SalaryAdjustController extends Controller
 
                 if ($updated) {
                     // $karyawan->tanggal_update = Carbon::now();
+
                     $karyawan->tanggal_update = Carbon::parse($tanggal);
                     $karyawan->save();
                     $jumlahUpdate++;
@@ -242,14 +252,15 @@ class SalaryAdjustController extends Controller
                         $data->tanggal = Carbon::parse($tanggal)->format('Y-m-d');
                         $data->bonus_lain = $bonus_baru;
                         $data->save();
+                        $jumlahUpdate++;
                     } else {
                         // Update jika sudah ada
-                        $data->bonus_lain = $bonus_baru;
-                        $data->save();
+                        if ($data->bonus_lain != $bonus_baru) {
+                            $data->bonus_lain = $bonus_baru;
+                            $data->save();
+                            $jumlahUpdate++;
+                        }
                     }
-
-                    if (!$updated)
-                        $jumlahUpdate++;
                 }
             }
         }
