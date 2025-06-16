@@ -774,7 +774,8 @@ class YfpresensiController extends Controller
 
             // tambahan_shift_malam
 
-            if ($kh->shift == 'Malam') {
+            // if ($kh->shift == 'Malam') {
+            if ($shift == 'Malam') {
                 if (is_saturday($kh->date)) {
                     if ($total_jam_kerja >= 6) {
                         $tambahan_shift_malam = 1;
@@ -790,6 +791,8 @@ class YfpresensiController extends Controller
                         $tambahan_shift_malam = 1;
                     }
                 }
+            } else {
+                $tambahan_shift_malam = 0;
             }
             // end tambahan_shift_malam
             Yfrekappresensi::create([
