@@ -221,8 +221,14 @@
                                 <option value="M8">M8</option>
                                 <option value="M9">M9</option>
                                 <option value="M10">M10</option>
-                                <option value="M11">M11</option>
-                                <option value="M12">M12</option>
+                                <option value="P1">P1</option>
+                                <option value="P2">P2</option>
+                                <option value="P3">P3</option>
+                                <option value="P4">P4</option>
+                                <option value="P5">P5</option>
+                                <option value="P6">P6</option>
+                                <option value="P7">P7</option>
+                                <option value="P8">P8</option>
                             </select>
                         </div>
                     </div>
