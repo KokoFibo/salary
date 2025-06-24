@@ -120,7 +120,7 @@
                                     <div style="width: 130px">
                                         <select wire:model.live="search_placement" class="form-select"
                                             aria-label="Default select example">
-                                            <option value="">{{ __('Placement') }}</option>
+                                            <option value="">{{ __('Directorate') }}</option>
                                             @foreach ($placements as $j)
                                                 {{-- <option value="{{ $j->id }}">{{ $j->placement_name }}</option> --}}
                                                 <option value="{{ $j }}">{{ nama_placement($j) }}
@@ -204,7 +204,7 @@
                                     </th>
                                     <th style="width: 150px; border-style: none;">
                                         <a href="/template-gaji-form-placement"> <button wire:loading.remove
-                                                class="btn btn-success col-12">Excel Template Placement</button></a>
+                                                class="btn btn-success col-12">Excel Template Directorate</button></a>
                                     </th>
                                     {{-- @endif --}}
                                     @if (auth()->user()->role >= 6 || auth()->user()->username == 1146)
@@ -282,7 +282,7 @@
                                 <th class="text-center" wire:click="sortColumnName('company_id')">
                                     {{ __('Company') }} </th>
                                 <th class="text-center" wire:click="sortColumnName('placement_id')">
-                                    {{ __('Placement') }}
+                                    {{ __('Directorate') }}
 
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('department_id')">

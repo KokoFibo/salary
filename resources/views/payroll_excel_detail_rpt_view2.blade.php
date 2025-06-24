@@ -111,7 +111,7 @@
                     Company Name</th>
                 <th
                     style="border: 1px solid black; text-align: center; font-size:14px; background-color: #28A745; color: white;">
-                    Placement</th>
+                    Directorate</th>
                 <th
                     style="border: 1px solid black; text-align: center; font-size:14px; background-color: #28A745; color: white;">
                     TKA</th>
@@ -197,7 +197,7 @@
             <tr>
 
                 <th colspan="6" style="font-size:20px; text-align:center; font-weight: bold">
-                    <h3>Pembagian by Placement</h3>
+                    <h3>Pembagian by Directorate</h3>
                 </th>
 
             </tr>
@@ -212,7 +212,7 @@
             <tr>
                 <th
                     style="border: 1px solid black;text-align: center; font-size:14px; background-color: #28A745; color: white;">
-                    Placement</th>
+                    Directorate</th>
                 <th
                     style="border: 1px solid black;text-align: center; font-size:14px; background-color: #28A745; color: white;">
                     中方</th>

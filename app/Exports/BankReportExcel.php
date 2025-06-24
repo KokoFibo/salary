@@ -86,7 +86,7 @@ class BankReportExcel implements FromView,  ShouldAutoSize, WithColumnFormatting
                     ->whereMonth('date', $this->month)
                     ->whereYear('date', $this->year)
                     ->orderBy('id_karyawan', 'asc')->get();
-                $header_text = 'Perincian Payroll untuk Placement ' . nama_placement($this->placement_id) . ' ' .  nama_bulan($this->month) . ' ' . $this->year;
+                $header_text = 'Perincian Payroll untuk Directorate ' . nama_placement($this->placement_id) . ' ' .  nama_bulan($this->month) . ' ' . $this->year;
             } else  if ($this->department_id) {
                 $data = Payroll::whereIn('status_karyawan', $statuses)
                     ->where('department_id', $this->department_id)

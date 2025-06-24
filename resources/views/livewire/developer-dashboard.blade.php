@@ -16,7 +16,7 @@
     <div class="d-flex mt-5 justify-content-evenly">
         <a href="/jabatan"><button class="btn btn-primary">Add Jabatan</button></a>
         <a href="/addcompany"><button class="btn btn-primary">Add Company</button></a>
-        <a href="/addplacement"><button class="btn btn-primary">Add Placement</button></a>
+        <a href="/addplacement"><button class="btn btn-primary">Add Placement/Directorate</button></a>
         <a href="/department"><button class="btn btn-primary">Add Departement</button></a>
         <button wire:click='clear_build' class="btn btn-primary">Clear Build</button>
         <button wire:click='clear_payroll_rebuild' class="btn btn-primary">Clear Payroll Rebuild</button>

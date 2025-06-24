@@ -208,9 +208,9 @@
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label class="form-label">{{ __('Level Jabatan') }}</label>
+                            <label class="form-label">{{ __('Job Grade') }}</label>
                             <select class="form-select" aria-label="Default select example" wire:model="level_jabatan">
-                                <option value=" ">{{ __('Pilih level jabatan') }}</option>
+                                <option value=" ">{{ __('Pilih Job Grade') }}</option>
                                 <option value="M1">M1</option>
                                 <option value="M2">M2</option>
                                 <option value="M3">M3</option>
@@ -234,11 +234,11 @@
                     </div>
                     <div class="col-md-4">
                         <div class="mb-3">
-                            <label class="form-label">{{ __('Placement') }} <span
+                            <label class="form-label">{{ __('Directorate') }} <span
                                     class="text-danger">*</span></label>
                             <select class="form-select @error('placement_id') is-invalid @enderror"
                                 aria-label="Default select example" wire:model="placement_id">
-                                <option value=" ">{{ __('Pilih placement') }}</option>
+                                <option value=" ">{{ __('Pilih Directorate') }}</option>
                                 @foreach ($pilih_placement as $key => $nj)
                                     @if ($nj->id != 100)
                                         <option value="{{ $nj->id }}">{{ $nj->placement_name }}</option>

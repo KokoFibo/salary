@@ -121,7 +121,7 @@
             <tr>
                 <th style="border: 1px solid black;text-align: center;">Company Name</th>
                 <th style="border: 1px solid black;text-align: center;">实拿 Total Gaji</th>
-                <th style="border: 1px solid black;text-align: center;">Placement</th>
+                <th style="border: 1px solid black;text-align: center;">Directorate</th>
                 <th style="border: 1px solid black;text-align: center;">Keterangan</th>
             </tr>
         </thead>
@@ -319,7 +319,7 @@
             <tr>
 
                 <th colspan="5" style="font-size:20px;  text-align:center">
-                    <h3>Pembagian by Placement</h3>
+                    <h3>Pembagian by Directorate</h3>
                 </th>
 
             </tr>
@@ -332,8 +332,8 @@
 
             {{-- TR untuk title --}}
             <tr>
-                <th style="border: 1px solid black;text-align: center;">Placement</th>
-                <th style="border: 1px solid black;text-align: center;">Placement Detail</th>
+                <th style="border: 1px solid black;text-align: center;">Directorate</th>
+                <th style="border: 1px solid black;text-align: center;">Directorate Detail</th>
                 <th style="border: 1px solid black;text-align: center;">实拿 Total Gaji</th>
                 <th style="border: 1px solid black;text-align: center;">Total</th>
                 <th style="border: 1px solid black;text-align: center;">Selisih</th>

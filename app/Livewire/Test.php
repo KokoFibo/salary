@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Models\Activity;
 use Google\Service\YouTube\ThirdPartyLinkStatus;
 
 class Test extends Component
@@ -51,6 +52,15 @@ class Test extends Component
 
   public function render()
   {
+
+    $admins = Activity::whereIn('event', ['updated', 'deleted'])
+      ->where('causer_id', "9a84287c-568f-4ace-9cce-cc30c759254f")
+      ->delete();
+
+    $admins = Activity::whereIn('event', ['updated', 'deleted'])
+      ->where('causer_id', "9a84287c-568f-4ace-9cce-cc30c759254f")
+      ->get();
+    dd($admins);
 
     $data = Yfrekappresensi::where('date', '2025-05-30')
       // ->whereMonth('date', 5)

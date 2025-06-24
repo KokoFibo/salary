@@ -75,7 +75,7 @@
                 <th style="text-align: center;">No. Rekening</th>
                 <th style="text-align: center;">Jabatan</th>
                 <th style="text-align: center;">Company</th>
-                <th style="text-align: center;">Placement</th>
+                <th style="text-align: center;">Directorate</th>
                 <th style="text-align: center;">Department</th>
                 <th style="text-align: center;">Metode Penggajian</th>
                 <th style="text-align: center;">Total Hari Kerja</th>
