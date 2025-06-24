@@ -1,6 +1,34 @@
 <div>
     <h2 class='my-3 text-center'>Log Perubahan Gaji karyawan</h2>
     <div>
+        <div class="d-flex gap-3  p-3">
+            <select class="form-select" aria-label="Default select example" wire:model='admin'>
+                <option selected>Pilih Admin</option>
+                @foreach ($admins as $key => $a)
+                    <option value="{{ $a }}">{{ getCauserName($a) }}</option>
+                @endforeach
+                {{-- <option value="2">Two</option>
+            <option value="3">Three</option> --}}
+            </select>
+            <select class="form-select" aria-label="Default select example" wire:model='month'>
+                {{-- <option selected>Bulan</option> --}}
+                @foreach ($months as $key => $m)
+                    <option value="{{ $m }}">{{ nama_bulan($m) }}</option>
+                @endforeach
+                {{-- <option value="2">Two</option>
+            <option value="3">Three</option> --}}
+            </select>
+            <select class="form-select" aria-label="Default select example" wire:model='year'>
+                {{-- <option selected value="{{ $thisYear }}">{{ $thisYear }}</option> --}}
+                @foreach ($years as $key => $y)
+                    <option value="{{ $y }}">{{ $y }}</option>
+                @endforeach
+                {{-- <option value="2">Two</option>
+            <option value="3">Three</option> --}}
+            </select>
+            <button class="btn btn-primary" wire:click='proses'>Proses</button>
+            <button class="btn btn-success" wire:click='excel'>Excel</button>
+        </div>
         <table class='table'>
             <thead>
                 <tr>
@@ -48,7 +76,8 @@
                                                         <strong>{{ ucfirst($subKey) }}:</strong>
                                                         <ul>
                                                             @foreach ($subValue as $subSubKey => $subSubValue)
-                                                                <li>{{ ucfirst($subSubKey) }}: {{ $subSubValue }}</li>
+                                                                <li>{{ ucfirst($subSubKey) }}: {{ $subSubValue }}
+                                                                </li>
                                                             @endforeach
                                                         </ul>
                                                     </li>
