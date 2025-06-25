@@ -20,7 +20,7 @@
             <tr>
                 <th style="text-align: center;">ID</th>
                 <th style="text-align: center;">Nama Karyawan</th>
-                <th style="text-align: center;">Placement</th>
+                <th style="text-align: center;">Directorate</th>
                 <th style="text-align: center;">Company</th>
                 <th style="text-align: center;">Department</th>
                 <th style="text-align: center;">Jabatan</th>
