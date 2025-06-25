@@ -77,7 +77,7 @@ class KaryawanExport implements FromView,  ShouldAutoSize, WithColumnFormatting,
         if ($placement || $company || $department || $this->search_etnis) {
             $header_text = 'Data Karyawan';
             if ($company) $header_text = $header_text . ' Company ' . $company;
-            if ($placement) $header_text = $header_text . ' Placement ' . $placement;
+            if ($placement) $header_text = $header_text . ' Directorate ' . $placement;
             if ($department) $header_text = $header_text . ' Department ' . $department;
             if ($this->search_etnis) $header_text = $header_text . ' Etnis ' . $this->search_etnis;
         } else {

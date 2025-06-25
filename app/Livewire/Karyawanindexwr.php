@@ -361,7 +361,7 @@ class Karyawanindexwr extends Component
         if ($placement_fn || $company_fn || $department_fn || $this->search_etnis) {
             $nama_file = 'Karyawan';
             if ($company_fn) $nama_file = $nama_file . ' Company ' . $company_fn;
-            if ($placement_fn) $nama_file = $nama_file . ' Placement ' . $placement_fn;
+            if ($placement_fn) $nama_file = $nama_file . ' Directorate ' . $placement_fn;
             if ($department_fn) $nama_file = $nama_file . ' Department ' . $department_fn;
             if ($this->search_etnis) $nama_file = $nama_file . ' Etnis ' . $this->search_etnis;
         } else {
