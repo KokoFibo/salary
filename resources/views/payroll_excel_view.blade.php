@@ -116,6 +116,7 @@
                 <th style="text-align: center;">TER</th>
                 <th style="text-align: center;">Rate</th>
                 <th style="text-align: center;">Pph21</th>
+                <th style="text-align: center;">NIK</th>
                 <th style="text-align: center;">No NPWP</th>
                 <th style="text-align: center;">Total</th>
                 <th style="text-align: center; background-color: #63BDF6;">PRF Salary</th>
@@ -337,6 +338,7 @@
                     <td style="text-align: right"> {{ $rate_pph21 }}</td>
                     <td style="text-align: right"> {{ $d->pph21 }}</td>
 
+                    <td style="text-align: right"> {{ nik($d->id_karyawan) }}</td>
                     <td style="text-align: right"> {{ no_npwp($d->id_karyawan) }}</td>
                     <td style="text-align: right"> {{ $d->total }}</td>
                     <td style="text-align: right"> {{ $d->prf_salary }}</td>
