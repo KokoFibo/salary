@@ -181,7 +181,8 @@ class PlacementTKAExport implements FromView,  ShouldAutoSize, WithColumnFormatt
             'AZ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'BA' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'BB' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'BC' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
+            'BC' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'BD' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
         ];
     }
 }

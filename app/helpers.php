@@ -265,6 +265,16 @@ function total_gaji_perjam($gaji_pokok, $jam_kerja)
     return $gaji_pokok / 198 * $jam_kerja;
 }
 
+function nik($id)
+{
+    // Fetch the Karyawan data by ID
+    $karyawan = Karyawan::where('id_karyawan', $id)->select('no_identitas')->first();
+
+    if ($karyawan) {
+        return $karyawan->no_identitas;
+    }
+    return null;
+}
 function no_npwp($id)
 {
     // Fetch the Karyawan data by ID
