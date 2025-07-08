@@ -19,6 +19,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\KaryawanByEtnisExport;
 use Illuminate\Database\Query\Builder;
 use App\Exports\KaryawanByDepartmentExport;
+use App\Exports\karyawanExportKhusus;
 use Google\Service\YouTube\ThirdPartyLinkStatus;
 
 class Karyawanindexwr extends Component
@@ -54,6 +55,29 @@ class Karyawanindexwr extends Component
 
 
     // public $departments, $companies, $etnises, $jabatans;
+
+    public function excelKhusus()
+    {
+        $nama_file = "";
+
+        $placement_fn = nama_placement($this->search_placement);
+        $company_fn = nama_company($this->search_company);
+        $department_fn = nama_department($this->search_department);
+
+
+        if ($placement_fn || $company_fn || $department_fn || $this->search_etnis) {
+            $nama_file = 'Karyawan';
+            if ($company_fn) $nama_file = $nama_file . ' Company ' . $company_fn;
+            if ($placement_fn) $nama_file = $nama_file . ' Directorate ' . $placement_fn;
+            if ($department_fn) $nama_file = $nama_file . ' Department ' . $department_fn;
+            if ($this->search_etnis) $nama_file = $nama_file . ' Etnis ' . $this->search_etnis;
+        } else {
+            $nama_file = 'Seluruh Karyawan';
+        }
+        $nama_file = $nama_file . '.xlsx';
+
+        return Excel::download(new karyawanExportKhusus($this->search_placement, $this->search_company, $this->search_department, $this->selectStatus, $this->search_etnis), $nama_file);
+    }
 
     public function export($id)
     {
