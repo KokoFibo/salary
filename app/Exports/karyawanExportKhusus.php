@@ -28,9 +28,72 @@ class karyawanExportKhusus implements FromView,  ShouldAutoSize, WithColumnForma
         $this->search_etnis = $search_etnis;
     }
 
+    // public function view(): View
+    // {
+
+    //     if ($this->selectStatus == 1) {
+    //         $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
+    //     } elseif ($this->selectStatus == 2) {
+    //         $statuses = ['Blacklist', 'Resigned'];
+    //     } else {
+    //         $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
+    //     }
+    //     $data = Karyawan::whereIn('status_karyawan', $statuses);
+
+    //     if ($this->selected_placement) {
+    //         $data = $data->where('placement_id', $this->selected_placement);
+    //     }
+
+    //     if ($this->selected_company) {
+    //         $data = $data->where('company_id', $this->selected_company);
+    //     }
+    //     if ($this->selected_department) {
+    //         $data = $data->where('department_id', $this->selected_department);
+    //     }
+    //     if ($this->search_etnis) {
+    //         $data = $data->where('etnis', $this->search_etnis);
+    //     }
+
+
+
+    //     $data = $data->get();
+
+    //     $placement = nama_placement($this->selected_placement);
+    //     $company = nama_company($this->selected_company);
+    //     $department = nama_department($this->selected_department);
+
+
+
+    //     // if ($placement && $company) {
+    //     //     $header_text = "Excel Karyawan Company $company, Placement $placement";
+    //     // } elseif ($placement) {
+    //     //     $header_text = "Excel Karyawan Placement $placement";
+    //     // } elseif ($company) {
+    //     //     $header_text = "Excel Karyawan Company $company";
+    //     // } else {
+    //     //     $header_text = 'Excel Seluruh Karyawan';
+    //     // }
+
+    //     if ($placement || $company || $department || $this->search_etnis) {
+    //         $header_text = 'Data Karyawan';
+    //         if ($company) $header_text = $header_text . ' Company ' . $company;
+    //         if ($placement) $header_text = $header_text . ' Directorate ' . $placement;
+    //         if ($department) $header_text = $header_text . ' Department ' . $department;
+    //         if ($this->search_etnis) $header_text = $header_text . ' Etnis ' . $this->search_etnis;
+    //     } else {
+    //         $header_text = 'Data Seluruh Karyawan';
+    //     }
+
+
+
+    //     return view('karyawan_excel_view_khusus', [
+    //         'data' => $data,
+    //         'header_text' => $header_text
+    //     ]);
+    // }
+
     public function view(): View
     {
-
         if ($this->selectStatus == 1) {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
         } elseif ($this->selectStatus == 2) {
@@ -38,53 +101,41 @@ class karyawanExportKhusus implements FromView,  ShouldAutoSize, WithColumnForma
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
-        $data = Karyawan::whereIn('status_karyawan', $statuses);
+
+        $query = Karyawan::whereIn('status_karyawan', $statuses)
+            ->selectRaw("*, no_identitas AS no_identitas_str"); // Convert nik to string
 
         if ($this->selected_placement) {
-            $data = $data->where('placement_id', $this->selected_placement);
+            $query->where('placement_id', $this->selected_placement);
         }
 
         if ($this->selected_company) {
-            $data = $data->where('company_id', $this->selected_company);
+            $query->where('company_id', $this->selected_company);
         }
+
         if ($this->selected_department) {
-            $data = $data->where('department_id', $this->selected_department);
+            $query->where('department_id', $this->selected_department);
         }
+
         if ($this->search_etnis) {
-            $data = $data->where('etnis', $this->search_etnis);
+            $query->where('etnis', $this->search_etnis);
         }
 
-
-
-        $data = $data->get();
+        $data = $query->get();
 
         $placement = nama_placement($this->selected_placement);
         $company = nama_company($this->selected_company);
         $department = nama_department($this->selected_department);
 
-
-
-        // if ($placement && $company) {
-        //     $header_text = "Excel Karyawan Company $company, Placement $placement";
-        // } elseif ($placement) {
-        //     $header_text = "Excel Karyawan Placement $placement";
-        // } elseif ($company) {
-        //     $header_text = "Excel Karyawan Company $company";
-        // } else {
-        //     $header_text = 'Excel Seluruh Karyawan';
-        // }
-
         if ($placement || $company || $department || $this->search_etnis) {
             $header_text = 'Data Karyawan';
-            if ($company) $header_text = $header_text . ' Company ' . $company;
-            if ($placement) $header_text = $header_text . ' Directorate ' . $placement;
-            if ($department) $header_text = $header_text . ' Department ' . $department;
-            if ($this->search_etnis) $header_text = $header_text . ' Etnis ' . $this->search_etnis;
+            if ($company) $header_text .= ' Company ' . $company;
+            if ($placement) $header_text .= ' Directorate ' . $placement;
+            if ($department) $header_text .= ' Department ' . $department;
+            if ($this->search_etnis) $header_text .= ' Etnis ' . $this->search_etnis;
         } else {
             $header_text = 'Data Seluruh Karyawan';
         }
-
-
 
         return view('karyawan_excel_view_khusus', [
             'data' => $data,
@@ -98,14 +149,15 @@ class karyawanExportKhusus implements FromView,  ShouldAutoSize, WithColumnForma
     public function columnFormats(): array
     {
         return [
-            // 'C' => NumberFormat::FORMAT_TEXT,
-            // 'D' => '0',
+            'C' => NumberFormat::FORMAT_TEXT,
+            'D' => '0',
 
-            'I' => NumberFormat::FORMAT_DATE_XLSX15,
-            'D' => "0",
-            'M' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'N' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'O' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            // 'D' => NumberFormat::FORMAT_NUMBER,
+            // 'D' => NumberFormat::FORMAT_TEXT,
+            // 'I' => NumberFormat::FORMAT_DATE_XLSX15,
+            // 'M' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            // 'N' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            // 'O' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
 
         ];
     }
