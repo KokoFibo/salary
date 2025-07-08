@@ -241,6 +241,10 @@
                                             <a href="/changeid">
                                                 <button class="btn btn-warning">Ganti ID</button> </a>
                                         </th>
+                                        <th style="width: 150px; border-style: none;">
+                                            <button wire:loading.remove wire:click="excelKhusus"
+                                                class="btn btn-success col-12">Excel Khusus</button>
+                                        </th>
                                     @endif
 
                                     <th style=" border-style: none;">
@@ -265,10 +269,10 @@
                                                 Iuran Locker</button></a>
                                     </th>
                                 @endif
-                                <th style="width: 150px; border-style: none;">
+                                {{-- <th style="width: 150px; border-style: none;">
                                     <a href="/infokaryawan">
                                         <button class="btn btn-info">Informasi</button> </a>
-                                </th>
+                                </th> --}}
 
 
 
