@@ -52,7 +52,8 @@ class Test extends Component
 
   public function render()
   {
-
+    $data = Karyawan::where('id_karyawan', 1146)->first();
+    dd($data->no_identitas);
 
     $data = Yfrekappresensi::where('date', '2025-05-30')
       // ->whereMonth('date', 5)
