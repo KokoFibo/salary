@@ -311,7 +311,7 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                             <option value=" ">{{ __('Pilih Etnis') }}</option>
                             <option value="Batak">{{ __('Batak') }}</option>
-                            <option value="China">{{ __('China') }}</option>
+                            {{-- <option value="China">{{ __('China') }}</option> --}}
                             <option value="Jawa">{{ __('Jawa') }}</option>
                             <option value="Sunda">{{ __('Sunda') }}</option>
                             <option value="Lampung">{{ __('Lampung') }}</option>
@@ -325,7 +325,27 @@
                             </div>
                         @enderror
                     </div>
-                    <div></div>
+                    <div>
+                        <label for="ptkp" class="block mb-2 text-sm font-medium text-gray-900">PTKP<span
+                                class="text-red-500 ml-1">*</span></label>
+                        <select id="ptkp" wire:model='ptkp'
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <option value=" ">{{ __('Pilih PTKP') }}</option>
+                            <option value="TK0">TK/0</option>
+                            <option value="TK1">TK/1</option>
+                            <option value="TK2">TK/2</option>
+                            <option value="TK3">TK/3</option>
+                            <option value="K0">K/0</option>
+                            <option value="K1">K/1</option>
+                            <option value="K2">K/2</option>
+                            <option value="K3">K/3</option>
+                        </select>
+                        @error('ptkp')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
                 </div>
                 {{-- kontak --}}
                 <div class="p-3 grid gap-6 mb-6 md:grid-cols-3">

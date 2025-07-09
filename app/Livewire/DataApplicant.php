@@ -167,6 +167,7 @@ class DataApplicant extends Component
                 'golongan_darah' => $dataApplicant->golongan_darah,
                 'agama' => $dataApplicant->agama,
                 'etnis' => $dataApplicant->etnis,
+                'ptkp' => $dataApplicant->ptkp,
                 'kontak_darurat' => $dataApplicant->nama_contact_darurat,
                 'kontak_darurat2' => $dataApplicant->nama_contact_darurat_2,
                 'hp1' => $dataApplicant->contact_darurat_1,

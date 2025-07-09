@@ -24,7 +24,7 @@ class Applicant extends Component
 
     public $is_registered, $show, $showMenu, $showSubmit, $registeredEmail, $registeredPassword, $is_update;
     public $nama, $email, $password, $confirm_password, $hp, $telp, $tempat_lahir, $tgl_lahir, $gender;
-    public $status_pernikahan, $golongan_darah, $agama, $etnis;
+    public $status_pernikahan, $golongan_darah, $agama, $etnis, $ptkp;
     public  $nama_contact_darurat, $contact_darurat_1, $hubungan_1;
     public $nama_contact_darurat_2, $contact_darurat_2, $hubungan_2;
     public $jenis_identitas, $no_identitas;
@@ -105,6 +105,7 @@ class Applicant extends Component
             $this->golongan_darah = $data->golongan_darah;
             $this->agama = $data->agama;
             $this->etnis = $data->etnis;
+            $this->ptkp = $data->ptkp;
             $this->nama_contact_darurat = $data->nama_contact_darurat;
             $this->nama_contact_darurat_2 = $data->nama_contact_darurat_2;
             $this->contact_darurat_1 = $data->contact_darurat_1;
@@ -148,6 +149,7 @@ class Applicant extends Component
             'golongan_darah.required' => 'Golongan Darah wajib diisi.',
             'agama.required' => 'Agama wajib diisi.',
             'etnis.required' => 'Etnis wajib diisi.',
+            'ptkp.required' => 'PTKP wajib diisi.',
             'nama_contact_darurat.required' => 'Nama Kontak 1 Darurat wajib diisi.',
             'nama_contact_darurat_2.required' => 'Nama Kontak 2 Darurat wajib diisi.',
             'hubungan_1.required' => 'Hubungan 1 Kontak Darurat wajib diisi.',
@@ -243,6 +245,7 @@ class Applicant extends Component
             'golongan_darah' => 'required',
             'agama' => 'required',
             'etnis' => 'required',
+            'ptkp' => 'required',
             'nama_contact_darurat' => 'required',
             'nama_contact_darurat_2' => 'required',
             'contact_darurat_1' => 'required|min:10',
@@ -597,6 +600,7 @@ class Applicant extends Component
             'golongan_darah' => $this->golongan_darah,
             'agama' => $this->agama,
             'etnis' => $this->etnis,
+            'ptkp' => $this->ptkp,
             'nama_contact_darurat' => titleCase($this->nama_contact_darurat),
             'nama_contact_darurat_2' => titleCase($this->nama_contact_darurat_2),
             'contact_darurat_1' => $this->contact_darurat_1,
@@ -653,6 +657,7 @@ class Applicant extends Component
             'golongan_darah',
             'agama',
             'etnis',
+            'ptkp',
             'nama_contact_darurat',
             'nama_contact_darurat_2',
             'contact_darurat_1',
