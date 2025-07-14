@@ -517,6 +517,8 @@ class Yfpresensiindexwr extends Component
             $data->late_history = null;
         }
 
+
+
         $data->save();
         $this->btnEdit = true;
 
