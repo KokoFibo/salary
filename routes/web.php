@@ -255,6 +255,8 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/headcount', Headcount::class);
                     // Route::get('/movedata', Movedata::class);
                     Route::get('/data-log', DataLog::class)->name('datalog');
+                    Route::post('/bulk-upload', [SalaryAdjustController::class, 'import']);
+
 
 
 
@@ -274,7 +276,6 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/template-gaji-form-placement', [ExcelController::class, 'template_gaji_placement']);
 
 
-                        Route::post('/bulk-upload', [SalaryAdjustController::class, 'import']);
 
 
 
