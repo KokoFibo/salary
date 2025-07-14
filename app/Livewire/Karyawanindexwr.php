@@ -52,8 +52,7 @@ class Karyawanindexwr extends Component
     public $search_gaji_overtime;
     public $is_tanggal_gajian;
     public $delete_id;
-
-
+    public $companies, $placements, $departments, $statuses;
     // public $departments, $companies, $etnises, $jabatans;
 
     public function excelKhusus()
@@ -230,8 +229,82 @@ class Karyawanindexwr extends Component
         // dd($nama_file);
         return Excel::download(new KaryawanByEtnisExport($this->search_etnis), $nama_file);
     }
+
+    public function updatedSearchPlacement()
+    {
+        if ($this->selectStatus == 1) {
+            $this->statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
+        } elseif ($this->selectStatus == 2) {
+            $this->statuses = ['Resigned'];
+        } elseif ($this->selectStatus == 3) {
+            $this->statuses = ['Blacklist'];
+        } else {
+            $this->statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
+        }
+
+        $this->departments = Karyawan::whereIn('status_karyawan', $this->statuses)
+            ->when($this->search_placement, function ($query) {
+                $query->where('placement_id', $this->search_placement);
+            })
+
+            ->when($this->search_company, function ($query) {
+                $query->where('company_id', trim($this->search_company));
+            })
+            ->when($this->search_jabatan, function ($query) {
+                $query->where('jabatan_id', trim($this->search_jabatan));
+            })
+            ->pluck('department_id')->unique();
+    }
+    // public function updatedSearchDepartment()
+    // {
+    //     dd($this->search_department);
+    // }
     public function mount()
     {
+        if ($this->selectStatus == 1) {
+            $this->statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
+        } elseif ($this->selectStatus == 2) {
+            $this->statuses = ['Resigned'];
+        } elseif ($this->selectStatus == 3) {
+            $this->statuses = ['Blacklist'];
+        } else {
+            $this->statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
+        }
+        $this->companies = Karyawan::whereIn('status_karyawan', $this->statuses)
+
+            ->pluck('company_id')->unique();
+
+
+        $this->placements = Karyawan::whereIn('status_karyawan', $this->statuses)
+            ->when($this->search_department, function ($query) {
+                $query->where('department_id', $this->search_department);
+            })
+
+            ->when($this->search_company, function ($query) {
+                $query->where('company_id', trim($this->search_company));
+            })
+            ->when($this->search_jabatan, function ($query) {
+                $query->where('jabatan_id', trim($this->search_jabatan));
+            })
+            ->pluck('placement_id')->unique();
+
+
+        $this->departments = Karyawan::whereIn('status_karyawan', $this->statuses)
+            ->when($this->search_placement, function ($query) {
+                $query->where('placement_id', $this->search_placement);
+            })
+
+            ->when($this->search_company, function ($query) {
+                $query->where('company_id', trim($this->search_company));
+            })
+            ->when($this->search_jabatan, function ($query) {
+                $query->where('jabatan_id', trim($this->search_jabatan));
+            })
+            ->pluck('department_id')->unique();
+
+
+
+
         $this->year = now()->year;
         $this->month = now()->month;
         $this->selected_company = 0;
@@ -305,15 +378,15 @@ class Karyawanindexwr extends Component
     {
         $this->resetPage();
     }
-    public function updatingSearchPlacement()
-    {
-        $this->resetPage();
-    }
-    public function updatingSearchDepartment()
-    {
+    // public function updatingSearchPlacement()
+    // {
+    //     $this->resetPage();
+    // }
+    // public function updatingSearchDepartment()
+    // {
 
-        $this->resetPage();
-    }
+    //     $this->resetPage();
+    // }
     public function updatingSearchEtnis()
     {
         $this->resetPage();
@@ -466,7 +539,7 @@ class Karyawanindexwr extends Component
     public function getPayrollQuery($statuses, $search = null, $placement_id = null, $company_id = null)
     {
         return Karyawan::query()
-            ->whereIn('status_karyawan', $statuses)
+            ->whereIn('status_karyawan', $this->statuses)
             ->when($search, function ($query) use ($search) {
                 $query
 
@@ -491,59 +564,50 @@ class Karyawanindexwr extends Component
     public function render()
     {
         if ($this->selectStatus == 1) {
-            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
+            $this->statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
         } elseif ($this->selectStatus == 2) {
-            $statuses = ['Resigned'];
+            $this->statuses = ['Resigned'];
         } elseif ($this->selectStatus == 3) {
-            $statuses = ['Blacklist'];
+            $this->statuses = ['Blacklist'];
         } else {
-            $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
+            $this->statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
 
-        $companies = Karyawan::whereIn('status_karyawan', $statuses)
-            // ->when($this->search_placement, function ($query) {
-            //     $query->where('placement_id', $this->search_placement);
-            // })
-            // ->when($this->search_department, function ($query) {
-            //     $query->where('department_id', trim($this->search_department));
-            // })
-            // ->when($this->search_jabatan, function ($query) {
-            //     $query->where('jabatan_id', trim($this->search_jabatan));
-            // })
-            ->pluck('company_id')->unique();
+        // $companies = Karyawan::whereIn('status_karyawan', $statuses)
+
+        //     ->pluck('company_id')->unique();
 
 
-        $placements = Karyawan::whereIn('status_karyawan', $statuses)
-            ->when($this->search_department, function ($query) {
-                $query->where('department_id', $this->search_department);
-            })
+        // $placements = Karyawan::whereIn('status_karyawan', $statuses)
+        //     ->when($this->search_department, function ($query) {
+        //         $query->where('department_id', $this->search_department);
+        //     })
 
-            ->when($this->search_company, function ($query) {
-                $query->where('company_id', trim($this->search_company));
-            })
-            ->when($this->search_jabatan, function ($query) {
-                $query->where('jabatan_id', trim($this->search_jabatan));
-            })
-            ->pluck('placement_id')->unique();
+        //     ->when($this->search_company, function ($query) {
+        //         $query->where('company_id', trim($this->search_company));
+        //     })
+        //     ->when($this->search_jabatan, function ($query) {
+        //         $query->where('jabatan_id', trim($this->search_jabatan));
+        //     })
+        //     ->pluck('placement_id')->unique();
 
-        // $placements = Placement::all();
 
-        $departments = Karyawan::whereIn('status_karyawan', $statuses)
-            ->when($this->search_placement, function ($query) {
-                $query->where('placement_id', $this->search_placement);
-            })
+        // $departments = Karyawan::whereIn('status_karyawan', $statuses)
+        //     ->when($this->search_placement, function ($query) {
+        //         $query->where('placement_id', $this->search_placement);
+        //     })
 
-            ->when($this->search_company, function ($query) {
-                $query->where('company_id', trim($this->search_company));
-            })
-            ->when($this->search_jabatan, function ($query) {
-                $query->where('jabatan_id', trim($this->search_jabatan));
-            })
-            ->pluck('department_id')->unique();
+        //     ->when($this->search_company, function ($query) {
+        //         $query->where('company_id', trim($this->search_company));
+        //     })
+        //     ->when($this->search_jabatan, function ($query) {
+        //         $query->where('jabatan_id', trim($this->search_jabatan));
+        //     })
+        //     ->pluck('department_id')->unique();
 
 
 
-        $jabatans = Karyawan::whereIn('status_karyawan', $statuses)
+        $jabatans = Karyawan::whereIn('status_karyawan', $this->statuses)
             ->when($this->search_placement, function ($query) {
                 $query->where('placement_id', $this->search_placement);
             })
@@ -555,7 +619,7 @@ class Karyawanindexwr extends Component
             })
             ->pluck('jabatan_id')->unique();
 
-        $etnises = Karyawan::whereIn('status_karyawan', $statuses)
+        $etnises = Karyawan::whereIn('status_karyawan', $this->statuses)
             ->when($this->search_placement, function ($query) {
                 $query->where('placement_id', $this->search_placement);
             })
@@ -575,7 +639,7 @@ class Karyawanindexwr extends Component
 
 
         $datas = Karyawan::query()
-            ->whereIn('status_karyawan', $statuses)
+            ->whereIn('status_karyawan', $this->statuses)
             ->where('nama', 'LIKE', '%' . trim($this->search_nama) . '%')
             ->when($this->search_id_karyawan, function ($query) {
                 $query->where('id_karyawan', trim($this->search_id_karyawan));
@@ -609,10 +673,10 @@ class Karyawanindexwr extends Component
 
         return view('livewire.karyawanindexwr', [
             'datas' => $datas,
-            'placements' => $placements,
-            'departments' => $departments,
+            // 'placements' => $placements,
+            // 'departments' => $departments,
             'jabatans' => $jabatans,
-            'companies' => $companies,
+            // 'companies' => $companies,
             'etnises' => $etnises,
         ]);
     }
