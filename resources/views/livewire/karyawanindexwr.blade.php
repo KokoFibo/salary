@@ -194,8 +194,17 @@
 
                                 @if (auth()->user()->role >= 6)
                                     <th style="width: 150px; border-style: none;">
-                                        <button wire:loading.remove wire:click="excel"
-                                            class="btn btn-success col-12">Excel</button>
+                                        @if ($selectStatus == 2)
+                                            <button wire:loading.remove wire:click="excelrb"
+                                                class="btn btn-success col-12">Excel Resigned</button>
+                                        @elseif($selectStatus == 3)
+                                            <button wire:loading.remove wire:click="excelrb"
+                                                class="btn btn-success col-12">Excel Blacklist</button>
+                                        @else
+                                            <button wire:loading.remove wire:click="excel"
+                                                class="btn btn-success col-12">Excel</button>
+                                        @endif
+
                                     </th>
 
                                     <th style="width: 150px; border-style: none;">
