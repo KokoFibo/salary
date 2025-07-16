@@ -44,7 +44,8 @@
                     <td style="text-align: center"> {{ $d->id_karyawan }}</td>
                     <td style="text-align: center"> {{ $d->nama }}</td>
                     <td style="text-align: center"> {{ $d->jenis_identitas }}</td>
-                    <td style="text-align: center">'{{ $d->no_identitas_str }}</td>
+                    <td style="text-align: center">'{{ $d->no_identitas }}</td>
+
                     <td style="text-align: center"> {{ $d->tempat_lahir }}</td>
                     <td style="text-align: center"> {{ $d->tanggal_lahir }}</td>
                     <td style="text-align: center"> {{ $d->gender }}</td>
