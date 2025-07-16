@@ -12,6 +12,7 @@ use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use App\Exports\KaryawanExport;
 use App\Exports\DataPelitaExport;
+use App\Exports\ExcelResignedBlacklist;
 use Illuminate\Support\Facades\DB;
 use App\Exports\karyawanExportForm;
 use Illuminate\Support\Facades\Http;
@@ -54,6 +55,17 @@ class Karyawanindexwr extends Component
     public $delete_id;
     public $companies, $placements, $departments, $statuses;
     // public $departments, $companies, $etnises, $jabatans;
+
+    public function excelrb()
+    {
+        $nama_file = "";
+        if ($this->selectStatus == 2) {
+            $nama_file = "semua_karyawan_resigned.xlsx";
+        } else {
+            $nama_file = "semua_karyawan_blacklist.xlsx";
+        }
+        return Excel::download(new ExcelResignedBlacklist($this->selectStatus), $nama_file);
+    }
 
     public function excelKhusus()
     {
