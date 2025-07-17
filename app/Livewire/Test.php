@@ -51,10 +51,7 @@ class Test extends Component
   public function render()
   {
     $karyawans = Karyawan::where('level_jabatan', '!=', "")->get();
-    foreach ($karyawans as $karyawan) {
-      $karyawan->level_jabatan = "";
-      $karyawan->save();
-    }
+
     dd($karyawans);
 
     $data = Yfrekappresensi::where('date', '2025-05-30')
