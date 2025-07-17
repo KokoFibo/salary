@@ -52,7 +52,7 @@ class Test extends Component
   {
     $karyawans = Karyawan::where('level_jabatan', '!=', "")->get();
 
-    dd($karyawans);
+    dd('aman');
 
     $data = Yfrekappresensi::where('date', '2025-05-30')
       // ->whereMonth('date', 5)
