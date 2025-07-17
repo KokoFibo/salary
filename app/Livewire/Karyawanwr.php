@@ -4,11 +4,12 @@ namespace App\Livewire;
 
 use App\Models\User;
 use App\Models\Company;
-use App\Models\Department;
 use App\Models\Jabatan;
 use Livewire\Component;
+use App\Models\Jobgrade;
 use App\Models\Karyawan;
 use App\Models\Placement;
+use App\Models\Department;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
@@ -34,9 +35,13 @@ class Karyawanwr extends Component
     public $pilih_company;
     public $pilih_department;
     public $pilih_placement;
+    public $jobgrades;
+
 
     public function mount()
     {
+        $this->jobgrades = Jobgrade::orderBy('grade', 'asc')->get();
+
         $this->pilih_jabatan = Jabatan::orderBy('nama_jabatan', 'asc')->get();
         $this->pilih_company = Company::orderBy('company_name', 'asc')->get();
         $this->pilih_department = Department::orderBy('nama_department', 'asc')->get();

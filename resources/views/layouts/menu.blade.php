@@ -15,6 +15,7 @@ with font-awesome or any other icon font library -->
             </a>
         </li>
 
+
         @if (Auth::user()->role >= 5)
             <li class="nav-item {{ 'karyawanindex' == request()->path() ? 'bg-secondary rounded' : '' }}">
                 <a href="/karyawanindex" class="nav-link">
