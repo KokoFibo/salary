@@ -211,7 +211,11 @@
                             <label class="form-label">{{ __('Job Grade') }}</label>
                             <select class="form-select" aria-label="Default select example" wire:model="level_jabatan">
                                 <option value=" ">{{ __('Pilih Job Grade') }}</option>
-                                <option value="M1">M1</option>
+                                @foreach ($jobgrades as $jobgrade)
+                                    <option value="{{ $jobgrade->id }}">{{ $jobgrade->grade }} -
+                                        {{ $jobgrade->grade_name }}</option>
+                                @endforeach
+                                {{-- <option value="M1">M1</option>
                                 <option value="M2">M2</option>
                                 <option value="M3">M3</option>
                                 <option value="M4">M4</option>
@@ -228,7 +232,7 @@
                                 <option value="P5">P5</option>
                                 <option value="P6">P6</option>
                                 <option value="P7">P7</option>
-                                <option value="P8">P8</option>
+                                <option value="P8">P8</option> --}}
                             </select>
                         </div>
                     </div>

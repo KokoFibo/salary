@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Company;
 use App\Models\Jabatan;
 use Livewire\Component;
+use App\Models\Jobgrade;
 use App\Models\Karyawan;
 use App\Models\Placement;
 use App\Models\Department;
@@ -17,10 +18,10 @@ use Livewire\WithFileUploads;
 use App\Livewire\Karyawanindexwr;
 use App\Rules\AllowedFileExtension;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\RequiredIf;
 use Google\Service\YouTube\ThirdPartyLinkStatus;
-use Intervention\Image\ImageManager;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class Updatekaryawanwr extends Component
@@ -53,6 +54,8 @@ class Updatekaryawanwr extends Component
     public $ktp = [], $kk = [], $ijazah = [], $nilai = [], $cv = [], $pasfoto = [];
     public $npwp = [], $paklaring = [], $bpjs = [], $skck = [], $sertifikat = [], $bri = [];
     public $applicant_id;
+    public $jobgrades;
+
 
 
 
@@ -144,6 +147,8 @@ class Updatekaryawanwr extends Component
 
     public function mount($id)
     {
+        $this->jobgrades = Jobgrade::orderBy('grade', 'asc')->get();
+
         $this->pilih_jabatan = Jabatan::orderBy('nama_jabatan', 'asc')->get();
         $this->pilih_company = Company::orderBy('company_name', 'asc')->get();
         $this->pilih_department = Department::orderBy('nama_department', 'asc')->get();

@@ -26,6 +26,7 @@ use App\Livewire\Timeoffwr;
 use App\Livewire\AddCompany;
 use App\Livewire\BankReport;
 use App\Livewire\CreateUser;
+use App\Livewire\Jobgradewr;
 use App\Livewire\Karyawanwr;
 use App\Livewire\Tambahanwr;
 use App\Livewire\UserMobile;
@@ -335,6 +336,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/createuser', CreateUser::class);
                             Route::get('/laporan', Laporan::class);
                             Route::get('/harikhusus', Harikhususwr::class);
+                            Route::get('/jobgrade', Jobgradewr::class);
 
 
 

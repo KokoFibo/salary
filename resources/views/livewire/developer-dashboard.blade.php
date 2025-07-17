@@ -8,6 +8,8 @@
         <a href="/usernotfound"><button class="btn btn-primary col-12">User Not Found</button></a>
         <a href="/rubahid"><button class="btn btn-primary">Rubah ID</button></a>
         <a href="/createuser"><button class="btn btn-primary">Create User Untuk Role</button></a>
+        <a href="/jobgrade"><button class="btn btn-primary">Job Grade</button></a>
+
 
 
 
@@ -23,8 +25,8 @@
         <button wire:click='delete_failed_jobs' class="btn btn-primary">Delete Failed Job</button>
         <a href="/GantiPasswordDeveloper"><button class="btn btn-primary">Ganti Password Developer</button></a>
         <a href="/harikhusus"><button class="btn btn-primary">Hari/tanggal Khusus</button></a>
-
     </div>
+
     <div class="d-flex mt-5 justify-content-evenly">
         <button class='btn btn-danger' wire:confirm='Are you sure?' wire:click='delete_diatas_4jt'>Delete Karyawan Gaji
             diatas
