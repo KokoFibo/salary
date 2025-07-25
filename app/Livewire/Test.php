@@ -50,9 +50,11 @@ class Test extends Component
 
   public function render()
   {
-    $karyawans = Karyawan::where('level_jabatan', '!=', "")->get();
+    DB::statement('UPDATE karyawans SET gaji_tetap = gaji_pokok');
+    dd('done');
+    $karyawans = Karyawan::all();
 
-    dd('aman');
+    dd($karyawans);
 
     $data = Yfrekappresensi::where('date', '2025-05-30')
       // ->whereMonth('date', 5)
