@@ -55,6 +55,7 @@ class Updatekaryawanwr extends Component
     public $npwp = [], $paklaring = [], $bpjs = [], $skck = [], $sertifikat = [], $bri = [];
     public $applicant_id;
     public $jobgrades;
+    public $gaji_tetap, $tunjangan_housing;
 
 
 
@@ -220,12 +221,13 @@ class Updatekaryawanwr extends Component
         //Payroll
         $this->metode_penggajian = trim($data->metode_penggajian);
         //  $this->gaji_pokok = $data->gaji_pokok;
-        $this->gaji_pokok = $data->gaji_pokok;
+        $this->gaji_tetap = $data->gaji_tetap;
         $this->gaji_overtime = $data->gaji_overtime;
         $this->gaji_shift_malam_satpam = $data->gaji_shift_malam_satpam;
         $this->bonus = $data->bonus;
         $this->tunjangan_jabatan = $data->tunjangan_jabatan;
         $this->tunjangan_bahasa = $data->tunjangan_bahasa;
+        $this->tunjangan_housing = $data->tunjangan_housing;
         $this->tunjangan_skill = $data->tunjangan_skill;
         $this->tunjangan_lembur_sabtu = $data->tunjangan_lembur_sabtu;
         $this->tunjangan_lama_kerja = $data->tunjangan_lama_kerja;
@@ -242,6 +244,8 @@ class Updatekaryawanwr extends Component
         $this->no_npwp = $data->no_npwp;
         $this->ptkp = $data->ptkp;
         $this->id_file_karyawan = $data->id_file_karyawan;
+        $this->gaji_pokok = $this->gaji_tetap + $this->tunjangan_housing + $this->tunjangan_bahasa;
+
 
         // data Applicant files
         // $this->personal_files = Applicantfile::where('id_karyawan', $this->id_file_karyawan)->get();
@@ -362,12 +366,13 @@ class Updatekaryawanwr extends Component
             'nomor_rekening' => 'nullable',
             // PAYROLL
             'metode_penggajian' => 'required',
-            'gaji_pokok' => 'numeric|required',
+            'gaji_tetap' => 'numeric|required',
             'gaji_overtime' => 'numeric|required',
             'gaji_shift_malam_satpam' => 'numeric',
             'bonus' => 'numeric|nullable',
             'tunjangan_jabatan' => 'numeric|nullable',
             'tunjangan_bahasa' => 'numeric|nullable',
+            'tunjangan_housing' => 'numeric|nullable',
             'tunjangan_skill' => 'numeric|nullable',
             'tunjangan_lembur_sabtu' => 'numeric|nullable',
             'tunjangan_lama_kerja' => 'numeric|nullable',
@@ -437,7 +442,6 @@ class Updatekaryawanwr extends Component
             'skck.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
             'sertifikat.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
             'bri.*' => ['nullable', 'mimes:png,jpg,jpeg', new AllowedFileExtension],
-
         ]);
     }
     public function updatedIjazah()
@@ -747,12 +751,13 @@ class Updatekaryawanwr extends Component
 
     public function update1()
     {
-        $this->gaji_pokok = convert_numeric($this->gaji_pokok);
+        $this->gaji_tetap = convert_numeric($this->gaji_tetap);
         $this->gaji_overtime = convert_numeric($this->gaji_overtime);
         $this->gaji_shift_malam_satpam = convert_numeric($this->gaji_shift_malam_satpam);
         $this->bonus = convert_numeric($this->bonus);
         $this->tunjangan_jabatan = convert_numeric($this->tunjangan_jabatan);
         $this->tunjangan_bahasa = convert_numeric($this->tunjangan_bahasa);
+        $this->tunjangan_housing = convert_numeric($this->tunjangan_housing);
         $this->tunjangan_skill = convert_numeric($this->tunjangan_skill);
         $this->tunjangan_lembur_sabtu = convert_numeric($this->tunjangan_lembur_sabtu);
         $this->tunjangan_lama_kerja = convert_numeric($this->tunjangan_lama_kerja);
@@ -816,13 +821,14 @@ class Updatekaryawanwr extends Component
         $data->nomor_rekening = $this->nomor_rekening;
 
         // Payroll
-        $data->gaji_pokok = $this->gaji_pokok;
+        $data->gaji_tetap = $this->gaji_tetap;
         $data->gaji_overtime = $this->gaji_overtime;
         $data->gaji_shift_malam_satpam = $this->gaji_shift_malam_satpam;
         $data->metode_penggajian = $this->metode_penggajian;
         $data->bonus = $this->bonus;
         $data->tunjangan_jabatan = $this->tunjangan_jabatan;
         $data->tunjangan_bahasa = $this->tunjangan_bahasa;
+        $data->tunjangan_housing = $this->tunjangan_housing;
         $data->tunjangan_skill = $this->tunjangan_skill;
         $data->tunjangan_lembur_sabtu = $this->tunjangan_lembur_sabtu;
         $data->tunjangan_lama_kerja = $this->tunjangan_lama_kerja;
@@ -843,6 +849,9 @@ class Updatekaryawanwr extends Component
             $data->id_file_karyawan = makeApplicationId($data->nama, convertTgl($data->tanggal_lahir));
         }
         $this->id_file_karyawan = $data->id_file_karyawan;
+
+        $data->gaji_pokok = $this->gaji_tetap + $this->tunjangan_housing + $this->tunjangan_bahasa;
+
 
         $data->save();
 

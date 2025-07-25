@@ -26,10 +26,10 @@
                 {{-- ====================================================== --}}
                 <div class="col-md-3">
                     <div class="mb-3">
-                        <label class="form-label">{{ __('Gaji pokok') }} </label>
-                        <input wire:model="gaji_pokok" type="text" type-currency="IDR"
-                            class="form-control @error('gaji_pokok') is-invalid @enderror">
-                        @error('gaji_pokok')
+                        <label class="form-label">{{ __('Gaji') }} </label>
+                        <input wire:model="gaji_tetap" type="text" type-currency="IDR"
+                            class="form-control @error('gaji_tetap') is-invalid @enderror">
+                        @error('gaji_tetap')
                             <div class="invalid-feedback">
                                 {{ $message }}
                             </div>
@@ -88,10 +88,16 @@
 
                 </div>
             </div>
-            <div class="col-md-4">
+            {{-- <div class="col-md-4">
                 <div class="mb-3">
                     <label class="form-label">{{ __('Tunjangan Jabatan') }}</label>
                     <input wire:model="tunjangan_jabatan" type="text" type-currency="IDR" class="form-control">
+                </div>
+            </div> --}}
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <label class="form-label">{{ __('Tunjangan Housing') }}</label>
+                    <input wire:model="tunjangan_housing" type="text" type-currency="IDR" class="form-control">
                 </div>
             </div>
             <div class="col-md-4">
@@ -102,7 +108,7 @@
             </div>
         </div>
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-4">
                 <div class="mb-3">
                     <label class="form-label">{{ __('Tunjangan Skill') }}</label>
@@ -123,7 +129,7 @@
                 </div>
             </div>
 
-        </div>
+        </div> --}}
     </div>
 </div>
 

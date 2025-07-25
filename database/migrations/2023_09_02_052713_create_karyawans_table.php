@@ -78,6 +78,8 @@ return new class extends Migration
             $table->integer('tanggungan')->nullable();
             $table->integer('id_file_karyawan')->nullable();
             $table->date('tanggal_update')->nullable();
+            $table->integer('gaji_tetap')->nullable();
+            $table->integer('tunjangan_housing')->nullable();
 
 
 

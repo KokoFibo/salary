@@ -49,11 +49,16 @@ class Karyawanindexwr extends Component
     public $search_etnis;
     public $search_status;
     public $search_tanggal_bergabung;
-    public $search_gaji_pokok;
+    // public $search_gaji_pokok;
+    public $search_gaji_tetap;
+    public $search_tunjangan_housing;
+    public $search_tunjangan_bahasa;
     public $search_gaji_overtime;
     public $is_tanggal_gajian;
     public $delete_id;
     public $companies, $placements, $departments, $statuses;
+    public $gaji_tetap, $tunjangan_housing, $tunjangan_bahasa;
+
     // public $departments, $companies, $etnises, $jabatans;
 
     public function excelrb()
@@ -153,10 +158,26 @@ class Karyawanindexwr extends Component
         $this->columnName = 'tanggal_bergabung';
         $this->direction = $this->search_tanggal_bergabung;
     }
-    public function updatedSearchGajiPokok()
+
+    // public function updatedSearchGajiPokok()
+    // {
+    //     $this->columnName = 'gaji_pokok';
+    //     $this->direction = $this->search_gaji_pokok;
+    // }
+    public function updatedSearchGajiTetap()
     {
-        $this->columnName = 'gaji_pokok';
-        $this->direction = $this->search_gaji_pokok;
+        $this->columnName = 'gaji_tetap';
+        $this->direction = $this->search_gaji_tetap;
+    }
+    public function updatedSearchTunjanganHousing()
+    {
+        $this->columnName = 'tunjangan_housing';
+        $this->direction = $this->search_tunjangan_housing;
+    }
+    public function updatedSearchTunjanganBahasa()
+    {
+        $this->columnName = 'tunjangan_bahasa';
+        $this->direction = $this->search_tunjangan_bahasa;
     }
     public function updatedSearchGajiOvertime()
     {
@@ -345,7 +366,10 @@ class Karyawanindexwr extends Component
         $this->search_etnis = "";
         $this->search_department = "";
         $this->search_tanggal_bergabung = "";
-        $this->search_gaji_pokok = "";
+        // $this->search_gaji_pokok = "";
+        $this->search_gaji_tetap = "";
+        $this->search_tunjangan_housing = "";
+        $this->search_tunjangan_bahasa = "";
         $this->search_gaji_overtime = "";
         $this->columnName = 'id_karyawan';
         $this->direction = 'desc';

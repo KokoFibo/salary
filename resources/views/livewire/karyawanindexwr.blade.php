@@ -322,8 +322,17 @@
                                 <th class="text-center" wire:click="sortColumnName('metode_penggajian')">
                                     {{ __('Metode Penggajian') }}
                                 </th>
-                                <th class="text-center" wire:click="sortColumnName('gaji_pokok')">
-                                    {{ __('Gaji Pokok') }}
+                                {{-- <th class="text-center" wire:click="sortColumnName('gaji_pokok')">
+                                    {{ __('Gaji (G+TB+TH)') }}
+                                </th> --}}
+                                <th class="text-center" wire:click="sortColumnName('gaji_tetap')">
+                                    {{ __('Gaji') }}
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('tunjangan_bahasa')">
+                                    {{ __('Tunjangan Bahasa') }}
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('tunjangan_housing')">
+                                    {{ __('Tunjangan Housing') }}
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('gaji_bpjs')">
                                     {{ __('Gaji BPJS') }}
@@ -403,7 +412,10 @@
                                             </td>
                                         @endif
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
-                                        <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
+                                        {{-- <td class="text-center">{{ number_format($data->gaji_pokok) }}</td> --}}
+                                        <td class="text-center">{{ number_format($data->gaji_tetap) }}</td>
+                                        <td class="text-center">{{ number_format($data->tunjangan_bahasa) }}</td>
+                                        <td class="text-center">{{ number_format($data->tunjangan_housing) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_bpjs) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>
                                         <td class="text-center">{{ format_tgl($data->tanggal_update) }}</td>
