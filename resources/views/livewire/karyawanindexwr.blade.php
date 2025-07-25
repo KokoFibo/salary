@@ -322,9 +322,10 @@
                                 <th class="text-center" wire:click="sortColumnName('metode_penggajian')">
                                     {{ __('Metode Penggajian') }}
                                 </th>
-                                {{-- <th class="text-center" wire:click="sortColumnName('gaji_pokok')">
+                                <th class="text-center" wire:click="sortColumnName('gaji_pokok')">
                                     {{ __('Gaji (G+TB+TH)') }}
-                                </th> --}}
+                                </th>
+
                                 <th class="text-center" wire:click="sortColumnName('gaji_tetap')">
                                     {{ __('Gaji') }}
                                 </th>
@@ -412,7 +413,7 @@
                                             </td>
                                         @endif
                                         <td class="text-center">{{ $data->metode_penggajian }}</td>
-                                        {{-- <td class="text-center">{{ number_format($data->gaji_pokok) }}</td> --}}
+                                        <td class="text-center">{{ number_format($data->gaji_pokok) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_tetap) }}</td>
                                         <td class="text-center">{{ number_format($data->tunjangan_bahasa) }}</td>
                                         <td class="text-center">{{ number_format($data->tunjangan_housing) }}</td>

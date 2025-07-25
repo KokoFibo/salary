@@ -24,6 +24,12 @@ use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function get_data_karyawan($id)
+{
+    $data = Karyawan::where('id_karyawan', $id)->first();
+    return $data;
+}
+
 function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $late, $shift, $date, $jabatan_id, $no_scan, $placement_id, $overtime_in, $overtime_out)
 {
 

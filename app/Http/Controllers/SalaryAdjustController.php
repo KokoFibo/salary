@@ -97,10 +97,11 @@ class SalaryAdjustController extends Controller
             if ($karyawan) {
                 $updated = false;
 
-                if ($karyawan->gaji_pokok != $gaji_sesudah) {
-                    $karyawan->gaji_pokok = $gaji_sesudah;
+                if ($karyawan->gaji_tetap != $gaji_sesudah) {
+                    $karyawan->gaji_tetap = $gaji_sesudah;
+                    $karyawan->gaji_pokok = $karyawan->gaji_tetap = $karyawan->tunjangan_bahasa + $karyawan->tunjangan_housing;
                     $updated = true;
-                    // dd($karyawan->gaji_pokok, $gaji_sesudah, $updated);
+                    // dd($karyawan->gaji_tetap, $gaji_sesudah, $updated);
                 }
 
                 if ($lembur_baru && $karyawan->gaji_overtime != $lembur_baru) {
@@ -210,9 +211,11 @@ class SalaryAdjustController extends Controller
             if ($karyawan) {
                 $updated = false;
 
-                // Update gaji_pokok jika berbeda atau meskipun 0
-                if ($gaji_sesudah !== null && $karyawan->gaji_pokok != $gaji_sesudah) {
-                    $karyawan->gaji_pokok = $gaji_sesudah;
+                // Update gaji_tetap jika berbeda atau meskipun 0
+                if ($gaji_sesudah !== null && $karyawan->gaji_tetap != $gaji_sesudah) {
+                    $karyawan->gaji_tetap = $gaji_sesudah;
+                    $karyawan->gaji_pokok = $karyawan->gaji_tetap = $karyawan->tunjangan_bahasa + $karyawan->tunjangan_housing;
+
                     $min_BPJS = 0;
                     // dd($karyawan->gaji_bpjs, $karyawan->potongan_kesehatan);
                     if ($karyawan->potongan_kesehatan) {

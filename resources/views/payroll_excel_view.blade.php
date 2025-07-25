@@ -83,7 +83,9 @@
                 <th style="text-align: center;">Total Jam Lembur</th>
                 <th style="text-align: center;">Jumlah Jam Terlambat</th>
                 <th style="text-align: center;">Tambahan Shift Malam</th>
-                <th style="text-align: center;">Gaji Pokok</th>
+                <th style="text-align: center;">Gaji</th>
+                <th style="text-align: center;">Tunjangan Bahasa</th>
+                <th style="text-align: center;">Tunjangan Housing</th>
                 <th style="text-align: center;">Gaji Per Hari/Jam</th>
                 <th style="text-align: center;">Gaji Bulan Ini</th>
                 <th style="text-align: center;">Gaji Lembur</th>
@@ -149,7 +151,13 @@
                     <td> {{ $d->jam_lembur }}</td>
                     <td> {{ $d->jumlah_jam_terlambat }}</td>
                     <td style="text-align: right"> {{ $d->tambahan_shift_malam }}</td>
-                    <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
+                    @php
+                        $data_karyawan = get_data_karyawan($d->id_karyawan);
+                    @endphp
+                    {{-- <td style="text-align: right"> {{ $d->gaji_tetap }}</td> --}}
+                    <td style="text-align: right"> {{ $data_karyawan->gaji_tetap }}</td>
+                    <td style="text-align: right"> {{ $data_karyawan->tunjangan_bahasa }}</td>
+                    <td style="text-align: right"> {{ $data_karyawan->tunjangan_housing }}</td>
 
                     @php
 

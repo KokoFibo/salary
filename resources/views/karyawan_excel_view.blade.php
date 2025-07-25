@@ -30,7 +30,9 @@
                 <th style="text-align: center;">Metode Penggajian</th>
                 <th style="text-align: center;">NPWP</th>
                 <th style="text-align: center;">PTKP</th>
-                <th style="text-align: center;">Gaji Pokok</th>
+                <th style="text-align: center;">Gaji</th>
+                <th style="text-align: center;">Tunjangan Bahasa</th>
+                <th style="text-align: center;">Tunjangan Housing</th>
                 <th style="text-align: center;">Gaji Lembur</th>
                 <th style="text-align: center;">Gaji BPJS</th>
             </tr>
@@ -50,7 +52,9 @@
                     <td style="text-align: center"> {{ $d->metode_penggajian }}</td>
                     <td style="text-align: center"> {{ $d->no_npwp }}</td>
                     <td style="text-align: center"> {{ $d->ptkp }}</td>
-                    <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
+                    <td style="text-align: right"> {{ $d->gaji_tetap }}</td>
+                    <td style="text-align: right"> {{ $d->tunjangan_bahasa }}</td>
+                    <td style="text-align: right"> {{ $d->tunjangan_housing }}</td>
                     <td style="text-align: right"> {{ $d->gaji_overtime }}</td>
                     <td style="text-align: right"> {{ $d->gaji_bpjs }}</td>
                 </tr>
