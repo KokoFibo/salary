@@ -116,7 +116,7 @@
             <td style="text-align: center; font-size:12px; border: 1px solid #000;">
                 {{ format_tgl($karyawan->tanggal_update) }}</td>
             <td style="text-align: center; font-size:12px; border: 1px solid #000;"></td>
-            <td style="text-align: center; font-size:12px; border: 1px solid #000;">{{ $karyawan->gaji_pokok }}</td>
+            <td style="text-align: center; font-size:12px; border: 1px solid #000;">{{ $karyawan->gaji_tetap }}</td>
             <td style="text-align: center; font-size:12px; border: 1px solid #000;"></td>
             <td style="text-align: center; font-size:12px; border: 1px solid #000;"></td>
             <td style="text-align: center; font-size:12px; border: 1px solid #000;">{{ $karyawan->gaji_overtime }}</td>

@@ -158,16 +158,18 @@ class PayrollGabunganExport implements FromView,  ShouldAutoSize, WithColumnForm
             'AP' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AQ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AT' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AU' => "0",
+            'AU' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AV' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AW' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AX' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AW' =>  "0",
+            'AX' => "0",
             'AY' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AZ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'BA' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'BB' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'BC' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'BD' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
+            'BD' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'BE' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'BF' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
         ];
     }
 }
