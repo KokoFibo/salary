@@ -50,8 +50,7 @@ class Test extends Component
 
   public function render()
   {
-    DB::statement('UPDATE karyawans SET gaji_tetap = gaji_pokok');
-    dd('done');
+    dd('aman');
     $karyawans = Karyawan::all();
 
     dd($karyawans);
