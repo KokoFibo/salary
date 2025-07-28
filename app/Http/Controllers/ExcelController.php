@@ -28,7 +28,7 @@ class ExcelController extends Controller
 
 
 
-        $zipFilename = 'exports/Template Form Salary Adjust by Placement - Department For Non OS.zip';
+        $zipFilename = 'exports/Template Form Salary Adjust by Directorate - Department For Non OS.zip';
         $zipPath = storage_path("app/{$zipFilename}");
 
         $zip = new ZipArchive;
@@ -48,22 +48,19 @@ class ExcelController extends Controller
 
             \Log::info("📦 Proses: placement_id = $placementId, department_id = $departmentId, count = " . $karyawanGroup->count());
 
-            $relativePath = "exports/placement_{$nama_placement}_department_{$nama_department}.xlsx";
-            $header_text = "Data Karyawan Non OS Placement {$nama_placement} - Department {$nama_department} - " . now()->format('d-m-Y H:i:s');
+            $relativePath = "exports/directorate_{$nama_placement}_department_{$nama_department}.xlsx";
+            $header_text = "Data Karyawan Non OS Directorate {$nama_placement} - Department {$nama_department} - " . now()->format('d-m-Y H:i:s');
             $stored = Excel::store(new KaryawanTemplateExport($karyawanGroup, $header_text), $relativePath, 'local');
             $fullPath = storage_path("app/{$relativePath}");
 
             if ($stored && file_exists($fullPath)) {
-                $zip->addFile($fullPath, "placement_{$nama_placement}/placement_{$nama_placement}_department_{$nama_department}_Non_OS.xlsx");
+                $zip->addFile($fullPath, "directorate_{$nama_placement}/directorate_{$nama_placement}_department_{$nama_department}_Non_OS.xlsx");
                 $storedFiles[] = $relativePath;
                 \Log::info("✅ Berhasil simpan Excel di: {$fullPath}");
             } else {
                 \Log::error("❌ Gagal simpan Excel: {$fullPath}");
             }
         }
-
-
-
 
         if (empty($storedFiles)) {
             \Log::error('Tidak ada file Excel yang berhasil dibuat untuk ZIP.');

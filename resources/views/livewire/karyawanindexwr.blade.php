@@ -323,7 +323,7 @@
                                     {{ __('Metode Penggajian') }}
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('gaji_pokok')">
-                                    {{ __('Gaji (G+TB+TH)') }}
+                                    {{ __('Gaji (G+TB+TH+TJ)') }}
                                 </th>
 
                                 <th class="text-center" wire:click="sortColumnName('gaji_tetap')">
@@ -334,6 +334,9 @@
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('tunjangan_housing')">
                                     {{ __('Tunjangan Housing') }}
+                                </th>
+                                <th class="text-center" wire:click="sortColumnName('tunjangan_jabatan')">
+                                    {{ __('Tunjangan Jabatan') }}
                                 </th>
                                 <th class="text-center" wire:click="sortColumnName('gaji_bpjs')">
                                     {{ __('Gaji BPJS') }}
@@ -417,6 +420,7 @@
                                         <td class="text-center">{{ number_format($data->gaji_tetap) }}</td>
                                         <td class="text-center">{{ number_format($data->tunjangan_bahasa) }}</td>
                                         <td class="text-center">{{ number_format($data->tunjangan_housing) }}</td>
+                                        <td class="text-center">{{ number_format($data->tunjangan_jabatan) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_bpjs) }}</td>
                                         <td class="text-center">{{ number_format($data->gaji_overtime) }}</td>
                                         <td class="text-center">{{ format_tgl($data->tanggal_update) }}</td>

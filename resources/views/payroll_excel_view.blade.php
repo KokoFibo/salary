@@ -86,6 +86,7 @@
                 <th style="text-align: center;">Gaji</th>
                 <th style="text-align: center;">Tunjangan Bahasa</th>
                 <th style="text-align: center;">Tunjangan Housing</th>
+                <th style="text-align: center;">Tunjangan Jabatan</th>
                 <th style="text-align: center;">Gaji Per Hari/Jam</th>
                 <th style="text-align: center;">Gaji Bulan Ini</th>
                 <th style="text-align: center;">Gaji Lembur</th>
@@ -158,6 +159,7 @@
                     <td style="text-align: right"> {{ $data_karyawan->gaji_tetap }}</td>
                     <td style="text-align: right"> {{ $data_karyawan->tunjangan_bahasa }}</td>
                     <td style="text-align: right"> {{ $data_karyawan->tunjangan_housing }}</td>
+                    <td style="text-align: right"> {{ $data_karyawan->tunjangan_jabatan }}</td>
 
                     @php
 

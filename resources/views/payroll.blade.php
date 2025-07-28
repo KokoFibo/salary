@@ -81,29 +81,30 @@
     <div class="card-body">
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="mb-3">
                     <label class="form-label">{{ __('Bonus') }}</label>
                     <input wire:model="bonus" type="text" type-currency="IDR" class="form-control">
 
                 </div>
             </div>
-            {{-- <div class="col-md-4">
-                <div class="mb-3">
-                    <label class="form-label">{{ __('Tunjangan Jabatan') }}</label>
-                    <input wire:model="tunjangan_jabatan" type="text" type-currency="IDR" class="form-control">
-                </div>
-            </div> --}}
-            <div class="col-md-4">
+
+            <div class="col-md-3">
                 <div class="mb-3">
                     <label class="form-label">{{ __('Tunjangan Housing') }}</label>
                     <input wire:model="tunjangan_housing" type="text" type-currency="IDR" class="form-control">
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="mb-3">
                     <label class="form-label">{{ __('Tunjangan Bahasa') }}</label>
                     <input wire:model="tunjangan_bahasa" type="text" type-currency="IDR" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label class="form-label">{{ __('Tunjangan Jabatan') }}</label>
+                    <input wire:model="tunjangan_jabatan" type="text" type-currency="IDR" class="form-control">
                 </div>
             </div>
         </div>
