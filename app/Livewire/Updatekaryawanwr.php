@@ -244,7 +244,7 @@ class Updatekaryawanwr extends Component
         $this->no_npwp = $data->no_npwp;
         $this->ptkp = $data->ptkp;
         $this->id_file_karyawan = $data->id_file_karyawan;
-        $this->gaji_pokok = $this->gaji_tetap + $this->tunjangan_housing + $this->tunjangan_bahasa;
+        $this->gaji_pokok = $this->gaji_tetap + $this->tunjangan_housing + $this->tunjangan_bahasa + $this->tunjangan_jabatan;
 
 
         // data Applicant files
@@ -850,7 +850,7 @@ class Updatekaryawanwr extends Component
         }
         $this->id_file_karyawan = $data->id_file_karyawan;
 
-        $data->gaji_pokok = $this->gaji_tetap + $this->tunjangan_housing + $this->tunjangan_bahasa;
+        $data->gaji_pokok = $this->gaji_tetap + $this->tunjangan_housing + $this->tunjangan_bahasa + $this->tunjangan_jabatan;
 
 
         $data->save();

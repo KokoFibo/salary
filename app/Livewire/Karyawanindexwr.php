@@ -52,12 +52,13 @@ class Karyawanindexwr extends Component
     // public $search_gaji_pokok;
     public $search_gaji_tetap;
     public $search_tunjangan_housing;
+    public $search_tunjangan_jabatan;
     public $search_tunjangan_bahasa;
     public $search_gaji_overtime;
     public $is_tanggal_gajian;
     public $delete_id;
     public $companies, $placements, $departments, $statuses;
-    public $gaji_tetap, $tunjangan_housing, $tunjangan_bahasa;
+    public $gaji_tetap, $tunjangan_housing, $tunjangan_bahasa, $tunjangan_jabatan;
 
     // public $departments, $companies, $etnises, $jabatans;
 
@@ -173,6 +174,11 @@ class Karyawanindexwr extends Component
     {
         $this->columnName = 'tunjangan_housing';
         $this->direction = $this->search_tunjangan_housing;
+    }
+    public function updatedSearchTunjanganJabatan()
+    {
+        $this->columnName = 'tunjangan_jabatan';
+        $this->direction = $this->search_tunjangan_jabatan;
     }
     public function updatedSearchTunjanganBahasa()
     {
@@ -369,6 +375,7 @@ class Karyawanindexwr extends Component
         // $this->search_gaji_pokok = "";
         $this->search_gaji_tetap = "";
         $this->search_tunjangan_housing = "";
+        $this->search_tunjangan_jabatan = "";
         $this->search_tunjangan_bahasa = "";
         $this->search_gaji_overtime = "";
         $this->columnName = 'id_karyawan';

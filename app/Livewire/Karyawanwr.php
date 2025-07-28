@@ -219,7 +219,7 @@ class Karyawanwr extends Component
             $data->tanggungan = $this->tanggungan;
             $data->no_npwp = $this->no_npwp;
             $data->ptkp = $this->ptkp;
-            $data->gaji_pokok = $this->gaji_tetap + $this->tunjangan_housing + $this->tunjangan_bahasa;
+            $data->gaji_pokok = $this->gaji_tetap + $this->tunjangan_housing + $this->tunjangan_bahasa + $this->tunjangan_jabatan;
 
 
 
@@ -342,7 +342,7 @@ class Karyawanwr extends Component
             $data->tanggungan = $this->tanggungan;
             $data->no_npwp = $this->no_npwp;
             $data->ptkp = $this->ptkp;
-            $data->gaji_pokok = $this->gaji_tetap + $this->tunjangan_housing + $this->tunjangan_bahasa;
+            $data->gaji_pokok = $this->gaji_tetap + $this->tunjangan_housing + $this->tunjangan_bahasa + $this->tunjangan_jabatan;
 
 
 
