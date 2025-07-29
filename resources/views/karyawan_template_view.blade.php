@@ -2,16 +2,16 @@
     <!-- Judul -->
     <tr>
         <td></td>
-        <td colspan="12" style="font-size:22px; text-align: center;">员工工资调薪单</td>
+        <td colspan="13" style="font-size:22px; text-align: center;">员工工资调薪单</td>
     </tr>
     <tr>
         <td></td>
-        <td colspan="12" style="font-size:22px; text-align: center;">Slip Penyesuaian Gaji
+        <td colspan="13" style="font-size:22px; text-align: center;">Slip Penyesuaian Gaji
             Karyawan</td>
     </tr>
     <tr>
         <td></td>
-        <td colspan="12" style="text-align: right;">
+        <td colspan="13" style="text-align: right;">
             日期 / Tanggal: {{ \Carbon\Carbon::now()->format('d-m-Y') }}
         </td>
     </tr>
@@ -30,6 +30,9 @@
         <th
             style="text-align: center; font-size:16px; border-top: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
             职职位 </th>
+        <th
+            style="text-align: center; font-size:16px; border-top: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            职位等级 </th>
         <th
             style="text-align: center; font-size:16px; border-top: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
             入职时间</th>
@@ -75,6 +78,9 @@
             Posisi Jabatan</th>
         <th
             style="text-align: center; font-size:16px; border-bottom: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            Job Grade</th>
+        <th
+            style="text-align: center; font-size:16px; border-bottom: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
             Waktu Gabung</th>
         <th
             style="text-align: center; font-size:16px; border-bottom: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
@@ -111,6 +117,8 @@
                 {{ nama_department($karyawan->department_id) }}</td>
             <td style="text-align: center; font-size:12px; border: 1px solid #000;">
                 {{ nama_jabatan($karyawan->jabatan_id) }}</td>
+            <td style="text-align: center; font-size:12px; border: 1px solid #000;">
+                {{ getGrade($karyawan->level_jabatan) }}</td>
             <td style="text-align: center; font-size:12px; border: 1px solid #000;">
                 {{ format_tgl($karyawan->tanggal_bergabung) }}</td>
             <td style="text-align: center; font-size:12px; border: 1px solid #000;">

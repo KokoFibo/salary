@@ -42,7 +42,7 @@ class KaryawanTemplateExport implements FromView,  ShouldAutoSize, WithColumnFor
     public function view(): View
     {
         return view('karyawan_template_view', [
-            // 'data' => $data,
+            // 'data' => $data, 
             'karyawans' => $this->karyawans,
             'header_text' => $this->header_text
         ]);
