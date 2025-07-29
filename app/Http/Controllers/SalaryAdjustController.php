@@ -165,9 +165,9 @@ class SalaryAdjustController extends Controller
 
             $id_karyawan = isset($row[0]) ? (int) str_replace(',', '', $row[0]) : null;
             $nama = $row[1];
-            $gaji_raw = $row[9] ?? null;
-            $lembur_raw = $row[11] ?? null;
-            $bonus_raw = $row[12] ?? null;
+            $gaji_raw = $row[10] ?? null;
+            $lembur_raw = $row[12] ?? null;
+            $bonus_raw = $row[13] ?? null;
 
             $gaji_sesudah = null;
             $lembur_baru = null;

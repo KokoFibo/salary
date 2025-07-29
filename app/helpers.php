@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Models\Jabatan;
 use App\Models\Payroll;
 use App\Models\Timeoff;
+use App\Models\Jobgrade;
 use App\Models\Karyawan;
 use App\Models\Tambahan;
 use App\Models\Placement;
@@ -23,6 +24,13 @@ use App\Models\Timeoffrequester;
 use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+
+function getGrade($id)
+{
+    $data = Jobgrade::where('id', $id)->first();
+    if ($data != null) return $data->grade;
+    else return '';
+}
 
 function get_data_karyawan($id)
 {
