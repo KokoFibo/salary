@@ -43,7 +43,26 @@ class ExcelDetailReport2 implements FromView,  ShouldAutoSize, WithColumnFormatt
         $last_results = [];
         $selisih_results = [];
         $companies = Company::all();
-        $placements = Placement::all();
+
+
+
+        $customOrder = [6, 102, 10, 9, 101, 103, 11, 3, 1, 109, 105, 2, 4, 13, 5, 104, 107, 106];
+
+        $cases = "CASE";
+        foreach ($customOrder as $index => $id) {
+            $cases .= " WHEN id = {$id} THEN {$index}";
+        }
+        $cases .= " ELSE " . count($customOrder) . " END";
+
+        $placements = Placement::query()
+            ->orderByRaw($cases)
+            ->orderBy('id') // untuk sisa data
+            ->get();
+        // dd($placements);
+
+        // $placements = Placement::all();
+
+        // saya mau diurut berdasarkan "id" =  6, 102, 10, 9, 101, 103, 11, 3, 1, 109, 105, 2, 4, 13, 5, 104, 107, 106 , sisanya diurut berdasarkan id ascending
 
         foreach ($companies as $company) {
             $total = Payroll::whereMonth('date', $this->month)
@@ -203,8 +222,30 @@ class ExcelDetailReport2 implements FromView,  ShouldAutoSize, WithColumnFormatt
             $total_api3 += $api_data;
         }
         // Urutkan berdasarkan placement name
-        usort($result3, function ($a, $b) {
-            return strcmp($a['placement'], $b['placement']);
+        // usort($result3, function ($a, $b) {
+        //     return strcmp($a['placement'], $b['placement']);
+        // });
+
+        $customOrder = [6, 102, 10, 9, 101, 103, 11, 3, 1, 109, 105, 2, 4, 13, 5, 104, 107, 106];
+        $orderMap = array_flip($customOrder);
+
+        usort($result3, function ($a, $b) use ($orderMap) {
+            // Tangani kasus jika key 'id' tidak tersedia
+            $aId = is_array($a) && isset($a['id']) ? $a['id'] : null;
+            $bId = is_array($b) && isset($b['id']) ? $b['id'] : null;
+
+            $aOrder = $aId !== null && isset($orderMap[$aId]) ? $orderMap[$aId] : null;
+            $bOrder = $bId !== null && isset($orderMap[$bId]) ? $orderMap[$bId] : null;
+
+            if ($aOrder !== null && $bOrder !== null) {
+                return $aOrder <=> $bOrder;
+            }
+
+            if ($aOrder !== null) return -1;
+            if ($bOrder !== null) return 1;
+
+            // Jika dua-duanya tidak ada di customOrder atau id-nya null
+            return $aId <=> $bId;
         });
 
 

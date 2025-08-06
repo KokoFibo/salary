@@ -234,6 +234,7 @@
             @php
                 // Kelompokkan data berdasarkan nama perusahaan
                 $grouped = collect($result3)->groupBy('company');
+
             @endphp
 
             @foreach ($grouped as $company => $placements)
