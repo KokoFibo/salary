@@ -2,16 +2,16 @@
     <!-- Judul -->
     <tr>
         <td></td>
-        <td colspan="13" style="font-size:22px; text-align: center;">员工工资调薪单</td>
+        <td colspan="19" style="font-size:22px; text-align: center;">员工工资调薪单</td>
     </tr>
     <tr>
         <td></td>
-        <td colspan="13" style="font-size:22px; text-align: center;">Slip Penyesuaian Gaji
+        <td colspan="19" style="font-size:22px; text-align: center;">Slip Penyesuaian Gaji
             Karyawan</td>
     </tr>
     <tr>
         <td></td>
-        <td colspan="13" style="text-align: right;">
+        <td colspan="19" style="text-align: right;">
             日期 / Tanggal: {{ \Carbon\Carbon::now()->format('d-m-Y') }}
         </td>
     </tr>
@@ -60,6 +60,24 @@
         <th
             style="text-align: center; font-size:16px; border-top: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
             奖金</th>
+        <th
+            style="text-align: center; font-size:16px; border-top: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            中文津贴前</th>
+        <th
+            style="text-align: center; font-size:16px; border-top: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            中文津贴后</th>
+        <th
+            style="text-align: center; font-size:16px; border-top: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            职位津贴前</th>
+        <th
+            style="text-align: center; font-size:16px; border-top: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            职位津贴后</th>
+        <th
+            style="text-align: center; font-size:16px; border-top: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            住宿津贴前</th>
+        <th
+            style="text-align: center; font-size:16px; border-top: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            住宿津贴后</th>
     </tr>
 
     <!-- Header Indonesia -->
@@ -106,6 +124,26 @@
         <th
             style="text-align: center; font-size:16px; border-bottom: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
             Bonus</th>
+        <th
+            style="text-align: center; font-size:16px; border-bottom: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            T. Bahasa Sebelum</th>
+        <th
+            style="text-align: center; font-size:16px; border-bottom: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            T. Bahasa Sesudah</th>
+        <th
+            style="text-align: center; font-size:16px; border-bottom: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            T. Jabatan Sebelum</th>
+        <th
+            style="text-align: center; font-size:16px; border-bottom: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            T. Jabatan Sesudah</th>
+        <th
+            style="text-align: center; font-size:16px; border-bottom: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            T. Housing Sebelum</th>
+        <th
+            style="text-align: center; font-size:16px; border-bottom: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
+            T. Housing Sesudah</th>
+
+
     </tr>
 
     <!-- Data Karyawan -->
@@ -130,6 +168,15 @@
             <td style="text-align: center; font-size:12px; border: 1px solid #000;">{{ $karyawan->gaji_overtime }}</td>
             <td style="text-align: center; font-size:12px; border: 1px solid #000;"></td>
             <td style="text-align: center; font-size:12px; border: 1px solid #000;">{{ $karyawan->bonus }}</td>
+            <td style="text-align: center; font-size:12px; border: 1px solid #000;">{{ $karyawan->tunjangan_bahasa }}
+            </td>
+            <td style="text-align: center; font-size:12px; border: 1px solid #000;"></td>
+            <td style="text-align: center; font-size:12px; border: 1px solid #000;">{{ $karyawan->tunjangan_housing }}
+            </td>
+            <td style="text-align: center; font-size:12px; border: 1px solid #000;"></td>
+            <td style="text-align: center; font-size:12px; border: 1px solid #000;">{{ $karyawan->tunjangan_jabatan }}
+            </td>
+            <td style="text-align: center; font-size:12px; border: 1px solid #000;"></td>
         </tr>
     @endforeach
 </table>
