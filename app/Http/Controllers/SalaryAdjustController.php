@@ -146,16 +146,15 @@ class SalaryAdjustController extends Controller
             'Gaji Sesudah',
             'Lemburan Awal',
             'Perubahan Lemburan',
-            'Bonus'
+            'Bonus',
+            'T. Bahasa Sebelum',
+            'T. Bahasa Sesudah',
+            'T. Jabatan Sebelum',
+            'T. Jabatan Sesudah',
+            'T. Housing Sebelum',
+            'T. Housing Sesudah'
         ];
-        // $actualHeader = $rows[4] ?? [];
 
-        // if (array_diff($expectedHeader, $actualHeader)) {
-        //     return back()->withErrors(['file' => 'Header file tidak sesuai format yang diharapkan.']);
-        // }
-
-        // $tanggal = $this->extractTanggal($rows[2][1]);
-        // dd($rows[2][1], $tanggal);
         $tanggal = Carbon::today()->toDateString();
 
         $jumlahUpdate = 0;
@@ -168,10 +167,16 @@ class SalaryAdjustController extends Controller
             $gaji_raw = $row[10] ?? null;
             $lembur_raw = $row[12] ?? null;
             $bonus_raw = $row[13] ?? null;
+            $bahasa_raw = $row[15] ?? null;
+            $jabatan_raw = $row[17] ?? null;
+            $housing_raw = $row[19] ?? null;
 
             $gaji_sesudah = null;
             $lembur_baru = null;
             $bonus_baru = null;
+            $bahasa_baru = null;
+            $jabatan_baru = null;
+            $housing_baru = null;
 
             // Validasi GAJI SESUDAH
             if ($gaji_raw !== null && $gaji_raw !== '') {
@@ -199,6 +204,36 @@ class SalaryAdjustController extends Controller
                     return back()->with('error', "{$nama} - ID: {$id_karyawan}, GAJI BONUS di file excel harus numeric. {$jumlahUpdate} data karyawan berhasil diperbarui.");
                 }
             }
+
+            // Validasi Tunjangan Bahasa
+            if ($bahasa_raw !== null && $bahasa_raw !== '') {
+                if (preg_match('/^[\d,\.]+$/', $bahasa_raw)) {
+                    $bahasa_baru = (int) str_replace([',', '.'], '', $bahasa_raw);
+                } else {
+                    return back()->with('error', "{$nama} - ID: {$id_karyawan}, Tunjangan BAHASA di file excel harus numeric. {$jumlahUpdate} data karyawan berhasil diperbarui.");
+                }
+            }
+
+            // Validasi Tunjangan Jabatan
+            if ($jabatan_raw !== null && $jabatan_raw !== '') {
+                if (preg_match('/^[\d,\.]+$/', $jabatan_raw)) {
+                    $jabatan_baru = (int) str_replace([',', '.'], '', $jabatan_raw);
+                } else {
+                    return back()->with('error', "{$nama} - ID: {$id_karyawan}, Tunjangan JABATAN di file excel harus numeric. {$jumlahUpdate} data karyawan berhasil diperbarui.");
+                }
+            }
+
+            // Validasi Tunjangan Housing
+            if ($housing_raw !== null && $housing_raw !== '') {
+                if (preg_match('/^[\d,\.]+$/', $housing_raw)) {
+                    $housing_baru = (int) str_replace([',', '.'], '', $housing_raw);
+                } else {
+                    return back()->with('error', "{$nama} - ID: {$id_karyawan}, Tunjangan HOUSING di file excel harus numeric. {$jumlahUpdate} data karyawan berhasil diperbarui.");
+                }
+            }
+
+
+
             // Skip jika ID kosong atau tidak ada data gaji/lembur
             if (!$id_karyawan || ($gaji_sesudah === null && $lembur_baru === null && $bonus_baru === null)) {
                 continue;
@@ -215,7 +250,6 @@ class SalaryAdjustController extends Controller
                 // Update gaji_tetap jika berbeda atau meskipun 0
                 if ($gaji_sesudah !== null && $karyawan->gaji_tetap != $gaji_sesudah) {
                     $karyawan->gaji_tetap = $gaji_sesudah;
-                    $karyawan->gaji_pokok = $karyawan->gaji_tetap + $karyawan->tunjangan_bahasa + $karyawan->tunjangan_housing + $karyawan->tunjangan_jabatan;
 
                     $min_BPJS = 0;
                     // dd($karyawan->gaji_bpjs, $karyawan->potongan_kesehatan);
@@ -233,9 +267,27 @@ class SalaryAdjustController extends Controller
                     $updated = true;
                 }
 
+                // Update Tunjangan Bahasa jika berbeda atau meskipun 0
+                if ($bahasa_baru !== null && $karyawan->gaji_overtime != $bahasa_baru) {
+                    $karyawan->tunjangan_bahasa = $bahasa_baru;
+                    $updated = true;
+                }
+
+                // Update Tunjangan Jabatan jika berbeda atau meskipun 0
+                if ($jabatan_baru !== null && $karyawan->gaji_overtime != $jabatan_baru) {
+                    $karyawan->tunjangan_jabatan = $jabatan_baru;
+                    $updated = true;
+                }
+
+                // Update Tunjangan Housing jika berbeda atau meskipun 0
+                if ($housing_baru !== null && $karyawan->gaji_overtime != $housing_baru) {
+                    $karyawan->tunjangan_housing = $housing_baru;
+                    $updated = true;
+                }
+
                 if ($updated) {
                     // $karyawan->tanggal_update = Carbon::now();
-
+                    $karyawan->gaji_pokok = $karyawan->gaji_tetap + $karyawan->tunjangan_bahasa + $karyawan->tunjangan_housing + $karyawan->tunjangan_jabatan;
                     $karyawan->tanggal_update = Carbon::parse($tanggal);
                     $karyawan->save();
                     $jumlahUpdate++;
