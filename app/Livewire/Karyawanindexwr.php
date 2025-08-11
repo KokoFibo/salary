@@ -11,6 +11,7 @@ use App\Models\Placement;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use App\Exports\KaryawanExport;
+use App\Exports\KaryawanExportLengkap;
 use App\Exports\DataPelitaExport;
 use App\Exports\ExcelResignedBlacklist;
 use Illuminate\Support\Facades\DB;
@@ -465,7 +466,8 @@ class Karyawanindexwr extends Component
         }
         $nama_file = $nama_file . '.xlsx';
 
-        return Excel::download(new karyawanExport($this->search_placement, $this->search_company, $this->search_department, $this->selectStatus, $this->search_etnis), $nama_file);
+        // return Excel::download(new karyawanExport($this->search_placement, $this->search_company, $this->search_department, $this->selectStatus, $this->search_etnis), $nama_file);
+        return Excel::download(new karyawanExportLengkap($this->search_placement, $this->search_company, $this->search_department, $this->selectStatus, $this->search_etnis), $nama_file);
     }
     public function excelForm()
     {

@@ -129,7 +129,6 @@
                 <th style="text-align: center; background-color: #63BDF6;">Other Deductions</th>
                 <th style="text-align: center; background-color: #63BDF6;">BPJS Employee</th>
                 <th style="text-align: center; background-color: #63BDF6;">PPH21</th>
-                <th style="text-align: center; background-color: #63BDF6;">Internship</th>
                 <th style="text-align: center; background-color: #63BDF6;">PRF</th>
                 <th style="text-align: center; background-color: #63BDF6;">Core Cash</th>
 
@@ -358,7 +357,6 @@
                     <td style="text-align: right"> {{ $d->other_deduction }}</td>
                     <td style="text-align: right"> {{ $d->bpjs_employee }}</td>
                     <td style="text-align: right"> {{ $d->pph21 }}</td>
-                    <td style="text-align: right"> {{ $d->internship }}</td>
                     <td style="text-align: right"> {{ $d->prf }}</td>
                     <td style="text-align: right"> {{ $d->core_cash }}</td>
                 </tr>
