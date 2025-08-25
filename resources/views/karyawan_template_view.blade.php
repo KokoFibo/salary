@@ -142,8 +142,6 @@
         <th
             style="text-align: center; font-size:16px; border-bottom: 1px solid #000; border-left: 1px solid #000; border-right: 1px solid #000;">
             T. Housing Sesudah</th>
-
-
     </tr>
 
     <!-- Data Karyawan -->
@@ -171,10 +169,11 @@
             <td style="text-align: center; font-size:12px; border: 1px solid #000;">{{ $karyawan->tunjangan_bahasa }}
             </td>
             <td style="text-align: center; font-size:12px; border: 1px solid #000;"></td>
-            <td style="text-align: center; font-size:12px; border: 1px solid #000;">{{ $karyawan->tunjangan_housing }}
+
+            <td style="text-align: center; font-size:12px; border: 1px solid #000;">{{ $karyawan->tunjangan_jabatan }}
             </td>
             <td style="text-align: center; font-size:12px; border: 1px solid #000;"></td>
-            <td style="text-align: center; font-size:12px; border: 1px solid #000;">{{ $karyawan->tunjangan_jabatan }}
+            <td style="text-align: center; font-size:12px; border: 1px solid #000;">{{ $karyawan->tunjangan_housing }}
             </td>
             <td style="text-align: center; font-size:12px; border: 1px solid #000;"></td>
         </tr>
