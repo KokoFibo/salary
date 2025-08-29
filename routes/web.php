@@ -296,7 +296,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/deletejamkerja', [YfpresensiController::class, 'deleteJamKerja']);
                             Route::get('/generateusers', [YfpresensiController::class, 'generateUsers']);
                             Route::get('/testto', [YfpresensiController::class, 'testto']);
-                            Route::get('/rubahid', Rubahidwr::class);
+                            // Route::get('/rubahid', Rubahidwr::class);
                             Route::get('/editpresensi', Editpresensiwr::class);
                             Route::get('/removepresensi', Removepresensiwr::class);
                             Route::get('/removepresensiduplikat', Removepresensiduplikatwr::class);

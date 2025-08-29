@@ -1,4 +1,6 @@
 <div>
+    @section('title', 'History Gaji')
+
     <h2 class='my-3 text-center'>Log Perubahan Gaji karyawan</h2>
     <div>
         <div class="d-flex gap-3  p-3">

@@ -1,4 +1,5 @@
 <div>
+    @section('title', 'Salary Adjustment')
 
     <div class="card">
         <div class="card-header">

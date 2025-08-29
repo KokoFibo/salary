@@ -1,4 +1,5 @@
 <div>
+    @section('title', 'Libur Nasional')
 
     @if ($is_create_new)
         <div class="pt-5 col-xl-6 mx-auto">
