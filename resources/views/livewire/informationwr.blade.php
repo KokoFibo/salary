@@ -1,4 +1,6 @@
 <div>
+    @section('title', 'Add Information')
+
     <div class="col-xl-6 col-12 pt-5 mx-auto">
         <div class="card">
             <div class="card-header">

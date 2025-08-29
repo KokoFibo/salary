@@ -1,4 +1,6 @@
 <div class='p-3'>
+    @section('title', 'Personnel Request')
+
 
     <div>
         {{-- <h5>Hello, {{ auth()->user()->name }}</h5> --}}

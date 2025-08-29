@@ -1,4 +1,6 @@
 <div>
+    @section('title', 'Data Applicant')
+
     <div class="p-3">
         <div class="card">
             <div class="card-header">

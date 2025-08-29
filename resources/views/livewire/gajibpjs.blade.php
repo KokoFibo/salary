@@ -1,4 +1,6 @@
 <div>
+    @section('title', 'BPJS/PTKP')
+
     <div>
         <h1 class='text-center mt-3'>Daftar Karyawan yang ada gaji BPJS</h1>
     </div>
