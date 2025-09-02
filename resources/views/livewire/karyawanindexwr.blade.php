@@ -392,7 +392,7 @@
                                     </td>
                                     <td>{{ $data->id_karyawan }}</td>
                                     <td>{{ $data->nama }}</td>
-                                    <td>{{ $data->level_jabatan }}</td>
+                                    <td>{{ getGrade($data->level_jabatan) }}</td>
                                     <td class="text-center">{{ $data->company->company_name }}</td>
                                     <td class="text-center">{{ $data->placement->placement_name }}</td>
                                     <td class="text-center">{{ $data->department->nama_department }}</td>
