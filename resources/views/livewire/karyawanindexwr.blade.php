@@ -292,7 +292,7 @@
                                 <th wire:click="sortColumnName('id_karyawan')">{{ __('ID Karyawan') }}
                                 </th>
                                 <th wire:click="sortColumnName('nama')">{{ __('Nama') }} </th>
-                                <th wire:click="sortColumnName('nama')">{{ __('Job Grade') }} </th>
+                                <th wire:click="sortColumnName('level_jabatan')">{{ __('Job Grade') }} </th>
                                 <th class="text-center" wire:click="sortColumnName('company_id')">
                                     {{ __('Company') }} </th>
                                 <th class="text-center" wire:click="sortColumnName('placement_id')">
