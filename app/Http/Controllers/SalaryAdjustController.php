@@ -6,6 +6,7 @@ use DateTime;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use App\Models\Bonuspotongan;
+use App\Models\Jobgrade;
 use Illuminate\Support\Carbon;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
@@ -138,6 +139,7 @@ class SalaryAdjustController extends Controller
             'Nama',
             'Departemen',
             'Posisi Jabatan',
+            'Job Grade',
             'Waktu Gabung',
             'Bulan Penyesuaian Sebelumnya',
             'Alasan',
@@ -156,6 +158,8 @@ class SalaryAdjustController extends Controller
         ];
 
         $tanggal = Carbon::today()->toDateString();
+        // $jobgrades = Jobgrade::pluck('grade')->toArray();
+        $jobgrades = Jobgrade::pluck('grade', 'grade')->toArray();
 
         $jumlahUpdate = 0;
 
@@ -164,6 +168,7 @@ class SalaryAdjustController extends Controller
 
             $id_karyawan = isset($row[0]) ? (int) str_replace(',', '', $row[0]) : null;
             $nama = $row[1];
+            $jobGrade_raw = trim($row[4]) ?? null;
             $gaji_raw = $row[10] ?? null;
             $lembur_raw = $row[12] ?? null;
             $bonus_raw = $row[13] ?? null;
@@ -171,6 +176,7 @@ class SalaryAdjustController extends Controller
             $jabatan_raw = $row[17] ?? null;
             $housing_raw = $row[19] ?? null;
 
+            $jobGrade_sesudah = null;
             $gaji_sesudah = null;
             $lembur_baru = null;
             $bonus_baru = null;
@@ -234,6 +240,8 @@ class SalaryAdjustController extends Controller
 
 
 
+
+
             // Skip jika ID kosong atau tidak ada data gaji/lembur
             if (!$id_karyawan || ($gaji_sesudah === null && $lembur_baru === null && $bonus_baru === null)) {
                 continue;
@@ -284,6 +292,20 @@ class SalaryAdjustController extends Controller
                     $karyawan->tunjangan_housing = $housing_baru;
                     $updated = true;
                 }
+
+                // update Job Grade
+                if (!empty($jobGrade_raw) && isset($jobgrades[$jobGrade_raw])) {
+                    $jobGrade_sesudah = $jobgrades[$jobGrade_raw];
+                    $karyawan->level_jabatan = $jobGrade_sesudah;
+
+                    $updated = true;
+                } else {
+                    // Kalau tidak ditemukan, kasih default value
+                    $jobGrade_sesudah  = null;
+                    $karyawan->level_jabatan = $jobGrade_sesudah;
+                    $updated = true;
+                }
+
 
                 if ($updated) {
                     // $karyawan->tanggal_update = Carbon::now();
