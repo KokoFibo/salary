@@ -159,7 +159,7 @@ class SalaryAdjustController extends Controller
 
         $tanggal = Carbon::today()->toDateString();
         // $jobgrades = Jobgrade::pluck('grade')->toArray();
-        $jobgrades = Jobgrade::pluck('grade', 'grade')->toArray();
+        $jobgrades = Jobgrade::pluck('id', 'grade')->toArray();
 
         $jumlahUpdate = 0;
 
@@ -294,6 +294,8 @@ class SalaryAdjustController extends Controller
                 }
 
                 // update Job Grade
+                // $jobgrades = Jobgrade::pluck('id', 'grade')->toArray();
+
                 if (!empty($jobGrade_raw) && isset($jobgrades[$jobGrade_raw])) {
                     $jobGrade_sesudah = $jobgrades[$jobGrade_raw];
                     $karyawan->level_jabatan = $jobGrade_sesudah;
