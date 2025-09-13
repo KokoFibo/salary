@@ -97,6 +97,7 @@ class SalaryAdjustController extends Controller
             // dd($karyawan, $id_karyawan, $nama);
             if ($karyawan) {
                 $updated = false;
+                $updateJob = false;
 
                 if ($karyawan->gaji_tetap != $gaji_sesudah) {
                     $karyawan->gaji_tetap = $gaji_sesudah;
@@ -300,12 +301,12 @@ class SalaryAdjustController extends Controller
                     $jobGrade_sesudah = $jobgrades[$jobGrade_raw];
                     $karyawan->level_jabatan = $jobGrade_sesudah;
 
-                    $updated = true;
+                    $updateJob = true;
                 } else {
                     // Kalau tidak ditemukan, kasih default value
                     $jobGrade_sesudah  = null;
                     $karyawan->level_jabatan = $jobGrade_sesudah;
-                    $updated = true;
+                    $updateJob = true;
                 }
 
 
@@ -315,6 +316,10 @@ class SalaryAdjustController extends Controller
                     $karyawan->tanggal_update = Carbon::parse($tanggal);
                     $karyawan->save();
                     $jumlahUpdate++;
+                }
+
+                if ($updateJob) {
+                    $karyawan->save();
                 }
                 // if ($bonus_baru !== null) {
                 if ($bonus_baru > 0) {

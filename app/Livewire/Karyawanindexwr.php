@@ -106,7 +106,7 @@ class Karyawanindexwr extends Component
                 $this->dispatch(
                     'message',
                     type: 'success',
-                    title: 'Data Sudah berhasil di copy ke OS',
+                    title: 'Data Sudah berhasil di copy ke OS!',
                     position: 'center'
                 );
             }
