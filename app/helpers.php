@@ -14,6 +14,7 @@ use App\Models\Tambahan;
 use App\Models\Placement;
 use App\Models\Requester;
 use App\Models\Department;
+use App\Models\Harikhusus;
 use Illuminate\Support\Str;
 use App\Models\Applicantdata;
 use App\Models\Applicantfile;
@@ -1752,15 +1753,7 @@ function absen_kosong($first_in, $first_out, $second_in, $second_out, $overtime_
     }
 }
 
-function is_sunday($tgl)
-{
-    if ($tgl === '2025-04-13') {
-        return false;
-    }
-    if ($tgl) {
-        return Carbon::parse($tgl)->isSunday();
-    }
-}
+
 
 function clear_locks()
 {
@@ -1773,6 +1766,12 @@ function clear_locks()
 
 function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
 {
+    $data = cek_hari_khusus($tgl);
+    if ($data) {
+        $tgl_khusus = $data->date;
+    } else {
+        $tgl_khusus = null;
+    }
 
     // betulin
     if ($second_out != null) {
@@ -1964,16 +1963,15 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                 if ($shift == 'Pagi') {
                     // Shift Pagi
                     if (is_saturday($tgl)) {
-                        if ($tgl == '2025-05-30') {
+                        if ($tgl == $tgl_khusus) {
                             // rubah disini jika ada perubahan jam lembur
-                            // if ($t2 < strtotime('16:00:00')) {
-                            // return $lembur = 0;
-                            // }
-                            // $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:30:00')) / 60;
-                            if ($t2 < strtotime('15:30:00')) {
+                            // ini perhitungan utk hari 08:00 - 15:30
+                            // di hitung hari 6 jam, untuk lembur mulai 15:30
+
+                            if ($t2 < strtotime('16:00:00')) {
                                 return $lembur = 0;
                             }
-                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:00:00')) / 60;
+                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:30:00')) / 60;
                         } else {
                             if ($t2 < strtotime('15:30:00')) {
                                 return $lembur = 0;
@@ -2450,14 +2448,18 @@ function late_check_detail($first_in, $first_out, $second_in, $second_out, $over
     // $late3 = null;
     // $late4 = null;
     // ffff
+    $hari_khusus = cek_hari_khusus($tgl);
     $setengah_hari = (
         ($first_in === null && $first_out !== null) ||
         ($second_in === null && $second_out === null)
     );
+    if ($hari_khusus) {
 
-    if ($tgl === '2025-05-30' && !$setengah_hari) {
-        return $late = 0;
+        if ($tgl === $hari_khusus->date && !$setengah_hari) {
+            return $late = 0;
+        }
     }
+
 
     try {
         $data_jabatan = Karyawan::where('id_karyawan', $id)->first();
@@ -3222,11 +3224,21 @@ function format_jam($jam)
     }
 }
 
+function cek_hari_khusus($tgl)
+{
+    $data = Harikhusus::where('date', $tgl)->first();
+    if ($data) {
+        return $data;
+    }
+}
+
 function is_friday($tgl)
 {
-    if ($tgl === '2025-05-30') {
-        return false;
+    $hari_khusus = cek_hari_khusus($tgl);
+    if ($hari_khusus) {
+        return $hari_khusus->is_friday;
     }
+
     if ($tgl) {
         return Carbon::parse($tgl)->isFriday();
     }
@@ -3234,8 +3246,9 @@ function is_friday($tgl)
 
 function is_saturday($tgl)
 {
-    if ($tgl === '2025-05-30') {
-        return true;
+    $hari_khusus = cek_hari_khusus($tgl);
+    if ($hari_khusus) {
+        return $hari_khusus->is_saturday;
     }
     if ($tgl) {
         // if ( Carbon::parse( $tgl )->isSaturday() ) {
@@ -3244,6 +3257,17 @@ function is_saturday($tgl)
         //     return false;
         // }
         return Carbon::parse($tgl)->isSaturday();
+    }
+}
+
+function is_sunday($tgl)
+{
+    $hari_khusus = cek_hari_khusus($tgl);
+    if ($hari_khusus) {
+        return $hari_khusus->is_sunday;
+    }
+    if ($tgl) {
+        return Carbon::parse($tgl)->isSunday();
     }
 }
 
