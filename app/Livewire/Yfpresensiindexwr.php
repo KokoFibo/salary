@@ -94,7 +94,26 @@ class Yfpresensiindexwr extends Component
         $this->bulan = Carbon::parse($tanggal)->format('m');
         $this->tahun = Carbon::parse($tanggal)->format('Y');
     }
+    public function check_no_scan()
+    {
+        $this->overallNoScan = Yfrekappresensi::where('no_scan', 'No Scan')->count();
 
+        if ($this->tanggal == null) {
+            $bulan_no_scan = now()->month;
+        } else {
+            $bulan_no_scan = Carbon::parse($this->tanggal)->month;
+        }
+
+        $this->totalNoScan = Yfrekappresensi::where('no_scan', '!=', null)
+            ->whereMonth('date', $bulan_no_scan)
+            ->count();
+
+        $this->totalNoScanPagi = Yfrekappresensi::where('no_scan', 'No Scan')
+            ->where('shift', 'Pagi')
+            ->whereMonth('date', $bulan_no_scan)
+            // ->where('date', '=', $this->tanggal)
+            ->count();
+    }
 
     public function mount()
     {
@@ -122,14 +141,16 @@ class Yfpresensiindexwr extends Component
         $this->totalHadirPagi = Yfrekappresensi::where('shift', 'Pagi')
             ->where('date', '=', $this->tanggal)
             ->count();
-        $this->overallNoScan = Yfrekappresensi::where('no_scan', 'No Scan')->count();
-        $this->totalNoScan = Yfrekappresensi::where('no_scan', 'No Scan')
-            ->where('date', '=', $this->tanggal)
-            ->count();
-        $this->totalNoScanPagi = Yfrekappresensi::where('no_scan', 'No Scan')
-            ->where('shift', 'Pagi')
-            ->where('date', '=', $this->tanggal)
-            ->count();
+
+        // $this->overallNoScan = Yfrekappresensi::where('no_scan', 'No Scan')->count();
+        // $this->totalNoScan = Yfrekappresensi::where('no_scan', 'No Scan')
+        //     ->where('date', '=', $this->tanggal)
+        //     ->count();
+        // $this->totalNoScanPagi = Yfrekappresensi::where('no_scan', 'No Scan')
+        //     ->where('shift', 'Pagi')
+        //     ->where('date', '=', $this->tanggal)
+        //     ->count();
+
         $this->totalLate = Yfrekappresensi::where('late', '>', '0')
             ->where('date', '=', $this->tanggal)
             ->count();
@@ -551,7 +572,7 @@ class Yfpresensiindexwr extends Component
 
     public function render()
     {
-
+        $this->check_no_scan();
         // $this->tanggal = date( 'Y-m-d', strtotime( $this->tanggal ) );
 
         if ($this->tanggal == null) {
