@@ -38,7 +38,8 @@
                 <div class="col-4 text-center nightowl-daylight">{{ __('Malam') }}</div>
             </div>
             <div class="d-flex flex-row ">
-                <div class="col-4 text-center nightowl-daylight">{{ $totalNoScan }} / {{ $overallNoScan }}</div>
+                {{-- <div class="col-4 text-center nightowl-daylight">{{ $totalNoScan }} / {{ $overallNoScan }}</div> --}}
+                <div class="col-4 text-center nightowl-daylight">{{ $totalNoScan }}</div>
                 <div class="col-4 text-center nightowl-daylight">{{ $totalNoScanPagi }}</div>
                 <div class="col-4 text-center nightowl-daylight">{{ $totalNoScan - $totalNoScanPagi }}</div>
             </div>
