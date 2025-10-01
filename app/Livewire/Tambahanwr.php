@@ -47,11 +47,14 @@ class Tambahanwr extends Component
     {
         $this->modal = false;
         $this->is_edit = false;
-        $this->year = now()->year;
-        $this->month = now()->month;
+        // $this->year = now()->year;
+        // $this->month = now()->month;
         $this->tanggal = now()->toDateString();
         $this->columnName = 'user_id';
         $this->direction = 'desc';
+        $temp = Bonuspotongan::orderBy('tanggal', 'desc')->first();
+        $this->year = $temp->tanggal ? Carbon::parse($temp->tanggal)->year : now()->year;
+        $this->month = $temp->tanggal ? Carbon::parse($temp->tanggal)->month : now()->month;
 
 
         $this->select_year = Bonuspotongan::select(DB::raw('YEAR(tanggal) as year'))
