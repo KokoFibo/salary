@@ -48,28 +48,63 @@ class Test extends Component
     $this->month = now()->month;
   }
 
+  public function deleteSTI1()
+  {
+    // company sti = 102
+    // placement sti = 104
+    $data = Karyawan::where('company_id', 102)->get();
+    foreach ($data as $d) {
+      $user = User::where('username', $d->id_karyawan)->delete();
+      $presensis = Yfrekappresensi::where('user_id', $d->id_karyawan)
+        ->whereMonth('date', 9)
+        ->whereYear('date', 2025)
+        ->delete();
+    }
+    $data = Karyawan::where('company_id', 102)->delete();
+  }
+  public function deleteSTI()
+  {
+    // company sti = 102
+    // placement sti = 104
+    DB::transaction(function () {
+      // Ambil semua karyawan dari company_id = 102
+      $karyawans = Karyawan::where('company_id', 102)->get();
+
+      foreach ($karyawans as $karyawan) {
+        // Hapus user
+        User::where('username', $karyawan->id_karyawan)->delete();
+
+        // Hapus presensi bulan 9 / 2025
+        Yfrekappresensi::where('user_id', $karyawan->id_karyawan)
+          ->whereMonth('date', 9)
+          ->whereYear('date', 2025)
+          ->delete();
+      }
+
+      // Hapus karyawan terakhir
+      Karyawan::where('company_id', 102)->delete();
+      $this->dispatch(
+        'message',
+        type: 'success',
+        title: 'Semua data STI telah didelete'
+      );
+    });
+  }
+
   public function render()
   {
-    dd('aman');
-    $karyawans = Karyawan::all();
+    $data = Karyawan::where('company_id', 102)->get();
+    // Ambil semua id_karyawan dari company 102
+    $karyawanIds = Karyawan::where('company_id', 102)->pluck('id_karyawan');
 
-    dd($karyawans);
-
-    $data = Yfrekappresensi::where('date', '2025-05-30')
-      // ->whereMonth('date', 5)
-      //   ->whereYear('date', 2025)
-      ->where(function ($query) {
-        $query->where(function ($q) {
-          $q->whereNull('first_in')
-            ->whereNull('first_out');
-        })->orWhere(function ($q) {
-          $q->whereNull('second_in')
-            ->whereNull('second_out');
-        });
-      })
+    // Ambil semua presensi dari user tersebut untuk bulan 9 / 2025
+    $presensis = Yfrekappresensi::whereIn('user_id', $karyawanIds)
+      ->whereMonth('date', 9)
+      ->whereYear('date', 2025)
       ->get();
     return view('livewire.test', [
-      'data' => $data
+      'data' => $data,
+      'presensis' => $presensis,
     ]);
   }
 }

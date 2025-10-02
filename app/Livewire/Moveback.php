@@ -3,8 +3,9 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Yfrekappresensi;
 use App\Models\Rekapbackup;
+use Illuminate\Support\Arr;
+use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\DB;
 
 class Moveback extends Component
@@ -24,48 +25,36 @@ class Moveback extends Component
             ->groupByRaw('YEAR(date)')
             ->pluck('year')
             ->all();
-
-        // $this->render();
     }
-    public function move()
+
+
+    public function moveBack()
     {
-        $datas = Rekapbackup::whereYear('date', $this->getYear)->whereMonth('date', $this->getMonth)->get();
+        DB::transaction(function () {
+            // 1. Hapus dulu data lama bulan & tahun tertentu dari tabel asal
+            DB::table('yfrekappresensis')
+                ->whereYear('date', $this->getYear)
+                ->whereMonth('date', $this->getMonth)
+                ->delete();
 
-        foreach ($datas as $data) {
-            $Yfpresensidata[] = [
-                'id' => $data->id,
-                'karyawan_id' => $data->karyawan_id,
-                'user_id' => $data->user_id,
-                'date' => $data->date,
-                'first_in' => $data->first_in,
-                'first_out' => $data->first_out,
-                'second_in' => $data->second_in,
-                'second_out' => $data->second_out,
-                'overtime_in' => $data->overtime_in,
-                'overtime_out' => $data->overtime_out,
-                'late' => $data->late,
-                'no_scan' => $data->no_scan,
-                'shift' => $data->shift,
-                'no_scan_history' => $data->no_scan_history,
-                'late_history' => $data->late_history,
-            ];
-        }
+            // 2. Ambil data dari backup, lalu restore ke tabel asal
+            Rekapbackup::whereYear('date', $this->getYear)
+                ->whereMonth('date', $this->getMonth)
+                ->chunk(500, function ($datas) {
+                    $insertData = $datas->map(function ($data) {
+                        // Hilangkan kolom 'id' agar tidak bentrok dengan auto increment
+                        return Arr::except($data->toArray(), ['id']);
+                    })->toArray();
 
+                    DB::table('yfrekappresensis')->insert($insertData);
+                });
+        });
 
-
-        foreach (array_chunk($Yfpresensidata, 50) as $item) {
-            Yfrekappresensi::insert($item);
-        }
-
-        foreach ($datas as $data) {
-            Rekapbackup::where('id', $data->id)->delete();
-        }
-
-        // $this->dispatch('success', message: $this->totalData . ' Data rekap presensi sudah di move');
+        // 3. Kirim notifikasi sukses
         $this->dispatch(
             'message',
             type: 'success',
-            title: 'ID: ' . $this->username . 'Data rekap presensi sudah di move',
+            title: "Data rekap presensi bulan {$this->getMonth}/{$this->getYear} berhasil di-restore."
         );
     }
 
