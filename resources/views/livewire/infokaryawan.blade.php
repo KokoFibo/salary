@@ -122,6 +122,12 @@
                             <p class="display-4">{{ $total_karyawan_aktif - $karyawan_berdokumen }}</p>
                         </div>
                     </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Karyawan Gaji 0</h5>
+                            <p class="display-4">{{ $karyawan_gaji_0_count }}</p>
+                        </div>
+                    </div>
                 </div>
                 <!-- Card 2 -->
                 <div class="col-md-4 d-none">
@@ -174,6 +180,37 @@
                                 <td>
                                     <button class="btn btn-sm btn-danger">Kosong</button>
                                 </td>
+                            </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+            </div>
+            <!-- Table -->
+            <div class="mt-5">
+                <h4>Karyawan Gaji 0</h4>
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>ID Karyawan</th>
+                            <th>Nama</th>
+                            <th>Jabatan</th>
+                            <th>Status</th>
+                            <th>Gaji</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($karyawan_gaji_0 as $key => $dtr)
+                            <tr>
+                                <td>{{ $key }}</td>
+                                <td>{{ $dtr->id_karyawan }}</td>
+                                <td>{{ $dtr->nama }}</td>
+                                <td>{{ nama_jabatan($dtr->jabatan_id) }}</td>
+                                <td>{{ $dtr->status_karyawan }}</td>
+                                <td>{{ $dtr->gaji_tetap }}</td>
+
+
                             </tr>
                         @endforeach
 

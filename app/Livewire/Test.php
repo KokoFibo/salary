@@ -93,6 +93,11 @@ class Test extends Component
 
   public function render()
   {
+    dd('aman');
+    $data = Karyawan::where('gaji_tetap', 0)->get();
+    dd($data);
+
+
     $data = Karyawan::where('company_id', 102)->get();
     // Ambil semua id_karyawan dari company 102
     $karyawanIds = Karyawan::where('company_id', 102)->pluck('id_karyawan');

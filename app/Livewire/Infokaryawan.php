@@ -25,6 +25,9 @@ class Infokaryawan extends Component
         $resigned = Karyawan::where('status_karyawan', 'Resigned')->count();
         $blacklist = Karyawan::where('status_karyawan', 'Blacklist')->count();
         $data = Karyawan::whereNotNull('id_file_karyawan')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->get();
+        $karyawan_gaji_0_count = Karyawan::where('gaji_tetap', 0)->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->count();
+        $karyawan_gaji_0 = Karyawan::where('gaji_tetap', 0)->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->get();
+
         $karyawan_berdokumen = 0;
         foreach ($data as $d) {
             $applicanteFiles = Applicantfile::where('id_karyawan', $d->id_file_karyawan)->count();
@@ -41,6 +44,8 @@ class Infokaryawan extends Component
             'resigned' => $resigned,
             'blacklist' => $blacklist,
             'karyawan_berdokumen' => $karyawan_berdokumen,
+            'karyawan_gaji_0' => $karyawan_gaji_0,
+            'karyawan_gaji_0_count' => $karyawan_gaji_0_count,
 
         ]);
     }
