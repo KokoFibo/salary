@@ -1,25 +1,39 @@
 <div>
-    <table class="table">
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
-                <th>First in</th>
-                <th>First out</th>
-                <th>Second in</th>
-                <th>Second out</th>
+                <th>Name</th>
+                <th>Company ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($data as $item)
+                <tr>
+                    <td>{{ $item->id_karyawan }}</td>
+                    <td>{{ $item->nama }}</td>
+                    <td>{{ nama_company($item->company_id) }}</td>
+                </tr>
+            @endforeach
+
+        </tbody>
+    </table>
+    <table>
+        <thead>
+            <tr>
+                <th>ID User</th>
 
             </tr>
         </thead>
         <tbody>
-            @foreach ($data as $key => $d)
+            @foreach ($presensis as $item)
                 <tr>
-                    <td>{{ $d->user_id }}</td>
-                    <td>{{ $d->first_in }}</td>
-                    <td>{{ $d->first_out }}</td>
-                    <td>{{ $d->second_in }}</td>
-                    <td>{{ $d->second_out }}</td>
+                    <td>{{ $item->user_id }}</td>
+
                 </tr>
             @endforeach
+
         </tbody>
     </table>
+    <button class="btn btn-primary" wire:click="deleteSTI">Delete all STI</button>
 </div>

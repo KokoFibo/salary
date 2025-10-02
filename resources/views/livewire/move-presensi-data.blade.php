@@ -1,4 +1,6 @@
 <div>
+    @section('title', 'Backup Presensi')
+
     <p>getYear: {{ $getYear }}</p>
     <p>getMonth : {{ $getMonth }}</p>
     <div class="col-xl-4 mx-auto pt-5">
@@ -7,7 +9,6 @@
                 <h3>Move Presensi ==> Backup</h3>
             </div>
             <div class="card-body">
-
                 <div class="mb-3">
                     <select class="form-select" aria-label="Default select example" wire:model.live="getYear">
                         <option selected value=" ">Select year</option>
@@ -26,9 +27,6 @@
                         </select>
                     </div>
                 @endif
-                {{-- @if ($dataBulan) --}}
-                {{-- <p>Tahun: {{ $getYear }}, Bulan : {{ $getMonth }}</p> --}}
-                {{-- @endif --}}
                 @if ($getMonth != null && $getYear != null)
                     <div>
                         <button wire:loading wire:target='move' class="btn btn-primary" type="button" disabled>
@@ -46,6 +44,7 @@
                 @endif
             </div>
         </div>
+        <button class="btn btn-primary" wire:click='compact'>Compact RekapBackup to 12 months</button>
     </div>
 
 

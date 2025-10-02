@@ -1,8 +1,11 @@
 <div>
+    @section('title', 'Restore Presensi')
+    <p>getYear: {{ $getYear }}</p>
+    <p>getMonth : {{ $getMonth }}</p>
     <div class="col-xl-4 mx-auto pt-5">
         <div class="card">
             <div class="card-header bg-success">
-                <h3>Move Back Data ==> Presensi</h3>
+                <h3>Move Back Data (Restore) ==> Presensi</h3>
             </div>
             <div class="card-body">
 
@@ -29,7 +32,7 @@
                 {{-- @endif --}}
                 @if ($getMonth != null && $getYear != null)
                     <div>
-                        <button wire:loading wire:target='move' class="btn btn-primary" type="button" disabled>
+                        <button wire:loading wire:target='moveBack' class="btn btn-primary" type="button" disabled>
                             <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
                             <span role="status">{{ __('Moving...') }}</span>
                         </button>
@@ -37,7 +40,7 @@
                     <div wire:loading.class='invisible'>
                         <p>Total data {{ $getMonth }} - {{ $getYear }} : {{ $totalData }} Data</p>
                         <p>Pastikan table "rekapbackup" tersedia</p>
-                        <button class="btn btn-warning" wire:click="move">Move Data {{ $getMonth }} -
+                        <button class="btn btn-warning" wire:click="moveBack">Move Data {{ $getMonth }} -
                             {{ $getYear }}</button>
                         <button class="btn btn-dark" wire:click="cancel">Cancel</button>
                     </div>

@@ -6,12 +6,51 @@ use Livewire\Component;
 use App\Models\Rekapbackup;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Arr;
+
 
 class MovePresensiData extends Component
 {
     public $month, $year, $today;
 
     public $tahun, $bulan, $getYear, $getMonth, $dataBulan, $dataTahun, $totalData;
+
+    public function compact()
+    {
+        if (Schema::hasTable('rekapbackups')) {
+            // Cari tanggal terbaru di backup
+            $latestDate = DB::table('rekapbackups')->max('date');
+
+            if ($latestDate) {
+                // Ambil cutoff date (12 bulan ke belakang dari yang terbaru)
+                $cutoff = \Carbon\Carbon::parse($latestDate)->subMonths(12)->startOfMonth();
+
+                // Hapus data yang lebih lama dari cutoff
+                DB::table('rekapbackups')
+                    ->where('date', '<', $cutoff)
+                    ->delete();
+
+                $this->dispatch(
+                    'message',
+                    type: 'success',
+                    title: "Data lama sebelum {$cutoff->format('m/Y')} berhasil dihapus. Hanya tersisa 12 bulan terakhir."
+                );
+            } else {
+                $this->dispatch(
+                    'message',
+                    type: 'info',
+                    title: "Tidak ada data di rekapbackups."
+                );
+            }
+        } else {
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: "Table 'rekapbackups' tidak ditemukan!"
+            );
+        }
+    }
 
     public function cancel()
     {
@@ -27,78 +66,55 @@ class MovePresensiData extends Component
 
         // $this->render();
     }
+
+
     public function move()
     {
-        $datas = Yfrekappresensi::whereYear('date', $this->getYear)->whereMonth('date', $this->getMonth)->get();
+        if (Schema::hasTable('rekapbackups')) {
+            $exists = DB::table('rekapbackups')
+                ->whereYear('date', $this->getYear)
+                ->whereMonth('date', $this->getMonth)
+                ->exists();
 
-        // foreach ($datas as $data) {
-        //     $Yfpresensidata[] = [
-        //         'id' => $data->id,
-        //         'karyawan_id' => $data->karyawan_id,
-        //         'user_id' => $data->user_id,
-        //         'date' => $data->date,
-        //         'first_in' => $data->first_in,
-        //         'first_out' => $data->first_out,
-        //         'second_in' => $data->second_in,
-        //         'second_out' => $data->second_out,
-        //         'overtime_in' => $data->overtime_in,
-        //         'overtime_out' => $data->overtime_out,
-        //         'late' => $data->late,
-        //         'no_scan' => $data->no_scan,
-        //         'shift' => $data->shift,
-        //         'no_scan_history' => $data->no_scan_history,
-        //         'late_history' => $data->late_history,
-        //     ];
-        // }
+            DB::transaction(function () use ($exists) {
+                if ($exists) {
+                    // Hapus data backup lama untuk bulan & tahun yang sama
+                    DB::table('rekapbackups')
+                        ->whereYear('date', $this->getYear)
+                        ->whereMonth('date', $this->getMonth)
+                        ->delete();
+                }
 
-        foreach ($datas as $data) {
-            DB::table('rekapbackups')->insert([
-                'id' => $data->id,
-                'karyawan_id' => $data->karyawan_id,
-                'user_id' => $data->user_id,
-                'date' => $data->date,
-                'first_in' => $data->first_in,
-                'first_out' => $data->first_out,
-                'second_in' => $data->second_in,
-                'second_out' => $data->second_out,
-                'overtime_in' => $data->overtime_in,
-                'overtime_out' => $data->overtime_out,
-                'late' => $data->late,
-                'no_scan' => $data->no_scan,
-                'shift' => $data->shift,
-                'no_scan_history' => $data->no_scan_history,
-                'late_history' => $data->late_history,
-            ]);
+                // Copy data dari tabel asal ke backup
+                Yfrekappresensi::whereYear('date', $this->getYear)
+                    ->whereMonth('date', $this->getMonth)
+                    ->chunk(500, function ($datas) {
+                        $insertData = $datas->map(function ($data) {
+                            // Hindari duplikat primary key
+                            return Arr::except($data->toArray(), ['id']);
+                        })->toArray();
+
+                        DB::table('rekapbackups')->insert($insertData);
+                    });
+
+                // Setelah berhasil backup → hapus data dari tabel asal
+                Yfrekappresensi::whereYear('date', $this->getYear)
+                    ->whereMonth('date', $this->getMonth)
+                    ->delete();
+            });
+
+            $this->dispatch(
+                'message',
+                type: 'success',
+                title: 'Data rekap presensi bulan ' . $this->getMonth . '/' . $this->getYear . ' berhasil di-backup dan dipindahkan.'
+            );
+        } else {
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: "Table 'rekapbackups' tidak ditemukan!"
+            );
         }
-
-
-
-        // foreach (array_chunk($Yfpresensidata, 25) as $item) {
-        //     Rekapbackup::insert($item);
-        // }
-
-        // try {
-        //     foreach (array_chunk($Yfpresensidata, 200) as $item) {
-        //         Rekapbackup::insert($item);
-        //     }
-        // } catch (\Exception $e) {
-        //     dd('eror lho');
-        //     return back()->with('error', $e);
-        // }
-
-
-
-
-        foreach ($datas as $data) {
-            Yfrekappresensi::where('id', $data->id)->delete();
-        }
-
-        // $this->dispatch('success', message: $this->totalData . ' Data rekap presensi sudah di move');
-        $this->dispatch(
-            'message',
-            type: 'success',
-            title: 'Data rekap presensi sudah di move',
-        );
     }
 
     public function mount()
