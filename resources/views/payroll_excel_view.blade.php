@@ -158,10 +158,12 @@
                         $data_karyawan = get_data_karyawan($d->id_karyawan);
                     @endphp
                     {{-- <td style="text-align: right"> {{ $d->gaji_tetap }}</td> --}}
-                    <td style="text-align: right"> {{ $data_karyawan->gaji_tetap }}</td>
-                    <td style="text-align: right"> {{ $data_karyawan->tunjangan_bahasa }}</td>
-                    <td style="text-align: right"> {{ $data_karyawan->tunjangan_housing }}</td>
-                    <td style="text-align: right"> {{ $data_karyawan->tunjangan_jabatan }}</td>
+
+                    {{-- <td style="text-align: right"> {{ $data_karyawan->gaji_tetap }}</td> --}}
+                    <td style="text-align: right"> {{ $data_karyawan?->gaji_tetap ?? 0 }}</td>
+                    <td style="text-align: right"> {{ $data_karyawan->tunjangan_bahasa ?? 0 }}</td>
+                    <td style="text-align: right"> {{ $data_karyawan->tunjangan_housing ?? 0 }}</td>
+                    <td style="text-align: right"> {{ $data_karyawan->tunjangan_jabatan ?? 0 }}</td>
 
                     @php
 
