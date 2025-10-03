@@ -917,10 +917,25 @@ function build_payroll($month, $year)
             $data_karyawan->potongan_kesehatan,
             0,
             0,
-            0,
+            $all_bonus,
             0,
             $data_karyawan->company_id
         );
+        // $pph21 = hitung_pph21(
+        //     $data_karyawan->gaji_bpjs,
+        //     // $gaji_bpjs_adjust,
+        //     $data_karyawan->ptkp,
+        //     $data_karyawan->potongan_JHT,
+        //     $data_karyawan->potongan_JP,
+        //     $data_karyawan->potongan_JKK,
+        //     $data_karyawan->potongan_JKM,
+        //     $data_karyawan->potongan_kesehatan,
+        //     0,
+        //     0,
+        //     0,
+        //     0,
+        //     $data_karyawan->company_id
+        // );
 
 
 
