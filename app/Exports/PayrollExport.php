@@ -111,18 +111,6 @@ class PayrollExport implements FromView,  ShouldAutoSize, WithColumnFormatting, 
             $header_text = 'Perincian Seluruh Payroll ' . nama_bulan($this->month) . ' ' . $this->year;
         }
 
-        // if ($this->selected_company == 0) {
-        //     $data = Payroll::whereIn('status_karyawan', $statuses)
-        //         ->whereMonth('date', $this->month)
-        //         ->whereYear('date', $this->year)
-        //         ->orderBy('id_karyawan', 'asc')->get();
-        // } else {
-        //     $data = Payroll::whereIn('status_karyawan', $statuses)
-        //         ->where('company_id', $this->selected_company)
-        //         ->whereMonth('date', $this->month)
-        //         ->whereYear('date', $this->year)
-        //         ->orderBy('id_karyawan', 'asc')->get();
-        // }
 
         $total_n_hari_kerja = getTotalWorkingDays($this->year, $this->month);
         $jumlah_libur_nasional = jumlah_libur_nasional($this->month, $this->year);
