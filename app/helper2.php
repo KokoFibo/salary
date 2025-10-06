@@ -1056,7 +1056,11 @@ function build_payroll($month, $year)
 
     foreach ($data as $d) {
         $total_gaji_lembur = $d->gaji_lembur * $d->jam_lembur;
-        $prf_salary = $d->tambahan_shift_malam + $total_gaji_lembur + $d->gaji_libur +  $d->bonus1x + $d->bpjs_adjustment;
+        if ($d->total == 0) {
+            $prf_salary = 0;
+        } else {
+            $prf_salary = $d->tambahan_shift_malam + $total_gaji_lembur + $d->gaji_libur +  $d->bonus1x + $d->bpjs_adjustment;
+        }
         $other_deduction = $d->potongan1x + $d->denda_lupa_absen + $d->denda_resigned + $d->tanggungan + $d->iuran_air + $d->iuran_locker;
         $bpjs_employee = $d->jht + $d->jp + $d->kesehatan;
         $prf = $prf_salary - $other_deduction - $bpjs_employee - $d->pph21;
