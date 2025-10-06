@@ -467,7 +467,7 @@
                                                 {{ $p->tambahan_shift_malam ? number_format($p->tambahan_shift_malam) : '' }}
                                             </td>
                                             <td class="text-end">
-                                                {{ $p->bonus1x ? number_format($p->bonus1x) : '' }} bonus1x
+                                                {{ $p->bonus1x ? number_format($p->bonus1x) : '' }}
                                             </td>
                                             @php
                                                 $total_potongan_dari_karyawan = 0;

@@ -430,12 +430,17 @@ function build_payroll($month, $year)
 
         if ($data->karyawan->gaji_pokok != 0) {
             // $gaji_bpjs_adjust = $data->karyawan->gaji_bpjs * $total_gaji_sebelum_tax / $data->karyawan->gaji_pokok;
-            $gaji_bpjs_adjust = $data->karyawan->gaji_bpjs * $gaji_bulan_ini / $data->karyawan->gaji_pokok;
+            $gaji_bpjs_adjust = ($data->karyawan->gaji_bpjs + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_housing) * $gaji_bulan_ini / $data->karyawan->gaji_pokok;
         } else {
             // Handle the case where gaji_pokok is zero (e.g., log an error or assign a default value)
             $gaji_bpjs_adjust = 0; // or another fallback value
             error_log("Division by zero error: gaji_pokok is zero for karyawan ID: " . $data->karyawan->id);
         }
+
+        // if ($data->karyawan->id_karyawan == 36) {
+        //     dd($gaji_bpjs_adjust,  $data->karyawan->gaji_pokok, $data->karyawan->gaji_bpjs, $gaji_bulan_ini);
+        //     // dd($data->karyawan->gaji_bpjs,$gaji_bulan_ini ,$data->karyawan->gaji_pokok,$gaji_bpjs_adjust);
+        // }
         // oioi
         $total_gaji_lembur = $data->jumlah_menit_lembur * $data->karyawan->gaji_overtime;
 
@@ -477,9 +482,6 @@ function build_payroll($month, $year)
         } else {
             $jkm_company = 0;
         }
-
-
-
 
         // $total_tax = $data->karyawan->gaji_bpjs +
         $total_tax =
@@ -617,34 +619,6 @@ function build_payroll($month, $year)
             // }
         }
     }
-
-
-    // foreach ($bonuspotongan as $d) {
-    //     $all_bonus = $d->uang_makan + $d->bonus_lain;
-    //     $all_potongan = $d->baju_esd + $d->gelas + $d->sandal + $d->seragam + $d->sport_bra + $d->hijab_instan + $d->id_card_hilang + $d->masker_hijau + $d->potongan_lain;
-    //     $id_payroll = Payroll::whereMonth('date', $month)
-    //         ->whereYear('date', $year)
-    //         ->where('id_karyawan', $d->user_id)
-    //         ->first();
-    //     if ($id_payroll != null) {
-    //         $payroll = Payroll::find($id_payroll->id);
-    //         $payroll->bonus1x = $payroll->bonus1x + $all_bonus;
-    //         $payroll->potongan1x = $payroll->potongan1x + $all_potongan;
-    //         $payroll->total = $payroll->total + $all_bonus - $all_potongan;
-    //         $payroll->total_bpjs = $payroll->total_bpjs + $payroll->bonus1x;
-    //         $payroll->save();
-
-    //         if ($payroll->id_karyawan == 1662) dd('total tax: ', $payroll->total_bpjs, $payroll->total_bpjs, $payroll->bonus1x);
-    //         // if ($payroll->id_karyawan  == 5794) {
-    //         //     dd(
-    //         //         $payroll->total_bpjs,
-    //         //         $payroll->bonus1x
-    //         //     );
-    //         // }
-    //     }
-    // }
-
-
 
 
     //  ok4
