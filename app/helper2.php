@@ -1064,6 +1064,7 @@ function build_payroll($month, $year)
         $other_deduction = $d->potongan1x + $d->denda_lupa_absen + $d->denda_resigned + $d->tanggungan + $d->iuran_air + $d->iuran_locker;
         $bpjs_employee = $d->jht + $d->jp + $d->kesehatan;
         $prf = $prf_salary - $other_deduction - $bpjs_employee - $d->pph21;
+        if ($prf < 0) $prf = 0;
         $core_cash = $d->gaji_bulan_ini - $d->bpjs_adjustment;
         $d->prf_salary = $prf_salary;
         $d->other_deduction = $other_deduction;
