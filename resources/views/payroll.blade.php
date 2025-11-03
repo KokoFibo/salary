@@ -173,7 +173,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="mb-3">
-                    <label class="form-label">{{ __('Gaji BPJS') }}</label>
+                    <label class="form-label">{{ __('Gaji BPJS') }} <span class="text-danger">*</span></label>
                     <input wire:model="gaji_bpjs" type="text" type-currency="IDR" class="form-control">
                 </div>
             </div>
@@ -185,7 +185,7 @@
             </div>
             <div class="col-md-4">
                 <div class="mb-3">
-                    <label class="form-label">PTKP </label>
+                    <label class="form-label">PTKP <span class="text-danger">*</span></label>
                     <select class="form-select @error('ptkp') is-invalid @enderror"
                         aria-label="Default select example" wire:model="ptkp">
                         <option value=" ">Pilih PTKP</option>

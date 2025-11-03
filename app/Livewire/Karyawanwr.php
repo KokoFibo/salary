@@ -112,7 +112,9 @@ class Karyawanwr extends Component
         'iuran_air' => 'numeric|required',
         'denda' => 'numeric|nullable',
         'iuran_locker' => 'numeric|nullable',
-        'gaji_bpjs' => 'nullable',
+        // 'gaji_bpjs' => 'nullable',
+        'gaji_bpjs' => 'required|integer|min:1',
+
         'potongan_JHT' => 'nullable',
         'potongan_JP' => 'nullable',
         'potongan_JKK' => 'nullable',
@@ -120,7 +122,9 @@ class Karyawanwr extends Component
         'potongan_kesehatan' => 'nullable',
         'tanggungan' => 'nullable',
         'no_npwp' => 'nullable',
-        'ptkp' => 'nullable',
+        // 'ptkp' => 'nullable',
+        'ptkp' => 'required',
+
         'gaji_tetap' => 'numeric|required',
         'tunjangan_housing' => 'nullable',
 
