@@ -366,7 +366,7 @@ class Updatekaryawanwr extends Component
             'nomor_rekening' => 'nullable',
             // PAYROLL
             'metode_penggajian' => 'required',
-            'gaji_tetap' => 'numeric|required',
+            'gaji_tetap' => 'required|numeric|min:1',
             'gaji_overtime' => 'numeric|required',
             'gaji_shift_malam_satpam' => 'numeric',
             'bonus' => 'numeric|nullable',
