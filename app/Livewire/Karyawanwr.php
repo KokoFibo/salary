@@ -125,7 +125,7 @@ class Karyawanwr extends Component
         // 'ptkp' => 'nullable',
         'ptkp' => 'required',
 
-        'gaji_tetap' => 'numeric|required',
+        'gaji_tetap' => 'required|numeric|min:1',
         'tunjangan_housing' => 'nullable',
 
 

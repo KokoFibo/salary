@@ -26,7 +26,7 @@
                 {{-- ====================================================== --}}
                 <div class="col-md-3">
                     <div class="mb-3">
-                        <label class="form-label">{{ __('Gaji') }} </label>
+                        <label class="form-label">{{ __('Gaji') }} <span class="text-danger">*</span> </label>
                         <input wire:model="gaji_tetap" type="text" type-currency="IDR"
                             class="form-control @error('gaji_tetap') is-invalid @enderror">
                         @error('gaji_tetap')
