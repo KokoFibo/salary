@@ -77,6 +77,7 @@ use App\Livewire\Timeoutrequsterwr;
 use App\Livewire\Yfpresensiindexwr;
 use App\Livewire\DeveloperDashboard;
 use App\Livewire\Checkabsensitanpaid;
+use App\Livewire\PerbulanKurangBayar;
 use App\Livewire\PermohonanPersonnel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TerControler;
@@ -337,6 +338,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/laporan', Laporan::class);
                             Route::get('/harikhusus', Harikhususwr::class);
                             Route::get('/jobgrade', Jobgradewr::class);
+                            Route::get('/cekperbulan', PerbulanKurangBayar::class);
 
 
 

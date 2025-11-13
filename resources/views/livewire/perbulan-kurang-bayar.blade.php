@@ -1,5 +1,14 @@
 <div class="max-w-4xl mx-auto p-4">
-    <h1>Non OS yang jam kerja dibawah 8 jam dan gaji hariannya tidak tercatat</h1>
+    <h4>Year = 2025</h4>
+    <select wire:model.live="month" class="border rounded p-1">
+        <option value="">Pilih Bulan</option>
+        <option value="10">Oktober</option>
+        <option value="11">November</option>
+        <option value="12">Desember</option>
+    </select>
+
+
+    <h1>OS yang jam kerja dibawah 8 jam dan gaji hariannya tidak tercatat</h1>
     <table>
         <thead>
             <tr>

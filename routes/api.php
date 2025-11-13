@@ -4,9 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\SlipgajiController;
-use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\LarkController;
+use App\Http\Controllers\SlipgajiController;
+use App\Http\Controllers\UserSyncController;
+use App\Http\Controllers\ApplicantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +38,5 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('/jamKerja/{user_id}/{month}/{year}', [ApiController::class, 'getDetailJamKerjaKaryawan']);
 
 Route::get('getKaryawanById/{id}', [LarkController::class, 'getKaryawanById']);
+
+Route::get('/users/export', [UserSyncController::class, 'export']);

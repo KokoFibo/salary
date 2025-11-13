@@ -93,23 +93,28 @@ class Test extends Component
 
   public function render()
   {
-    dd('aman');
-    $data = Karyawan::where('gaji_tetap', 0)->get();
-    dd($data);
+    $year = 2025;
+    $month = 10;
 
-
-    $data = Karyawan::where('company_id', 102)->get();
-    // Ambil semua id_karyawan dari company 102
-    $karyawanIds = Karyawan::where('company_id', 102)->pluck('id_karyawan');
-
-    // Ambil semua presensi dari user tersebut untuk bulan 9 / 2025
-    $presensis = Yfrekappresensi::whereIn('user_id', $karyawanIds)
-      ->whereMonth('date', 9)
-      ->whereYear('date', 2025)
+    $data = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')
+      ->select(
+        'yfrekappresensis.*',
+        'karyawans.metode_penggajian',
+        'karyawans.nama'
+      )
+      ->whereMonth('yfrekappresensis.date', $month)
+      ->whereYear('yfrekappresensis.date', $year)
+      ->where('karyawans.metode_penggajian', 'Perbulan')
+      // ->where('total_jam_kerja_libur', '<', 4)
+      ->where('total_jam_kerja', '<=', 7)
+      ->where('total_hari_kerja', 0)
       ->get();
+    $total = 0;
+    $total = $data->count();
+    // dd($data);
     return view('livewire.test', [
       'data' => $data,
-      'presensis' => $presensis,
+      'total' => $total
     ]);
   }
 }
