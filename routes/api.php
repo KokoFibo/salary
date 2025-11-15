@@ -8,6 +8,7 @@ use App\Http\Controllers\LarkController;
 use App\Http\Controllers\SlipgajiController;
 use App\Http\Controllers\UserSyncController;
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,3 +41,6 @@ Route::get('/jamKerja/{user_id}/{month}/{year}', [ApiController::class, 'getDeta
 Route::get('getKaryawanById/{id}', [LarkController::class, 'getKaryawanById']);
 
 Route::get('/users/export', [UserSyncController::class, 'export']);
+
+Route::get('/attendance/{user_id}/{month}/{year}', [AttendanceController::class, 'index']);
+Route::get('/latest-month-year/{user_id}', [AttendanceController::class, 'getLatestMonthYearByUser']);
