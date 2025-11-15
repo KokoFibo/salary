@@ -23,7 +23,7 @@ class UserSyncController extends Controller
             ->join('companies', 'companies.id', '=', 'karyawans.company_id')
             ->get()
             ->map(function ($user) {
-                $user->db_code = 2;
+                $user->db_code = 'salary';
                 return $user;
             });
         $users->makeVisible(['password']);
