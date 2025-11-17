@@ -96,6 +96,7 @@ class Test extends Component
     $year = 2025;
     $month = 10;
 
+    dd('aman');
     $data = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')
       ->select(
         'yfrekappresensis.*',
