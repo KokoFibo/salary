@@ -27,12 +27,15 @@ class AttendanceController extends Controller
                 $date = Carbon::parse($latestRecord->date);
                 $result = [
                     'month' => $date->month,
-                    'year' => $date->year
+                    'year' => $date->year,
+                    'month_year' => $date->format('F Y'),
+
                 ];
             } else {
                 $result = [
                     'month' => Carbon::now()->month,
-                    'year' => Carbon::now()->year
+                    'year' => Carbon::now()->year,
+                    'month_year' => Carbon::now()->format('F Y'),
                 ];
             }
 
