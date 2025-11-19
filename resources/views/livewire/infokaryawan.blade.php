@@ -200,7 +200,7 @@
             <div class="row g-4">
 
                 <div class="mt-5">
-                    <h4>Karyawan tanpa nomor rekening bank</h4>
+                    <h4>Karyawan tanpa Email</h4>
                     <table class="table table-bordered table-hover">
                         <thead class="table-dark">
                             <tr>
