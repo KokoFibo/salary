@@ -2,51 +2,133 @@
 
 namespace App\Livewire;
 
+use Livewire\Component;
 use App\Models\Karyawan;
-use App\Models\Yfrekappresensi;
 use App\Models\Applicantfile;
 
-use Livewire\Component;
+use App\Models\Yfrekappresensi;
+use Illuminate\Support\Facades\DB;
 
 class Infokaryawan extends Component
 {
 
+    // public function render()
+    // {
+    //     $total_karyawan_aktif = Karyawan::whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->count();
+    //     $total_karyawan_hadir_hari_ini = Yfrekappresensi::where('date', today())->count();
+
+
+    //     $jumlahTanpaRekening = Karyawan::where('nomor_rekening', '')->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->count();
+    //     $dataTanpaRekening = Karyawan::where('nomor_rekening', '')->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->get();
+    //     $pkwt = Karyawan::where('status_karyawan', 'PKWT')->count();
+    //     $pkwtt = Karyawan::where('status_karyawan', 'PKWTT')->count();
+    //     $dirumahkan = Karyawan::where('status_karyawan', 'Dirumahkan')->count();
+    //     $resigned = Karyawan::where('status_karyawan', 'Resigned')->count();
+    //     $blacklist = Karyawan::where('status_karyawan', 'Blacklist')->count();
+    //     $data = Karyawan::whereNotNull('id_file_karyawan')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->get();
+    //     $karyawan_berdokumen = 0;
+    //     foreach ($data as $d) {
+    //         $applicanteFiles = Applicantfile::where('id_karyawan', $d->id_file_karyawan)->count();
+    //         if ($applicanteFiles > 0) $karyawan_berdokumen++;
+    //     }
+    //     return view('livewire.infokaryawan', [
+    //         'total_karyawan_aktif' => $total_karyawan_aktif,
+    //         'total_karyawan_hadir_hari_ini' => $total_karyawan_hadir_hari_ini,
+    //         'jumlahTanpaRekening' => $jumlahTanpaRekening,
+    //         'dataTanpaRekening' => $dataTanpaRekening,
+    //         'pkwt' => $pkwt,
+    //         'pkwtt' => $pkwtt,
+    //         'dirumahkan' => $dirumahkan,
+    //         'resigned' => $resigned,
+    //         'blacklist' => $blacklist,
+    //         'karyawan_berdokumen' => $karyawan_berdokumen,
+
+    //     ]);
+    // }
     public function render()
     {
         $total_karyawan_aktif = Karyawan::whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->count();
-        $total_karyawan_hadir_hari_ini = Yfrekappresensi::where('date', today())->count();
+
+        // $total_karyawan_hadir_hari_ini = Yfrekappresensi::whereDate('date', today())->count();
+
+        $jumlahTanpaRekening = Karyawan::where('nomor_rekening', '')
+            ->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])
+            ->count();
+
+        $dataTanpaRekening = Karyawan::where('nomor_rekening', '')
+            ->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])
+            ->get();
+
+        $total_karyawan_perbulan = Karyawan::where('metode_penggajian', 'Perbulan')
+            ->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->count();
+
+        $total_karyawan_perjam = Karyawan::where('metode_penggajian', 'Perjam')
+            ->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->count();
+
+        // hitung semua status dalam 1 query
+        $statusCount = Karyawan::select('status_karyawan', DB::raw('COUNT(*) as total'))
+            ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'])
+            ->groupBy('status_karyawan')
+            ->pluck('total', 'status_karyawan');
+
+        // hitung jumlah karyawan yg punya ApplicantFile dalam 1 query bukan looping
+        $karyawan_berdokumen = Applicantfile::distinct('id_karyawan')->count('id_karyawan');
+
+        // 1. Ambil semua karyawan aktif yang seharusnya punya dokumen
+        $karyawanYgHarusPunyaDokumen = Karyawan::whereNotNull('id_file_karyawan')
+            ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+            ->pluck('id_file_karyawan')
+            ->toArray();
+
+        // 2. Ambil semua id_karyawan yang sudah punya dokumen
+        $karyawanYgSudahPunyaDokumen = Applicantfile::distinct('id_karyawan')
+            ->pluck('id_karyawan')
+            ->toArray();
+
+        // 3. Cari yang belum punya dokumen
+        $karyawan_tanpa_dokumen = array_diff(
+            $karyawanYgHarusPunyaDokumen,
+            $karyawanYgSudahPunyaDokumen
+        );
+
+        // 4. Hitung jumlahnya
+        $jumlah_karyawan_tanpa_dokumen = count($karyawan_tanpa_dokumen);
+
+        $karyawan_perbulan_tanpa_ptkp = Karyawan::whereNotNull('id_file_karyawan')
+            ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+            ->where('ptkp', null)->count();
+
+        $karyawan_tanpa_email = Karyawan::whereNotNull('id_file_karyawan')
+            ->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+            ->where(function ($q) {
+                $q->whereNull('email')
+                    ->orWhere('email', '')
+                    ->orWhere('email', ' ');
+            })
+            ->get();
+
+        $jumlah_karyawan_tanpa_email = $karyawan_tanpa_email->count();
 
 
-        $jumlahTanpaRekening = Karyawan::where('nomor_rekening', '')->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->count();
-        $dataTanpaRekening = Karyawan::where('nomor_rekening', '')->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->get();
-        $pkwt = Karyawan::where('status_karyawan', 'PKWT')->count();
-        $pkwtt = Karyawan::where('status_karyawan', 'PKWTT')->count();
-        $dirumahkan = Karyawan::where('status_karyawan', 'Dirumahkan')->count();
-        $resigned = Karyawan::where('status_karyawan', 'Resigned')->count();
-        $blacklist = Karyawan::where('status_karyawan', 'Blacklist')->count();
-        $data = Karyawan::whereNotNull('id_file_karyawan')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->get();
-        $karyawan_gaji_0_count = Karyawan::where('gaji_tetap', 0)->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->count();
-        $karyawan_gaji_0 = Karyawan::where('gaji_tetap', 0)->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->get();
-
-        $karyawan_berdokumen = 0;
-        foreach ($data as $d) {
-            $applicanteFiles = Applicantfile::where('id_karyawan', $d->id_file_karyawan)->count();
-            if ($applicanteFiles > 0) $karyawan_berdokumen++;
-        }
         return view('livewire.infokaryawan', [
             'total_karyawan_aktif' => $total_karyawan_aktif,
-            'total_karyawan_hadir_hari_ini' => $total_karyawan_hadir_hari_ini,
+            // 'total_karyawan_hadir_hari_ini' => $total_karyawan_hadir_hari_ini,
             'jumlahTanpaRekening' => $jumlahTanpaRekening,
             'dataTanpaRekening' => $dataTanpaRekening,
-            'pkwt' => $pkwt,
-            'pkwtt' => $pkwtt,
-            'dirumahkan' => $dirumahkan,
-            'resigned' => $resigned,
-            'blacklist' => $blacklist,
-            'karyawan_berdokumen' => $karyawan_berdokumen,
-            'karyawan_gaji_0' => $karyawan_gaji_0,
-            'karyawan_gaji_0_count' => $karyawan_gaji_0_count,
 
+            'pkwt'       => $statusCount['PKWT']       ?? 0,
+            'pkwtt'      => $statusCount['PKWTT']      ?? 0,
+            'dirumahkan' => $statusCount['Dirumahkan'] ?? 0,
+            'resigned'   => $statusCount['Resigned']   ?? 0,
+            'blacklist'  => $statusCount['Blacklist']  ?? 0,
+
+            'karyawan_berdokumen' => $karyawan_berdokumen,
+            'total_karyawan_perjam' => $total_karyawan_perjam,
+            'total_karyawan_perbulan' => $total_karyawan_perbulan,
+            'jumlah_karyawan_tanpa_dokumen' => $jumlah_karyawan_tanpa_dokumen,
+            'karyawan_perbulan_tanpa_ptkp' => $karyawan_perbulan_tanpa_ptkp,
+            'karyawan_tanpa_email' => $karyawan_tanpa_email,
+            'jumlah_karyawan_tanpa_email' => $jumlah_karyawan_tanpa_email,
         ]);
     }
 }
