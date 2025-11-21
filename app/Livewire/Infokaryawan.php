@@ -11,40 +11,39 @@ use Illuminate\Support\Facades\DB;
 
 class Infokaryawan extends Component
 {
+    public $month, $year;
+    public $showKaryawanTanpaEmail = false;
+    public $showKaryawanTerlambat = false;
+    public $selectBulan;
 
-    // public function render()
-    // {
-    //     $total_karyawan_aktif = Karyawan::whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->count();
-    //     $total_karyawan_hadir_hari_ini = Yfrekappresensi::where('date', today())->count();
+    public function updatedSelectBulan()
+    {
+        if ($this->selectBulan == 0) {
+            // Bulan sekarang
+            $this->month = now()->month;
+            $this->year  = now()->year;
+        } else {
+            // Bulan lalu
+            $this->month = now()->subMonth()->month;
+            $this->year  = now()->subMonth()->year;
+        }
+    }
 
+    public function toggleKaryawanTerlambat()
+    {
+        $this->showKaryawanTerlambat = !$this->showKaryawanTerlambat;
+    }
+    public function toggleKaryawanTanpaEmail()
+    {
+        $this->showKaryawanTanpaEmail = !$this->showKaryawanTanpaEmail;
+    }
 
-    //     $jumlahTanpaRekening = Karyawan::where('nomor_rekening', '')->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->count();
-    //     $dataTanpaRekening = Karyawan::where('nomor_rekening', '')->whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->get();
-    //     $pkwt = Karyawan::where('status_karyawan', 'PKWT')->count();
-    //     $pkwtt = Karyawan::where('status_karyawan', 'PKWTT')->count();
-    //     $dirumahkan = Karyawan::where('status_karyawan', 'Dirumahkan')->count();
-    //     $resigned = Karyawan::where('status_karyawan', 'Resigned')->count();
-    //     $blacklist = Karyawan::where('status_karyawan', 'Blacklist')->count();
-    //     $data = Karyawan::whereNotNull('id_file_karyawan')->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->get();
-    //     $karyawan_berdokumen = 0;
-    //     foreach ($data as $d) {
-    //         $applicanteFiles = Applicantfile::where('id_karyawan', $d->id_file_karyawan)->count();
-    //         if ($applicanteFiles > 0) $karyawan_berdokumen++;
-    //     }
-    //     return view('livewire.infokaryawan', [
-    //         'total_karyawan_aktif' => $total_karyawan_aktif,
-    //         'total_karyawan_hadir_hari_ini' => $total_karyawan_hadir_hari_ini,
-    //         'jumlahTanpaRekening' => $jumlahTanpaRekening,
-    //         'dataTanpaRekening' => $dataTanpaRekening,
-    //         'pkwt' => $pkwt,
-    //         'pkwtt' => $pkwtt,
-    //         'dirumahkan' => $dirumahkan,
-    //         'resigned' => $resigned,
-    //         'blacklist' => $blacklist,
-    //         'karyawan_berdokumen' => $karyawan_berdokumen,
-
-    //     ]);
-    // }
+    public function mount()
+    {
+        $this->month = now()->month; // bulan sekarang (1–12)
+        $this->year  = now()->year;  // tahun sekarang (misal 2025)
+        $this->selectBulan = 0; // bulan ini
+    }
     public function render()
     {
         $total_karyawan_aktif = Karyawan::whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->count();
@@ -109,6 +108,36 @@ class Infokaryawan extends Component
 
         $jumlah_karyawan_tanpa_email = $karyawan_tanpa_email->count();
 
+        $karyawan_telat = Yfrekappresensi::join(
+            'karyawans',
+            'karyawans.id_karyawan',
+            '=',
+            'yfrekappresensis.user_id'
+        )
+            ->whereYear('date', $this->year)
+            ->whereMonth('date', $this->month)
+            ->whereIn('karyawans.status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+            ->where('karyawans.metode_penggajian', 'Perbulan')
+            ->where('yfrekappresensis.late', '>', 0)
+            ->select(
+                'yfrekappresensis.user_id',
+                'karyawans.nama',
+                'karyawans.jabatan_id',
+                'karyawans.status_karyawan',
+                'karyawans.company_id'
+            )
+            ->selectRaw('COUNT(*) as total_terlambat')
+            ->groupBy(
+                'yfrekappresensis.user_id',
+                'karyawans.nama',
+                'karyawans.jabatan_id',
+                'karyawans.status_karyawan',
+                'karyawans.company_id'
+            )
+            ->orderBy('total_terlambat', 'desc')
+            ->get();
+
+        $total_karyawan_telat = $karyawan_telat->count();
 
         return view('livewire.infokaryawan', [
             'total_karyawan_aktif' => $total_karyawan_aktif,
@@ -129,6 +158,8 @@ class Infokaryawan extends Component
             'karyawan_perbulan_tanpa_ptkp' => $karyawan_perbulan_tanpa_ptkp,
             'karyawan_tanpa_email' => $karyawan_tanpa_email,
             'jumlah_karyawan_tanpa_email' => $jumlah_karyawan_tanpa_email,
+            'karyawan_telat' => $karyawan_telat,
+            'total_karyawan_telat' => $total_karyawan_telat,
         ]);
     }
 }
