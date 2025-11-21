@@ -160,78 +160,141 @@
             </div>
 
             <!-- Table Karyawan tanpa nomor rekening bank -->
-            <div class="row g-4">
-
-                <div class="mt-5">
-                    <h4>Karyawan tanpa nomor rekening bank</h4>
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>#</th>
-                                <th>ID Karyawan</th>
-                                <th>Nama</th>
-                                <th>Jabatan</th>
-                                <th>Status</th>
-                                <th>Bank</th>
-                                <th>No Rekening</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($dataTanpaRekening as $key => $dtr)
+            @if ($dataTanpaRekening->isNotEmpty())
+                <div class="row g-4">
+                    <div class="mt-5">
+                        <h4>Karyawan tanpa nomor rekening bank</h4>
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
                                 <tr>
-                                    <td>{{ $key }}</td>
-                                    <td>{{ $dtr->id_karyawan }}</td>
-                                    <td>{{ $dtr->nama }}</td>
-                                    <td>{{ nama_jabatan($dtr->jabatan_id) }}</td>
-                                    <td>{{ $dtr->status_karyawan }}</td>
-                                    <td>{{ $dtr->nama_bank }}</td>
-
-                                    <td>
-                                        <button class="btn btn-sm btn-danger">Kosong</button>
-                                    </td>
+                                    <th>#</th>
+                                    <th>ID Karyawan</th>
+                                    <th>Nama</th>
+                                    <th>Jabatan</th>
+                                    <th>Status</th>
+                                    <th>Bank</th>
+                                    <th>No Rekening</th>
                                 </tr>
-                            @endforeach
+                            </thead>
+                            <tbody>
+                                @foreach ($dataTanpaRekening as $key => $dtr)
+                                    <tr>
+                                        <td>{{ $key }}</td>
+                                        <td>{{ $dtr->id_karyawan }}</td>
+                                        <td>{{ $dtr->nama }}</td>
+                                        <td>{{ nama_jabatan($dtr->jabatan_id) }}</td>
+                                        <td>{{ $dtr->status_karyawan }}</td>
+                                        <td>{{ $dtr->nama_bank }}</td>
 
-                        </tbody>
-                    </table>
+                                        <td>
+                                            <button class="btn btn-sm btn-danger">Kosong</button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+            @endif
+
             <!-- Table Karyawan tanpa Email -->
-            <div class="row g-4">
+            @if ($karyawan_tanpa_email->isNotEmpty())
+                <div class="row g-4">
+                    <div class="mt-5">
+                        <h4>Karyawan tanpa Email</h4>
+                        <button class="btn btn-sm btn-primary mb-3" wire:click="toggleKaryawanTanpaEmail">
+                            {{ $showKaryawanTanpaEmail ? 'Hide Details' : 'Show Details' }}
+                        </button>
 
-                <div class="mt-5">
-                    <h4>Karyawan tanpa Email</h4>
-                    <table class="table table-bordered table-hover">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>#</th>
-                                <th>ID Karyawan</th>
-                                <th>Nama</th>
-                                <th>Jabatan</th>
-                                <th>Status</th>
-                                <th>Email</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($karyawan_tanpa_email as $key => $dtr)
-                                <tr>
-                                    <td>{{ $key }}</td>
-                                    <td>{{ $dtr->id_karyawan }}</td>
-                                    <td>{{ $dtr->nama }}</td>
-                                    <td>{{ nama_jabatan($dtr->jabatan_id) }}</td>
-                                    <td>{{ $dtr->status_karyawan }}</td>
-                                    <td>{{ $dtr->email }}</td>
+                        @if ($showKaryawanTanpaEmail)
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ID Karyawan</th>
+                                        <th>Nama</th>
+                                        <th>Jabatan</th>
+                                        <th>Status</th>
+                                        <th>Email</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($karyawan_tanpa_email as $key => $dtr)
+                                        <tr class="text-center">
+                                            <td>{{ $key }}</td>
+                                            <td>{{ $dtr->id_karyawan }}</td>
+                                            <td>{{ $dtr->nama }}</td>
+                                            <td>{{ nama_jabatan($dtr->jabatan_id) }}</td>
+                                            <td>{{ $dtr->status_karyawan }}</td>
 
-                                    <td>
-                                        <button class="btn btn-sm btn-danger">Kosong</button>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                            <td>
+                                                <button class="btn btn-sm btn-danger">Kosong</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
 
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        @endif
+                    </div>
                 </div>
-            </div>
+            @endif
+
+            <!-- Table Karyawan terlambat -->
+            @if ($karyawan_telat->isNotEmpty())
+                <div class="row g-4">
+                    <div class="mt-5">
+
+                        <h4>Karyawan (Perbulan) Terlambat Total {{ $total_karyawan_telat }} Orang
+                            ({{ nama_bulan($month) }} {{ $year }})</h4>
+                        <div class="d-flex align-items-center gap-2 mb-3">
+
+                            <button class="btn btn-sm btn-primary" wire:click="toggleKaryawanTerlambat">
+                                {{ $showKaryawanTerlambat ? 'Hide Details' : 'Show Details' }}
+                            </button>
+
+                            <select wire:model.live="selectBulan" class="form-select form-select-sm w-auto">
+                                <option value="0">Bulan ini</option>
+                                <option value="1">Bulan lalu</option>
+                            </select>
+                        </div>
+
+                        @if ($showKaryawanTerlambat)
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ID Karyawan</th>
+                                        <th>Nama</th>
+                                        <th>Jabatan</th>
+                                        <th>Status</th>
+                                        <th>Company</th>
+                                        <th>Jumlah Hari Terlambat</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($karyawan_telat as $key => $dtr)
+                                        <tr class="text-center">
+                                            <td>{{ $key }}</td>
+                                            <td>{{ $dtr->user_id }}</td>
+                                            <td>{{ $dtr->nama }}</td>
+                                            <td>{{ nama_jabatan($dtr->jabatan_id) }}</td>
+                                            <td>{{ $dtr->status_karyawan }}</td>
+                                            <td>{{ nama_company($dtr->company_id) }}</td>
+                                            <td>{{ $dtr->total_terlambat }}</td>
+
+
+
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        @endif
+                    </div>
+                </div>
+            @endif
 
             <!-- Script Bootstrap -->
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
