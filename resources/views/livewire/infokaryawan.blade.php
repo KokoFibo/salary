@@ -17,9 +17,6 @@
     </style>
 
     <body>
-
-
-
         <!-- Main Content -->
         <div class="content">
             <!-- Header -->
@@ -179,7 +176,7 @@
                             <tbody>
                                 @foreach ($dataTanpaRekening as $key => $dtr)
                                     <tr>
-                                        <td>{{ $key }}</td>
+                                        <td>{{ $key + 1 }}</td>
                                         <td>{{ $dtr->id_karyawan }}</td>
                                         <td>{{ $dtr->nama }}</td>
                                         <td>{{ nama_jabatan($dtr->jabatan_id) }}</td>
@@ -222,7 +219,7 @@
                                 <tbody>
                                     @foreach ($karyawan_tanpa_email as $key => $dtr)
                                         <tr class="text-center">
-                                            <td>{{ $key }}</td>
+                                            <td>{{ $key + 1 }}</td>
                                             <td>{{ $dtr->id_karyawan }}</td>
                                             <td>{{ $dtr->nama }}</td>
                                             <td>{{ nama_jabatan($dtr->jabatan_id) }}</td>
@@ -242,59 +239,11 @@
             @endif
 
             <!-- Table Karyawan terlambat -->
-            @if ($karyawan_telat->isNotEmpty())
-                <div class="row g-4">
-                    <div class="mt-5">
-
-                        <h4>Karyawan (Perbulan) Terlambat Total {{ $total_karyawan_telat }} Orang
-                            ({{ nama_bulan($month) }} {{ $year }})</h4>
-                        <div class="d-flex align-items-center gap-2 mb-3">
-
-                            <button class="btn btn-sm btn-primary" wire:click="toggleKaryawanTerlambat">
-                                {{ $showKaryawanTerlambat ? 'Hide Details' : 'Show Details' }}
-                            </button>
-
-                            <select wire:model.live="selectBulan" class="form-select form-select-sm w-auto">
-                                <option value="0">Bulan ini</option>
-                                <option value="1">Bulan lalu</option>
-                            </select>
-                        </div>
-
-                        @if ($showKaryawanTerlambat)
-                            <table class="table table-bordered table-hover">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th>#</th>
-                                        <th>ID Karyawan</th>
-                                        <th>Nama</th>
-                                        <th>Jabatan</th>
-                                        <th>Status</th>
-                                        <th>Company</th>
-                                        <th>Jumlah Hari Terlambat</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($karyawan_telat as $key => $dtr)
-                                        <tr class="text-center">
-                                            <td>{{ $key }}</td>
-                                            <td>{{ $dtr->user_id }}</td>
-                                            <td>{{ $dtr->nama }}</td>
-                                            <td>{{ nama_jabatan($dtr->jabatan_id) }}</td>
-                                            <td>{{ $dtr->status_karyawan }}</td>
-                                            <td>{{ nama_company($dtr->company_id) }}</td>
-                                            <td>{{ $dtr->total_terlambat }}</td>
-
-
-
-                                        </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-                        @endif
-                    </div>
-                </div>
-            @endif
+            <div class="mb-5">
+                @livewire('KaryawanTerlambat')
+                @livewire('KaryawanNoscan')
+                @livewire('KaryawanLembur')
+            </div>
 
             <!-- Script Bootstrap -->
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

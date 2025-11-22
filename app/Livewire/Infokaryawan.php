@@ -2,48 +2,28 @@
 
 namespace App\Livewire;
 
+use App\Exports\InfoKaryawanExport;
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Karyawan;
-use App\Models\Applicantfile;
 
+use App\Models\Applicantfile;
 use App\Models\Yfrekappresensi;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Infokaryawan extends Component
 {
     public $month, $year;
     public $showKaryawanTanpaEmail = false;
-    public $showKaryawanTerlambat = false;
-    public $selectBulan;
 
-    public function updatedSelectBulan()
-    {
-        if ($this->selectBulan == 0) {
-            // Bulan sekarang
-            $this->month = now()->month;
-            $this->year  = now()->year;
-        } else {
-            // Bulan lalu
-            $this->month = now()->subMonth()->month;
-            $this->year  = now()->subMonth()->year;
-        }
-    }
 
-    public function toggleKaryawanTerlambat()
-    {
-        $this->showKaryawanTerlambat = !$this->showKaryawanTerlambat;
-    }
     public function toggleKaryawanTanpaEmail()
     {
         $this->showKaryawanTanpaEmail = !$this->showKaryawanTanpaEmail;
     }
 
-    public function mount()
-    {
-        $this->month = now()->month; // bulan sekarang (1–12)
-        $this->year  = now()->year;  // tahun sekarang (misal 2025)
-        $this->selectBulan = 0; // bulan ini
-    }
+
     public function render()
     {
         $total_karyawan_aktif = Karyawan::whereNotIn('status_karyawan', ['Resigned', 'Blacklist'])->count();
@@ -108,36 +88,7 @@ class Infokaryawan extends Component
 
         $jumlah_karyawan_tanpa_email = $karyawan_tanpa_email->count();
 
-        $karyawan_telat = Yfrekappresensi::join(
-            'karyawans',
-            'karyawans.id_karyawan',
-            '=',
-            'yfrekappresensis.user_id'
-        )
-            ->whereYear('date', $this->year)
-            ->whereMonth('date', $this->month)
-            ->whereIn('karyawans.status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-            ->where('karyawans.metode_penggajian', 'Perbulan')
-            ->where('yfrekappresensis.late', '>', 0)
-            ->select(
-                'yfrekappresensis.user_id',
-                'karyawans.nama',
-                'karyawans.jabatan_id',
-                'karyawans.status_karyawan',
-                'karyawans.company_id'
-            )
-            ->selectRaw('COUNT(*) as total_terlambat')
-            ->groupBy(
-                'yfrekappresensis.user_id',
-                'karyawans.nama',
-                'karyawans.jabatan_id',
-                'karyawans.status_karyawan',
-                'karyawans.company_id'
-            )
-            ->orderBy('total_terlambat', 'desc')
-            ->get();
 
-        $total_karyawan_telat = $karyawan_telat->count();
 
         return view('livewire.infokaryawan', [
             'total_karyawan_aktif' => $total_karyawan_aktif,
@@ -158,8 +109,7 @@ class Infokaryawan extends Component
             'karyawan_perbulan_tanpa_ptkp' => $karyawan_perbulan_tanpa_ptkp,
             'karyawan_tanpa_email' => $karyawan_tanpa_email,
             'jumlah_karyawan_tanpa_email' => $jumlah_karyawan_tanpa_email,
-            'karyawan_telat' => $karyawan_telat,
-            'total_karyawan_telat' => $total_karyawan_telat,
+
         ]);
     }
 }
