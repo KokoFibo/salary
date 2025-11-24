@@ -3,13 +3,10 @@
         <div class="mt-5">
 
             <h4>
-                Karyawan (Perbulan) Terlambat — Total:
+                Karyawan Terlambat — Total:
                 <span class="text-danger">{{ $total_karyawan_telat }}</span>
                 <span class=" ms-2">{{ $periodeTerlambat }}</span>
             </h4>
-
-
-
 
             <div class="d-flex align-items-center flex-wrap gap-2 mb-3">
 
@@ -29,6 +26,13 @@
 
                 {{-- Date To --}}
                 <input type="date" wire:model.live="terlambatTo" class="form-control form-control-sm w-auto">
+
+                {{-- Dropdown Metode Penggajian --}}
+                <select wire:model.live="metode" class="form-select form-select-sm w-auto">
+                    <option value="Perbulan">Perbulan</option>
+                    <option value="Perjam">Perjam</option>
+                    <option value="Semua">Semua</option>
+                </select>
 
                 {{-- Export Excel --}}
                 <button class="btn btn-sm btn-success" wire:click="excelTerlambat()">

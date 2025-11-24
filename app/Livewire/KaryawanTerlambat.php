@@ -20,6 +20,8 @@ class KaryawanTerlambat extends Component
     public $selectBulan;
     public $terlambatFrom, $terlambatTo, $periodeTerlambat;
     public $perpage = 5;
+    public $metode = "Perbulan";
+
 
 
     public function excelTerlambat()
@@ -31,7 +33,12 @@ class KaryawanTerlambat extends Component
             'yfrekappresensis.user_id'
         )
             ->whereIn('karyawans.status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-            ->where('karyawans.metode_penggajian', 'Perbulan')
+            ->when(
+                $this->metode != "Semua",
+                function ($q) {
+                    return $q->where('karyawans.metode_penggajian', $this->metode);
+                }
+            )
             ->where('yfrekappresensis.late', '>', 0);
 
         // Filter tanggal
@@ -71,11 +78,13 @@ class KaryawanTerlambat extends Component
             ->orderBy('total', 'desc')
             ->get();
         $periode = $this->periodeTerlambat;
-        $title = "Rekap Karyawan Terlambat " . $periode;
-        $label = "Jumlah karyawan terlambat";
+        $metode_penggajian = $this->metode;
+        if ($this->metode == "Semua") $metode_penggajian = "";
+        $title = "Rekap Karyawan " . $metode_penggajian . " Terlambat " . $periode;
+        $label = "Jumlah karyawan " . $metode_penggajian . " Terlambat";
         return Excel::download(
             new InfoKaryawanExport($karyawan_telat, $periode, $label, $title),
-            'Karyawan Terlambat ' . $periode . '.xlsx'
+            'Karyawan Terlambat ' . $metode_penggajian . ' ' . $periode . '.xlsx'
         );
     }
 
@@ -107,6 +116,7 @@ class KaryawanTerlambat extends Component
         $this->selectBulan = 0; // bulan ini
         $this->terlambatFrom = "";
         $this->terlambatTo = "";
+        $this->metode = "Perbulan";
     }
     public function render()
     {
@@ -118,7 +128,9 @@ class KaryawanTerlambat extends Component
             'yfrekappresensis.user_id'
         )
             ->whereIn('karyawans.status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-            ->where('karyawans.metode_penggajian', 'Perbulan')
+            ->when($this->metode != "Semua", function ($q) {
+                $q->where('karyawans.metode_penggajian', $this->metode);
+            })
             ->where('yfrekappresensis.late', '>', 0);
 
         // Filter tanggal
