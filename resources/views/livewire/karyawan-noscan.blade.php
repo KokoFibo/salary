@@ -3,7 +3,7 @@
         <div class="mt-5">
 
             <h4>
-                Karyawan (Perbulan) No Scan — Total:
+                Karyawan No Scan — Total:
                 <span class="text-danger">{{ $total_karyawan_noscan }}</span>
                 <span class=" ms-2">{{ $periodeNoscan }}</span>
             </h4>
@@ -29,6 +29,13 @@
 
                 {{-- Date To --}}
                 <input type="date" wire:model.live="noscanTo" class="form-control form-control-sm w-auto">
+
+                {{-- Dropdown Metode Penggajian --}}
+                <select wire:model.live="metode" class="form-select form-select-sm w-auto">
+                    <option value="Perbulan">Perbulan</option>
+                    <option value="Perjam">Perjam</option>
+                    <option value="Semua">Semua</option>
+                </select>
 
                 {{-- Export Excel --}}
                 <button class="btn btn-sm btn-success" wire:click="excelNoscan()">

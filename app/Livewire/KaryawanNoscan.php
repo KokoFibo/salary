@@ -20,6 +20,8 @@ class KaryawanNoscan extends Component
     public $selectBulan;
     public $noscanFrom, $noscanTo, $periodeNoscan;
     public $perpage = 5;
+    public $metode = "Perbulan";
+
 
     public function excelNoscan()
     {
@@ -31,7 +33,12 @@ class KaryawanNoscan extends Component
             'yfrekappresensis.user_id'
         )
             ->whereIn('karyawans.status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-            ->where('karyawans.metode_penggajian', 'Perbulan')
+            ->when(
+                $this->metode != "Semua",
+                function ($q) {
+                    return $q->where('karyawans.metode_penggajian', $this->metode);
+                }
+            )
             ->where('yfrekappresensis.no_scan_history', 'No Scan');
 
         // Filter tanggal
@@ -72,11 +79,13 @@ class KaryawanNoscan extends Component
             ->get();
 
         $periode = $this->periodeNoscan;
-        $title = "Rekap Karyawan No Scan " . $periode;
-        $label = "Jumlah karyawan No Scan";
+        $metode_penggajian = $this->metode;
+        if ($this->metode == "Semua") $metode_penggajian = "";
+        $title = "Rekap Karyawan " . $metode_penggajian . " No Scan " . $periode;
+        $label = "Jumlah karyawan " . $metode_penggajian . " No Scan";
         return Excel::download(
             new InfoKaryawanExport($karyawan_noscan, $periode, $label, $title),
-            'Karyawan No Scan ' . $periode . '.xlsx'
+            'Karyawan No Scan ' . $metode_penggajian . " " . $periode . '.xlsx'
         );
     }
 
@@ -108,6 +117,7 @@ class KaryawanNoscan extends Component
         $this->selectBulan = 0; // bulan ini
         $this->noscanFrom = "";
         $this->noscanTo = "";
+        $this->metode = "Perbulan";
     }
 
     public function render()
@@ -120,7 +130,9 @@ class KaryawanNoscan extends Component
             'yfrekappresensis.user_id'
         )
             ->whereIn('karyawans.status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-            ->where('karyawans.metode_penggajian', 'Perbulan')
+            ->when($this->metode != "Semua", function ($q) {
+                $q->where('karyawans.metode_penggajian', $this->metode);
+            })
             ->where('yfrekappresensis.no_scan_history', 'No Scan');
 
         // Filter tanggal

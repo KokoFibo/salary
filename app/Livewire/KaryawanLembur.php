@@ -32,8 +32,9 @@ class KaryawanLembur extends Component
             'yfrekappresensis.user_id'
         )
             ->whereIn('karyawans.status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
-            ->where('karyawans.metode_penggajian', $this->metode)
-            // lembur dicatat minimal 1 jam
+            ->when($this->metode != "Semua", function ($q) {
+                $q->where('karyawans.metode_penggajian', $this->metode);
+            })
             ->where(function ($q) {
                 $q->where('yfrekappresensis.total_jam_lembur', '>', 0)
                     ->orWhere('yfrekappresensis.total_jam_lembur_libur', '>', 0);
