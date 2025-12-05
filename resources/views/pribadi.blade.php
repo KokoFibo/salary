@@ -152,11 +152,11 @@
             <div class="col-md-4">
                 <div class="mb-3">
                     <label class="form-label">{{ __('Etnis') }} <span class="text-danger">*</span></label>
-                    <select wire:model="etnis" class="form-select @error('etnis') is-invalid @enderror""
+                    <select wire:model.live="etnis" class="form-select @error('etnis') is-invalid @enderror""
                         aria-label="Default select example">
                         <option value=" ">{{ __('Pilih Etnis') }}</option>
                         <option value="Batak">{{ __('Batak') }}</option>
-                        <option value="China">{{ __('China') }}</option>
+                        <option value="China">{{ __('TKA') }}</option>
                         <option value="Jawa">{{ __('Jawa') }}</option>
                         <option value="Sunda">{{ __('Sunda') }}</option>
                         <option value="Lampung">{{ __('Lampung') }}</option>

@@ -4,7 +4,7 @@
     <div class="container ">
         <div class="card mt-3 ">
             <div class="card-header bg-secondary text-light">
-                <h5>Tambah Data Karyawan
+                <h5>Tambah Data Karyawan :{{ $etnis }}
                     <button wire:click="clear"
                         class="btn btn-primary float-end nightowl-daylight">{{ __('Create New') }}</button>
                 </h5>

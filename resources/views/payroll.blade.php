@@ -215,13 +215,16 @@
                             JHT
                         </label>
                     </div>
-                    <div class="form-check mt-2">
-                        <input type="checkbox" wire:model="potongan_JP" class="form-check-input"
-                            {{ $potongan_JP == 1 ? 'checked' : '' }}>
-                        <label class="form-check-label">
-                            JP
-                        </label>
-                    </div>
+                    @if ($etnis != 'China')
+                        <div class="form-check mt-2">
+                            <input type="checkbox" wire:model="potongan_JP" class="form-check-input"
+                                {{ $potongan_JP == 1 ? 'checked' : '' }}>
+                            <label class="form-check-label">
+                                JP
+                            </label>
+                        </div>
+                    @endif
+
                     <div class="form-check mt-2">
                         <input type="checkbox" wire:model="potongan_JKK"
                             class="form-check-input @error('potongan_JKK') is-invalid @enderror""
