@@ -96,6 +96,18 @@ class Infokaryawan extends Component
 
         $jumlah_karyawan_tanpa_email = $karyawan_tanpa_email->count();
 
+        $duplicates = Karyawan::whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
+            ->whereNotNull('nomor_rekening')
+            ->where('nomor_rekening', '!=', '')
+            ->get()
+            ->groupBy(function ($item) {
+                return trim($item->nomor_rekening);
+            })
+            ->filter(function ($group) {
+                return $group->count() > 1;
+            });
+
+        // dd($duplicates->all());
 
 
         return view('livewire.infokaryawan', [
@@ -117,6 +129,7 @@ class Infokaryawan extends Component
             'karyawan_perbulan_tanpa_ptkp' => $karyawan_perbulan_tanpa_ptkp,
             'karyawan_tanpa_email' => $karyawan_tanpa_email,
             'jumlah_karyawan_tanpa_email' => $jumlah_karyawan_tanpa_email,
+            'duplicates' => $duplicates,
 
         ]);
     }
