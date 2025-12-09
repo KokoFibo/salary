@@ -295,14 +295,8 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">{{ __('Nomor Rekening') }}</label>
-                            <input wire:model="nomor_rekening" type="number"
-                                class="form-control @error('nomor_rekening') is-invalid @enderror">
+                            <input wire:model="nomor_rekening" type="number" class="form-control">
                         </div>
-                        @error('nomor_rekening')
-                            <div class="invalid-feedback">
-                                {{ $message }}
-                            </div>
-                        @enderror
                     </div>
                 </div>
             </div>

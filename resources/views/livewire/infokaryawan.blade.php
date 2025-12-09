@@ -155,6 +155,61 @@
                 </div>
 
             </div>
+            <h4>Total Nomor Rekening Duplikat: <span class="text-danger">
+                    {{ $duplicates->flatten()->count() }}</span></h4>
+
+            @if (!empty($duplicates) && $duplicates->count() > 0)
+                <div class="row g-4">
+                    <div class="mt-5">
+                        {{-- <h4>
+                        Karyawan dengan nomor rekening duplikat :
+                        <span class="text-danger">
+                            {{ $duplicates?->keys()->join(', ') ?? '-' }}
+                        </span>
+                    </h4> --}}
+
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>ID Karyawan</th>
+                                    <th>Nama</th>
+                                    <th>Company</th>
+                                    <th>Directorate</th>
+                                    <th>Department</th>
+                                    <th>Jabatan</th>
+                                    <th>Status</th>
+                                    <th>Bank</th>
+                                    <th>No Rekening (Trim)</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @php $no = 1; @endphp
+
+                                @foreach ($duplicates as $rekening => $group)
+                                    @foreach ($group as $d)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $d->id_karyawan }}</td>
+                                            <td>{{ $d->nama }}</td>
+                                            <td>{{ nama_company($d->company_id) }}</td>
+                                            <td>{{ nama_placement($d->placement_id) }}</td>
+                                            <td>{{ nama_department($d->department_id) }}</td>
+                                            <td>{{ nama_jabatan($d->jabatan_id) }}</td>
+                                            <td>{{ $d->status_karyawan }}</td>
+                                            <td>{{ $d->nama_bank }}</td>
+                                            <td class="text-danger fw-bold">{{ trim($d->nomor_rekening) }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endif
+
+
 
             <!-- Table Karyawan tanpa nomor rekening bank -->
             @if ($dataTanpaRekening->isNotEmpty())

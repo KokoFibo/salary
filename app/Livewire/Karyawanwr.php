@@ -12,7 +12,7 @@ use App\Models\Placement;
 use App\Models\Department;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
+// use Illuminate\Validation\Rule;
 
 
 class Karyawanwr extends Component
@@ -62,147 +62,77 @@ class Karyawanwr extends Component
         $this->status_off = true;
     }
 
-    // protected $rules = [
+    protected $rules = [
 
-    //     'id_karyawan' => 'nullable',
-    //     'nama' => 'required',
-    //     'email' => 'email|nullable',
-    //     'tanggal_lahir' => 'date|before:today|required',
-    //     // PRIBADI
-    //     'hp' => 'nullable',
-    //     'telepon' => 'nullable',
-    //     'tempat_lahir' => 'required',
-    //     'gender' => 'required',
-    //     'status_pernikahan' => 'nullable',
-    //     'golongan_darah' => 'nullable',
-    //     'agama' => 'nullable',
-    //     'etnis' => 'required',
-    //     'kontak_darurat' => 'nullable',
-    //     'kontak_darurat2' => 'nullable',
-    //     'hp1' => 'nullable',
-    //     'hp2' => 'nullable',
-    //     'hubungan1' => 'nullable',
-    //     'hubungan2' => 'nullable',
-
-
-    //     // IDENTITAS
-    //     'jenis_identitas' => 'required',
-    //     'no_identitas' => 'required',
-    //     'alamat_identitas' => 'required',
-    //     'alamat_tinggal' => 'required',
-    //     // KEPEGAWAIAN
-    //     'status_karyawan' => 'required',
-    //     'tanggal_bergabung' => 'date|required|after:yesterday',
-    //     'company_id' => 'required',
-    //     'placement_id' => 'required',
-    //     'department_id' => 'required',
-    //     'jabatan_id' => 'required',
-    //     'level_jabatan' => 'nullable',
-    //     'nama_bank' => 'nullable',
-    //     'nomor_rekening' => 'nullable',
-    //     // PAYROLL
-    //     'metode_penggajian' => 'required',
-    //     'gaji_overtime' => 'numeric|required',
-    //     'gaji_shift_malam_satpam' => 'numeric',
-    //     'bonus' => 'numeric|nullable',
-    //     'tunjangan_jabatan' => 'numeric|nullable',
-    //     'tunjangan_bahasa' => 'numeric|nullable',
-    //     'tunjangan_housing' => 'numeric|nullable',
-    //     'tunjangan_skill' => 'numeric|nullable',
-    //     'tunjangan_lembur_sabtu' => 'numeric|nullable',
-    //     'tunjangan_lama_kerja' => 'numeric|nullable',
-    //     'iuran_air' => 'numeric|required',
-    //     'denda' => 'numeric|nullable',
-    //     'iuran_locker' => 'numeric|nullable',
-    //     // 'gaji_bpjs' => 'nullable',
-    //     'gaji_bpjs' => 'required|integer|min:1',
-
-    //     'potongan_JHT' => 'nullable',
-    //     'potongan_JP' => 'nullable',
-    //     'potongan_JKK' => 'nullable',
-    //     'potongan_JKM' => 'nullable',
-    //     'potongan_kesehatan' => 'nullable',
-    //     'tanggungan' => 'nullable',
-    //     'no_npwp' => 'nullable',
-    //     // 'ptkp' => 'nullable',
-    //     'ptkp' => 'required',
-
-    //     'gaji_tetap' => 'required|numeric|min:1',
-    //     'tunjangan_housing' => 'nullable',
+        'id_karyawan' => 'nullable',
+        'nama' => 'required',
+        'email' => 'email|nullable',
+        'tanggal_lahir' => 'date|before:today|required',
+        // PRIBADI
+        'hp' => 'nullable',
+        'telepon' => 'nullable',
+        'tempat_lahir' => 'required',
+        'gender' => 'required',
+        'status_pernikahan' => 'nullable',
+        'golongan_darah' => 'nullable',
+        'agama' => 'nullable',
+        'etnis' => 'required',
+        'kontak_darurat' => 'nullable',
+        'kontak_darurat2' => 'nullable',
+        'hp1' => 'nullable',
+        'hp2' => 'nullable',
+        'hubungan1' => 'nullable',
+        'hubungan2' => 'nullable',
 
 
-    // ];
+        // IDENTITAS
+        'jenis_identitas' => 'required',
+        'no_identitas' => 'required',
+        'alamat_identitas' => 'required',
+        'alamat_tinggal' => 'required',
+        // KEPEGAWAIAN
+        'status_karyawan' => 'required',
+        'tanggal_bergabung' => 'date|required|after:yesterday',
+        'company_id' => 'required',
+        'placement_id' => 'required',
+        'department_id' => 'required',
+        'jabatan_id' => 'required',
+        'level_jabatan' => 'nullable',
+        'nama_bank' => 'nullable',
+        'nomor_rekening' => 'nullable',
+        // PAYROLL
+        'metode_penggajian' => 'required',
+        'gaji_overtime' => 'numeric|required',
+        'gaji_shift_malam_satpam' => 'numeric',
+        'bonus' => 'numeric|nullable',
+        'tunjangan_jabatan' => 'numeric|nullable',
+        'tunjangan_bahasa' => 'numeric|nullable',
+        'tunjangan_housing' => 'numeric|nullable',
+        'tunjangan_skill' => 'numeric|nullable',
+        'tunjangan_lembur_sabtu' => 'numeric|nullable',
+        'tunjangan_lama_kerja' => 'numeric|nullable',
+        'iuran_air' => 'numeric|required',
+        'denda' => 'numeric|nullable',
+        'iuran_locker' => 'numeric|nullable',
+        // 'gaji_bpjs' => 'nullable',
+        'gaji_bpjs' => 'required|integer|min:1',
 
-    protected function rules()
-    {
-        return [
-            'id_karyawan' => 'nullable',
-            'nama' => 'required',
-            'email' => 'email|nullable',
-            'tanggal_lahir' => 'date|before:today|required',
+        'potongan_JHT' => 'nullable',
+        'potongan_JP' => 'nullable',
+        'potongan_JKK' => 'nullable',
+        'potongan_JKM' => 'nullable',
+        'potongan_kesehatan' => 'nullable',
+        'tanggungan' => 'nullable',
+        'no_npwp' => 'nullable',
+        // 'ptkp' => 'nullable',
+        'ptkp' => 'required',
 
-            'hp' => 'nullable',
-            'telepon' => 'nullable',
-            'tempat_lahir' => 'required',
-            'gender' => 'required',
-            'status_pernikahan' => 'nullable',
-            'golongan_darah' => 'nullable',
-            'agama' => 'nullable',
-            'etnis' => 'required',
-            'kontak_darurat' => 'nullable',
-            'hp1' => 'nullable',
-            'hp2' => 'nullable',
-            'kontak_darurat2' => 'nullable',
-            'hubungan1' => 'nullable',
-            'hubungan2' => 'nullable',
+        'gaji_tetap' => 'required|numeric|min:1',
+        'tunjangan_housing' => 'nullable',
 
-            'jenis_identitas' => 'required',
-            'no_identitas' => 'required',
-            'alamat_identitas' => 'required',
-            'alamat_tinggal' => 'required',
 
-            'status_karyawan' => 'required',
-            'tanggal_bergabung' => 'date|required|after:yesterday',
-            'company_id' => 'required',
-            'placement_id' => 'required',
-            'department_id' => 'required',
-            'jabatan_id' => 'required',
-            'level_jabatan' => 'nullable',
+    ];
 
-            'nama_bank' => 'nullable',
-
-            // ============================
-            // UNIQUE NOMOR REKENING
-            // ============================
-            'nomor_rekening' => [
-                'nullable',
-                Rule::unique('karyawans', 'nomor_rekening')->ignore($this->id_karyawan)
-            ],
-
-            'metode_penggajian' => 'required',
-            // 'gaji_pokok' => 'numeric|required',
-            'gaji_overtime' => 'numeric|required',
-            'gaji_shift_malam_satpam' => 'numeric',
-            'bonus' => 'numeric|nullable',
-            'tunjangan_jabatan' => 'numeric|nullable',
-            'tunjangan_bahasa' => 'numeric|nullable',
-            'tunjangan_skill' => 'numeric|nullable',
-            'tunjangan_lembur_sabtu' => 'numeric|nullable',
-            'tunjangan_lama_kerja' => 'numeric|nullable',
-            'iuran_air' => 'numeric|required',
-            'denda' => 'numeric|nullable',
-            'iuran_locker' => 'numeric|nullable',
-            'gaji_bpjs' => 'nullable',
-            'potongan_JHT' => 'nullable',
-            'potongan_JP' => 'nullable',
-            'potongan_JKK' => 'nullable',
-            'potongan_JKM' => 'nullable',
-            'potongan_kesehatan' => 'nullable',
-            'tanggungan' => 'nullable',
-            'no_npwp' => 'nullable',
-            'ptkp' => 'nullable',
-        ];
-    }
 
     public function save()
     {

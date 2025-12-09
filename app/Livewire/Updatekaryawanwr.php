@@ -754,36 +754,9 @@ class Updatekaryawanwr extends Component
         }
     }
 
-    public function cek_nomor_rekening()
-    {
-        $data = Karyawan::where('nomor_rekening', trim($this->nomor_rekening))
-            ->where('id_karyawan', '!=', $this->id_karyawan)
-            ->first();
-        if ($data) {
-            // $this->dispatch(
-            //     'message',
-            //     type: 'error',
-            //     title: 'Nomor rekening sudah terdaftar pada karyawan lain.',
-            //     position: 'center'
-            // );
-            // $this->nomor_rekening = '';
-            return true;
-        } else {
-            return false;
-        }
-    }
-    // 403001000872507
     public function update1()
     {
-        if ($this->cek_nomor_rekening()) {
-            $this->dispatch(
-                'message',
-                type: 'error',
-                title: 'Nomor rekening sudah terdaftar pada karyawan lain.',
-                position: 'center'
-            );
-            return;
-        }
+
         $this->gaji_tetap = convert_numeric($this->gaji_tetap);
         $this->gaji_overtime = convert_numeric($this->gaji_overtime);
         $this->gaji_shift_malam_satpam = convert_numeric($this->gaji_shift_malam_satpam);
