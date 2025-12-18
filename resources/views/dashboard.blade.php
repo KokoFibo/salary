@@ -128,7 +128,21 @@
 
     <livewire:placementreport />
 
+    <div class=" d-flex  justify-content-center">
+        <div class="c-dashboardInfo col-lg-4 col-md-6">
+            <div class="wrap d-flex flex-column justify-content-center align-items-center h-100">
+                <h4 class="heading heading5 hind-font medium-font-weight c-dashboardInfo__title text-center">
+                    {{ __('Berdasarkan Agama') }}
+                </h4>
 
+                @foreach ($agamas as $agama => $jumlah)
+                    <span class="hind-font caption-12 c-dashboardInfo__count text-center">
+                        {{ $agama }} : {{ $jumlah }}
+                    </span>
+                @endforeach
+            </div>
+        </div>
+    </div>
 
 
 
