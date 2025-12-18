@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Dashboarddata;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Payroll;
 use App\Models\Karyawan;
 use Jenssegers\Agent\Agent;
 use Illuminate\Http\Request;
+use App\Models\Dashboarddata;
 use App\Models\Yfrekappresensi;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Spatie\Activitylog\Contracts\Activity;
 
@@ -147,6 +148,10 @@ class HomeController extends Controller
                 // $karyawan_resigned_mtd =  Karyawan::whereBetween('tanggal_resigned', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
                 // $karyawan_blacklist_mtd =  Karyawan::whereBetween('tanggal_blacklist', [Carbon::now()->startOfMonth(), Carbon::now()])->count();
                 // $karyawan_aktif_mtd = Karyawan::whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->count();
+                $agamas = Karyawan::whereNotIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])
+                    ->select('agama', DB::raw('COUNT(*) as total'))
+                    ->groupBy('agama')
+                    ->pluck('total', 'agama');
 
 
                 return view('dashboard', compact([
@@ -161,7 +166,8 @@ class HomeController extends Controller
                     'belum_isi_kontak_darurat',
                     'jumlah_karyawan_baru_minggu_lalu',
                     'jumlah_karyawan_resign_minggu_lalu',
-                    'jumlah_karyawan_blacklist_minggu_lalu'
+                    'jumlah_karyawan_blacklist_minggu_lalu',
+                    'agamas'
                 ]));
             } else {
                 return view('user_dashboard');
@@ -187,6 +193,8 @@ class HomeController extends Controller
                     'jumlah_karyawan_baru_minggu_lalu',
                     'jumlah_karyawan_resign_minggu_lalu',
                     'jumlah_karyawan_blacklist_minggu_lalu'
+
+
                 ]));
             }
             $user->device = 0;
