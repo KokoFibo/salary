@@ -5,7 +5,9 @@
         Anything you want
     </div> --}}
     <!-- Default to the left -->
-    <strong>Copyright &copy; 2025 Yifang Investment Group | All rights reserved.
+    <strong>
+        Copyright &copy; {{ date('Y') }} Yifang Investment Group | All rights reserved.
+    </strong>
 </footer>
 
 </div>
