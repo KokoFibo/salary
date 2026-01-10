@@ -9,7 +9,6 @@ use App\Models\Employee;
 use App\Models\Karyawan;
 use App\Models\Presensi;
 use App\Models\Department;
-use App\Models\Harikhusus;
 use App\Models\Jamkerjaid;
 use App\Models\Yfpresensi;
 use Illuminate\Support\Str;
@@ -25,19 +24,23 @@ use PhpOffice\PhpSpreadsheet\Reader\Exception;
 
 class YfpresensiController extends Controller
 {
+
+    public function clear_upload_lock()
+    {
+        $lock = Lock::find(1);
+        $lock->upload = false;
+        $lock->save();
+    }
+
     public function compare(Request $request)
     {
-
+        dd('compare');
         $request->validate([
             'file' => 'required|mimes:xlsx|max:2048',
         ]);
 
-
-
-
         $file = $request->file('file');
         $spreadsheet = IOFactory::load($file);
-
         $importedData = $spreadsheet->getActiveSheet();
         $row_limit = $importedData->getHighestDataRow();
         $tgl = trim(explode('~', $importedData->getCell('A2')->getValue())[1]);
@@ -93,12 +96,40 @@ class YfpresensiController extends Controller
                     $formattedIds[] = $d['user_id'];
                 }
                 $msg = 'Data tidak bisa diupload karena terdapat user id yang sama: ' . implode(', ', $formattedIds);
+                clear_locks();
 
                 return back()->with('error', $msg);
             }
         }
+        clear_locks();
 
         return back()->with('success', 'Tidak ada data duplikat');
+
+
+        // if (collect($datasama)->count() > 0) {
+        //  $userid = [];
+        //     foreach ($datasama as $d) {
+        //         $userid = $userid + $userid.',';
+        //     }
+
+        //     $msg = ''Data Tidak bisa di upload karena terdapat user id yang sama :'
+        //     return back()->with('error', 'Data Tidak bisa di upload karena terdapat user id yang sama ' . $data->user_id);
+        // } else {
+
+        //     dd('aman');
+        // }
+
+        // try {
+        //     foreach (array_chunk($Yfpresensidata, 200) as $item) {
+        //         Yfpresensi::insert($item);
+        //     }
+        // } catch (\Exception $e) {
+        //     clear_locks();
+        //     return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
+        // }
+
+
+
     }
 
     public function deleteByPabrik(Request $request)
@@ -170,6 +201,16 @@ class YfpresensiController extends Controller
             }
         }
 
+        // try {
+        //     foreach (array_chunk($Yfpresensidata, 200) as $item) {
+        //         Yfpresensi::insert($item);
+        //     }
+        // } catch (\Exception $e) {
+        //     clear_locks();
+        //     return back()->with('error', 'Gagal Upload Format tanggal tidak sesuai');
+        // }
+
+
         $unique = collect($Yfpresensidata)->unique('user_id');
         $cx = 0;
         foreach ($unique as $d) {
@@ -231,46 +272,11 @@ class YfpresensiController extends Controller
         return view('yfpresensi.index');
     }
 
-    public function clear_upload_lock()
-    {
-        $lock = Lock::find(1);
-        $lock->upload = false;
-        $lock->save();
-    }
-
-    public function check_store(Request $request)
-    {
-        $request->validate([
-            'file' => 'required|mimes:xlsx|max:2048',
-        ]);
-
-        $file = $request->file('file');
-        $spreadsheet = IOFactory::load($file);
-
-        $importedData = $spreadsheet->getActiveSheet();
-        $row_limit = $importedData->getHighestDataRow();
-
-        $tgl = trim(explode('~', $importedData->getCell('A2')->getValue())[1]);
-        $tgl1 = trim(explode('~', $importedData->getCell('A2')->getValue())[0]);
-        $tgl2 = trim(explode(':', $tgl1)[1]);
-        if ($tgl != $tgl2) {
-            $this->clear_upload_lock();
-            return back()->with('error', 'Gagal Upload Tanggal harus dihari yang sama');
-        }
-        $hari_khusus = Harikhusus::where('date', $tgl)->first();
-        if ($hari_khusus) {
-            $this->khusus_store($request);
-        } else {
-            // dd('bukan hari khusus');
-            $this->store($request);
-        }
-    }
-
     public function store(Request $request)
     {
         $lock = Lock::find(1);
         if ($lock->upload) {
-            // $this->clear_upload_lock();
+            $this->clear_upload_lock();
             return back()->with('error', 'Mohon dicoba sebentar lagi ya');
         } else {
             $lock->upload = true;
@@ -291,9 +297,9 @@ class YfpresensiController extends Controller
         $tgl = trim(explode('~', $importedData->getCell('A2')->getValue())[1]);
         $tgl1 = trim(explode('~', $importedData->getCell('A2')->getValue())[0]);
         $tgl2 = trim(explode(':', $tgl1)[1]);
-        // dd($tgl, $tgl1, $tgl2);
         if ($tgl != $tgl2) {
             $this->clear_upload_lock();
+
             return back()->with('error', 'Gagal Upload Tanggal harus dihari yang sama');
         }
         $user_id = '';
@@ -349,6 +355,8 @@ class YfpresensiController extends Controller
                     $msg = 'Data tidak bisa diupload karena terdapat user id yang sama: ' . implode(', ', $formattedIds);
                 }
                 $this->clear_upload_lock();
+
+
                 return back()->with('error', $msg);
             }
         }
@@ -379,7 +387,9 @@ class YfpresensiController extends Controller
                     $time = date('H:i', strtotime($str));
                 }
 
-                // pakai Chunk
+
+
+                //  pakai Chunk
                 $Yfpresensidata[] = [
                     'user_id' => $user_id,
 
@@ -419,18 +429,11 @@ class YfpresensiController extends Controller
             ->select('user_id', 'date')
             ->distinct()
             ->get();
-
-        $is_sunday = is_sunday($tgl);
-        $is_saturday = is_saturday($tgl);
-        $is_friday = is_friday($tgl);
-        $is_hari_libur_nasional = is_libur_nasional($tgl);
         foreach ($karyawanHadir as $kh) {
             $tgl_delete = $kh->date;
             $user_id = $kh->user_id;
             // $name = $kh->name;
             $tgl = $kh->date;
-            // dd('tgl', $tgl);
-
             $first_in = null;
             $first_out = null;
             $second_in = null;
@@ -472,9 +475,9 @@ class YfpresensiController extends Controller
                                 else $second_in = $tp->time;
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '14:00')) {
                                 if ($second_in == '') $second_in = $tp->time;
-                                // perubahan second_out dan overtime_in yg tidak terdeteksi, untuk jam kerja sabtu
+                                // perubahan second_out dan overtime_in yg tidak terdeteksi,  untuk jam kerja sabtu 
                                 // } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '17:30')) {
-                                // $second_out = $tp->time;
+                                //     $second_out = $tp->time;
 
                                 // } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '16:59') && $second_out == null) {
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '17:59') && $second_out == null) {
@@ -605,22 +608,22 @@ class YfpresensiController extends Controller
                                 if ($first_out == '') $first_out = $tp->time;
                                 else $second_in = $tp->time;
                                 // if ($flag == 0) {
-                                // $first_out = $tp->time;
-                                // if (Carbon::parse($tp->time)->betweenIncluded('10:01', '11:59')) {
-                                // $flag = 1;
-                                // } else {
-                                // $flag = 2;
-                                // }
+                                //     $first_out = $tp->time;
+                                //     if (Carbon::parse($tp->time)->betweenIncluded('10:01', '11:59')) {
+                                //         $flag = 1;
+                                //     } else {
+                                //         $flag = 2;
+                                //     }
                                 // }
                                 // // ook
                                 // if ($flag == 1) {
-                                // $second_in = $tp->time;
+                                //     $second_in = $tp->time;
                                 // }
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '14:00')) {
                                 if ($second_in == '') $second_in = $tp->time;
-                                // perubahan second_out dan overtime_in yg tidak terdeteksi, untuk jam kerja sabtu
+                                // perubahan second_out dan overtime_in yg tidak terdeteksi,  untuk jam kerja sabtu 
                                 // } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '17:30')) {
-                                // $second_out = $tp->time;
+                                //     $second_out = $tp->time;
 
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:59') && $second_out == null) {
                                 $second_out = $tp->time;
@@ -733,6 +736,7 @@ class YfpresensiController extends Controller
             }
             // Batasana Akhir Puasa
 
+
             $no_scan = noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out);
             $late = late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $kh->user_id);
             $dataKaryawan = Karyawan::where('id_karyawan', $user_id)->first();
@@ -742,21 +746,17 @@ class YfpresensiController extends Controller
                 $id_karyawan = $dataKaryawan->id;
             }
             // pakai code dibawah ini, jika masih banyak second yang masuk ke malam hari second_in code
-            // if(Carbon::parse( $second_in )->betweenIncluded( '11:01', '14:00' )) $shift = 'Pagi';
+            // if(Carbon::parse( $second_in )->betweenIncluded( '11:01', '14:00' ))   $shift = 'Pagi';
             // ook
             if ($no_scan != null) $late = null;
             // lanjutkan
             $hasil = saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl, $dataKaryawan->jabatan_id, $no_scan, $dataKaryawan->placement_id, $overtime_in, $overtime_out);
             // dd($hasil['jam_kerja']);
-
             $total_hari_kerja = 0;
             $total_jam_kerja = 0;
             $total_jam_lembur = 0;
-            $jam_kerja_libur = 0;
-            $total_hari_kerja_libur = 0;
-            $total_jam_lembur_libur = 0;
 
-            if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] >= 1) {
+            if (isset($hasil['jam_kerja']) && $hasil['jam_kerja'] > 4) {
                 $total_hari_kerja = 1;
             }
 
@@ -767,29 +767,28 @@ class YfpresensiController extends Controller
                 $total_jam_lembur = $hasil['jam_lembur'];
             }
 
-            // if ($kh->date == '2025-05-30') $late = null;
-
-            $setengah_hari = (
-                ($first_in === null && $first_out !== null) ||
-                ($second_in === null && $second_out === null)
-            );
-
+            //   'tgl' => $tgl,
+            //             'jam_kerja' => $jam_kerja,
+            //             'terlambat' => $terlambat,
+            //             'jam_lembur' => $jam_lembur,
+            //             'tambahan_shift_malam' => $tambahan_shift_malam
             if ($hari_khusus) {
-                if ($kh->date === $hari_khusus->date && !$setengah_hari) {
-                    $late = 0;
-                }
+
+                if ($kh->date == $hari_khusus->date) $late = null;
             }
 
+            // tambahan_shift_malam
+
+            // if ($kh->shift == 'Malam') {
+            $tambahan_shift_malam = 0;
 
             if ($shift == 'Malam') {
-
-                if ($is_saturday) {
+                if (is_saturday($kh->date)) {
                     if ($total_jam_kerja >= 6) {
-                        // $jam_lembur = $jam_lembur + 1;
                         $tambahan_shift_malam = 1;
                     }
-                } else if ($is_sunday || $is_hari_libur_nasional) {
-                    if ($total_jam_kerja >= 8) {
+                } elseif (is_sunday($kh->date)) {
+                    if ($total_jam_kerja >= 16) {
                         // $jam_lembur = $jam_lembur + 2;
                         $tambahan_shift_malam = 1;
                     }
@@ -799,33 +798,9 @@ class YfpresensiController extends Controller
                         $tambahan_shift_malam = 1;
                     }
                 }
-            } else {
-                $tambahan_shift_malam = 0;
             }
-
-            // khusus untuk security kode jabatan 17
-            if ($dataKaryawan->jabatan_id == 17 && $shift == 'Malam') {
-                if ($is_sunday || $is_hari_libur_nasional) {
-                    $total_jam_kerja = min($total_jam_kerja, 16);
-                } elseif ($is_saturday) {
-                    $total_jam_kerja = min($total_jam_kerja, 6);
-                } else {
-                    $total_jam_kerja = min($total_jam_kerja, 8);
-                }
-            }
-
-
-            if ($is_hari_libur_nasional || $is_sunday) {
-                $total_hari_kerja_libur = 0;
-                $total_hari_kerja = 0;
-                $jam_kerja_libur = $total_jam_kerja * 2;
-                $total_jam_lembur_libur = $total_jam_lembur * 2;
-                $total_jam_kerja = 0;
-                $total_jam_lembur = 0;
-            }
-            // dd($tgl);
+            // end tambahan_shift_malam
             Yfrekappresensi::create([
-                'shift_malam' => $tambahan_shift_malam ?? 0,
                 'user_id' => $user_id,
                 'karyawan_id' => $id_karyawan,
                 // 'name' => $name,
@@ -839,16 +814,13 @@ class YfpresensiController extends Controller
                 'total_jam_kerja' => $total_jam_kerja,
                 'total_hari_kerja' => $total_hari_kerja,
                 'total_jam_lembur' => $total_jam_lembur,
-                'total_jam_kerja_libur' => $jam_kerja_libur,
-
-                'total_hari_kerja_libur' => $total_hari_kerja_libur,
-                'total_jam_lembur_libur' => $total_jam_lembur_libur,
 
                 'shift' => $shift,
                 'late' => $late,
                 'no_scan' => $no_scan,
                 'no_scan_history' => $no_scan,
                 'late_history' => $late,
+                'shift_malam' => $tambahan_shift_malam,
             ]);
         }
 
@@ -858,4 +830,5 @@ class YfpresensiController extends Controller
 
         return back()->with('info', 'Berhasil Import : ' . $jumlahKaryawanHadir . ' data');
     }
+    // end
 }

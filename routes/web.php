@@ -36,6 +36,7 @@ use App\Livewire\AddTambahan;
 use App\Livewire\ChangeField;
 use App\Livewire\Informasiwr;
 use App\Livewire\IuranLocker;
+use App\Livewire\Newpresensi;
 use App\Livewire\Requesterwr;
 use App\Livewire\AddPlacement;
 use App\Livewire\DataResigned;
@@ -215,6 +216,8 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/yfdeletepresensi', [YfpresensiController::class, 'deletepresensi']);
                 Route::get('/yfpresensiindexwr', Yfpresensiindexwr::class);
                 Route::get('/presensidetailwr', Presensidetailwr::class);
+                Route::get('/newpresensi', Newpresensi::class);
+
 
                 // Presensi Summary Excel
                 Route::get('/presensisummaryindex', [ReportController::class, 'presensi_summary_index']);
