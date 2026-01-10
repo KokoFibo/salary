@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\Karyawan;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 
@@ -205,50 +204,43 @@ class Movedata extends Component
         });
     }
 
+
     public function move()
     {
-        DB::beginTransaction();
+        // dd($this->data_user['password']);
+        $this->create_data();
+        // dd($this->data_karyawan['nama']);
+        $apiUrlDeleteKaryawan =  "https://payroll.yifang.co.id/api/delete_karyawan_yf_aja/" . $this->id_karyawan;
+        $apiUrlDeleteUser =  "https://payroll.yifang.co.id/api/delete_user_yf_aja/" . $this->id_karyawan;
+        $data_delete_karyawan = $this->deleteDataKaryawanApi($apiUrlDeleteKaryawan);
+        $data_delete_user = $this->deleteDataUserApi($apiUrlDeleteUser);
 
-        try {
-
-            // 1️⃣ COPY DATA KE DB BARU
-            $this->create_data();
-
-            // 2️⃣ DELETE DATA DI API LAMA
-            $apiDeleteKaryawan = "https://payroll.yifang.co.id/api/delete_karyawan_yf_aja/{$this->id_karyawan}";
-            $apiDeleteUser     = "https://payroll.yifang.co.id/api/delete_user_yf_aja/{$this->id_karyawan}";
-
-            $deleteKaryawan = $this->deleteDataKaryawanApi($apiDeleteKaryawan);
-            $deleteUser     = $this->deleteDataUserApi($apiDeleteUser);
-
-            if (
-                (isset($deleteKaryawan['status']) && $deleteKaryawan['status'] === 'error') ||
-                (isset($deleteUser['status']) && $deleteUser['status'] === 'error')
-            ) {
-                throw new \Exception('Gagal menghapus data di sistem lama');
-            }
-
-            // 3️⃣ SEMUA SUKSES → COMMIT
-            DB::commit();
-
-            $this->dispatch(
-                'message',
-                type: 'success',
-                title: 'Data berhasil dipindahkan',
-                position: 'center'
-            );
-        } catch (\Throwable $e) {
-
-            // ❌ ADA YANG GAGAL → ROLLBACK
-            DB::rollBack();
-
+        if (isset($data_delete_karyawan['status']) && $data_delete_karyawan['status'] === 'error') {
+            // Display the error message
             $this->dispatch(
                 'message',
                 type: 'error',
-                title: 'Gagal memindahkan data',
+                title: 'Data tidak ditemukan',
                 position: 'center'
             );
+            return;
+        } else if (isset($data_delete_user['status']) && $data_delete_user['status'] === 'error') {
+            $this->dispatch(
+                'message',
+                type: 'error',
+                title: 'Data tidak ditemukan',
+                position: 'center'
+            );
+            return;
         }
+
+
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Data telah dipindahkan',
+            position: 'center'
+        );
     }
     public function render()
     {
