@@ -245,7 +245,7 @@ class Movedata extends Component
             $this->dispatch(
                 'message',
                 type: 'error',
-                title: 'Gagal memindahkan data',
+                title: $e->getMessage(),
                 position: 'center'
             );
         }

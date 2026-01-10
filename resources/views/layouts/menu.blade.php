@@ -113,8 +113,17 @@ with font-awesome or any other icon font library -->
                     </a>
                 </li>
             @endif --}}
-            <li class="nav-item {{ 'yfpresensiindexwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
-                <a href="/yfpresensiindexwr" class="nav-link">
+            @if (Auth::user()->role == 8)
+                <li class="nav-item {{ 'yfpresensiindexwr' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/yfpresensiindexwr" class="nav-link">
+                        <i class="nav-icon fas fa-clipboard-check"></i>
+                        <p>{{ __('Old Presensi') }}</p>
+                    </a>
+                </li>
+            @endif
+
+            <li class="nav-item {{ 'newpresensi' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                <a href="/newpresensi" class="nav-link">
                     <i class="nav-icon fas fa-clipboard-check"></i>
                     <p>{{ __('Presensi') }}</p>
                 </a>

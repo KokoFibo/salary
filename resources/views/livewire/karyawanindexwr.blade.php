@@ -238,7 +238,7 @@
                                         <th style="width: 150px; border-style: none;">
                                             <a href="/movedata">
                                                 <button wire:loading.remove class="btn btn-primary col-12">Move
-                                                    Data</button></a>
+                                                    Data From Payroll</button></a>
                                         </th>
                                     @endif
                                     <th style="width: 150px; border-style: none;">
