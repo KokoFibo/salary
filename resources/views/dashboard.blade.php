@@ -130,6 +130,9 @@
 
     <livewire:agamadetail />
 
+    <livewire:turnover />
+
+
 
 
 
