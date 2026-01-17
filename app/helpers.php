@@ -2035,6 +2035,14 @@ function tgl_doang($tgl)
     return $dt->day;
 }
 
+function tgl_lengkap($tgl)
+{
+    if (!$tgl) return null;
+    return Carbon::parse($tgl)
+        ->locale('id')
+        ->translatedFormat('d M Y');
+}
+
 function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late, $shift, $tgl, $jabatan, $placement_id)
 {
     $perJam = 60;
