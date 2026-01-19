@@ -152,7 +152,6 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
 
 
 
-
 function files($ktp_count)
 {
     if ($ktp_count == 0) return '';

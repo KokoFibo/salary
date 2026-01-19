@@ -54,6 +54,7 @@ use App\Livewire\Editpresensiwr;
 use App\Livewire\UpdateTambahan;
 use App\Livewire\UserRegulation;
 use App\Http\Controllers\Testaja;
+use App\Livewire\Cekkenaikangaji;
 use App\Livewire\ChangeFieldData;
 use App\Livewire\Changeprofilewr;
 use App\Livewire\Karyawanindexwr;
@@ -279,6 +280,7 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/kenaikangaji', Kenaikangaji::class);
                         Route::get('/template-gaji-form', [ExcelController::class, 'template_gaji']);
                         Route::get('/template-gaji-form-placement', [ExcelController::class, 'template_gaji_placement']);
+                        Route::get('/cek-kenaikan-gaji', Cekkenaikangaji::class);
 
 
 

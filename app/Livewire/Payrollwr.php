@@ -54,6 +54,16 @@ class Payrollwr extends Component
     public $lock_data;
     public $select_month, $select_year;
 
+    public function rebuildOptimized()
+    {
+        quickRebuildOptimized($this->month, $this->year);
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Data berhasil di build',
+        );
+    }
+
     public function buat_payroll_baru()
     {
         build_payroll_os_new($this->month, $this->year);
