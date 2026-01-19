@@ -94,7 +94,14 @@ class Test extends Component
   public function render()
   {
     $year = 2025;
-    $month = 10;
+    $month = 12;
+    $id_karyawan = 1102;
+
+
+    $karyawans = Payroll::where('id_karyawan', $id_karyawan)
+      ->whereYear('date', $year)
+      ->get();
+
 
     dd('aman');
     $data = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')

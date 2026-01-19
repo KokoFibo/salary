@@ -45,7 +45,8 @@
             "app/helper2.php",
             "app/helper3.php",
             "app/helper4.php",
-            "app/helperBaru.php"
+            "app/helperBaru.php",
+            "app/helpers_khusus_optimized.php"
         ]
     },
     "autoload-dev": {

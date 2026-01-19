@@ -189,6 +189,8 @@
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild without queue') }}</button>
                         <button wire:click="buat_payroll_baru" {{-- {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }} --}}
                             class="btn btn-primary nightowl-daylight">{{ __('Rebuild Baru') }}</button>
+                        <button wire:click="rebuildOptimized" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
+                            class="btn btn-primary nightowl-daylight">{{ __('Quick Rebuild optimized') }}</button>
                     @endif
                     <a href="/ter"><button
                             class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>

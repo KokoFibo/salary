@@ -255,6 +255,12 @@
                                                 class="btn btn-success col-12">Excel Khusus</button>
                                         </th>
                                     @endif
+                                    @if (auth()->user()->role >= 7)
+                                        <th style="width: 150px; border-style: none;">
+                                            <a href="/cek-kenaikan-gaji"><button class="btn btn-primary col-12">Cek
+                                                    Perkembangan Gaji</button></a>
+                                        </th>
+                                    @endif
 
                                     <th style=" border-style: none;">
                                         <div wire:loading wire:target='excel' class="spinner-border text-primary"
