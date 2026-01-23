@@ -209,7 +209,7 @@
 
 
                     <button wire:click="buat_payroll('queue')" {{-- {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }} --}}
-                        class="btn btn-primary nightowl-daylight">{{ __('Rebuild??') }}</button>
+                        class="btn btn-primary nightowl-daylight" disabled>{{ __('Rebuild') }}</button>
 
 
                 </div>
