@@ -20,9 +20,19 @@ class LaporanCostController extends Controller
             'department_id',
             'jabatan_id',
 
-            DB::raw('SUM(subtotal)-SUM(gaji_lembur * (jam_lembur + jam_lembur_libur)) as bruto_thn'),
-            DB::raw('SUM(gaji_lembur * (jam_lembur + jam_lembur_libur)) as total_lembur'),
-            // DB::raw('SUM(subtotal) as bruto_thn'),
+            // DB::raw('SUM(subtotal)-SUM(gaji_lembur * (jam_lembur + jam_lembur_libur)) as bruto_thn'),
+            // DB::raw('SUM(gaji_lembur * (jam_lembur + jam_lembur_libur)) as total_lembur'),
+
+            DB::raw("
+    SUM(subtotal) 
+    - SUM(gaji_lembur * (COALESCE(jam_lembur,0) + COALESCE(jam_lembur_libur,0)))
+    AS bruto_thn
+"),
+            DB::raw("
+    SUM(gaji_lembur * (COALESCE(jam_lembur,0) + COALESCE(jam_lembur_libur,0)))
+    AS total_lembur
+"),
+
 
             DB::raw('SUM(tambahan_shift_malam) as shift_malam'),
 

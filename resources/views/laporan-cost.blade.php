@@ -32,13 +32,13 @@
                                 <th>Potongan</th>
                                 <th>JHT Karyawan</th>
                                 <th>JP Karyawan</th>
-                                <th>JKK</th>
-                                <th>JKM</th>
+                                {{-- <th>JKK</th>
+                                <th>JKM</th> --}}
+                                <th>BPJS KS Karyawan</th>
                                 <th>JHT Company</th>
                                 <th>JP Company</th>
                                 <th>JKK Company</th>
                                 <th>JKM Company</th>
-                                <th>BPJS KS Karyawan</th>
                                 <th>BPJS KS Company</th>
                                 <th>PPh21</th>
                                 <th>Gaji Dibayarkan</th>
@@ -66,7 +66,7 @@
 
                                     <td>{{ number_format($row->jht_karyawan) }}</td>
                                     <td>{{ number_format($row->jp_karyawan) }}</td>
-                                    <td class="text-center">
+                                    {{-- <td class="text-center">
                                         <span class="badge {{ $row->jkk == 1 ? 'bg-success' : 'bg-secondary' }}">
                                             {{ $row->jkk == 1 ? 'Yes' : 'No' }}
                                         </span>
@@ -75,14 +75,14 @@
                                         <span class="badge {{ $row->jkm == 1 ? 'bg-success' : 'bg-secondary' }}">
                                             {{ $row->jkm == 1 ? 'Yes' : 'No' }}
                                         </span>
-                                    </td>
+                                    </td> --}}
 
+                                    <td>{{ number_format($row->bpjs_ks_karyawan) }}</td>
                                     <td>{{ number_format($row->jht_company) }}</td>
                                     <td>{{ number_format($row->jp_company) }}</td>
                                     <td>{{ number_format($row->jkk_company) }}</td>
                                     <td>{{ number_format($row->jkm_company) }}</td>
 
-                                    <td>{{ number_format($row->bpjs_ks_karyawan) }}</td>
                                     <td>{{ number_format($row->bpjs_ks_company) }}</td>
 
                                     <td>{{ number_format($row->pph21) }}</td>
