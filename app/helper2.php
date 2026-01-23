@@ -460,6 +460,7 @@ function build_payroll($month, $year)
         } else {
             $gaji_jp_max = $data->karyawan->gaji_bpjs;
         }
+
         if (
             $data->karyawan->potongan_kesehatan != 0
         ) {

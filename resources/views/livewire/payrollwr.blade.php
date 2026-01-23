@@ -204,10 +204,12 @@
                         class="btn btn-warning nightowl-daylight">{{ __('Detail Report') }}</button>
 
                     <button wire:click="export" class="btn btn-success nightowl-daylight">Excel</button>
+                    <a href="/laporan-cost/{{ $year }}"><button class="btn btn-success nightowl-daylight">Cost
+                            Report</button></a>
 
-                    <button wire:click="buat_payroll('queue')"
-                        {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
-                        class="btn btn-primary nightowl-daylight">{{ __('Rebuild') }}</button>
+
+                    <button wire:click="buat_payroll('queue')" {{-- {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }} --}}
+                        class="btn btn-primary nightowl-daylight">{{ __('Rebuild??') }}</button>
 
 
                 </div>
