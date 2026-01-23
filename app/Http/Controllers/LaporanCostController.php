@@ -20,19 +20,12 @@ class LaporanCostController extends Controller
             'department_id',
             'jabatan_id',
 
-            // Gaji bersih ditransfer
-            // DB::raw('SUM(total) as gaji_dibayarkan'),
-            // DB::raw('SUM(pph21) as pph21'),
-
-
             DB::raw('SUM(subtotal)-SUM(gaji_lembur * (jam_lembur + jam_lembur_libur)) as bruto_thn'),
             DB::raw('SUM(gaji_lembur * (jam_lembur + jam_lembur_libur)) as total_lembur'),
+            // DB::raw('SUM(subtotal) as bruto_thn'),
 
-            // DB::raw('SUM(gaji_lembur) as total_lembur'),
             DB::raw('SUM(tambahan_shift_malam) as shift_malam'),
-            // DB::raw('SUM(bonus1x) as bonus'),
-            // DB::raw('SUM(potongan1x + denda_lupa_absen + denda_resigned + other_deduction) as potongan'),
-            // BONUS 1x (uang_makan + bonus_lain)
+
             DB::raw('(
     SELECT SUM(
         COALESCE(bp.uang_makan,0) +
