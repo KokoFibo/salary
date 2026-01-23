@@ -95,34 +95,19 @@ class Test extends Component
   {
     $year = 2025;
     $month = 12;
-    $id_karyawan = 1102;
+    $id_karyawan = 1;
 
 
-    $karyawans = Payroll::where('id_karyawan', $id_karyawan)
-      ->whereYear('date', $year)
-      ->get();
-
-
-    dd('aman');
-    $data = Yfrekappresensi::join('karyawans', 'karyawans.id_karyawan', '=', 'yfrekappresensis.user_id')
-      ->select(
-        'yfrekappresensis.*',
-        'karyawans.metode_penggajian',
-        'karyawans.nama'
-      )
-      ->whereMonth('yfrekappresensis.date', $month)
-      ->whereYear('yfrekappresensis.date', $year)
-      ->where('karyawans.metode_penggajian', 'Perbulan')
-      // ->where('total_jam_kerja_libur', '<', 4)
-      ->where('total_jam_kerja', '<=', 7)
-      ->where('total_hari_kerja', 0)
-      ->get();
+    $payrolls = Payroll::whereYear('date', $year)->where('id_karyawan', $id_karyawan)->get();
     $total = 0;
-    $total = $data->count();
-    // dd($data);
+    foreach ($payrolls as $p) {
+      $total += $p->total;
+    }
+    dd($total);
+
+
     return view('livewire.test', [
-      'data' => $data,
-      'total' => $total
+      'karyawans' => $karyawans
     ]);
   }
 }

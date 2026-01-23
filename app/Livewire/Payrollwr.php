@@ -54,6 +54,8 @@ class Payrollwr extends Component
     public $lock_data;
     public $select_month, $select_year;
 
+    public function cost() {}
+
     public function rebuildOptimized()
     {
         quickRebuildOptimized($this->month, $this->year);

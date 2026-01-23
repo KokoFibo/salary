@@ -1,27 +1,22 @@
-<div class="max-w-4xl mx-auto p-4">
-    <h1>Non OS yang jam kerja dibawah 8 jam dan gaji hariannya tidak tercatat</h1>
-    <table>
-        <thead>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>ID Karyawan</th>
+            <th>Nama Karyawan</th>
+        </tr>
+    </thead>
+    <tbody>
+        @forelse ($karyawans as $index => $karyawan)
             <tr>
-                <th>ID</th>
-                <th>Nama</th>
-                <th>Total Jam Kerja</th>
-                <th>Total hari kerja</th>
-                <th>Tanggal</th>
+                <td>{{ $karyawan->id_karyawan }}</td>
+                <td>{{ $karyawan->nama }}</td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach ($data as $key => $d)
-                <tr>
-                    <td>{{ $d->user_id }}</td>
-                    <td>{{ $d->nama }}</td>
-                    <td>{{ $d->total_jam_kerja }}</td>
-                    <td>{{ $d->total_hari_kerja }}</td>
-                    <td>{{ $d->date }}</td>
-                    {{-- <td>{{ $d->total_jam_kerja_libur }}</td> --}}
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <h1>total = {{ $total }}</h1>
-</div>
+        @empty
+            <tr>
+                <td colspan="3" class="text-center">
+                    Tidak ada data
+                </td>
+            </tr>
+        @endforelse
+    </tbody>
+</table>
