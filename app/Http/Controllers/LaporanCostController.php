@@ -25,23 +25,23 @@ class LaporanCostController extends Controller
             // BRUTO TAHUNAN
             // =========================
             DB::raw("
-            SUM(
-                CASE 
-                    WHEN karyawans.etnis = 'China'
-                        THEN payrolls.gaji_pokok
-                    ELSE payrolls.subtotal
-                END
-            )
-            -
-            SUM(
-                payrolls.gaji_lembur
-                * (
-                    COALESCE(payrolls.jam_lembur, 0)
-                    + COALESCE(payrolls.jam_lembur_libur, 0)
-                )
-            )
-            AS bruto_thn
-        "),
+    SUM(
+        CASE 
+            WHEN karyawans.etnis = 'China'
+                THEN payrolls.gaji_pokok
+            ELSE payrolls.subtotal
+        END
+    )
+    -
+    SUM(
+        COALESCE(payrolls.gaji_lembur, 0)
+        * (
+            COALESCE(payrolls.jam_lembur, 0)
+            + COALESCE(payrolls.jam_lembur_libur, 0)
+        )
+    )
+    AS bruto_thn
+"),
 
             // =========================
             // TOTAL LEMBUR
