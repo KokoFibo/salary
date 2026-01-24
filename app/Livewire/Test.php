@@ -95,15 +95,14 @@ class Test extends Component
   {
     $year = 2025;
     $month = 12;
-    $id_karyawan = 1;
 
+    Karyawan::where('potongan_kesehatan', 1)
+      ->where('gaji_bpjs', 4901117)
+      ->update([
+        'gaji_bpjs' => 5210377
+      ]);
 
-    $payrolls = Payroll::whereYear('date', $year)->where('id_karyawan', $id_karyawan)->get();
-    $total = 0;
-    foreach ($payrolls as $p) {
-      $total += $p->total;
-    }
-    dd($total);
+    $karyawans = Karyawan::where('potongan_kesehatan', 1)->get();
 
 
     return view('livewire.test', [

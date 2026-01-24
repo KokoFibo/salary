@@ -3,6 +3,8 @@
         <tr>
             <th>ID Karyawan</th>
             <th>Nama Karyawan</th>
+            <th>Gaji BPJS</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
@@ -10,6 +12,8 @@
             <tr>
                 <td>{{ $karyawan->id_karyawan }}</td>
                 <td>{{ $karyawan->nama }}</td>
+                <td>{{ $karyawan->gaji_bpjs }}</td>
+                <td>{{ $karyawan->status_karyawan }}</td>
             </tr>
         @empty
             <tr>

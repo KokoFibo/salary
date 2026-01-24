@@ -263,7 +263,7 @@ class SalaryAdjustController extends Controller
                     $min_BPJS = 0;
                     // dd($karyawan->gaji_bpjs, $karyawan->potongan_kesehatan);
                     if ($karyawan->potongan_kesehatan) {
-                        $min_BPJS = 4901117;
+                        $min_BPJS = 5210377;
                     } else  $min_BPJS = 3850000;
                     if ($gaji_sesudah <= $min_BPJS) $karyawan->gaji_bpjs = $min_BPJS;
                     else $karyawan->gaji_bpjs = $gaji_sesudah;
