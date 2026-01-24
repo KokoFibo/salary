@@ -95,12 +95,13 @@ class Test extends Component
   {
     $year = 2025;
     $month = 12;
+    dd('aman');
 
-    Karyawan::where('potongan_kesehatan', 1)
-      ->where('gaji_bpjs', 4901117)
-      ->update([
-        'gaji_bpjs' => 5210377
-      ]);
+    // Karyawan::where('potongan_kesehatan', 1)
+    //   ->where('gaji_bpjs', 4901117)
+    //   ->update([
+    //     'gaji_bpjs' => 5210377
+    //   ]);
 
     $karyawans = Karyawan::where('potongan_kesehatan', 1)->get();
 
