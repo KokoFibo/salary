@@ -107,7 +107,8 @@ class LaporanCostController extends Controller
             // =========================
             DB::raw('SUM(payrolls.jht) AS jht_karyawan'),
             DB::raw('SUM(payrolls.jp) AS jp_karyawan'),
-            DB::raw('SUM(payrolls.bpjs_employee) AS bpjs_ks_karyawan'),
+            // DB::raw('SUM(payrolls.bpjs_employee) AS bpjs_ks_karyawan'),
+            DB::raw('SUM(payrolls.kesehatan) AS bpjs_ks_karyawan'),
 
             // =========================
             // BPJS COMPANY
@@ -122,7 +123,7 @@ class LaporanCostController extends Controller
             DB::raw('MAX(payrolls.jkk) AS jkk_flag'),
             DB::raw('MAX(payrolls.jkm) AS jkm_flag'),
 
-            DB::raw('SUM(payrolls.kesehatan) AS bpjs_ks_company'),
+            DB::raw('SUM(payrolls.kesehatan * 4) AS bpjs_ks_company'),
             DB::raw('SUM(payrolls.pph21) AS pph21'),
 
             // =========================

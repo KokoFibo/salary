@@ -95,7 +95,11 @@ class Test extends Component
   {
     $year = 2025;
     $month = 12;
-    dd('aman');
+    // dd('aman');
+    $karyawans = Karyawan::where('etnis', 'China')
+      ->where('potongan_kesehatan', 1)
+      ->get();
+    dd($karyawans);
 
     // Karyawan::where('potongan_kesehatan', 1)
     //   ->where('gaji_bpjs', 4901117)
@@ -103,7 +107,7 @@ class Test extends Component
     //     'gaji_bpjs' => 5210377
     //   ]);
 
-    $karyawans = Karyawan::where('potongan_kesehatan', 1)->get();
+
 
 
     return view('livewire.test', [
