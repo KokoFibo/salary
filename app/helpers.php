@@ -26,6 +26,44 @@ use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function selisihBulanBulat($tgl, $tanggal_akhir)
+{
+    $nilai = selisihHari($tgl, $tanggal_akhir) / 365 * 12;
+    // return round($nilai, 0, PHP_ROUND_HALF_UP);
+    // return round($nilai + 1e-9, 0, PHP_ROUND_HALF_UP);
+    return  round($nilai);
+}
+function selisihBulan($tgl, $tanggal_akhir)
+{
+    $nilai = selisihHari($tgl, $tanggal_akhir) / 365 * 12;
+    return $nilai;
+}
+function selisihHari($tgl, $tanggal_akhir)
+{
+    return Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
+}
+
+function hitungTHR($id, $tgl, $gaji, $tanggal_akhir)
+{
+    $thr = 0;
+
+    $lama_kerja = selisihBulanBulat($tgl, $tanggal_akhir);
+    if ($lama_kerja < 12) {
+        return $gaji / 12 * $lama_kerja;
+    } else {
+        return $gaji;
+    }
+    // $selisih_hari = selisihHari($tgl, $tanggal_akhir);
+    // if ($selisih_hari > 365) {
+    //     $thr = $gaji;
+    // } else {
+    //     $karyawan = Karyawan::where('id_karyawan', $id)->first();
+    //     // $selisih_hari = Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
+    //     $thr =  $selisih_hari / 365 * $gaji;
+    // }
+    // return $thr;
+}
+
 function getGrade($id)
 {
     $data = Jobgrade::where('id', $id)->first();

@@ -17,6 +17,7 @@ use App\Models\Department;
 use App\Livewire\Applicant;
 use App\Livewire\Developer;
 use App\Livewire\Headcount;
+use App\Livewire\Hitungthr;
 use App\Livewire\Jabatanwr;
 use App\Livewire\MissingId;
 use App\Livewire\Payrollwr;
@@ -100,10 +101,10 @@ use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\YfpresensiController;
+use App\Http\Controllers\LaporanCostController;
 use App\Http\Controllers\SalaryAdjustController;
 use App\Http\Controllers\ExcelUploaderController;
 use App\Http\Controllers\KaryawanExcelController;
-use App\Http\Controllers\LaporanCostController;
 
 // Middleware
 Auth::routes([
@@ -264,6 +265,8 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/data-log', DataLog::class)->name('datalog');
                     Route::post('/bulk-upload', [SalaryAdjustController::class, 'import']);
                     Route::get('/laporan-cost/{year}', [LaporanCostController::class, 'index']);
+                    Route::get('hitungthr', Hitungthr::class);
+
 
 
 
