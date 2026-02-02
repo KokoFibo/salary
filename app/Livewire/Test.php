@@ -96,19 +96,16 @@ class Test extends Component
     $year = 2025;
     $month = 12;
     // dd('aman');
-    $karyawans = Karyawan::where('etnis', 'China')
-      ->where('potongan_kesehatan', 1)
+
+
+    $karyawans = Karyawan::where('potongan_kesehatan', 1)
+      ->where('gaji_bpjs', '<', 5210377)
       ->get();
-    dd($karyawans);
 
-    // Karyawan::where('potongan_kesehatan', 1)
-    //   ->where('gaji_bpjs', 4901117)
-    //   ->update([
-    //     'gaji_bpjs' => 5210377
-    //   ]);
-
-
-
+    foreach ($karyawans as $karyawan) {
+      $karyawan->gaji_bpjs = 5210377;
+      $karyawan->save();
+    }
 
     return view('livewire.test', [
       'karyawans' => $karyawans
