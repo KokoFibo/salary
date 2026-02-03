@@ -130,160 +130,211 @@
             </div>
         </div>
         @if (!check_rebuilding())
+            {{-- =============== --}}
+            <div class="px-3 mb-2">
 
-            <div class="d-flex  flex-column gap-2 flex-xl-row align-items-center justify-content-between px-4 mb-2">
-                <div class="d-flex gap-2 flex-lg-row flex-column">
-                    <button class="btn btn-info nightowl-daylight">{{ __('Total Gaji') }} : Rp.
-                        {{ number_format($total) }}</button>
-                    <div class="d-flex gap-2">
-                        <div>
-                            <select class="form-select" wire:model.live="year">
-                                @foreach ($select_year as $sy)
-                                    <option value="{{ $sy }}">{{ $sy }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <select class="form-select" wire:model.live="month">
-                                {{-- <option selected>Open this select menu</option>  --}}
-                                @foreach ($select_month as $sm)
-                                    <option value="{{ $sm }}">{{ monthName($sm) }}</option>
-                                @endforeach
-                                <option value="1">Januari 2026</option>
-                            </select>
+                {{-- BARIS ATAS --}}
+                <div class="row g-2 align-items-center mb-3">
 
-                        </div>
+                    {{-- Total Gaji --}}
+                    <div class="col-12 col-xl-auto">
+                        <button class="btn btn-info w-100 nightowl-daylight">
+                            {{ __('Total Gaji') }} : Rp. {{ number_format($total) }}
+                        </button>
                     </div>
-                    <div>
 
-                        <button wire:loading wire:target='buat_payroll' class="btn btn-primary" type="button" disabled>
-                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                            <span
-                                role="status">{{ __('Building Data... sedikit lama (3,5 menit), jangan tekan apapun.') }}</span>
-                        </button>
-                        <button wire:loading wire:target='export' class="btn btn-primary" type="button" disabled>
-                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                            <span role="status">{{ __('Building Excel ... PLease wait') }}</span>
-                        </button>
-                        <button wire:loading wire:target='bankexcel' class="btn btn-primary" type="button" disabled>
-                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                            <span role="status">{{ __('Building Excel for bank ... PLease wait') }}</span>
-                        </button>
-                        <button wire:loading wire:target='excelDetailReport2' class="btn btn-primary" type="button"
-                            disabled>
-                            <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                            <span role="status">{{ __('Building detail report ... PLease wait') }}</span>
-                        </button>
-
+                    {{-- Year --}}
+                    <div class="col-6 col-md-3 col-xl-auto">
+                        <select class="form-select" wire:model.live="year">
+                            @foreach ($select_year as $sy)
+                                <option value="{{ $sy }}">{{ $sy }}</option>
+                            @endforeach
+                        </select>
                     </div>
+
+                    {{-- Month --}}
+                    <div class="col-6 col-md-3 col-xl-auto">
+                        <select class="form-select" wire:model.live="month">
+                            @foreach ($select_month as $sm)
+                                <option value="{{ $sm }}">{{ monthName($sm) }}</option>
+                            @endforeach
+                            <option value="1">Januari 2026</option>
+                        </select>
+                    </div>
+
+                    {{-- LOADING STATE --}}
+                    <div class="col-12">
+                        <button wire:loading wire:target='buat_payroll' class="btn btn-primary w-100" disabled>
+                            <span class="spinner-border spinner-border-sm"></span>
+                            {{ __('Building Data... ±3,5 menit, jangan tekan apapun.') }}
+                        </button>
+
+                        <button wire:loading wire:target='export' class="btn btn-primary w-100" disabled>
+                            <span class="spinner-border spinner-border-sm"></span>
+                            {{ __('Building Excel... Please wait') }}
+                        </button>
+
+                        <button wire:loading wire:target='bankexcel' class="btn btn-primary w-100" disabled>
+                            <span class="spinner-border spinner-border-sm"></span>
+                            {{ __('Building Excel for bank...') }}
+                        </button>
+
+                        <button wire:loading wire:target='excelDetailReport2' class="btn btn-primary w-100" disabled>
+                            <span class="spinner-border spinner-border-sm"></span>
+                            {{ __('Building detail report...') }}
+                        </button>
+                    </div>
+
                 </div>
 
-                <div class="d-flex gap-2" wire:loading.class='invisible'>
+                {{-- BARIS TOMBOL AKSI --}}
+                <div class="row g-2" wire:loading.class="invisible">
+
                     @if (auth()->user()->role == 8)
-                        <a href="/cekabsensitanpaid"><button
-                                class="btn btn-primary nightowl-daylight">{{ __('Cek Absensi Tanpa ID') }}</button></a>
+                        <div class="col-12 col-md-6 col-xl-auto">
+                            <a href="/cekabsensitanpaid" class="d-grid">
+                                <button class="btn btn-primary nightowl-daylight">
+                                    {{ __('Cek Absensi Tanpa ID') }}
+                                </button>
+                            </a>
+                        </div>
 
-                        <button wire:click="clear_lock()"
-                            class="btn btn-primary nightowl-daylight">{{ __('Clear Lock') }}</button>
-                        <button wire:click="buat_payroll('noQueue')" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
-                            class="btn btn-primary nightowl-daylight">{{ __('Rebuild without queue') }}</button>
-                        <button wire:click="buat_payroll_baru" {{-- {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }} --}}
-                            class="btn btn-primary nightowl-daylight">{{ __('Rebuild Baru') }}</button>
-                        <button wire:click="rebuildOptimized" {{-- {{ is_40_days($month, $year) == true ? 'disabled' : '' }} --}}
-                            class="btn btn-primary nightowl-daylight">{{ __('Quick Rebuild optimized') }}</button>
+                        <div class="col-6 col-md-4 col-xl-auto">
+                            <button wire:click="clear_lock" class="btn btn-primary w-100 nightowl-daylight">
+                                {{ __('Clear Lock') }}
+                            </button>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-xl-auto">
+                            <button wire:click="buat_payroll('noQueue')"
+                                class="btn btn-primary w-100 nightowl-daylight">
+                                {{ __('Rebuild tanpa queue') }}
+                            </button>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-xl-auto">
+                            <button wire:click="buat_payroll_baru" class="btn btn-primary w-100 nightowl-daylight">
+                                {{ __('Rebuild Baru') }}
+                            </button>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-xl-auto">
+                            <button wire:click="rebuildOptimized" class="btn btn-primary w-100 nightowl-daylight">
+                                {{ __('Quick Rebuild') }}
+                            </button>
+                        </div>
                     @endif
-                    <a href="/ter"><button
-                            class="btn btn-warning nightowl-daylight">{{ __('Table Ter PPh21') }}</button></a>
-                    <button class="btn btn-success nightowl-daylight"
-                        wire:click="bankexcel">{{ __('Report for bank') }}</button>
-                    {{-- <a href="/headcount"><button
-                            class="btn btn-warning nightowl-daylight">{{ __('Headcount') }}</button></a> --}}
-                    {{-- <button wire:click="excelDetailReport"
-                        class="btn btn-warning nightowl-daylight">{{ __('Detail Report') }}</button> --}}
-                    <button wire:click="excelDetailReport2"
-                        class="btn btn-warning nightowl-daylight">{{ __('Detail Report') }}</button>
 
-                    <button wire:click="export" class="btn btn-success nightowl-daylight">Excel</button>
-                    <a href="/laporan-cost/{{ $year }}"><button class="btn btn-success nightowl-daylight">Cost
-                            Report</button></a>
+                    <div class="col-6 col-md-4 col-xl-auto">
+                        <a href="/ter" class="d-grid">
+                            <button class="btn btn-warning nightowl-daylight">
+                                {{ __('Table TER PPh21') }}
+                            </button>
+                        </a>
+                    </div>
 
+                    <div class="col-6 col-md-4 col-xl-auto">
+                        <button wire:click="bankexcel" class="btn btn-success w-100 nightowl-daylight">
+                            {{ __('Report for Bank') }}
+                        </button>
+                    </div>
 
-                    <button wire:click="buat_payroll('queue')"
-                        {{ is_40_days($month, $year) == true || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
-                        class="btn btn-primary nightowl-daylight">{{ __('Rebuild') }}</button>
+                    <div class="col-6 col-md-4 col-xl-auto">
+                        <button wire:click="excelDetailReport2" class="btn btn-warning w-100 nightowl-daylight">
+                            {{ __('Detail Report') }}
+                        </button>
+                    </div>
 
+                    <div class="col-6 col-md-4 col-xl-auto">
+                        <button wire:click="export" class="btn btn-success w-100 nightowl-daylight">
+                            Excel
+                        </button>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-auto">
+                        <a href="/laporan-cost/{{ $year }}" class="d-grid">
+                            <button class="btn btn-success nightowl-daylight">
+                                Cost Report
+                            </button>
+                        </a>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-xl-auto">
+                        <button wire:click="buat_payroll('queue')"
+                            {{ is_40_days($month, $year) || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
+                            class="btn btn-primary w-100 nightowl-daylight">
+                            {{ __('Rebuild') }}
+                        </button>
+                    </div>
 
                 </div>
             </div>
+
+            {{-- WARNING DATA --}}
             @if (isDataUtamaLengkap() > 0)
-                <div class='d-flex m-2 justify-content-center'>
-                    <h4 class='text-danger text-center text-bold mr-3'>Ada beberapa data utama karyawan yang belum
-                        lengkap!
-                    </h4>
-                    <a href="/datatidaklengkap"><button class="btn btn-danger">Silakan cek disini</button></a>
+                <div class="d-flex flex-column align-items-center text-center m-3 gap-2">
+                    <h5 class="text-danger fw-bold">
+                        Ada beberapa data utama karyawan yang belum lengkap!
+                    </h5>
+                    <a href="/datatidaklengkap">
+                        <button class="btn btn-danger">
+                            Silakan cek di sini
+                        </button>
+                    </a>
                 </div>
             @endif
+
+            {{-- =============== --}}
 
         @endif
 
         <div class="card">
             <div class="card-header">
-                <div class="d-flex flex-xl-row flex-column justify-content-between align-items-center gap-2 gap-xl-0">
-                    <div class="col-xl-4">
+                <div class="row g-2 align-items-end">
+
+                    {{-- Search --}}
+                    <div class="col-12 col-md-6 col-xl-4">
                         <div class="input-group">
-                            <button class="btn btn-primary" type="button"><i
-                                    class="fa-solid fa-magnifying-glass"></i></button>
+                            <button class="btn btn-primary" type="button">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
                             <input type="search" wire:model.live="search" class="form-control"
                                 placeholder="{{ __('Search') }} ...">
                         </div>
                     </div>
-                    {{-- placement --}}
-                    <div>
-                        <select wire:model.live="selected_placement" class="form-select"
-                            aria-label="Default select example">
-                            <option value="0"selected>{{ __('All Directorates') }}</option>
+
+                    {{-- Placement --}}
+                    <div class="col-12 col-md-6 col-xl">
+                        <select wire:model.live="selected_placement" class="form-select">
+                            <option value="0">{{ __('All Directorates') }}</option>
                             @foreach ($placements as $p)
-                                <option value="{{ $p->id }}">{{ $p->placement_name }}
-                            @endforeach
-                        </select>
-                    </div>
-                    {{-- Company --}}
-                    <div>
-                        <select wire:model.live="selected_company" class="form-select"
-                            aria-label="Default select example">
-                            <option value="0"selected>{{ __('All Companies') }}</option>
-                            @foreach ($companies as $c)
-                                <option value="{{ $c->id }}">{{ $c->company_name }} </option>
+                                <option value="{{ $p->id }}">{{ $p->placement_name }}</option>
                             @endforeach
                         </select>
                     </div>
 
-                    {{-- Departemen --}}
-                    <div>
-                        <select wire:model.live="selected_departemen" class="form-select"
-                            aria-label="Default select example">
-                            <option value="0"selected>{{ __('All Department') }}</option>
+                    {{-- Company --}}
+                    <div class="col-12 col-md-6 col-xl">
+                        <select wire:model.live="selected_company" class="form-select">
+                            <option value="0">{{ __('All Companies') }}</option>
+                            @foreach ($companies as $c)
+                                <option value="{{ $c->id }}">{{ $c->company_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    {{-- Department --}}
+                    <div class="col-12 col-md-6 col-xl">
+                        <select wire:model.live="selected_departemen" class="form-select">
+                            <option value="0">{{ __('All Department') }}</option>
                             @foreach ($departments as $d)
                                 <option value="{{ $d->id }}">{{ $d->nama_department }}</option>
                             @endforeach
                         </select>
                     </div>
-                    @if (auth()->user()->role >= 7)
-                        <div>
-                            <a href="/kenaikangaji"><button class='btn btn-success'>Excel by etnis</button></a>
-                        </div>
-                    @endif
 
-                    <div>
-                        <select class="form-select" wire:model.live="perpage">
-                            {{-- <option selected>Open this select menu</option> --}}
-                            <option value="10">10 {{ __('rows perpage') }}</option>
-                            <option value="15">15 {{ __('rows perpage') }}</option>
-                            <option value="20">20 {{ __('rows perpage') }}</option>
-                            <option value="25">25 {{ __('rows perpage') }}</option>
-                        </select>
-                    </div>
-                    <div>
+                    {{-- Status --}}
+                    <div class="col-6 col-md-3 col-xl">
                         <select class="form-select" wire:model.live="status">
                             <option value="0">{{ __('Semua') }}</option>
                             <option value="1">{{ __('Status Aktif') }}</option>
@@ -291,7 +342,27 @@
                         </select>
                     </div>
 
-                    {{-- </div> --}}
+                    {{-- Per Page --}}
+                    <div class="col-6 col-md-3 col-xl">
+                        <select class="form-select" wire:model.live="perpage">
+                            <option value="10">10 {{ __('rows') }}</option>
+                            <option value="15">15 {{ __('rows') }}</option>
+                            <option value="20">20 {{ __('rows') }}</option>
+                            <option value="25">25 {{ __('rows') }}</option>
+                        </select>
+                    </div>
+
+                    {{-- Excel Button --}}
+                    @if (auth()->user()->role >= 7)
+                        <div class="col-12 col-md-6 col-xl-auto">
+                            <a href="/kenaikangaji" class="d-grid">
+                                <button class="btn btn-success">
+                                    Excel by etnis
+                                </button>
+                            </a>
+                        </div>
+                    @endif
+
                 </div>
             </div>
 
