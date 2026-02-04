@@ -201,7 +201,11 @@ function build_payroll($month, $year)
                         if ($jam_kerja <= 8) {
                             $jam_kerja_libur += $jam_kerja;
                         } else {
-                            $jam_kerja_libur += 8;
+                            if (is_friday($d->date)) {
+                                $jam_kerja_libur += 7.5;
+                            } else {
+                                $jam_kerja_libur += 8;
+                            }
                         }
                         // if ($d->user_id == 6882) {
                         //     $jam_kerja_array[] = $jam_kerja;
