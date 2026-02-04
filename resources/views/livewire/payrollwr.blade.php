@@ -379,7 +379,7 @@
                                 <th wire:click="sortColumnName('nama')">{{ __('Nama') }} <i
                                         class="fa-solid fa-sort"></i></th>
                                 @if (auth()->user()->role == 8)
-                                    <th wire:click="sortColumnName('status_karyawan')">{{ __('test field') }} <i
+                                    <th wire:click="sortColumnName('gaji_libur')">{{ __('test gaji_libur') }} <i
                                             class="fa-solid fa-sort"></i></th>
                                 @endif
                                 <th wire:click="sortColumnName('status_karyawan')">{{ __('Status') }} <i
@@ -514,7 +514,7 @@
                                             <td>{{ month_year($p->date) }}</td>
                                             <td>{{ $p->nama }}</td>
                                             @if (auth()->user()->role == 8)
-                                                <td>{{ number_format($p->pph21) }}</td>
+                                                <td>{{ number_format($p->gaji_libur) }}</td>
                                             @endif
                                             <td>{{ $p->status_karyawan }}</td>
                                             <td>{{ nama_jabatan($p->jabatan_id) }}</td>

@@ -15,7 +15,6 @@ function build_payroll($month, $year)
     // $lock = Lock::find(1);
     // $lock->rebuild_done = 2;
     // $lock->save();
-
     $libur = Liburnasional::whereMonth('tanggal_mulai_hari_libur', $month)->whereYear('tanggal_mulai_hari_libur', $year)->orderBy('tanggal_mulai_hari_libur', 'asc')->get('tanggal_mulai_hari_libur');
     $total_n_hari_kerja = getTotalWorkingDays($year, $month);
     $startOfMonth = Carbon::parse($year . '-' . $month . '-01');
@@ -111,6 +110,8 @@ function build_payroll($month, $year)
             $total_keterlambatan = 0;
             $total_tambahan_shift_malam = 0;
             $jam_kerja_libur = 0;
+            $jam_kerja_array = [];
+
             //loop ini utk 1 user selama 22 hari
             $get_placement = get_placement($dataId[0]->user_id);
             foreach ($dataId as $d) {
@@ -195,11 +196,19 @@ function build_payroll($month, $year)
 
 
                     $total_hari_kerja++;
-
                     if ((is_sunday($d->date) || is_libur_nasional($d->date)) && trim($d->karyawan->metode_penggajian) == 'Perbulan') {
                         $total_hari_kerja--;
-                        $jam_kerja_libur += $jam_kerja;
+                        if ($jam_kerja <= 8) {
+                            $jam_kerja_libur += $jam_kerja;
+                        } else {
+                            $jam_kerja_libur += 8;
+                        }
+                        // if ($d->user_id == 6882) {
+                        //     $jam_kerja_array[] = $jam_kerja;
+                        //     // dd($d->user_id, $jam_kerja_libur);
+                        // }
                     }
+
 
                     $total_jam_kerja = $total_jam_kerja + $jam_kerja;
                     $total_jam_lembur = $total_jam_lembur + $jam_lembur;
@@ -227,7 +236,10 @@ function build_payroll($month, $year)
 
 
 
-
+            // if ($d->user_id == 6882) {
+            //     dd($jam_kerja_array);
+            //     // dd($d->user_id, $jam_kerja_libur);
+            // }
 
             if ($d->karyawan->status_karyawan != 'Blacklist') {
                 $dataArr[] = [
@@ -237,7 +249,7 @@ function build_payroll($month, $year)
                     'jumlah_menit_lembur' => $total_jam_lembur,
                     'jumlah_jam_terlambat' => $total_keterlambatan,
                     'tambahan_jam_shift_malam' => $total_tambahan_shift_malam,
-                    'jam_kerja_libur' => $jam_kerja_libur,
+                    'jam_kerja_libur' => $jam_kerja_libur * 2,
 
 
                     'total_noscan' => $n_noscan,
@@ -368,6 +380,9 @@ function build_payroll($month, $year)
         // lbr
         if ($data->karyawan->etnis !=  'China') {
             $gaji_libur = ($data->jam_kerja_libur * ($data->karyawan->gaji_pokok / 198));
+            // if ($data->user_id == 6882) {
+            //     dd($data->jam_kerja_libur, $gaji_libur);
+            // }
         }
         // $total_bonus_dari_karyawan = $data->karyawan->bonus + $data->karyawan->tunjangan_jabatan + $data->karyawan->tunjangan_bahasa + $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lembur_sabtu + $data->karyawan->tunjangan_lama_kerja;
         $total_bonus_dari_karyawan = $data->karyawan->bonus +  $data->karyawan->tunjangan_skill + $data->karyawan->tunjangan_lembur_sabtu + $data->karyawan->tunjangan_lama_kerja;
