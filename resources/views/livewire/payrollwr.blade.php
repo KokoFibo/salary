@@ -153,15 +153,19 @@
                     </div>
 
                     {{-- Month --}}
-                    <div class="col-6 col-md-3 col-xl-auto">
+                    <div class="col-6 col-md-3 col-xl-auto d-flex gap-2">
                         <select class="form-select" wire:model.live="month">
                             @foreach ($select_month as $sm)
                                 <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                             @endforeach
                             <option value="1">Januari 2026</option>
                         </select>
+                        @if (auth()->user()->role == 8)
+                            <button wire:click="clear_lock" class="btn btn-primary w-100 nightowl-daylight">
+                                {{ __('Clear Lock') }}
+                            </button>
+                        @endif
                     </div>
-
                     {{-- LOADING STATE --}}
                     <div class="col-12">
                         <button wire:loading wire:target='buat_payroll' class="btn btn-primary w-100" disabled>
@@ -197,12 +201,6 @@
                                     {{ __('Cek Absensi Tanpa ID') }}
                                 </button>
                             </a>
-                        </div>
-
-                        <div class="col-6 col-md-4 col-xl-auto">
-                            <button wire:click="clear_lock" class="btn btn-primary w-100 nightowl-daylight">
-                                {{ __('Clear Lock') }}
-                            </button>
                         </div>
 
                         <div class="col-6 col-md-4 col-xl-auto">
