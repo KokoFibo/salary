@@ -455,7 +455,9 @@ function build_payroll($month, $year)
             $gaji_bpjs_adjust = 0; // or another fallback value
             error_log("Division by zero error: gaji_pokok is zero for karyawan ID: " . $data->karyawan->id);
         }
-
+        // if ($data->karyawan->id_karyawan == 110) {
+        //     dd($data->karyawan->id_karyawan, $gaji_bpjs_adjust, $data->karyawan->gaji_bpjs, $data->karyawan->tunjangan_jabatan,  $data->karyawan->tunjangan_bahasa, $data->karyawan->tunjangan_housing, $gaji_bulan_ini, $data->karyawan->gaji_pokok);
+        // }
         // if ($data->karyawan->id_karyawan == 36) {
         //     dd($gaji_bpjs_adjust,  $data->karyawan->gaji_pokok, $data->karyawan->gaji_bpjs, $gaji_bulan_ini);
         //     // dd($data->karyawan->gaji_bpjs,$gaji_bulan_ini ,$data->karyawan->gaji_pokok,$gaji_bpjs_adjust);
@@ -915,6 +917,8 @@ function build_payroll($month, $year)
             0,
             $data_karyawan->company_id
         );
+
+
         // $pph21 = hitung_pph21(
         //     $data_karyawan->gaji_bpjs,
         //     // $gaji_bpjs_adjust,
