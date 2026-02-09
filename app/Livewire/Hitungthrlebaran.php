@@ -2,12 +2,12 @@
 
 namespace App\Livewire;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Karyawan;
 use Livewire\WithPagination;
+use App\Exports\THRLebaranExport;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\THRExport;
-use Carbon\Carbon;
 
 class Hitungthrlebaran extends Component
 {
@@ -24,8 +24,8 @@ class Hitungthrlebaran extends Component
 
     public function excel()
     {
-        $nama_file = 'THR_NON_OS_2026.xlsx';
-        return Excel::download(new THRExport($this->cutOffDate), $nama_file,);
+        $nama_file = 'THR_LEBARAN_NON_OS_2026.xlsx';
+        return Excel::download(new THRLebaranExport($this->cutOffDate), $nama_file,);
     }
     public function render()
     {
