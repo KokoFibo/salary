@@ -258,7 +258,8 @@
                     </div>
 
                     <div class="col-12 col-md-6 col-xl-auto">
-                        <button wire:click="buat_payroll('queue')"
+                        {{-- <button wire:click="buat_payroll('queue')" --}}
+                        <button wire:click="rebuildOptimized"
                             {{ is_40_days($month, $year) || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
                             class="btn btn-primary w-100 nightowl-daylight">
                             {{ __('Rebuild') }}

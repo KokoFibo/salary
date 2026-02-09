@@ -143,7 +143,37 @@ END AS subtotal
 
             $lemburan = 0;
             $lemburan = ($k->total_jam_lembur + $k->total_jam_lembur_libur) * $k->gaji_overtime;
+
+            // if ($k->id_karyawan == 1044) {
+            //     dd($k->tambahan_jam_shift_malam);
+            // }
+
+            // Gaji Bulan Ini
+
+            // if ($k->metode_penggajian == "Perjam") {
+            //     $gbi = total_gaji_perjam($k->gaji_pokok, $k->jumlah_jam_kerja);
+            // } else {
+            //     // sore
+            //     $gbi = total_gaji_bulanan(
+            //         $k->gaji_pokok,
+            //         $k->total_hari_kerja,
+            //         $total_n_hari_kerja,
+            //         $jumlah_libur_nasional,
+            //         $k->date,
+            //         $k->id_karyawan,
+            //         $k->status_karyawan
+
+            //     );
+            // }
+
             $gbi = $k->subtotal - $lemburan;
+
+
+            // if ($k->id_karyawan == 110) {
+            //     dd($k->id_karyawan, $gbi);
+            // }
+
+
             if ($k->etnis == 'China') {
                 $gbl = $k->gaji_pokok;
             }
@@ -185,6 +215,10 @@ END AS subtotal
                 'gaji_bpjs' =>  $k->gaji_bpjs,
                 'gaji_bulan_ini' =>  $gbi,
 
+
+                'tunjangan_jabatan' => (int) $k->tunjangan_jabatan,
+                'tunjangan_bahasa' => (int) $k->tunjangan_bahasa,
+                'tunjangan_skill' => (int) $k->tunjangan_skill,
                 'subtotal' => round($k->subtotal, 1),
                 'total' => round($k->subtotal + $tambahan_shift_malam - $k->iuran_air - $k->iuran_locker, 1),
 
@@ -448,22 +482,50 @@ WHEN p.total_noscan <= 3 THEN 0
                 'karyawan' => $p
             ];
 
+            // $hasil = hitungBPJSdanPPH21(
+            //     $data,
+            //     $p->subtotal,
+            //     $p->gaji_lembur ?? 0,
+            //     $p->gaji_libur ?? 0,
+            //     $p->tambahan_shift_malam ?? 0,
+            //     $p->bonus1x ?? 0,
+            // );
+
+            $total_gaji_lembur1 = $p->gaji_lembur * ($p->jam_lembur + $p->jam_lembur_libur);
             $hasil = hitungBPJSdanPPH21(
                 $data,
-                $p->subtotal,
-                $p->gaji_lembur ?? 0,
+                $p->gaji_bulan_ini,
+                $total_gaji_lembur1 ?? 0,
                 $p->gaji_libur ?? 0,
                 $p->tambahan_shift_malam ?? 0,
                 $p->bonus1x ?? 0,
-
             );
-            $other_deduction = $p->potongan1x + $p->denda_lupa_absen + $p->denda_resigned + $p->tanggungan + $p->iuran_air + $p->iuran_locker;
 
+            // function hitungBPJSdanPPH21(
+            //     object $data,
+            //     float $gaji_bulan_ini,
+            //     float $total_gaji_lembur,
+            //     float $gaji_libur,
+            //     float $tambahan_shift_malam,
+            //     float $bonus1x
+            // ): array {
+
+            if ($p->tanggungan >= 1) {
+                $tanggungan = $p->tanggungan * $p->gaji_bpjs * 0.01;
+            } else {
+                $tanggungan = 0;
+            }
+            $other_deduction = $p->potongan1x + $p->denda_lupa_absen + $p->denda_resigned + $tanggungan + $p->iuran_air + $p->iuran_locker;
+
+            // if ($p->tanggungan > 10) {
+            //     dd($p->id_karyawan, $other_deduction, $p->tanggungan);
+            // }
             $prf = $hasil['prf_salary'] - $other_deduction - $hasil['bpjs_employee'] - $hasil['pph21'];
             if ($prf < 0) $prf = 0;
 
             $core_cash = $p->gaji_bulan_ini - $hasil['gaji_bpjs_adjust'];
-
+            $total_bpjs = 0;
+            $total_bpjs = $hasil['total_bpjs'] + $p->bonus1x - $p->potongan1x;
             DB::table('payrolls')
                 ->where('id_karyawan', $p->id_karyawan)
                 ->where('date', $p->date)
@@ -487,9 +549,10 @@ WHEN p.total_noscan <= 3 THEN 0
 
 
                     'pph21' => $hasil['pph21'],
-                    'total_bpjs' => $hasil['total_bpjs'],
+                    // 'total_bpjs' => $hasil['total_bpjs'],
+                    'total_bpjs' => $total_bpjs,
                     // 'pajak' => $hasil['pph21'],
-                    'total' => DB::raw("total - {$hasil['pph21']} - {$hasil['bpjs_employee']}"),
+                    'total' => DB::raw("total - {$hasil['pph21']} - {$hasil['bpjs_employee']} - {$hasil['tanggungan']}"),
                     // 'total' => DB::raw("total - {$hasil['pph21']}"),
                     'updated_at' => now(),
                 ]);
@@ -586,6 +649,19 @@ function hitungBPJSdanPPH21(
     } else {
         $gaji_bpjs_adjust = 0;
     }
+    // if ($k->id_karyawan == 110) {
+    //     dd(
+    //         $k->id_karyawan,
+    //         $gaji_bpjs_adjust,
+    //         $k->gaji_bpjs,
+    //         $k->tunjangan_jabatan,
+    //         $k->tunjangan_bahasa,
+    //         $k->tunjangan_housing,
+    //         $gaji_bulan_ini,
+    //         $k->gaji_pokok
+    //     );
+    // }
+
 
     /**
      * =========================
@@ -602,14 +678,35 @@ function hitungBPJSdanPPH21(
         + $gaji_libur
         + $tambahan_shift_malam;
 
+    $tg =
+        $gaji_bpjs_adjust
+        + $jkk_company + $jkm_company + $kesehatan_company +
+        $total_gaji_lembur +
+        $gaji_libur +
+        $bonus1x +
+        $tambahan_shift_malam;
+
+
+
+    // if ($k->id_karyawan == 110) {
+    //     dd(
+    //         $k->id_karyawan,
+    //         $bonus1x,
+    //         $tg
+    //     );
+    // }
+
     $rate_pph21 = get_rate_ter_pph21(
         $k->ptkp,
-        $total_tax
+        // $total_tax
+        $tg
+
     );
 
-    $pph21 = round(($total_tax * $rate_pph21) / 100, 2);
+    $pph21 = round(($tg * $rate_pph21) / 100, 2);
 
-    $total_bpjs =  $total_tax  + $bonus1x;
+    // $total_bpjs =  $total_tax  + $bonus1x;
+    $total_bpjs =  $total_tax;
     $bpjs_employee = $jht + $jp + $kesehatan;
     $prf_salary = $tambahan_shift_malam + $total_gaji_lembur + $gaji_libur +  $bonus1x + $gaji_bpjs_adjust;
 
@@ -637,6 +734,7 @@ function hitungBPJSdanPPH21(
 
         'bpjs_employee'       =>  $bpjs_employee,
         'gaji_bpjs_adjust'  => round($gaji_bpjs_adjust, 2),
+        // 'bpjs_adjustment'  => round($gaji_bpjs_adjust, 2),
         'pph21'             => $pph21,
 
         'total_bpjs' => $total_bpjs,
