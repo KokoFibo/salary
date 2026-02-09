@@ -66,6 +66,7 @@ use App\Livewire\UserInformation;
 use App\Livewire\Changeuserrolewr;
 use App\Livewire\Datatidaklengkap;
 use App\Livewire\Deletepresensiwr;
+use App\Livewire\Hitungthrlebaran;
 use App\Livewire\Importkaryawanwr;
 use App\Livewire\MovePresensiData;
 use App\Livewire\Presensidetailwr;
@@ -265,7 +266,8 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/data-log', DataLog::class)->name('datalog');
                     Route::post('/bulk-upload', [SalaryAdjustController::class, 'import']);
                     Route::get('/laporan-cost/{year}', [LaporanCostController::class, 'index']);
-                    Route::get('hitungthr', Hitungthr::class);
+                    Route::get('/hitungthr', Hitungthr::class);
+                    Route::get('/hitungthrlebaran', Hitungthrlebaran::class);
 
 
 

@@ -200,6 +200,12 @@ with font-awesome or any other icon font library -->
                 </li>
             @endif
             @if (Auth::user()->role >= 6)
+                <li class="nav-item {{ 'hitungthrlebaran' == request()->path() ? 'bg-secondary rounded' : '' }}">
+                    <a href="/hitungthrlebaran" class="nav-link">
+                        <i class="nav-icon fa-solid fa-mobile-screen-button"></i>
+                        <p>{{ __('Hitung THR Lebaran') }}</p>
+                    </a>
+                </li>
                 <li class="nav-item {{ 'data-log' == request()->path() ? 'bg-secondary rounded' : '' }}">
                     <a href="/data-log" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
