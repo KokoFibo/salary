@@ -38,6 +38,8 @@
                 <th style="text-align: center;">Metode Penggajian</th>
                 <th style="text-align: center;">Gaji Pokok</th>
                 <th style="text-align: center;">THR</th>
+                <th style="text-align: center;">Penyesuaian</th>
+
             </tr>
         </thead>
         <tbody>
@@ -60,6 +62,8 @@
                     <td style="text-align: center;">
                         {{ hitungTHR($k->id_karyawan, $k->tanggal_bergabung, $k->gaji_pokok, $cutOffDate) }}
                     </td>
+                    <td></td>
+
                 </tr>
             @endforeach
 
