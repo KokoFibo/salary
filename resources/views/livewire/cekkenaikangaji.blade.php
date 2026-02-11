@@ -68,4 +68,8 @@
         @endif
 
     </div>
+    {{-- @if (auth()->user()->role >= 7)
+    @endif --}}
+    @livewire('LaporanPerubahanGaji')
+
 </div>
