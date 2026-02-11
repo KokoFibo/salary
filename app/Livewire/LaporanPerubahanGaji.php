@@ -8,7 +8,6 @@ use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LaporanGajiPeriodeExport;
 
-
 class LaporanPerubahanGaji extends Component
 {
     public $bulan_awal;
@@ -22,14 +21,14 @@ class LaporanPerubahanGaji extends Component
     public function exportExcel()
     {
         return Excel::download(
-            new LaporanGajiPeriodeExport($this->data, $this->months, 'Tabel Perubahan Gaji Karyawan Non OS '),
-            'laporan-perubahan-gaji-Non-OS-periode.xlsx'
+            new LaporanGajiPeriodeExport($this->data, $this->months, 'Tabel Perubahan Gaji Karyawan OS '),
+            'laporan-perubahan-gaji-OS-periode.xlsx'
         );
     }
 
     public function mount()
     {
-        $this->bulan_awal = 2;
+        $this->bulan_awal = 3;
         $this->tahun_awal = 2025;
         $this->bulan_akhir = now()->month;
         $this->tahun_akhir = now()->year;
@@ -49,19 +48,21 @@ class LaporanPerubahanGaji extends Component
             $period->addMonth();
         }
 
-        // Ambil data payroll
+        // Ambil data payroll + filter status karyawan
         $payrolls = DB::table('payrolls')
+            ->join('karyawans', 'payrolls.id_karyawan', '=', 'karyawans.id_karyawan')
             ->select(
-                'id_karyawan',
-                'nama',
-                DB::raw('DATE_FORMAT(date, "%Y-%m") as periode'),
-                'gaji_pokok'
+                'payrolls.id_karyawan',
+                'karyawans.nama as nama',
+                DB::raw('DATE_FORMAT(payrolls.date, "%Y-%m") as periode'),
+                'payrolls.gaji_pokok'
             )
-            ->whereBetween('date', [
-                $start->startOfMonth(),
-                $end->endOfMonth()
+            ->whereBetween('payrolls.date', [
+                $start->copy()->startOfMonth(),
+                $end->copy()->endOfMonth()
             ])
-            ->orderBy('id_karyawan')
+            ->whereIn('karyawans.status_karyawan', ['PKWT', 'PKWTT'])
+            ->orderBy('payrolls.id_karyawan')
             ->get();
 
         // Pivot manual
@@ -71,7 +72,7 @@ class LaporanPerubahanGaji extends Component
 
             if (!isset($result[$row->id_karyawan])) {
                 $result[$row->id_karyawan] = [
-                    'id' => $row->id_karyawan,
+                    'id'   => $row->id_karyawan,
                     'nama' => $row->nama,
                 ];
 
