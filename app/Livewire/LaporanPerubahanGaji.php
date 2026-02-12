@@ -54,6 +54,8 @@ class LaporanPerubahanGaji extends Component
             ->select(
                 'payrolls.id_karyawan',
                 'karyawans.nama as nama',
+                'karyawans.company_id',
+                'karyawans.placement_id',
                 DB::raw('DATE_FORMAT(payrolls.date, "%Y-%m") as periode'),
                 'payrolls.gaji_pokok'
             )
@@ -72,8 +74,10 @@ class LaporanPerubahanGaji extends Component
 
             if (!isset($result[$row->id_karyawan])) {
                 $result[$row->id_karyawan] = [
-                    'id'   => $row->id_karyawan,
-                    'nama' => $row->nama,
+                    'id'          => $row->id_karyawan,
+                    'nama'        => $row->nama,
+                    'company'     => nama_company($row->company_id),
+                    'placement' => nama_placement($row->placement_id),
                 ];
 
                 // isi default null
