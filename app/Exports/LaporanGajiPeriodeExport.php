@@ -47,6 +47,8 @@ class LaporanGajiPeriodeExport implements
             $line = [
                 $row['id'] ?? '',
                 $row['nama'] ?? '',
+                $row['company'] ?? '',
+                $row['placement'] ?? '',
             ];
 
             foreach ($this->months as $m) {
@@ -72,7 +74,7 @@ class LaporanGajiPeriodeExport implements
 
     public function headings(): array
     {
-        $headers = ['ID Karyawan', 'Nama'];
+        $headers = ['ID Karyawan', 'Nama', 'Company', 'Directorate'];
 
         foreach ($this->months as $m) {
             $headers[] = Carbon::createFromFormat('Y-m', $m)
@@ -92,7 +94,7 @@ class LaporanGajiPeriodeExport implements
     {
         $formats = [];
 
-        $startColumnIndex = 3; // C
+        $startColumnIndex = 5; // C
 
         foreach ($this->months as $index => $month) {
 
