@@ -58,6 +58,17 @@ class Newpresensi extends Component
 
     public $placements, $jabatans, $bulan_terakhir;
 
+    public function delete_no_scan()
+    {
+        // Yfrekappresensi::whereNot('no_scan_history', null)->delete();
+        $data = Yfrekappresensi::WhereMonth('date', $this->month)->WhereYear('date', $this->year)->whereNot('no_scan_history', null)->delete();
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'No Scan History sudah di delete',
+        );
+    }
+
     public function delete_no_scan1()
     {
         $data = Yfrekappresensi::find($this->delete_id);
@@ -372,28 +383,11 @@ class Newpresensi extends Component
     }
     public function update()
     {
-
-        // $this->validate([
-        //     'first_in' => 'date_format:H:i|nullable',
-        //     'first_out' => 'date_format:H:i|nullable',
-        //     'second_in' => 'date_format:H:i|nullable',
-        //     'second_out' => 'date_format:H:i|nullable',
-        //     'overtime_in' => 'date_format:H:i|nullable',
-        //     'overtime_out' => 'date_format:H:i|nullable',
-        // ]);
-        // proses penambahan  00 untuk data yg ada isi dan null utk data kosong
-        // $this->first_in != null ? ($this->first_in = $this->first_in . ':00') : ($this->first_in = null);
-        // $this->first_out != null ? ($this->first_out = $this->first_out . ':00') : ($this->first_out = null);
-        // $this->second_in != null ? ($this->second_in = $this->second_in . ':00') : ($this->second_in = null);
-        // $this->second_out != null ? ($this->second_out = $this->second_out . ':00') : ($this->second_out = null);
-        // $this->overtime_in != null ? ($this->overtime_in = $this->overtime_in . ':00') : ($this->overtime_in = null);
-        // $this->overtime_out != null ? ($this->overtime_out = $this->overtime_out . ':00') : ($this->overtime_out = null);
-
         $data = Yfrekappresensi::find($this->editId);
-
 
         $is_hari_libur_nasional = is_libur_nasional($data->date);
         $is_sunday = is_sunday($data->date);
+        $is_puasa = is_puasa($data->date);
 
 
 
@@ -407,6 +401,13 @@ class Newpresensi extends Component
 
         $data->no_scan = noScan($this->first_in, $this->first_out, $this->second_in, $this->second_out, $this->overtime_in, $this->overtime_out);
         $data->late = late_check_detail($this->first_in, $this->first_out, $this->second_in, $this->second_out, $this->overtime_in, $this->shift, $this->date, $this->late_user_id);
+
+        if ($is_puasa) {
+            $dataKaryawan = Karyawan::where('id_karyawan', $data->user_id)->first();
+            if ($dataKaryawan->jabatan_id == 17 || $dataKaryawan->jabatan_id == 18 || $dataKaryawan->jabatan_id == 19 || $dataKaryawan->jabatan_id == 20) $data->late = 0;
+            // if ($data->user_id == 10196) dd($data->user_id, $dataKaryawan->jabatan_id, $late);
+        }
+
         $data->late_history = $data->late;
         // dd($data->no_scan, $this->first_in, $this->first_out, $this->second_in, $this->second_out, $this->overtime_in, $this->overtime_out);
 
