@@ -461,7 +461,6 @@ class YfpresensiController extends Controller
                     } else {
                         $shift = 'Malam';
                     }
-
                     if ($shift == 'Pagi') {
                         // SHIFT PAGI
                         $flag = 0;
@@ -477,11 +476,11 @@ class YfpresensiController extends Controller
                                 // } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '17:30')) {
                                 // $second_out = $tp->time;
 
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:59') && $second_out == null) {
+                                // } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '16:59') && $second_out == null) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('14:01', '17:59') && $second_out == null) {
                                 $second_out = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '18:59')  && $second_out != null) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '18:59') && $second_out != null) {
                                 $overtime_in = $tp->time;
-                                if ($overtime_in ==  $second_out) $overtime_in = '';
                             } else {
                                 $overtime_out = $tp->time;
                             }
@@ -490,7 +489,7 @@ class YfpresensiController extends Controller
                     if ($shift == 'Malam') {
                         foreach ($tablePresensi as $tp) {
                             switch ($tp->time) {
-                                case Carbon::parse($tp->time)->betweenIncluded('15:00', '17:00'):
+                                case Carbon::parse($tp->time)->betweenIncluded('15:00', '20:00'):
                                     if ($first_in == '') $first_in = $tp->time;
                                     break;
                                 case Carbon::parse($tp->time)->betweenIncluded('17:01', '19:30'):
@@ -500,7 +499,7 @@ class YfpresensiController extends Controller
                                         $second_in = $tp->time;
                                     }
                                     break;
-                                case Carbon::parse($tp->time)->betweenIncluded('19:31', '20:30'):
+                                case Carbon::parse($tp->time)->betweenIncluded('17:30', '19:30'):
                                     if ($second_in == '') $second_in = $tp->time;
                                     break;
 
@@ -539,11 +538,11 @@ class YfpresensiController extends Controller
                                 else $second_in = $tp->time;
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('12:31', '15:00')) {
                                 $second_in = $tp->time;
+                                // } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '17:59') && $second_out == null) {
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('15:01', '18:59') && $second_out == null) {
                                 $second_out = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '19:59') && $second_out != null) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '18:59') && $second_out != null) {
                                 $overtime_in = $tp->time;
-                                if ($overtime_in ==  $second_out) $overtime_in = '';
                             } else {
                                 $overtime_out = $tp->time;
                             }
@@ -556,21 +555,19 @@ class YfpresensiController extends Controller
                         foreach ($tablePresensi as $tp) {
                             if (Carbon::parse($tp->time)->betweenIncluded('17:30', '22:00')) {
                                 if ($first_in == '') $first_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('02:30', '03:30')) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('01:30', '04:30')) {
 
                                 if ($first_out == '') $first_out = $tp->time;
                                 else $second_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('03:31', '04:15')) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('03:31', '04:30')) {
                                 if ($second_in == '') $second_in = $tp->time;
-                            } elseif (Carbon::parse($tp->time)->betweenIncluded('03:01', '08:30') && $second_out == null) {
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded('04:01', '05:59') && $second_out == null) {
                                 $second_out = $tp->time;
+                            } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '04:59') && $second_out != null) {
+                                $overtime_in = $tp->time;
+                            } else {
+                                $overtime_out = $tp->time;
                             }
-                            // } elseif (Carbon::parse($tp->time)->betweenIncluded(shortJam($second_out), '07:59') && $second_out != null && $tp->time != $second_out) {
-                            // } elseif (Carbon::parse($tp->time)->betweenIncluded('07:30', '07:59') && $second_out != null && $tp->time != $second_out) {
-                            //     $overtime_in = $tp->time;
-                            // } elseif ($overtime_in != null  && $tp->time != $overtime_in) {
-                            //     $overtime_out = $tp->time;
-                            // }
                         }
                     }
 
@@ -739,10 +736,6 @@ class YfpresensiController extends Controller
             $no_scan = noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out);
             $late = late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $kh->user_id);
             $dataKaryawan = Karyawan::where('id_karyawan', $user_id)->first();
-
-            if ($dataKaryawan->jabatan_id == 17 || $dataKaryawan->jabatan_id == 18 || $dataKaryawan->jabatan_id == 19 || $dataKaryawan->jabatan_id == 20) $late = 0;
-            // if ($user_id == 2216) dd($user_id, $late);
-
             if ($dataKaryawan == null) {
                 $id_karyawan = 'kosong';
             } else {
@@ -830,9 +823,6 @@ class YfpresensiController extends Controller
                 $total_jam_kerja = 0;
                 $total_jam_lembur = 0;
             }
-
-            // if ($user_id == 2216) dd($user_id, $late, $hasil['jam_kerja']);
-
             // dd($tgl);
             Yfrekappresensi::create([
                 'shift_malam' => $tambahan_shift_malam ?? 0,

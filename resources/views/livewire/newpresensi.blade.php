@@ -34,6 +34,8 @@
             @if ($totalNoScan > 0)
                 <button wire:click="filterNoScan" class="btn btn-sm btn-warning"
                     type="button">{{ __('Total No Scan :') }} {{ $totalNoScan }}</button>
+                <button class="btn btn-sm btn-danger" wire:confirm="Yakin mau di delete semua NOSCAN?"
+                    wire:click="delete_no_scan">Delete No Scan</button>
             @else
             @endif
         </div>
