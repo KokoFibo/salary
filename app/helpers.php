@@ -1383,7 +1383,7 @@ function getTotalWorkingDays($year, $month)
 function is_puasa($tgl)
 {
     // Start date dan end date = tanggal mulai dan akhir puasa
-    $start_date = '2026-02-19';
+    $start_date = '2026-02-18';
     $end_date = '2026-03-19';
     // Jika ada tanggal spesial lainnya, tambahkan di array $special_dates
     $special_dates = ['2024-04-20', '2024-04-27'];

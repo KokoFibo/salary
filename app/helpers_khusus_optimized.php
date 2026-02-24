@@ -621,7 +621,7 @@ function hitungBPJSdanPPH21(
         : 0;
 
     if ($k->potongan_JKK) {
-        $jkk_company = ($k->company_id == 102)
+        $jkk_company = ($k->company_id == 106)
             ? ($k->gaji_bpjs * 0.89) / 100
             : ($k->gaji_bpjs * 0.24) / 100;
     } else {
