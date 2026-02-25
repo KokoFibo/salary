@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 class AddTambahan extends Component
 {
     public $karyawan = [];
-    public $tanggal, $uang_makan, $bonus_lain, $baju_esd, $gelas, $sandal;
+    public $tanggal, $uang_makan, $bonus_lain, $thr, $baju_esd, $gelas, $sandal;
     public $seragam, $sport_bra, $hijab_instan, $id_card_hilang, $masker_hijau, $potongan_lain;
     public $year, $month;
 
@@ -100,6 +100,7 @@ class AddTambahan extends Component
         }
         $this->uang_makan = convert_numeric($this->uang_makan);
         $this->bonus_lain = convert_numeric($this->bonus_lain);
+        $this->thr = convert_numeric($this->thr);
         $this->baju_esd = convert_numeric($this->baju_esd);
         $this->gelas = convert_numeric($this->gelas);
         $this->sandal = convert_numeric($this->sandal);
@@ -124,6 +125,7 @@ class AddTambahan extends Component
             $record->karyawan_id = Karyawan::where('id_karyawan', $data['user_id'])->value('id');
             $record->uang_makan = $this->uang_makan;
             $record->bonus_lain = $this->bonus_lain;
+            $record->thr = $this->thr;
             $record->baju_esd = $this->baju_esd;
             $record->gelas = $this->gelas;
             $record->sandal = $this->sandal;
@@ -157,6 +159,7 @@ class AddTambahan extends Component
         $this->karyawan = [['user_id' => '', 'nama_karyawan' => '']];
         $this->uang_makan = null;
         $this->bonus_lain = null;
+        $this->thr = null;
         $this->baju_esd = null;
         $this->gelas = null;
         $this->sandal = null;

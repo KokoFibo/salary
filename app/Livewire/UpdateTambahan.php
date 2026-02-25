@@ -13,7 +13,7 @@ class UpdateTambahan extends Component
 {
     public $user_id, $nama_karyawan, $karyawan_id;
 
-    public $tanggal, $uang_makan, $bonus_lain, $baju_esd, $gelas, $sandal;
+    public $tanggal, $uang_makan, $bonus_lain, $thr, $baju_esd, $gelas, $sandal;
     public $seragam, $sport_bra, $hijab_instan, $id_card_hilang, $masker_hijau, $potongan_lain;
     public $year, $month;
     public $id;
@@ -28,6 +28,7 @@ class UpdateTambahan extends Component
         $this->karyawan_id = $data->karyawan_id;
         $this->uang_makan = number_format($data->uang_makan);
         $this->bonus_lain = number_format($data->bonus_lain);
+        $this->thr = number_format($data->thr);
         $this->baju_esd = number_format($data->baju_esd);
         $this->gelas = number_format($data->gelas);
         $this->sandal = number_format($data->sandal);
@@ -49,6 +50,7 @@ class UpdateTambahan extends Component
     {
         $this->uang_makan = convert_numeric($this->uang_makan);
         $this->bonus_lain = convert_numeric($this->bonus_lain);
+        $this->thr = convert_numeric($this->thr);
         $this->baju_esd = convert_numeric($this->baju_esd);
         $this->gelas = convert_numeric($this->gelas);
         $this->sandal = convert_numeric($this->sandal);
@@ -63,6 +65,7 @@ class UpdateTambahan extends Component
             $this->uang_makan == null &&
             // $this->bonus == null &&
             $this->bonus_lain == null &&
+            $this->thr == null &&
             $this->baju_esd == null &&
             $this->gelas == null &&
             $this->sandal == null &&
@@ -85,6 +88,7 @@ class UpdateTambahan extends Component
         $data = Bonuspotongan::find($this->id);
         $data->uang_makan = $this->uang_makan;
         $data->bonus_lain = $this->bonus_lain;
+        $data->thr = $this->thr;
         $data->baju_esd = $this->baju_esd;
         $data->gelas = $this->gelas;
         $data->sandal = $this->sandal;
@@ -114,6 +118,7 @@ class UpdateTambahan extends Component
         $this->uang_makan = null;
         // $this->bonus = null;
         $this->bonus_lain = null;
+        $this->thr = null;
         $this->baju_esd = null;
         $this->gelas = null;
         $this->sandal = null;
