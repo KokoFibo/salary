@@ -411,6 +411,8 @@ WHEN p.total_noscan <= 3 THEN 0
         IFNULL(b.uang_makan, 0)
         + IFNULL(b.bonus_lain, 0),
 
+        p.thr = IFNULL(b.thr, 0),
+
         p.potongan1x =
         IFNULL(b.baju_esd, 0)
         + IFNULL(b.gelas, 0)
@@ -426,6 +428,7 @@ WHEN p.total_noscan <= 3 THEN 0
         p.total
         + IFNULL(b.uang_makan, 0)
         + IFNULL(b.bonus_lain, 0)
+        + IFNULL(b.thr, 0)
         - (
         IFNULL(b.baju_esd, 0)
         + IFNULL(b.gelas, 0)
@@ -481,14 +484,7 @@ WHEN p.total_noscan <= 3 THEN 0
                 'karyawan' => $p
             ];
 
-            // $hasil = hitungBPJSdanPPH21(
-            //     $data,
-            //     $p->subtotal,
-            //     $p->gaji_lembur ?? 0,
-            //     $p->gaji_libur ?? 0,
-            //     $p->tambahan_shift_malam ?? 0,
-            //     $p->bonus1x ?? 0,
-            // );
+
 
             $total_gaji_lembur1 = $p->gaji_lembur * ($p->jam_lembur + $p->jam_lembur_libur);
             $hasil = hitungBPJSdanPPH21(
@@ -498,16 +494,10 @@ WHEN p.total_noscan <= 3 THEN 0
                 $p->gaji_libur ?? 0,
                 $p->tambahan_shift_malam ?? 0,
                 $p->bonus1x ?? 0,
+                $p->thr ?? 0,
             );
 
-            // function hitungBPJSdanPPH21(
-            //     object $data,
-            //     float $gaji_bulan_ini,
-            //     float $total_gaji_lembur,
-            //     float $gaji_libur,
-            //     float $tambahan_shift_malam,
-            //     float $bonus1x
-            // ): array {
+
 
             if ($p->tanggungan >= 1) {
                 $tanggungan = $p->tanggungan * $p->gaji_bpjs * 0.01;
@@ -524,7 +514,7 @@ WHEN p.total_noscan <= 3 THEN 0
 
             $core_cash = $p->gaji_bulan_ini - $hasil['gaji_bpjs_adjust'];
             $total_bpjs = 0;
-            $total_bpjs = $hasil['total_bpjs'] + $p->bonus1x - $p->potongan1x;
+            $total_bpjs = $hasil['total_bpjs'] + $p->bonus1x + $p->thr - $p->potongan1x;
             DB::table('payrolls')
                 ->where('id_karyawan', $p->id_karyawan)
                 ->where('date', $p->date)
@@ -568,7 +558,8 @@ function hitungBPJSdanPPH21(
     float $total_gaji_lembur,
     float $gaji_libur,
     float $tambahan_shift_malam,
-    float $bonus1x
+    float $bonus1x,
+    float $thr
 ): array {
 
 
@@ -683,17 +674,12 @@ function hitungBPJSdanPPH21(
         $total_gaji_lembur +
         $gaji_libur +
         $bonus1x +
+        $thr +
         $tambahan_shift_malam;
 
 
 
-    // if ($k->id_karyawan == 110) {
-    //     dd(
-    //         $k->id_karyawan,
-    //         $bonus1x,
-    //         $tg
-    //     );
-    // }
+
 
     $rate_pph21 = get_rate_ter_pph21(
         $k->ptkp,
@@ -704,10 +690,9 @@ function hitungBPJSdanPPH21(
 
     $pph21 = round(($tg * $rate_pph21) / 100, 2);
 
-    // $total_bpjs =  $total_tax  + $bonus1x;
     $total_bpjs =  $total_tax;
     $bpjs_employee = $jht + $jp + $kesehatan;
-    $prf_salary = $tambahan_shift_malam + $total_gaji_lembur + $gaji_libur +  $bonus1x + $gaji_bpjs_adjust;
+    $prf_salary = $tambahan_shift_malam + $total_gaji_lembur + $gaji_libur +  $bonus1x + $thr + $gaji_bpjs_adjust;
 
     /**
      * =========================
