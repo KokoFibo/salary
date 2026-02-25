@@ -436,9 +436,12 @@
                                 <th wire:click="sortColumnName('bonus1x')">{{ __('Bonus/U.Makan') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
-                                <th wire:click="sortColumnName('bonus1x')">{{ __('Bonus Karyawan') }} <i
+                                <th wire:click="sortColumnName('thr')">{{ __('THR') }} <i
                                         class="fa-solid fa-sort"></i>
                                 </th>
+                                {{-- <th wire:click="sortColumnName('bonus1x')">{{ __('Bonus Karyawan') }} <i
+                                        class="fa-solid fa-sort"></i>
+                                </th> --}}
                                 <th wire:click="sortColumnName('potongan1x')">{{ __('Potongan 1X') }}<i
                                         class="fa-solid fa-sort"></i>
                                 </th>
@@ -544,6 +547,9 @@
                                             <td class="text-end">
                                                 {{ $p->bonus1x ? number_format($p->bonus1x) : '' }}
                                             </td>
+                                            <td class="text-end">
+                                                {{ $p->thr ? number_format($p->thr) : '' }}
+                                            </td>
                                             @php
                                                 $total_potongan_dari_karyawan = 0;
                                                 $total_bonus_dari_karyawan = 0;
@@ -557,10 +563,9 @@
                                                     $p->tunjangan_lama_kerja;
 
                                             @endphp
-                                            <td class="text-end">
+                                            {{-- <td class="text-end">
                                                 {{ number_format($total_bonus_dari_karyawan) }}
-                                                {{-- {{ $total_bonus_dari_karyawan ? number_format($total_bonus_dari_karyawan) : '' }} --}}
-                                            </td>
+                                            </td> --}}
                                             <td class="text-end">
                                                 {{ $p->potongan1x ? number_format($p->potongan1x) : '' }}
                                             </td>
