@@ -39,6 +39,10 @@
                                 <label class="form-label">{{ __('Bonus Lain') }}</label>
                                 <input wire:model="bonus_lain" type="text" type-currency="IDR" class="form-control">
                             </div>
+                            <div class="mb-3">
+                                <label class="form-label">{{ __('THR') }}</label>
+                                <input wire:model="thr" type="text" type-currency="IDR" class="form-control">
+                            </div>
                         </div>
                     </div>
                 </div>

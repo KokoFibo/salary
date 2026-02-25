@@ -12,7 +12,6 @@ use App\Models\Liburnasional;
 
 function quickRebuildOptimized(int $month, int $year)
 {
-
     DB::transaction(function () use ($month, $year) {
 
         $payrollDate = Carbon::create($year, $month, 1)->format('Y-m-d');
