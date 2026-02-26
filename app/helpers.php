@@ -43,26 +43,7 @@ function selisihHari($tgl, $tanggal_akhir)
     return Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
 }
 
-function hitungTHR($id, $tgl, $gaji, $tanggal_akhir)
-{
-    $thr = 0;
 
-    $lama_kerja = selisihBulanBulat($tgl, $tanggal_akhir);
-    if ($lama_kerja < 12) {
-        return $gaji / 12 * $lama_kerja;
-    } else {
-        return $gaji;
-    }
-    // $selisih_hari = selisihHari($tgl, $tanggal_akhir);
-    // if ($selisih_hari > 365) {
-    //     $thr = $gaji;
-    // } else {
-    //     $karyawan = Karyawan::where('id_karyawan', $id)->first();
-    //     // $selisih_hari = Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
-    //     $thr =  $selisih_hari / 365 * $gaji;
-    // }
-    // return $thr;
-}
 
 function getGrade($id)
 {

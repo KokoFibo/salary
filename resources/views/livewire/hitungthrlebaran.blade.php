@@ -10,6 +10,15 @@
                 </div>
 
                 <div class="d-flex align-items-center gap-2">
+                    @if (auth()->user()->role == 8)
+                        <button wire:click="pindahKeBonusPotongan" class="btn btn-danger d-flex align-items-center gap-2"
+                            wire:loading.attr="disabled">
+                            Pindahkan ke Bonus & Potongan hanya digunakan untuk THR saja
+                        </button>
+                        <div wire:loading wire:target="pindahKeBonusPotongan" class="small text-success fw-bold">
+                            <div class="spinner-border spinner-border-sm" role="status"></div> Mengolah...
+                        </div>
+                    @endif
                     {{-- Tombol Excel --}}
                     <button wire:click='excel' class="btn btn-success d-flex align-items-center gap-2"
                         wire:loading.attr="disabled">
@@ -82,7 +91,7 @@
                                 <td class="text-end">Rp {{ number_format($k->gaji_pokok) }}</td>
                                 <td class="text-end fw-bold text-primary bg-light">
                                     Rp
-                                    {{ number_format(hitungTHR($k->id_karyawan, $k->tanggal_bergabung, $k->gaji_pokok, $cutOffDate)) }}
+                                    {{ number_format($this->hitungTHR($k->id_karyawan, $k->tanggal_bergabung, $k->gaji_pokok, $cutOffDate)) }}
                                 </td>
                             </tr>
                         @endforeach
