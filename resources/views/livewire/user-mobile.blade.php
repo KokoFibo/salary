@@ -424,6 +424,14 @@
                                                     {{ $data_karyawan->ptkp }}</td>
                                             </tr>
                                         @endif
+                                        @if ($data_payroll->thr != 0)
+                                            <tr>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">THR
+                                                </td>
+                                                <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">
+                                                    Rp. {{ number_format($data_payroll->thr) }}</td>
+                                            </tr>
+                                        @endif
                                         @if ($data_payroll->pph21 != 0)
                                             <tr>
                                                 <td class="px-6 py-1 whitespace-nowrap text-sm text-gray-600">PPh21
