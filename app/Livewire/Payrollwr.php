@@ -285,7 +285,8 @@ class Payrollwr extends Component
 
         // 🔑 PASTI TAMBAHKAN BULAN SEKARANG JIKA TAHUN SEKARANG
         if ((int) $year === (int) now()->year) {
-            $months->push(now()->month);
+            // $months->push(now()->month);
+            $months->push($months->max() + 1);
         }
 
         $this->select_month = $months
