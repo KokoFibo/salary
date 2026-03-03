@@ -158,7 +158,7 @@
                             @foreach ($select_month as $sm)
                                 <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                             @endforeach
-                            <option value="1">Januari 2026</option>
+                            <option value="2">February 2026</option>
                         </select>
                         @if (auth()->user()->role == 8)
                             <button wire:click="clear_lock" class="btn btn-primary w-100 nightowl-daylight">
