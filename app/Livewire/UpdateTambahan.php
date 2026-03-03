@@ -48,6 +48,8 @@ class UpdateTambahan extends Component
 
     public function update()
     {
+        // dd($this->thr, $this->baju_esd, $this->seragam);
+
         $this->uang_makan = convert_numeric($this->uang_makan);
         $this->bonus_lain = convert_numeric($this->bonus_lain);
         $this->thr = convert_numeric($this->thr);
@@ -60,7 +62,7 @@ class UpdateTambahan extends Component
         $this->id_card_hilang = convert_numeric($this->id_card_hilang);
         $this->masker_hijau = convert_numeric($this->masker_hijau);
         $this->potongan_lain = convert_numeric($this->potongan_lain);
-
+        // dd($this->thr, $this->baju_esd, $this->seragam);
         if (
             $this->uang_makan == null &&
             // $this->bonus == null &&
