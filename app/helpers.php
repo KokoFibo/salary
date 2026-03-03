@@ -26,6 +26,18 @@ use App\Models\Personnelrequestform;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
+function hitungTHR($id, $tgl, $gaji, $tanggal_akhir)
+{
+    $thr = 0;
+
+    $lama_kerja = selisihBulanBulat($tgl, $tanggal_akhir);
+    if ($lama_kerja < 12) {
+        return $gaji / 12 * $lama_kerja;
+    } else {
+        return $gaji;
+    }
+}
+
 function selisihBulanBulat($tgl, $tanggal_akhir)
 {
     $nilai = selisihHari($tgl, $tanggal_akhir) / 365 * 12;
