@@ -175,6 +175,8 @@ END AS subtotal
 
             if ($k->etnis == 'China') {
                 $gbl = $k->gaji_pokok;
+
+                $k->total_hari_kerja = (float) $total_n_hari_kerja - $jumlah_libur_nasional;
             }
 
             $insert[] = [
@@ -292,7 +294,7 @@ END AS subtotal
                 'nama_bank' => $k->nama_bank,
                 'nomor_rekening' => $k->nomor_rekening,
                 'metode_penggajian' => $k->metode_penggajian,
-
+                // ini
                 'hari_kerja' => (float) $total_n_hari_kerja - $jumlah_libur_nasional,
                 'jam_kerja' => 0,
                 'jam_lembur' => 0,
