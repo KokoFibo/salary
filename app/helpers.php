@@ -1702,7 +1702,7 @@ function lama_resign($tanggal_bergabung, $tanggal_resigned, $tanggal_blacklist)
     }
 }
 
-function convert_numeric($number)
+function convert_numeric_old($number)
 {
     $number = trim($number, "Rp\u{A0}");
     $arrNumber = explode('.', $number);
@@ -1711,6 +1711,13 @@ function convert_numeric($number)
         $numberString = $numberString . $arrNumber[$i];
     }
     return (int) $numberString;
+}
+
+function convert_numeric($number)
+{
+    if (!$number) return 0;
+
+    return (int) preg_replace('/[^0-9]/', '', $number);
 }
 
 function month_year($tgl)
