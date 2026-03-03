@@ -91,7 +91,7 @@
                                 <td class="text-end">Rp {{ number_format($k->gaji_pokok) }}</td>
                                 <td class="text-end fw-bold text-primary bg-light">
                                     Rp
-                                    {{ number_format($this->hitungTHR($k->id_karyawan, $k->tanggal_bergabung, $k->gaji_pokok, $cutOffDate)) }}
+                                    {{ number_format(hitungTHR($k->id_karyawan, $k->tanggal_bergabung, $k->gaji_pokok, $cutOffDate)) }}
                                 </td>
                             </tr>
                         @endforeach

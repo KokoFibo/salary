@@ -3,14 +3,15 @@
 namespace App\Exports;
 
 use App\Models\Karyawan;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
-use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithColumnFormatting;
 use Maatwebsite\Excel\Concerns\WithStyles;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class THRLebaranExport implements FromView,  ShouldAutoSize, WithColumnFormatting, WithStyles
 {
@@ -55,8 +56,15 @@ class THRLebaranExport implements FromView,  ShouldAutoSize, WithColumnFormattin
     public function view(): View
     {
         // $data = Karyawan::with(['placement', 'company', 'department', 'jabatan'])->whereIn('status_karyawan', ['PKWT', 'PKWTT', 'Dirumahkan'])->get();
+        $cutoffMinus30 = Carbon::parse($this->cutOffDate)->subDays(30);
+
         $data = Karyawan::whereNotIn('etnis', ['China', 'Tionghoa'])
-            ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])->get();
+            ->where('tanggal_bergabung', '<', $cutoffMinus30)
+            ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
+            ->orderBy('id_karyawan', 'asc')
+            ->get();
+
+
         $header_text = 'Perincian THR Lebaran untuk Non-OS';
         return view('thr_excel_view', [
             'cutOffDate' => $this->cutOffDate,

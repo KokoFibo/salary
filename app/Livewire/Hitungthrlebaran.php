@@ -67,26 +67,7 @@ class Hitungthrlebaran extends Component
         $this->cutoffMinus30 = Carbon::parse($this->cutOffDate)->subDays(30);
     }
 
-    public function hitungTHR($id, $tgl, $gaji, $tanggal_akhir)
-    {
-        $thr = 0;
 
-        $lama_kerja = selisihBulanBulat($tgl, $tanggal_akhir);
-        if ($lama_kerja < 12) {
-            return $gaji / 12 * $lama_kerja;
-        } else {
-            return $gaji;
-        }
-        // $selisih_hari = selisihHari($tgl, $tanggal_akhir);
-        // if ($selisih_hari > 365) {
-        //     $thr = $gaji;
-        // } else {
-        //     $karyawan = Karyawan::where('id_karyawan', $id)->first();
-        //     // $selisih_hari = Carbon::parse($tgl)->diffInDays(Carbon::parse($tanggal_akhir));
-        //     $thr =  $selisih_hari / 365 * $gaji;
-        // }
-        // return $thr;
-    }
 
     public function excel()
     {
@@ -97,10 +78,11 @@ class Hitungthrlebaran extends Component
     {
         $query = Karyawan::whereNotIn('etnis', ['China', 'Tionghoa'])
             ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
-            ->where('tanggal_bergabung', '<', $this->cutoffMinus30);
+            ->where('tanggal_bergabung', '<', $this->cutoffMinus30)
+            ->orderBy('id_karyawan', 'asc');
 
         $total = $query->get()->sum(function ($d) {
-            return $this->hitungTHR(
+            return hitungTHR(
                 $d->id_karyawan,
                 $d->tanggal_bergabung,
                 $d->gaji_pokok,
