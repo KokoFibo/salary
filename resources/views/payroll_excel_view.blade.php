@@ -228,7 +228,7 @@
                             $jkk_company +
                             $jkm_company +
                             $kesehatan_company +
-                            $d->gaji_lembur * $d->jam_lembur +
+                            $d->gaji_lembur * ($d->jam_lembur + $d->jam_lembur_libur) +
                             $d->gaji_libur +
                             $d->bonus1x +
                             $d->thr +
@@ -337,8 +337,8 @@
                     @endif
 
 
-                    {{-- <td style="text-align: right"> {{ $total_tax }}</td> --}}
-                    <td style="text-align: right"> {{ $d->total_tax }}</td>
+                    <td style="text-align: right"> {{ $total_tax }}</td>
+                    {{-- <td style="text-align: right"> {{ $d->total_tax }}</td> --}}
                     {{-- <td style="text-align: right">
                         {{ $d->gaji_lembur * $d->jam_lembur + $d->gaji_libur + $d->bonus1x + $d->tambahan_shift_malam + $gaji_bpjs_adjust + $jkk_company + $jkm_company + $kesehatan_company }}
                     </td> --}}
