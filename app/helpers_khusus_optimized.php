@@ -143,35 +143,9 @@ END AS subtotal
             $lemburan = 0;
             $lemburan = ($k->total_jam_lembur + $k->total_jam_lembur_libur) * $k->gaji_overtime;
 
-            // if ($k->id_karyawan == 1044) {
-            //     dd($k->tambahan_jam_shift_malam);
-            // }
+            $gl = round($k->total_jam_kerja_libur * ($k->gaji_pokok / 198), 1);
 
-            // Gaji Bulan Ini
-
-            // if ($k->metode_penggajian == "Perjam") {
-            //     $gbi = total_gaji_perjam($k->gaji_pokok, $k->jumlah_jam_kerja);
-            // } else {
-            //     // sore
-            //     $gbi = total_gaji_bulanan(
-            //         $k->gaji_pokok,
-            //         $k->total_hari_kerja,
-            //         $total_n_hari_kerja,
-            //         $jumlah_libur_nasional,
-            //         $k->date,
-            //         $k->id_karyawan,
-            //         $k->status_karyawan
-
-            //     );
-            // }
-
-            $gbi = $k->subtotal - $lemburan;
-
-
-            // if ($k->id_karyawan == 110) {
-            //     dd($k->id_karyawan, $gbi);
-            // }
-
+            $gbi = $k->subtotal - $lemburan - $gl;
 
             if ($k->etnis == 'China') {
                 $gbl = $k->gaji_pokok;
@@ -212,7 +186,8 @@ END AS subtotal
 
                 'gaji_pokok' => (int) $k->gaji_pokok,
                 'gaji_lembur' => (int) $k->gaji_overtime,
-                'gaji_libur' => round($k->total_jam_kerja_libur * ($k->gaji_pokok / 198), 1),
+                // 'gaji_libur' => round($k->total_jam_kerja_libur * ($k->gaji_pokok / 198), 1),
+                'gaji_libur' => $gl,
                 'gaji_bpjs' =>  $k->gaji_bpjs,
                 'gaji_bulan_ini' =>  $gbi,
 

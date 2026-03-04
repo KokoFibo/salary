@@ -432,7 +432,7 @@ function build_payroll($month, $year)
         if ($data->karyawan->metode_penggajian == "Perjam") {
             $gaji_bulan_ini = total_gaji_perjam($data->karyawan->gaji_pokok, $data->jumlah_jam_kerja);
         } else {
-            // sore
+            // sore 
             $gaji_bulan_ini = total_gaji_bulanan(
                 $data->karyawan->gaji_pokok,
                 $data->total_hari_kerja,
