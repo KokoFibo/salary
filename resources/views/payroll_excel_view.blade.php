@@ -57,6 +57,8 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
+                <th></th>
                 <th colspan="5" style="text-align: center; background-color: green; color:black">
                     <h4>Karyawan</h4>
                 </th>
@@ -85,6 +87,8 @@
                 <th style="text-align: center;">Total Hari Kerja</th>
                 <th style="text-align: center;">Total Jam Kerja (Bersih)</th>
                 <th style="text-align: center;">Total Jam Lembur</th>
+                <th style="text-align: center;">Total Jam Kerja Libur</th>
+                <th style="text-align: center;">Total Jam Lembur Libur</th>
                 <th style="text-align: center;">Jumlah Jam Terlambat</th>
                 <th style="text-align: center;">Tambahan Shift Malam</th>
                 <th style="text-align: center;">Gaji</th>
@@ -119,6 +123,7 @@
                 <th style="text-align: center;">JKM</th>
                 <th style="text-align: center;">Kesehatan</th>
                 <th style="text-align: center;">Total TAX</th>
+                {{-- <th style="text-align: center;">Total TAX Baru</th> --}}
                 {{-- <th style="text-align: center;">Perhitungan Tax Manual</th> --}}
                 <th style="text-align: center;">PTKP</th>
                 <th style="text-align: center;">TER</th>
@@ -154,6 +159,8 @@
                     <td> {{ $d->hari_kerja }}</td>
                     <td> {{ $d->jam_kerja }}</td>
                     <td> {{ $d->jam_lembur }}</td>
+                    <td> {{ $d->jam_kerja_libur }}</td>
+                    <td> {{ $d->jam_lembur_libur }}</td>
                     <td> {{ $d->jumlah_jam_terlambat }}</td>
                     <td style="text-align: right"> {{ $d->tambahan_shift_malam }}</td>
                     @php
@@ -188,7 +195,7 @@
 
                         if ($d->jkk) {
                             $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
-                            if ($d->company_id == 102) {
+                            if ($d->company_id == 106) {
                                 // Company STI
                                 $jkk_company = ($d->gaji_bpjs * 0.89) / 100;
                             }
@@ -256,23 +263,7 @@
                         }
 
                         $rate_pph21 = get_rate_ter_pph21($d->ptkp, $total_tax);
-                        // $pph21 = ($total_tax * $rate_pph21) / 100;
-                        // if ($d->id_karyawan == 1662) {
-                        //     dd(
-                        //         $total_tax,
-                        //         $d->tambahan_shift_malam,
-                        //         $d->gaji_lembur * $d->jam_lembur,
-                        //         $d->gaji_libur,
-                        //         $d->bonus1x,
-                        //         $gaji_bpjs_adjust,
-                        //         $jkk_company,
-                        //         $jkm_company,
-                        //         $kesehatan_company,
-                        //         $d->kesehatan,
-                        //         $rate_pph21,
-                        //         $pph21,
-                        //     );
-                        // }
+
                     @endphp
 
                     @if ($d->metode_penggajian == 'Perjam')
@@ -346,8 +337,8 @@
                     @endif
 
 
-                    {{-- <td style="text-align: right"> {{ $d->total_bpjs }}</td> --}}
-                    <td style="text-align: right"> {{ $total_tax }}</td>
+                    {{-- <td style="text-align: right"> {{ $total_tax }}</td> --}}
+                    <td style="text-align: right"> {{ $d->total_tax }}</td>
                     {{-- <td style="text-align: right">
                         {{ $d->gaji_lembur * $d->jam_lembur + $d->gaji_libur + $d->bonus1x + $d->tambahan_shift_malam + $gaji_bpjs_adjust + $jkk_company + $jkm_company + $kesehatan_company }}
                     </td> --}}

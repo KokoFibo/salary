@@ -520,9 +520,6 @@ function build_payroll($month, $year)
         $rate_pph21 = get_rate_ter_pph21($data->karyawan->ptkp, $total_tax);
         $pph21 = ($total_tax * $rate_pph21) / 100;
 
-
-
-
         if ($data->karyawan->metode_penggajian == '') {
             dd('metode penggajian belum diisi', $data->karyawan->id_karyawan);
         }

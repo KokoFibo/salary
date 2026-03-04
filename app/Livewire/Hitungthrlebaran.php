@@ -26,7 +26,7 @@ class Hitungthrlebaran extends Component
             ->get();
         foreach ($karyawans as $karyawan) {
 
-            $thr = $this->hitungTHR(
+            $thr = hitungTHR(
                 $karyawan->id_karyawan,
                 $karyawan->tanggal_bergabung,
                 $karyawan->gaji_pokok,
