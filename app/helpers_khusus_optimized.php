@@ -148,9 +148,9 @@ END AS subtotal
             $gbi = $k->subtotal - $lemburan - $gl;
 
             if ($k->etnis == 'China') {
-                $gbl = $k->gaji_pokok;
-
+                $gbi = $k->gaji_pokok;
                 $k->total_hari_kerja = (float) $total_n_hari_kerja - $jumlah_libur_nasional;
+                $gl = 0;
             }
 
             $insert[] = [
@@ -464,6 +464,7 @@ WHEN p.total_noscan <= 3 THEN 0
 
 
             $total_gaji_lembur1 = $p->gaji_lembur * ($p->jam_lembur + $p->jam_lembur_libur);
+            // $total_gaji_lembur1 = $p->gaji_lembur * ($p->jam_lembur);
             $hasil = hitungBPJSdanPPH21(
                 $data,
                 $p->gaji_bulan_ini,
@@ -473,8 +474,6 @@ WHEN p.total_noscan <= 3 THEN 0
                 $p->bonus1x ?? 0,
                 $p->thr ?? 0,
             );
-
-
 
             if ($p->tanggungan >= 1) {
                 $tanggungan = $p->tanggungan * $p->gaji_bpjs * 0.01;
@@ -515,6 +514,7 @@ WHEN p.total_noscan <= 3 THEN 0
 
 
                     'pph21' => $hasil['pph21'],
+                    'total_tax' => $hasil['total_tax'],
                     // 'total_bpjs' => $hasil['total_bpjs'],
                     'total_bpjs' => $total_bpjs,
                     // 'pajak' => $hasil['pph21'],
@@ -616,18 +616,7 @@ function hitungBPJSdanPPH21(
     } else {
         $gaji_bpjs_adjust = 0;
     }
-    // if ($k->id_karyawan == 110) {
-    //     dd(
-    //         $k->id_karyawan,
-    //         $gaji_bpjs_adjust,
-    //         $k->gaji_bpjs,
-    //         $k->tunjangan_jabatan,
-    //         $k->tunjangan_bahasa,
-    //         $k->tunjangan_housing,
-    //         $gaji_bulan_ini,
-    //         $k->gaji_pokok
-    //     );
-    // }
+
 
 
     /**
@@ -697,6 +686,7 @@ function hitungBPJSdanPPH21(
         'gaji_bpjs_adjust'  => round($gaji_bpjs_adjust, 2),
         // 'bpjs_adjustment'  => round($gaji_bpjs_adjust, 2),
         'pph21'             => $pph21,
+        'total_tax'             => $tg,
 
         'total_bpjs' => $total_bpjs,
     ];

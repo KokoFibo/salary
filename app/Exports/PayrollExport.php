@@ -170,15 +170,17 @@ class PayrollExport implements FromView,  ShouldAutoSize, WithColumnFormatting, 
             'AV' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AW' =>  NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AX' =>  NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'AY' => "0",
-            'AZ' => "0",
-            'BA' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'BB' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            // 'AY' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'AZ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'BA' => "0",
+            'BB' => "0",
             'BC' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'BD' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'BE' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'BF' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'BG' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
+            'BG' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'BH' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'BI' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
         ];
     }
 }
