@@ -514,7 +514,7 @@ WHEN p.total_noscan <= 3 THEN 0
 
 
                     'pph21' => $hasil['pph21'],
-                    'total_tax' => $hasil['total_tax'],
+                    // 'total_tax' => $hasil['total_tax'],
                     // 'total_bpjs' => $hasil['total_bpjs'],
                     'total_bpjs' => $total_bpjs,
                     // 'pajak' => $hasil['pph21'],
