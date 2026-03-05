@@ -46,7 +46,9 @@ class ExcelDetailReport2 implements FromView,  ShouldAutoSize, WithColumnFormatt
 
 
 
-        $customOrder = [6, 102, 10, 9, 101, 103, 11, 3, 1, 109, 105, 2, 4, 13, 5, 104, 107, 106];
+        // $customOrder = [6, 102, 10, 9, 101, 103, 11, 3, 1, 109, 105, 2, 4, 13, 5, 104, 107, 106];
+        $customOrder = [110, 5, 102, 10, 9, 101, 103, 8, 6, 1, 3, 13, 4, 11, 2, 109, 105, 106];
+
 
         $cases = "CASE";
         foreach ($customOrder as $index => $id) {
@@ -226,10 +228,12 @@ class ExcelDetailReport2 implements FromView,  ShouldAutoSize, WithColumnFormatt
         //     return strcmp($a['placement'], $b['placement']);
         // });
 
-        $customOrder = [6, 102, 10, 9, 101, 103, 11, 3, 1, 109, 105, 2, 4, 13, 5, 104, 107, 106];
+        // $customOrder = [6, 102, 10, 9, 101, 103, 11, 3, 1, 109, 105, 2, 4, 13, 5, 104, 107, 106];
+        $customOrder = [110, 5, 102, 10, 9, 101, 103, 8, 6, 1, 3, 13, 4, 11, 2, 109, 105, 106];
         $orderMap = array_flip($customOrder);
 
         usort($result3, function ($a, $b) use ($orderMap) {
+
             // Tangani kasus jika key 'id' tidak tersedia
             $aId = is_array($a) && isset($a['id']) ? $a['id'] : null;
             $bId = is_array($b) && isset($b['id']) ? $b['id'] : null;
