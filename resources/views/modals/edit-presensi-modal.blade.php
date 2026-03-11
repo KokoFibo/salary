@@ -70,6 +70,15 @@
                         </label>
                     </div>
                 @endif
+                {{-- @if ($this->check_is_late())
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" type="checkbox" value="1" id="checkChecked"
+                            wire:model='is_delete_late'>
+                        <label class="form-check-label" for="checkChecked">
+                            Delete Late History {{ $this->check_is_late() }}
+                        </label>
+                    </div>
+                @endif --}}
 
 
 
