@@ -554,7 +554,7 @@ class YfpresensiController extends Controller
                         // SHIFT Malam
                         $flag = 0;
                         foreach ($tablePresensi as $tp) {
-                            if (Carbon::parse($tp->time)->betweenIncluded('17:30', '22:00')) {
+                            if (Carbon::parse($tp->time)->betweenIncluded('17:00', '22:00')) {
                                 if ($first_in == '') $first_in = $tp->time;
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('02:30', '03:30')) {
 
@@ -700,7 +700,8 @@ class YfpresensiController extends Controller
                         // SHIFT Malam
                         $flag = 0;
                         foreach ($tablePresensi as $tp) {
-                            if (Carbon::parse($tp->time)->betweenIncluded('17:30', '22:00')) {
+                            // if (Carbon::parse($tp->time)->betweenIncluded('17:30', '22:00')) {
+                            if (Carbon::parse($tp->time)->betweenIncluded('17:00', '22:00')) {
                                 if ($first_in == '') $first_in = $tp->time;
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('22:01', '23:59') || Carbon::parse($tp->time)->betweenIncluded('00:00', '00:30')) {
 
