@@ -550,9 +550,9 @@ function hitungBPJSdanPPH21(
 
     // JP
     if ($k->potongan_JP == 1) {
-        $jp = ($k->gaji_bpjs <= 10547400)
+        $jp = ($k->gaji_bpjs <= 11086300)
             ? $k->gaji_bpjs * 0.01
-            : 10547400 * 0.01;
+            : 11086300 * 0.01;
     } else {
         $jp = 0;
     }
@@ -581,7 +581,7 @@ function hitungBPJSdanPPH21(
      */
 
     $gaji_bpjs_max = min($k->gaji_bpjs, 12000000);
-    $gaji_jp_max   = min($k->gaji_bpjs, 10547400);
+    $gaji_jp_max   = min($k->gaji_bpjs, 11086300);
 
     $kesehatan_company = ($k->potongan_kesehatan != 0)
         ? ($gaji_bpjs_max * 4) / 100
