@@ -453,13 +453,23 @@ class YfpresensiController extends Controller
             // ok2 selama puasa jam kerja sabtu disamakan dengan hari biasa khusus utk YCME
             //plk
             // if (is_puasa($kh->date) && get_placement($kh->user_id) == 'YCME') {
+            $gagal_scan = 0;
             if (is_puasa($kh->date)) {
                 if ($is_saturday) {
                     // JIKA HARI SABTU kkk
+                    // if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '13:00')) {
+                    //     $shift = 'Pagi';
+                    // } else {
+                    //     $shift = 'Malam';
+                    // }
+
                     if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '13:00')) {
                         $shift = 'Pagi';
+                    } elseif (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('17:30', '23:59')) {
+                        $shift = 'Malam';
                     } else {
                         $shift = 'Malam';
+                        $gagal_scan = 1;
                     }
 
                     if ($shift == 'Pagi') {
@@ -522,10 +532,19 @@ class YfpresensiController extends Controller
                     }
                 } else {
                     // JIKA BUKAN HARI SABTU
+                    // if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '15:00')) {
+                    //     $shift = 'Pagi';
+                    // } else {
+                    //     $shift = 'Malam';
+                    // }
+
                     if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '15:00')) {
                         $shift = 'Pagi';
+                    } elseif (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('17:30', '23:59')) {
+                        $shift = 'Malam';
                     } else {
                         $shift = 'Malam';
+                        $gagal_scan = 1;
                     }
 
                     if ($shift == 'Pagi') {
@@ -554,10 +573,9 @@ class YfpresensiController extends Controller
                         // SHIFT Malam
                         $flag = 0;
                         foreach ($tablePresensi as $tp) {
-                            if (Carbon::parse($tp->time)->betweenIncluded('17:00', '22:00')) {
+                            if (Carbon::parse($tp->time)->betweenIncluded('17:00', '23:59') || Carbon::parse($tp->time)->betweenIncluded('00:00', '02:29')) {
                                 if ($first_in == '') $first_in = $tp->time;
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('02:30', '03:30')) {
-
                                 if ($first_out == '') $first_out = $tp->time;
                                 else $second_in = $tp->time;
                             } elseif (Carbon::parse($tp->time)->betweenIncluded('03:31', '04:15')) {
@@ -738,6 +756,7 @@ class YfpresensiController extends Controller
             // Batasana Akhir Puasa
 
             $no_scan = noScan($first_in, $first_out, $second_in, $second_out, $overtime_in, $overtime_out);
+            if ($gagal_scan == 1) $no_scan = 'No Scan';
             $late = late_check_detail($first_in, $first_out, $second_in, $second_out, $overtime_in, $shift, $tgl, $kh->user_id);
             $dataKaryawan = Karyawan::where('id_karyawan', $user_id)->first();
 
