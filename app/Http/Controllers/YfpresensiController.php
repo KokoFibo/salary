@@ -455,7 +455,7 @@ class YfpresensiController extends Controller
             // if (is_puasa($kh->date) && get_placement($kh->user_id) == 'YCME') {
             $gagal_scan = 0;
             if (is_puasa($kh->date)) {
-                if (get_placement($user_id) == 102 && $is_sunday) { // 1st Factory
+                if (get_placement($user_id) == 102 && $is_sunday && $kh->date === "2026-03-15") { // 1st Factory
                     $is_sunday = false;
                 }
                 if ($is_saturday) {
