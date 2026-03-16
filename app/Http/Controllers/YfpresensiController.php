@@ -468,7 +468,7 @@ class YfpresensiController extends Controller
 
                     if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '13:00')) {
                         $shift = 'Pagi';
-                    } elseif (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('17:30', '23:59')) {
+                    } elseif (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('15:00', '23:59')) {
                         $shift = 'Malam';
                     } else {
                         $shift = 'Malam';
