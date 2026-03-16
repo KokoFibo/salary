@@ -455,6 +455,9 @@ class YfpresensiController extends Controller
             // if (is_puasa($kh->date) && get_placement($kh->user_id) == 'YCME') {
             $gagal_scan = 0;
             if (is_puasa($kh->date)) {
+                if (get_placement($user_id) == 102 && $is_sunday) { // 1st Factory
+                    $is_sunday = false;
+                }
                 if ($is_saturday) {
                     // JIKA HARI SABTU kkk
                     // if (Carbon::parse($tablePresensi[0]->time)->betweenIncluded('05:30', '13:00')) {
