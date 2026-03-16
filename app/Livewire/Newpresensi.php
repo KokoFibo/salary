@@ -406,7 +406,7 @@ class Newpresensi extends Component
             $dataKaryawan = Karyawan::where('id_karyawan', $data->user_id)->first();
             if ($dataKaryawan->jabatan_id == 17 || $dataKaryawan->jabatan_id == 18 || $dataKaryawan->jabatan_id == 19 || $dataKaryawan->jabatan_id == 20) $data->late = 0;
             // if ($data->user_id == 10196) dd($data->user_id, $dataKaryawan->jabatan_id, $late);
-            if ($dataKaryawan->placement_id == 102 && $is_sunday) { // 1st Factory
+            if ($dataKaryawan->placement_id == 102 && $is_sunday && $data->date === "2026-03-15") { // 1st Factory
                 $is_sunday = false;
             }
         }
