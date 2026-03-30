@@ -53,6 +53,7 @@
                                 aria-label="Default select example">
                                 <option value="0">{{ __('All Status') }}</option>
                                 <option value="1">{{ __('Aktif') }}</option>
+                                <option value="4">{{ __('Dirumahkan') }}</option>
                                 <option value="2">{{ __('Resigned') }}</option>
                                 <option value="3">{{ __('Blacklist') }}</option>
                             </select>
@@ -194,7 +195,7 @@
 
                                 @if (auth()->user()->role >= 6)
                                     <th style="width: 150px; border-style: none;">
-                                        @if ($selectStatus == 2)
+                                        {{-- @if ($selectStatus == 2)
                                             <button wire:loading.remove wire:click="excelrb"
                                                 class="btn btn-success col-12">Excel Resigned</button>
                                         @elseif($selectStatus == 3)
@@ -203,7 +204,10 @@
                                         @else
                                             <button wire:loading.remove wire:click="excel"
                                                 class="btn btn-success col-12">Excel</button>
-                                        @endif
+                                        @endif --}}
+
+                                        <button wire:loading.remove wire:click="excel"
+                                            class="btn btn-success col-12">Excel</button>
 
                                     </th>
 
