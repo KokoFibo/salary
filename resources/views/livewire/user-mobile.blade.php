@@ -543,9 +543,22 @@
                                                                         $tambahan_shift_malam = 1;
                                                                     }
                                                                 } elseif (is_sunday($d->date)) {
-                                                                    if ($jam_kerja >= 16) {
-                                                                        // $jam_lembur = $jam_lembur + 2;
-                                                                        $tambahan_shift_malam = 1;
+                                                                    //sini
+                                                                    // if ($jam_kerja >= 16) {
+                                                                    //     $tambahan_shift_malam = 1;
+                                                                    // }
+
+                                                                    if ($d->date === '2026-03-15') {
+                                                                        if ($jam_kerja >= 8) {
+                                                                            // $jam_lembur = $jam_lembur + 2;
+                                                                            $tambahan_shift_malam = 1;
+                                                                        }
+                                                                    } else {
+                                                                        $jam_kerja *= 2;
+                                                                        if ($jam_kerja >= 16) {
+                                                                            // $jam_lembur = $jam_lembur + 2;
+                                                                            $tambahan_shift_malam = 1;
+                                                                        }
                                                                     }
                                                                 } else {
                                                                     if ($jam_kerja >= 8) {
