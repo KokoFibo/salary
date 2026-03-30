@@ -447,6 +447,7 @@ class Karyawanindexwr extends Component
 
     public function excel()
     {
+        // dd($this->selectStatus);
         $nama_file = "";
 
 
