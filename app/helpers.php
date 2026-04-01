@@ -414,9 +414,16 @@ function check_resigned_blacklist($id)
     }
 
     // Search for a matching Karyawan record
-    $karyawan = Karyawan::where('nama', trim($dataApplicant->nama))
-        // ->orWhere('email', trim($dataApplicant->email))
-        ->orWhere('email', 'resigned_' . $dataApplicant->email)
+    // $karyawan = Karyawan::where('nama', trim($dataApplicant->nama))
+    //     // ->orWhere('email', trim($dataApplicant->email))
+    //     ->orWhere('email', 'resigned_' . $dataApplicant->email)
+    //     ->orWhere('email', 'blacklist_' . $dataApplicant->email)
+    //     ->orWhere('email',  $dataApplicant->email)
+    //     ->orWhere('no_identitas', trim($dataApplicant->no_identitas))
+    //     ->orWhere('hp', trim($dataApplicant->hp))
+    //     ->first();
+
+    $karyawan = Karyawan::where('email', 'resigned_' . $dataApplicant->email)
         ->orWhere('email', 'blacklist_' . $dataApplicant->email)
         ->orWhere('email',  $dataApplicant->email)
         ->orWhere('no_identitas', trim($dataApplicant->no_identitas))
