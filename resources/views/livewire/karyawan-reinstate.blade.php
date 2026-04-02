@@ -38,7 +38,7 @@
         <script>
             window.addEventListener("show-reinstate-confirmation", (event) => {
                 Swal.fire({
-                    title: "Data Karyawan ini akan di reinstate?",
+                    title: "Data Karyawan ini akan di reinstate? Ingat untuk menghapus contengan BPJS",
                     // text: "You won't be able to revert this!",
                     text: event.detail.text,
                     icon: "warning",
