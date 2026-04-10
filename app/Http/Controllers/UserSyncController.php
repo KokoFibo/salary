@@ -21,6 +21,7 @@ class UserSyncController extends Controller
         )
             ->join('karyawans', 'karyawans.id_karyawan', '=', 'users.username')
             ->join('companies', 'companies.id', '=', 'karyawans.company_id')
+            ->whereNotIn('karyawans.status_karyawan', ['Resigned', 'Blacklist'])
             ->get()
             ->map(function ($user) {
                 $user->db_code = 'salary';
