@@ -95,8 +95,10 @@ class Test extends Component
   {
     $year = 2025;
     $month = 12;
-    // dd('aman');
-
+    dd('aman');
+    // $data = Karyawan::where('placement_id', 106)->delete();
+    // $data = Karyawan::where('placement_id', 110)->delete();
+    // dd($data);
 
     $karyawans = Karyawan::where('potongan_kesehatan', 1)
       ->where('gaji_bpjs', '<', 5210377)
