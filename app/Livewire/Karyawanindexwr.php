@@ -273,9 +273,11 @@ class Karyawanindexwr extends Component
     public function updatedSearchPlacement()
     {
         if ($this->selectStatus == 1) {
-            $this->statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
+            $this->statuses = ['PKWT', 'PKWTT'];
         } elseif ($this->selectStatus == 2) {
             $this->statuses = ['Resigned'];
+        } elseif ($this->selectStatus == 4) {
+            $this->statuses = ['Dirumahkan'];
         } elseif ($this->selectStatus == 3) {
             $this->statuses = ['Blacklist'];
         } else {
@@ -301,17 +303,24 @@ class Karyawanindexwr extends Component
     // }
     public function mount()
     {
+
+        // $this->selectStatus = 1;
+
         if ($this->selectStatus == 1) {
-            $this->statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
+            $this->statuses = ['PKWT', 'PKWTT'];
         } elseif ($this->selectStatus == 2) {
             $this->statuses = ['Resigned'];
         } elseif ($this->selectStatus == 3) {
             $this->statuses = ['Blacklist'];
+        } elseif ($this->selectStatus == 4) {
+            $this->statuses = ['Dirumahkan'];
         } else {
             $this->statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
-        $this->companies = Karyawan::whereIn('status_karyawan', $this->statuses)
 
+        // dd($this->selectStatus);
+
+        $this->companies = Karyawan::whereIn('status_karyawan', $this->statuses)
             ->pluck('company_id')->unique();
 
 
@@ -566,11 +575,13 @@ class Karyawanindexwr extends Component
     public function render()
     {
         if ($this->selectStatus == 1) {
-            $this->statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
+            $this->statuses = ['PKWT', 'PKWTT'];
         } elseif ($this->selectStatus == 2) {
             $this->statuses = ['Resigned'];
         } elseif ($this->selectStatus == 3) {
             $this->statuses = ['Blacklist'];
+        } elseif ($this->selectStatus == 4) {
+            $this->statuses = ['Dirumahkan'];
         } else {
             $this->statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
