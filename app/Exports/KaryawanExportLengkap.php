@@ -75,10 +75,10 @@ class KaryawanExportLengkap implements FromView,  ShouldAutoSize, WithColumnForm
         } else {
             $header_text = 'Data Seluruh Karyawan';
         }
-
         return view('karyawan_excel_view_lengkap', [
             'data' => $data,
-            'header_text' => $header_text
+            'header_text' => $header_text,
+            'status_karyawan' => $this->selectStatus
         ]);
     }
 
@@ -106,6 +106,7 @@ class KaryawanExportLengkap implements FromView,  ShouldAutoSize, WithColumnForm
             // 'AE' => "0",
             // 'AF' => "0",
             // 'AF' => NumberFormat::FORMAT_TEXT,
+
 
             'AH' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AI' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
