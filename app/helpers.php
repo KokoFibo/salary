@@ -3319,12 +3319,10 @@ function cek_hari_khusus($tgl)
 
 function is_friday($tgl)
 {
-    if ($tgl == "2026-04-03") {
-        return false;
-    }
 
     $hari_khusus = cek_hari_khusus($tgl);
     if ($hari_khusus) {
+        // dd($hari_khusus->is_friday);
         return $hari_khusus->is_friday;
     }
 
