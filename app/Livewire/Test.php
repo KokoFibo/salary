@@ -95,22 +95,12 @@ class Test extends Component
   {
     $year = 2025;
     $month = 12;
-    dd('aman');
-    // $data = Karyawan::where('placement_id', 106)->delete();
-    // $data = Karyawan::where('placement_id', 110)->delete();
-    // dd($data);
-
-    $karyawans = Karyawan::where('potongan_kesehatan', 1)
-      ->where('gaji_bpjs', '<', 5210377)
-      ->get();
-
-    foreach ($karyawans as $karyawan) {
-      $karyawan->gaji_bpjs = 5210377;
-      $karyawan->save();
-    }
+    $data = Karyawan::whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
+      ->where('gaji_pokok', '<', 2200000)
+      ->paginate(10);
 
     return view('livewire.test', [
-      'karyawans' => $karyawans
+      'data' => $data
     ]);
   }
 }
