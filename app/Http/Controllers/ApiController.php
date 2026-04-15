@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Karyawan;
-use Illuminate\Http\Request;
+use App\Models\Payroll;
+use App\Models\User;
 use App\Models\Yfrekappresensi;
+use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
