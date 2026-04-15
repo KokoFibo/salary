@@ -83,6 +83,15 @@
                                     </select>
                                 </div>
                             </th>
+                            @if (auth()->user()->role == 8)
+                                <th>
+                                    <button class="btn btn-danger nightowl-daylight"
+                                        onclick="confirm('Yakin ingin sesuaikan gaji ke 2.200.000?') || event.stopImmediatePropagation()"
+                                        wire:click="sesuaikan_ke_gaji_minimal(2200000)">
+                                        {{ __('Sesuaikan Ke Gaji Minimal 2,2 jt') }}
+                                    </button>
+                                </th>
+                            @endif
                             <th><button class="btn btn-primary nightowl-daylight"
                                     wire:click="refresh">{{ __('Refresh') }}</button>
                             </th>
