@@ -2,11 +2,12 @@
 
 namespace App\Livewire;
 
-use App\Models\User;
-use Livewire\Component;
 use App\Models\Karyawan;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+use Livewire\Component;
 
 class Profile extends Component
 {
@@ -18,90 +19,92 @@ class Profile extends Component
     public $confirm_password;
     public $language;
     public $kontak_darurat, $kontak_darurat2, $hp1, $hp2, $id, $hubungan1, $hubungan2;
-    public $etnis, $handphone;
+    public $etnis;
 
-    public function updateEtnis()
-    {
-        // $user = User::find(Auth::user()->id);
-        if (auth()->user()->language == 'Cn') {
-            $this->validate([
-                'etnis' => 'required',
-            ], [
-                'etnis.required' => '必填项',
-            ]);
-        } else {
-            $this->validate([
-                'etnis' => 'required',
-            ], [
-                'etnis.required' => 'Wajib diisi',
-            ]);
-        }
-        $user = Karyawan::where('id_karyawan', auth()->user()->username)->first();
-        $user->etnis = $this->etnis;
-        $user->save();
-        if (auth()->user()->language == 'Id')
-            $this->dispatch('success', message: 'Etnis berhasil di update');
-        else $this->dispatch('success', message: '语言已成功更改');
-    }
 
-    public function changeLanguage()
-    {
-        $user = User::find(Auth::user()->id);
-        if ($user->language != $this->language) {
-            $user->language = $this->language;
-            $user->save();
-            if (auth()->user()->language == 'Cn')
-                $this->dispatch('success', message: 'Bahasa berhasil di rubah');
-            else $this->dispatch('success', message: '语言已成功更改');
-        }
-    }
 
-    public function changePassword()
-    {
-        if (auth()->user()->language == 'Cn') {
-            $this->validate([
-                'old_password' => 'required|min:6',
-                'new_password' => 'required|min:6|different:old_password',
-                'confirm_password' => 'required|same:new_password',
-            ], [
-                'old_password.required' => '必填项',
-                'old_password.min' => '最少需要6个字符',
-                'new_password.required' => '必填项',
-                'new_password.min' => '最少需要6个字符',
-                'new_password.different:old_password' => '必须与旧密码不同',
-                'confirm_password.required' => '必填项',
-                'confirm_password.same:new_password' => '密码不同',
-            ]);
-        } else {
-            $this->validate([
-                'old_password' => 'required|min:6',
-                'new_password' => 'required|min:6|different:old_password',
-                'confirm_password' => 'required|same:new_password',
-            ], [
-                'old_password.required' => 'Wajib diisi',
-                'old_password.min' => 'Minimal harus 6 karakter',
-                'new_password.required' => 'Wajib diisi',
-                'new_password.min' => 'Minimal harus 6 karakter',
-                'new_password.different:old_password' => 'Harus berbeda dengan password lama',
-                'confirm_password.required' => 'Wajib diisi',
-                'confirm_password.same:new_password' => 'Password berbeda',
-            ]);
-        }
+    // public function updateEtnis()
+    // {
+    //     // $user = User::find(Auth::user()->id);
+    //     if (auth()->user()->language == 'Cn') {
+    //         $this->validate([
+    //             'etnis' => 'required',
+    //         ], [
+    //             'etnis.required' => '必填项',
+    //         ]);
+    //     } else {
+    //         $this->validate([
+    //             'etnis' => 'required',
+    //         ], [
+    //             'etnis.required' => 'Wajib diisi',
+    //         ]);
+    //     }
+    //     $user = Karyawan::where('id_karyawan', auth()->user()->username)->first();
+    //     $user->etnis = $this->etnis;
+    //     $user->save();
+    //     if (auth()->user()->language == 'Id')
+    //         $this->dispatch('success', message: 'Etnis berhasil di update');
+    //     else $this->dispatch('success', message: '语言已成功更改');
+    // }
 
-        $user = User::find(Auth::user()->id);
-        if (Hash::check($this->old_password, Auth::user()->password)) {
-            $user->password = Hash::make($this->new_password);
+    // public function changeLanguage()
+    // {
+    //     $user = User::find(Auth::user()->id);
+    //     if ($user->language != $this->language) {
+    //         $user->language = $this->language;
+    //         $user->save();
+    //         if (auth()->user()->language == 'Cn')
+    //             $this->dispatch('success', message: 'Bahasa berhasil di rubah');
+    //         else $this->dispatch('success', message: '语言已成功更改');
+    //     }
+    // }
 
-            $user->save();
-            if (auth()->user()->language == 'Cn')
-                $this->dispatch('success', message: '密码已成功更改');
-            else $this->dispatch('success', message: 'Password berhasil di rubah');
-        } else {
-            if (auth()->user()->language == 'Cn')
-                $this->dispatch('error', message: '密码更改失败');
-            else $this->dispatch('error', message: 'Password gagal di rubah');
-        }
-    }
+    // public function changePassword()
+    // {
+    //     if (auth()->user()->language == 'Cn') {
+    //         $this->validate([
+    //             'old_password' => 'required|min:6',
+    //             'new_password' => 'required|min:6|different:old_password',
+    //             'confirm_password' => 'required|same:new_password',
+    //         ], [
+    //             'old_password.required' => '必填项',
+    //             'old_password.min' => '最少需要6个字符',
+    //             'new_password.required' => '必填项',
+    //             'new_password.min' => '最少需要6个字符',
+    //             'new_password.different:old_password' => '必须与旧密码不同',
+    //             'confirm_password.required' => '必填项',
+    //             'confirm_password.same:new_password' => '密码不同',
+    //         ]);
+    //     } else {
+    //         $this->validate([
+    //             'old_password' => 'required|min:6',
+    //             'new_password' => 'required|min:6|different:old_password',
+    //             'confirm_password' => 'required|same:new_password',
+    //         ], [
+    //             'old_password.required' => 'Wajib diisi',
+    //             'old_password.min' => 'Minimal harus 6 karakter',
+    //             'new_password.required' => 'Wajib diisi',
+    //             'new_password.min' => 'Minimal harus 6 karakter',
+    //             'new_password.different:old_password' => 'Harus berbeda dengan password lama',
+    //             'confirm_password.required' => 'Wajib diisi',
+    //             'confirm_password.same:new_password' => 'Password berbeda',
+    //         ]);
+    //     }
+
+    //     $user = User::find(Auth::user()->id);
+    //     if (Hash::check($this->old_password, Auth::user()->password)) {
+    //         $user->password = Hash::make($this->new_password);
+
+    //         $user->save();
+    //         if (auth()->user()->language == 'Cn')
+    //             $this->dispatch('success', message: '密码已成功更改');
+    //         else $this->dispatch('success', message: 'Password berhasil di rubah');
+    //     } else {
+    //         if (auth()->user()->language == 'Cn')
+    //             $this->dispatch('error', message: '密码更改失败');
+    //         else $this->dispatch('error', message: 'Password gagal di rubah');
+    //     }
+    // }
 
     public function changeEmail()
     {
@@ -120,34 +123,20 @@ class Profile extends Component
         $user->save();
         $karyawan->save();
 
+        // update email di db
+        $result = updateEmail($this->current_email, $this->email);
+
+        if (!$result['success']) {
+            $this->addError('api', $result['data']['message'] ?? 'Gagal update');
+            return;
+        }
+
+        session()->flash('success', 'Email berhasil diupdate');
+
+
         if (auth()->user()->language == 'Cn')
             $this->dispatch('success', message: '电子邮件已成功更改');
         else $this->dispatch('success', message: 'Email berhasil di rubah');
-    }
-
-    public function changeHandphone()
-    {
-        if (auth()->user()->language == 'Cn') {
-            $this->validate([
-                'handphone' => 'numeric|min_digits:10',
-            ], [
-                'handphone.numeric' => '这应该是数字0到9',
-                'handphone.min_digits' => '最少需要10位数字',
-            ]);
-        } else {
-            $this->validate([
-                'handphone' => 'numeric|min_digits:10',
-            ], [
-                'handphone.numeric' => 'Harus berupa angka 0..9',
-                'handphone.min_digits' => 'Minimal 10 digit',
-            ]);
-        }
-        $karyawan = Karyawan::where('id_karyawan', auth()->user()->username)->first();
-        $karyawan->hp = $this->handphone;
-        $karyawan->save();
-        if (auth()->user()->language == 'Cn')
-            $this->dispatch('success', message: '手机号已成功更新');
-        else $this->dispatch('success', message: 'Nomor Handphone berhasil di update');
     }
 
     public function mount()
@@ -159,13 +148,8 @@ class Profile extends Component
             $this->kontak_darurat = $data->kontak_darurat;
             $this->hp1 = $data->hp1;
             $this->hp2 = $data->hp2;
-            $this->kontak_darurat = $data->kontak_darurat;
-            $this->kontak_darurat2 = $data->kontak_darurat2;
-            $this->hubungan1 = $data->hubungan1;
-            $this->hubungan2 = $data->hubungan2;
             $this->id = $data->id;
             $this->etnis = $data->etnis;
-            $this->handphone = $data->hp;
         }
     }
 
