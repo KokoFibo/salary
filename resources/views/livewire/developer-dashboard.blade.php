@@ -28,6 +28,7 @@
     <div class="d-flex mt-5 justify-content-evenly">
         <a href="/harikhusus"><button class="btn btn-primary">Hari/tanggal khusus</button></a>
         <a href="/cekperbulan"><button class="btn btn-primary">Cek Perbulan yang < 8jam</button></a>
+        <a href="/clean-email"><button class="btn btn-primary">Clean Email resigned_</button></a>
 
     </div>
 
