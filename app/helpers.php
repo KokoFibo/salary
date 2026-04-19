@@ -1,30 +1,96 @@
 <?php
 
-use Carbon\Carbon;
-use App\Models\Ter;
-use App\Models\Lock;
-use App\Models\User;
-use App\Models\Company;
-use App\Models\Jabatan;
-use App\Models\Payroll;
-use App\Models\Timeoff;
-use App\Models\Jobgrade;
-use App\Models\Karyawan;
-use App\Models\Tambahan;
-use App\Models\Placement;
-use App\Models\Requester;
-use App\Models\Department;
-use App\Models\Harikhusus;
-use Illuminate\Support\Str;
 use App\Models\Applicantdata;
 use App\Models\Applicantfile;
+use App\Models\Company;
 use App\Models\Dashboarddata;
+use App\Models\Department;
+use App\Models\Harikhusus;
+use App\Models\Jabatan;
+use App\Models\Jobgrade;
+use App\Models\Karyawan;
 use App\Models\Liburnasional;
-use App\Models\Yfrekappresensi;
-use App\Models\Timeoffrequester;
+use App\Models\Lock;
+use App\Models\Payroll;
 use App\Models\Personnelrequestform;
+use App\Models\Placement;
+use App\Models\Requester;
+use App\Models\Tambahan;
+use App\Models\Ter;
+use App\Models\Timeoff;
+use App\Models\Timeoffrequester;
+use App\Models\User;
+use App\Models\Yfrekappresensi;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
+function createUser($id_karyawan)
+{
+    $data = Karyawan::where('id_karyawan', $id_karyawan)->first();
+
+    if (!$data) {
+        return [
+            'status' => false,
+            'message' => 'Data karyawan tidak ditemukan'
+        ];
+    }
+
+    // 🔐 password dari tanggal lahir
+    $password = Carbon::parse($data->tanggal_lahir)->format('dmy');
+
+    $response = Http::withToken('yifang18april2026')
+        ->post('https://presensidb.yifang.co.id/api/create-user', [
+            // ->post('http://127.0.0.1:8000/api/create-user', [
+            'name' => $data->nama,                 // sesuaikan kolom
+            'email' => $data->email,
+            'password' => $password,
+            'db_code' => 'salary',                // ✅ FIX sesuai request kamu
+            'id_karyawan' => $data->id_karyawan,
+            'id_unik_karyawan' => $data->id,
+            'role' => 1,                           // default (ubah kalau perlu)
+            'language' => 'Id',
+            'outsource' => $data->outsource,       // ✅ ambil dari data
+            'company_name' => nama_company($data->company_id) ?? null,
+        ]);
+
+    if ($response->successful()) {
+        return [
+            'status' => true,
+            'message' => 'User berhasil dibuat',
+            'data' => $response->json()
+        ];
+    }
+
+    return [
+        'status' => false,
+        'message' => 'Gagal create user',
+        'error' => $response->json()
+    ];
+}
+
+function deleteUserByid_unik_karyawan($id_unik_karyawan)
+{
+    $response = Http::withToken('yifang18april2026')
+        ->delete('https://presensidb.yifang.co.id/api/user/' . $id_unik_karyawan);
+    // ->delete('http://127.0.0.1:8000/api/user/' . $id_karyawan);
+
+    if ($response->successful()) {
+        return [
+            'status' => true,
+            'message' => 'User berhasil dihapus di API',
+            'data' => $response->json()
+        ];
+    }
+
+    return [
+        'status' => false,
+        'message' => 'Gagal menghapus user',
+        'error' => $response->json()
+    ];
+}
 
 function updateEmail($oldEmail, $newEmail)
 {

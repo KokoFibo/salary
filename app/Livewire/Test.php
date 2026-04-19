@@ -93,6 +93,8 @@ class Test extends Component
 
   public function render()
   {
+
+    dd('aman');
     $year = 2025;
     $month = 12;
     $data = Karyawan::whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
