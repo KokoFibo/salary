@@ -195,6 +195,8 @@ class DataApplicant extends Component
                 'password' => Hash::make($dataApplicant->password),
             ]);
 
+            //Create USer
+            createUser($id_karyawan_terbaru);
 
             // hapus data applicant
             $dataApplicant->delete();
