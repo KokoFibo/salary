@@ -61,6 +61,9 @@ class Updatekaryawanwr extends Component
     public $email_awal;
     public $id_unik_karyawan;
     public $company_id_awal;
+    public $nama_awal;
+    public $outsource_awal;
+    public $outsource;
 
 
 
@@ -258,7 +261,9 @@ class Updatekaryawanwr extends Component
         $this->email_awal = $this->email;
         $this->id_unik_karyawan = $data->id;
         $this->company_id_awal = $this->company_id;
-
+        $this->nama_awal = $this->nama;
+        $this->outsource = $data->outsource;
+        $this->outsource_awal = $this->outsource;
 
         // data Applicant files
         // $this->personal_files = Applicantfile::where('id_karyawan', $this->id_file_karyawan)->get();
@@ -886,12 +891,19 @@ class Updatekaryawanwr extends Component
                 $this->email_awal = $this->email;
             }
         }
-        // Update company name di presensidb
-        if ($this->company_id != $this->company_id_awal) {
+
+        // Update user data di presensidb
+        if (($this->company_id != $this->company_id_awal) ||
+            ($this->nama != $this->nama_awal) ||
+            ($this->outsource != $this->outsource_awal)
+        ) {
             // dd($this->id_unik_karyawan, nama_company($this->company_id));
-            $result = callUpdateCompanyNameApi(
+            $result = callUpdateUserDataApi(
                 $this->id_unik_karyawan,
-                nama_company($this->company_id)
+                nama_company($this->company_id),
+                $this->nama,
+                $this->outsource
+
             );
         }
 
