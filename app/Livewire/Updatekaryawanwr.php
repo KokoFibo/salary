@@ -346,7 +346,7 @@ class Updatekaryawanwr extends Component
         return [
             'id_karyawan' => 'required',
             'nama' => 'required',
-            'email' => 'email|nullable|unique:karyawans,email,' . $this->id,
+            'email' => 'required|email|unique:karyawans,email,' . $this->id,
             'tanggal_lahir' => 'date|before:today|required',
             // PRIBADI
             'hp' => 'nullable',
