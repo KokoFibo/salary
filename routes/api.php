@@ -45,3 +45,4 @@ Route::get('/users/export', [UserSyncController::class, 'export']);
 Route::get('/attendance/{user_id}/{month}/{year}', [AttendanceController::class, 'index']);
 Route::get('/latest-month-year/{user_id}', [AttendanceController::class, 'getLatestMonthYearByUser']);
 Route::get('/get-payroll/{id_karyawan}/{month}/{year}', [ApiController::class, 'getPayroll']);
+Route::post('/user/update-email', [ApiController::class, 'updateEmail']);
