@@ -48,7 +48,7 @@ class ExcelDetailReport2 implements FromView,  ShouldAutoSize, WithColumnFormatt
 
         // $customOrder = [6, 102, 10, 9, 101, 103, 11, 3, 1, 109, 105, 2, 4, 13, 5, 104, 107, 106];
         //    $customOrder = [110, 5, 102, 10, 9, 101, 103, 8, 6, 1, 3, 13, 4, 11, 2, 109, 105, 106];
-        $customOrder = [110, 5, 102, 10, 9, 101, 103, 8, 11, 6,  3, 1, 13, 4,  2, 109, 105, 106];
+        $customOrder = [5, 102, 10, 9, 101, 103, 8, 11, 6,  3, 1, 13, 4,  2, 109, 105, 106];
 
 
         $cases = "CASE";
@@ -233,7 +233,7 @@ class ExcelDetailReport2 implements FromView,  ShouldAutoSize, WithColumnFormatt
 
         // $customOrder = [6, 102, 10, 9, 101, 103, 11, 3, 1, 109, 105, 2, 4, 13, 5, 104, 107, 106];
         // $customOrder = [110, 5, 102, 10, 9, 101, 103, 8, 6, 1, 3, 13, 4, 11, 2, 109, 105, 106];
-        $customOrder = [110, 5, 102, 10, 9, 101, 103, 8, 11, 6,  3, 1, 13, 4,  2, 109, 105, 106];
+        $customOrder = [5, 102, 10, 9, 101, 103, 8, 11, 6,  3, 1, 13, 4,  2, 109, 105, 106];
 
         $orderMap = array_flip($customOrder);
 
