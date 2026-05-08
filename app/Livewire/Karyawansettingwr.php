@@ -30,8 +30,16 @@ class Karyawansettingwr extends Component
             $data = User::find($user->id);
 
             if ($data) {
+
+                $email_lama = $data->password;
                 $data->password = Hash::make(generatePassword($this->tanggal_lahir));
                 $data->save();
+
+                // update yang di user database
+                $result = updateEmail($email_lama, $data->password);
+
+                // update yang di user database
+                $result = updateEmail($this->email_awal, $this->email);
                 // $this->dispatch('success', message: 'Password berhasil di reset');
                 $this->dispatch(
                     'message',
