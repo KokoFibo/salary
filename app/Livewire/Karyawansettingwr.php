@@ -41,7 +41,6 @@ class Karyawansettingwr extends Component
                     $user->email,
                     $user->tanggal_lahir,
                 );
-                dd($result);
 
                 // $this->dispatch('success', message: 'Password berhasil di reset');
                 $this->dispatch(
