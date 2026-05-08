@@ -33,7 +33,7 @@ function resetPasswordApi($email, $tanggalLahir)
 
     $response = Http::withToken('yifang18april2026')
         ->acceptJson()
-        ->post('https://presensi.yifang.co.id/api/reset-password', [
+        ->post('https://presensidb.yifang.co.id/api/reset-password', [
             // ->post('http://127.0.0.1:8000/api/reset-password', [
             'email' => $email,
             'tanggal_lahir' => $tanggalLahir,
