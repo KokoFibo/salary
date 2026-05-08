@@ -94,12 +94,14 @@ class Test extends Component
   public function render()
   {
 
-    dd('aman');
+    $data = Karyawan::where('status_karyawan',  'Resigned')
+      ->where('etnis',  'China')
+      ->get();
+
+    // dd('aman');
     $year = 2025;
     $month = 12;
-    $data = Karyawan::whereNotIn('status_karyawan', ['Blacklist', 'Resigned'])
-      ->where('gaji_pokok', '<', 2200000)
-      ->paginate(10);
+
 
     return view('livewire.test', [
       'data' => $data
