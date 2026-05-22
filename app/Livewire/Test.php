@@ -93,7 +93,7 @@ class Test extends Component
 
   public function render()
   {
-
+    dd('aman');
     $data = Karyawan::where('status_karyawan',  'Resigned')
       ->where('etnis',  'China')
       ->get();
