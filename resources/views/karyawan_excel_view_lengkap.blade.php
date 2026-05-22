@@ -21,6 +21,7 @@
                 <th style="text-align: center;">ID</th>
                 <th style="text-align: center;">Nama Lengkap</th>
                 <th style="text-align: center;">Tanggal Bergabung</th>
+
                 <th style="text-align: center;">Status Karyawan</th>
                 @if ($status_karyawan == 2)
                     <th style="text-align: center;">Tanggal Resigned</th>
@@ -73,14 +74,16 @@
                 <tr>
                     <td style="text-align: center"> {{ $d->id_karyawan }}</td>
                     <td style="text-align: center"> {{ $d->nama }}</td>
-                    <th style="text-align: center;">{{ $d->tanggal_bergabung }}</th>
+                    <th style="text-align: center;">{{ format_tgl($d->tanggal_bergabung) }}</th>
                     <th style="text-align: center;">{{ $d->status_karyawan }}</th>
+
                     @if ($status_karyawan == 2)
-                        <th style="text-align: center;">{{ $d->tanggal_resigned }}</th>
+                        <th style="text-align: center;">{{ format_tgl($d->tanggal_resigned) }}</th>
                     @endif
                     @if ($status_karyawan == 3)
-                        <th style="text-align: center;">{{ $d->tanggal_blacklist }}</th>
+                        <th style="text-align: center;">{{ format_tgl($d->tanggal_blacklist) }}</th>
                     @endif
+
                     <th style="text-align: center;">{{ $d->ptkp }}</th>
                     <th style="text-align: center;">{{ $d->company->company_name }}</th>
                     <th style="text-align: center;">{{ $d->placement->placement_name }}</th>
