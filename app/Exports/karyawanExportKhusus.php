@@ -97,7 +97,9 @@ class karyawanExportKhusus implements FromView,  ShouldAutoSize, WithColumnForma
         if ($this->selectStatus == 1) {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
         } elseif ($this->selectStatus == 2) {
-            $statuses = ['Blacklist', 'Resigned'];
+            $statuses = ['Resigned'];
+        } elseif ($this->selectStatus == 3) {
+            $statuses = ['Blacklist'];
         } else {
             $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
         }
@@ -122,7 +124,7 @@ class karyawanExportKhusus implements FromView,  ShouldAutoSize, WithColumnForma
         }
 
         $data = $query->get();
-
+        // dd($data[0]->status_karyawan, $this->selectStatus, $statuses);
         $placement = nama_placement($this->selected_placement);
         $company = nama_company($this->selected_company);
         $department = nama_department($this->selected_department);
@@ -136,10 +138,10 @@ class karyawanExportKhusus implements FromView,  ShouldAutoSize, WithColumnForma
         } else {
             $header_text = 'Data Seluruh Karyawan';
         }
-
         return view('karyawan_excel_view_khusus', [
             'data' => $data,
-            'header_text' => $header_text
+            'header_text' => $header_text,
+            'status_karyawan' => $this->selectStatus, // Pass status_karyawan to the view
         ]);
     }
 

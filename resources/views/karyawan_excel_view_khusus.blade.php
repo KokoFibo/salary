@@ -33,6 +33,13 @@
                 <th style="text-align: center;">Jabatan</th>
                 <th style="text-align: center;">Departement</th>
                 <th style="text-align: center;">Tanggal Bergabung</th>
+                @if ($status_karyawan == 2)
+                    <th style="text-align: center;">Tanggal Resigned</th>
+                @elseif ($status_karyawan == 3)
+                    <th style="text-align: center;">Tanggal Blacklist</th>
+                @elseif ($status_karyawan == 0)
+                    <th style="text-align: center;">Tanggal Resigned/Blacklist</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -65,7 +72,28 @@
                     <td style="text-align: center"> {{ $d->company->company_name }}</td>
                     <td style="text-align: center"> {{ $d->jabatan->nama_jabatan }}</td>
                     <td style="text-align: center"> {{ $d->department->nama_department }}</td>
-                    <td style="text-align: center"> {{ $d->tanggal_bergabung }}</td>
+                    <td style="text-align: center"> {{ format_tgl($d->tanggal_bergabung) }}</td>
+                    @if ($status_karyawan == 2)
+                        <td style="text-align: center"> {{ format_tgl($d->tanggal_resigned) }}</td>
+                    @elseif($status_karyawan == 3)
+                        <td style="text-align: center"> {{ format_tgl($d->tanggal_blacklist) }}</td>
+                    @elseif($status_karyawan == 0)
+                        <td style="text-align: center">
+                            @if ($d->tanggal_blacklist)
+                                {{ format_tgl($d->tanggal_blacklist) }}
+                            @endif
+
+                            @if ($d->tanggal_blacklist && $d->tanggal_resigned)
+                                <br>
+                                atau
+                                <br>
+                            @endif
+
+                            @if ($d->tanggal_resigned)
+                                {{ format_tgl($d->tanggal_resigned) }}
+                            @endif
+                        </td>
+                    @endif
 
                 </tr>
             @endforeach

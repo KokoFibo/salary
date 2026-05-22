@@ -2427,6 +2427,7 @@ function lamaBekerjaBlacklistResigned($tglJoin, $tglResignedBlacklist)
     $month = floor(($diff % ($tahun * 365)) / 30);
     return (int) $tahun . ' Tahun ' . (int) $month . ' Bulan';
 }
+
 function lamaBekerja($tgl)
 {
     $date = Carbon::parse($tgl);
