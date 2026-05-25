@@ -11,7 +11,7 @@ class LaporanCostController extends Controller
 
     public function index($year)
     {
-        $year = 2025;
+        // $year = 2025;
 
         $payrolls = Payroll::select(
             'payrolls.id_karyawan',
