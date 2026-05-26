@@ -35,6 +35,12 @@ class Applicant extends Component
     public $ktp = [], $kk = [], $ijazah = [], $nilai = [], $cv = [], $pasfoto = [];
     public $npwp = [], $paklaring = [], $bpjs = [], $skck = [], $sertifikat = [], $bri = [];
 
+    public function UpdatedGender()
+    {
+        if ($this->gender == 'Perempuan') {
+            $this->ptkp = 'TK0';
+        }
+    }
 
     public function toggleEyePassword()
     {
@@ -105,6 +111,7 @@ class Applicant extends Component
             $this->golongan_darah = $data->golongan_darah;
             $this->agama = $data->agama;
             $this->etnis = $data->etnis;
+
             $this->ptkp = $data->ptkp;
             $this->nama_contact_darurat = $data->nama_contact_darurat;
             $this->nama_contact_darurat_2 = $data->nama_contact_darurat_2;
@@ -586,6 +593,9 @@ class Applicant extends Component
         $this->processAndStoreFiles($this->bri, 'bri');
 
         // Simpan data pelamar
+        if ($this->gender == 'Perempuan') {
+            $this->ptkp = 'TK0';
+        }
         $applicantData = Applicantdata::create([
             'applicant_id' => $this->applicant_id,
             'nama' => titleCase(trim($this->nama)),
@@ -600,6 +610,7 @@ class Applicant extends Component
             'golongan_darah' => $this->golongan_darah,
             'agama' => $this->agama,
             'etnis' => $this->etnis,
+
             'ptkp' => $this->ptkp,
             'nama_contact_darurat' => titleCase($this->nama_contact_darurat),
             'nama_contact_darurat_2' => titleCase($this->nama_contact_darurat_2),

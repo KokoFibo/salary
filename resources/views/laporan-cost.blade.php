@@ -8,6 +8,9 @@
                     Laporan Cost Karyawan Tahun {{ $year }}
                 </h5>
                 <a href="/payroll"><button class="btn btn-dark">Kembali ke payroll</button></a>
+                <a href="{{ url('/laporan-cost/export/' . $year) }}" class="btn btn-success">
+                    Export Excel
+                </a>
                 <span class="badge bg-light text-dark">
                     Total Data: {{ count($payrolls) }}
                 </span>
@@ -40,6 +43,7 @@
                                 <th>JKK Company</th>
                                 <th>JKM Company</th>
                                 <th>BPJS KS Company</th>
+                                <th>PPh21 (Jan-Nov)</th>
                                 <th>PPh21</th>
                                 <th>Gaji Dibayarkan</th>
                                 <th>TOTAL COST</th>
@@ -85,6 +89,7 @@
 
                                     <td>{{ number_format($row->bpjs_ks_company) }}</td>
 
+                                    <td>{{ number_format($row->pph21_jan_nov) }}</td>
                                     <td>{{ number_format($row->pph21) }}</td>
 
                                     <td class="fw-bold text-success">

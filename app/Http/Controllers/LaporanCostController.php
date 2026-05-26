@@ -2,16 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LaporanCostExport;
 use App\Models\Payroll;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+// use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanCostController extends Controller
 {
+    public function export($year)
+    {
+        return Excel::download(
+            new LaporanCostExport($year),
+            'laporan-cost-' . $year . '.xlsx'
+        );
+    }
 
     public function index($year)
     {
-        $year = 2025;
+        // $year = 2025;
 
         $payrolls = Payroll::select(
             'payrolls.id_karyawan',
@@ -125,6 +135,8 @@ class LaporanCostController extends Controller
 
             DB::raw('SUM(payrolls.kesehatan * 4) AS bpjs_ks_company'),
             DB::raw('SUM(payrolls.pph21) AS pph21'),
+            // DB::raw('SUM(payrolls.pph21 from jan-nov) AS pph21_jan_nov'),
+            DB::raw("SUM(CASE WHEN MONTH(payrolls.date) BETWEEN 1 AND 11 THEN payrolls.pph21 ELSE 0 END) AS pph21_jan_nov"),
 
             // =========================
             // GAJI DIBAYARKAN
@@ -150,6 +162,8 @@ class LaporanCostController extends Controller
             ->groupBy('payrolls.id_karyawan')
             ->orderBy('payrolls.id_karyawan', 'asc')
             ->get();
+
+        // dd($payrolls[0]);
 
         $payrolls = $payrolls->map(function ($row) {
 

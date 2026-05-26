@@ -269,6 +269,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/laporan-cost/{year}', [LaporanCostController::class, 'index']);
                     Route::get('/hitungthr', Hitungthr::class);
                     Route::get('/hitungthrlebaran', Hitungthrlebaran::class);
+                    Route::get('/laporan-cost/export/{year}', [LaporanCostController::class, 'export']);
 
 
 
