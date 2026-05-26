@@ -484,20 +484,28 @@ function nik($id)
     $karyawan = Karyawan::where('id_karyawan', $id)->select('no_identitas')->first();
 
     if ($karyawan) {
-        return $karyawan->no_identitas;
+        return (string) $karyawan->no_identitas;
     }
     return null;
 }
-function no_npwp($id)
-{
-    // Fetch the Karyawan data by ID
-    $karyawan = Karyawan::where('id_karyawan', $id)->select('no_npwp')->first();
 
-    if ($karyawan) {
-        return $karyawan->no_npwp;
-    }
-    return null;
+function no_npwp($id): ?string
+{
+    $npwp = Karyawan::where('id_karyawan', $id)->value('no_npwp');
+
+    return $npwp !== null ? (string) $npwp : null;
 }
+
+// function no_npwp($id)
+// {
+//     // Fetch the Karyawan data by ID
+//     $karyawan = Karyawan::where('id_karyawan', $id)->select('no_npwp')->first();
+
+//     if ($karyawan) {
+//         return (string)$karyawan->no_npwp;
+//     }
+//     return null;
+// }
 
 function isDataUtamaLengkap()
 {

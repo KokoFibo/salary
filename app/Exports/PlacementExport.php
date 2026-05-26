@@ -31,19 +31,17 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
         $this->month = $month;
         $this->year = $year;
     }
+
+
+
     public function styles(Worksheet $sheet)
     {
+
+
+        // Return array styling seperti biasa
         return [
-            // Style the first row as bold text.
-            2    => ['font' => ['bold' => true]],
-            // Styling a specific cell by coordinate.
-
-            // Styling an entire column.
-            2  => ['font' => ['size' => 15]],
-            // 2 => ['font' => ['italic' => true]],
-            3  => ['font' => ['size' => 12]],
-
-
+            2 => ['font' => ['bold' => true, 'size' => 15]],
+            3 => ['font' => ['size' => 12]],
         ];
     }
 
@@ -152,8 +150,10 @@ class PlacementExport implements FromView,  ShouldAutoSize, WithColumnFormatting
             'AX' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AY' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'AZ' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'BA' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
-            'BB' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            'BA' =>  '@',
+            'BB' => NumberFormat::FORMAT_TEXT,
+            // 'BA' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
+            // 'BB' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED,
             'BC' => NumberFormat::FORMAT_NUMBER_COMMA_SEPARATED
         ];
     }
