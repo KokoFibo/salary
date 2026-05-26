@@ -347,8 +347,10 @@
                     <td style="text-align: right"> {{ $rate_pph21 }}</td>
                     <td style="text-align: right"> {{ $d->pph21 }}</td>
 
-                    <td style="text-align: right"> {{ nik($d->id_karyawan) }}</td>
-                    <td style="text-align: right"> {{ no_npwp($d->id_karyawan) }}</td>
+                    <td style="text-align: right"> {{ "'" . trim(strval(nik($d->id_karyawan))) }}</td>
+                    <td style="text-align: right"> {{ "'" . trim(strval(no_npwp($d->id_karyawan))) }}</td>
+                    {{-- <td style="text-align: right"> {{ strval(nik($d->id_karyawan)) }}</td>
+                    <td style="text-align: right"> {{ strval(no_npwp($d->id_karyawan)) }}</td> --}}
                     <td style="text-align: right"> {{ $d->total }}</td>
                     <td style="text-align: right"> {{ $d->prf_salary }}</td>
                     <td style="text-align: right"> {{ $d->other_deduction }}</td>
