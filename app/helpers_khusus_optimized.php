@@ -479,11 +479,12 @@ WHEN p.total_noscan <= 3 THEN 0
                 $p->thr ?? 0,
             );
 
-            if ($p->tanggungan >= 1) {
-                $tanggungan = $p->tanggungan * $p->gaji_bpjs * 0.01;
-            } else {
-                $tanggungan = 0;
-            }
+            $gaji_bpjs_khusus_tanggungan = min($p->gaji_bpjs, 12000000);
+
+            $tanggungan = $p->tanggungan > 0
+                ? $p->tanggungan * $gaji_bpjs_khusus_tanggungan * 0.01
+                : 0;
+
             $other_deduction = $p->potongan1x + $p->denda_lupa_absen + $p->denda_resigned + $tanggungan + $p->iuran_air + $p->iuran_locker;
 
             // if ($p->tanggungan > 10) {
@@ -574,8 +575,10 @@ function hitungBPJSdanPPH21(
     }
 
     // Tanggungan
+    $gaji_bpjs_khusus_tanggungan = min($k->gaji_bpjs, 12000000);
+
     $tanggungan = ($k->tanggungan >= 1)
-        ? $k->tanggungan * $k->gaji_bpjs * 0.01
+        ? $k->tanggungan * $gaji_bpjs_khusus_tanggungan * 0.01
         : 0;
 
     /**
