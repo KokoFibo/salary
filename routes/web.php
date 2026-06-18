@@ -77,6 +77,7 @@ use App\Livewire\Payrollwr;
 use App\Livewire\PerbulanKurangBayar;
 use App\Livewire\PermohonanPersonnel;
 use App\Livewire\Placementreport;
+use App\Livewire\PresensiAddTime;
 use App\Livewire\Presensidetailwr;
 use App\Livewire\Prindexwr;
 use App\Livewire\Profile;
@@ -355,6 +356,8 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/jobgrade', Jobgradewr::class);
                             Route::get('/cekperbulan', PerbulanKurangBayar::class);
                             Route::get('clean-email', Cleanemail::class);
+                            Route::get('presensi-add-time', PresensiAddTime::class);
+
                             Route::get('/delete-monthly-presensi', DeleteMonthlyPresensi::class);
 
 
