@@ -425,6 +425,21 @@ class YfpresensiController extends Controller
         $is_friday = is_friday($tgl);
         $is_hari_libur_nasional = is_libur_nasional($tgl);
         foreach ($karyawanHadir as $kh) {
+
+            // 103	5th Factory
+            // 8	7th Factory
+
+            if (get_placement($user_id) == 103 && $kh->date === '2026-06-13') {
+                $is_saturday = true;
+            }
+            if (get_placement($user_id) == 8) {
+                if ($kh->date === '2026-06-13') {
+                    $is_saturday = true;
+                }
+                if ($kh->date === '2026-06-14') {
+                    $is_sunday = true;
+                }
+            }
             $tgl_delete = $kh->date;
             $user_id = $kh->user_id;
             // $name = $kh->name;
