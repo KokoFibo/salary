@@ -412,7 +412,7 @@ class Newpresensi extends Component
             }
         }
         if ($data->date === '2026-06-15') {
-            if ($dataKaryawan->placement_id == 8 || $dataKaryawan->placement_id == 106) {
+            if ($dataKaryawan->placement_id == 8 || $dataKaryawan->placement_id == 103) {
                 $is_sunday = false;
             } else {
                 $is_sunday = true;
@@ -571,7 +571,9 @@ class Newpresensi extends Component
             $data->total_jam_lembur = 0;
         }
 
-
+        // if ($data->user_id == 1108) {
+        //     dd($data->user_id, $is_sunday, $is_saturday);
+        // }
 
         $data->save();
         $this->delete_no_scan_history = false;
