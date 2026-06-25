@@ -228,7 +228,7 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
     // 103	5th Factory
     // 8	7th Factory
 
-    if ($placement_id == 106 && $date === '2026-06-13') {
+    if ($placement_id == 103 && $date === '2026-06-13') {
         $is_saturday = true;
     }
     if ($placement_id == 8) {
@@ -241,7 +241,7 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
         }
     }
     if ($date === '2026-06-15') {
-        if ($placement_id == 8 || $placement_id == 106) {
+        if ($placement_id == 8 || $placement_id == 103) {
             $is_sunday = false;
         } else {
             $is_sunday = true;
@@ -2048,7 +2048,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
         }
     }
     if ($tgl === '2026-06-15') {
-        if ($placement_id == 8 || $placement_id == 106) {
+        if ($placement_id == 8 || $placement_id == 103) {
             $is_sunday = false;
         } else {
             $is_sunday = true;
@@ -2335,7 +2335,7 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
         }
     }
     if ($tgl === '2026-06-15') {
-        if ($placement_id == 8 || $placement_id == 106) {
+        if ($placement_id == 8 || $placement_id == 103) {
             $is_sunday = false;
         } else {
             $is_sunday = true;
@@ -3393,7 +3393,7 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
         // }
     }
     if ($tgl === '2026-06-15') {
-        if ($placement_id == 8 || $placement_id == 106) {
+        if ($placement_id == 8 || $placement_id == 103) {
             $is_sunday = false;
         } else {
             $is_sunday = true;

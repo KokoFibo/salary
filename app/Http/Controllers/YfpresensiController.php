@@ -449,7 +449,7 @@ class YfpresensiController extends Controller
             }
 
             if ($kh->date === '2026-06-15') {
-                if ($placement_id == 8 || $placement_id == 106) {
+                if ($placement_id == 8 || $placement_id == 103) {
                     $is_sunday = false;
                 } else {
                     $is_sunday = true;
