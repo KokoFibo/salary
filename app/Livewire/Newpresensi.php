@@ -396,6 +396,23 @@ class Newpresensi extends Component
         $is_hari_libur_nasional = is_libur_nasional($data->date);
         $is_sunday = is_sunday($data->date);
         $is_puasa = is_puasa($data->date);
+        $is_saturday = is_saturday($data->date);
+        $dataKaryawan = Karyawan::where('id_karyawan', $data->user_id)->first();
+
+        if ($dataKaryawan->placement_id == 106 && $data->date === '2026-06-13') {
+            $is_saturday = true;
+        }
+        if ($dataKaryawan->placement_id == 8) {
+            if ($data->date === '2026-06-13') {
+                $is_saturday = true;
+            }
+            if ($data->date === '2026-06-14') {
+                $is_saturday = false;
+                $is_sunday = true;
+            }
+        }
+
+
 
 
 
@@ -411,7 +428,7 @@ class Newpresensi extends Component
         $data->late = late_check_detail($this->first_in, $this->first_out, $this->second_in, $this->second_out, $this->overtime_in, $this->shift, $this->date, $this->late_user_id);
 
         if ($is_puasa) {
-            $dataKaryawan = Karyawan::where('id_karyawan', $data->user_id)->first();
+            // $dataKaryawan = Karyawan::where('id_karyawan', $data->user_id)->first();
             if ($dataKaryawan->jabatan_id == 17 || $dataKaryawan->jabatan_id == 18 || $dataKaryawan->jabatan_id == 19 || $dataKaryawan->jabatan_id == 20) $data->late = 0;
             // if ($data->user_id == 10196) dd($data->user_id, $dataKaryawan->jabatan_id, $late);
             if ($dataKaryawan->placement_id == 102 && $is_sunday && $data->date === "2026-03-15") { // 1st Factory
@@ -425,7 +442,6 @@ class Newpresensi extends Component
         // jadwal puasa
         // dd($data->late);
         // ================================
-        $is_saturday = is_saturday($data->date);
         if ($is_saturday) {
             // JIKA HARI SABTU kkk
             if (Carbon::parse($data->first_in)->betweenIncluded('05:30', '15:00')) {
@@ -464,7 +480,7 @@ class Newpresensi extends Component
             }
         }
 
-        $dataKaryawan = Karyawan::where('id_karyawan', $data->user_id)->first();
+        // $dataKaryawan = Karyawan::where('id_karyawan', $data->user_id)->first();
         $hasil = saveDetail($data->user_id, $data->first_in, $data->first_out, $data->second_in, $data->second_out, $data->late, $data->shift, $data->date, $dataKaryawan->jabatan_id, $data->no_scan, $dataKaryawan->placement_id, $data->overtime_in, $data->overtime_out);
         // dd($hasil['jam_kerja']);
         // if ($data->user_id == 2152) dd($data->user_id, $hasil['jam_kerja']);

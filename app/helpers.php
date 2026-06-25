@@ -236,6 +236,7 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
             $is_saturday = true;
         }
         if ($date === '2026-06-14') {
+            $is_saturday = false;
             $is_sunday = true;
         }
     }
@@ -2017,6 +2018,9 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
     } else {
         $tgl_khusus = null;
     }
+    if ($placement_id == 8 && $tgl === '2026-06-14') {
+        $tgl_khusus = null;
+    }
 
     // 103	5th Factory
     // 8	7th Factory
@@ -2031,6 +2035,7 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
             $tgl_khusus = null;
         }
         if ($tgl === '2026-06-14') {
+            $is_saturday = false;
             $is_sunday = true;
             $tgl_khusus = null;
         }
@@ -2242,10 +2247,10 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
                             // rubah disini jika ada perubahan jam lembur
                             // ini perhitungan utk hari 08:00 - 15:30
                             // di hitung hari 6 jam, untuk lembur mulai 15:30
-                            if ($t2 < strtotime('16:00:00')) {
+                            if ($t2 < strtotime('15:30:00')) {
                                 return $lembur = 0;
                             }
-                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:30:00')) / 60;
+                            $diff = Carbon::parse(pembulatanJamOvertimeOut($second_out))->diffInMinutes(Carbon::parse('15:00:00')) / 60;
                         } else {
                             if ($t2 < strtotime('15:30:00')) {
                                 return $lembur = 0;
@@ -2310,6 +2315,8 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
             $is_saturday = true;
         }
         if ($tgl === '2026-06-14') {
+            $is_saturday = false;
+
             $is_sunday = true;
         }
     }

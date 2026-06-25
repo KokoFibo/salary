@@ -425,19 +425,26 @@ class YfpresensiController extends Controller
         $is_friday = is_friday($tgl);
         $is_hari_libur_nasional = is_libur_nasional($tgl);
         foreach ($karyawanHadir as $kh) {
-
+            $placement_id = get_placement($kh->user_id);
             // 103	5th Factory
             // 8	7th Factory
-
-            if (get_placement($user_id) == 103 && $kh->date === '2026-06-13') {
+            $hari_khusus = cek_hari_khusus($tgl);
+            if ($kh->date === '2026-06-14') {
+                $is_sunday = false;
                 $is_saturday = true;
             }
-            if (get_placement($user_id) == 8) {
+            if ($placement_id == 103 && $kh->date === '2026-06-13') {
+                $is_saturday = true;
+            }
+            if ($placement_id == 8) {
                 if ($kh->date === '2026-06-13') {
                     $is_saturday = true;
+                    $hari_khusus = false;
                 }
                 if ($kh->date === '2026-06-14') {
                     $is_sunday = true;
+                    $is_saturday = false;
+                    // $hari_khusus = false;
                 }
             }
             $tgl_delete = $kh->date;
@@ -455,7 +462,6 @@ class YfpresensiController extends Controller
             $late = null;
             $no_scan = null;
             $shift = '';
-            $hari_khusus = cek_hari_khusus($tgl);
 
 
             // ini mulai masukin data perID
