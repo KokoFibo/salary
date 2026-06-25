@@ -240,6 +240,13 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
             $is_sunday = true;
         }
     }
+    if ($date === '2026-06-15') {
+        if ($placement_id == 8 || $placement_id == 106) {
+            $is_sunday = false;
+        } else {
+            $is_sunday = true;
+        }
+    }
 
     $tambahan_shift_malam = 0;
     if ($no_scan === null) {
@@ -2040,6 +2047,13 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
             $tgl_khusus = null;
         }
     }
+    if ($tgl === '2026-06-15') {
+        if ($placement_id == 8 || $placement_id == 106) {
+            $is_sunday = false;
+        } else {
+            $is_sunday = true;
+        }
+    }
 
     // betulin
     if ($second_out != null) {
@@ -2317,6 +2331,13 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
         if ($tgl === '2026-06-14') {
             $is_saturday = false;
 
+            $is_sunday = true;
+        }
+    }
+    if ($tgl === '2026-06-15') {
+        if ($placement_id == 8 || $placement_id == 106) {
+            $is_sunday = false;
+        } else {
             $is_sunday = true;
         }
     }
@@ -3370,6 +3391,13 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
         // if ($tgl === '2026-06-14') {
         //     $is_sunday = true;
         // }
+    }
+    if ($tgl === '2026-06-15') {
+        if ($placement_id == 8 || $placement_id == 106) {
+            $is_sunday = false;
+        } else {
+            $is_sunday = true;
+        }
     }
 
     if (is_puasa($tgl)) {
