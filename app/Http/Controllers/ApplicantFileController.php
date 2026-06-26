@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\ApplicantFile;
+use App\Models\Applicantfile;
 use Illuminate\Http\JsonResponse;
 
 class ApplicantFileController extends Controller
 {
     public function index($id_karyawan): JsonResponse
     {
-        $files = ApplicantFile::where('id_karyawan', $id_karyawan)
+        $files = Applicantfile::where('id_karyawan', $id_karyawan)
             ->orderBy('id', 'desc')
             ->get();
 
