@@ -1,14 +1,15 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\ApplicantFileController;
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LarkController;
 use App\Http\Controllers\SlipgajiController;
 use App\Http\Controllers\UserSyncController;
-use App\Http\Controllers\ApplicantController;
-use App\Http\Controllers\AttendanceController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,3 +47,4 @@ Route::get('/attendance/{user_id}/{month}/{year}', [AttendanceController::class,
 Route::get('/latest-month-year/{user_id}', [AttendanceController::class, 'getLatestMonthYearByUser']);
 Route::get('/get-payroll/{id_karyawan}/{month}/{year}', [ApiController::class, 'getPayroll']);
 Route::post('/user/update-email', [ApiController::class, 'updateEmail']);
+Route::get('/applicant-files/{id_karyawan}', [ApplicantFileController::class, 'index']);
