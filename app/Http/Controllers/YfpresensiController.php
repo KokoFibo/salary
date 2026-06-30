@@ -420,11 +420,16 @@ class YfpresensiController extends Controller
             ->distinct()
             ->get();
 
-        $is_sunday = is_sunday($tgl);
-        $is_saturday = is_saturday($tgl);
-        $is_friday = is_friday($tgl);
-        $is_hari_libur_nasional = is_libur_nasional($tgl);
+        // $is_sunday = is_sunday($tgl);
+        // $is_saturday = is_saturday($tgl);
+        // $is_friday = is_friday($tgl);
+        // $is_hari_libur_nasional = is_libur_nasional($tgl);
         foreach ($karyawanHadir as $kh) {
+            $is_sunday = is_sunday($tgl);
+            $is_saturday = is_saturday($tgl);
+            $is_friday = is_friday($tgl);
+            $is_hari_libur_nasional = is_libur_nasional($tgl);
+
             $placement_id = get_placement($kh->user_id);
             // 103	5th Factory
             // 8	7th Factory
@@ -454,6 +459,10 @@ class YfpresensiController extends Controller
                 } else {
                     $is_sunday = true;
                 }
+            }
+
+            if ($placement_id == 103 && $kh->date === '2026-06-28') {
+                $is_sunday = false;
             }
 
             $tgl_delete = $kh->date;
