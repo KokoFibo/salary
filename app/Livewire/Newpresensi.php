@@ -399,7 +399,7 @@ class Newpresensi extends Component
         $is_saturday = is_saturday($data->date);
         $dataKaryawan = Karyawan::where('id_karyawan', $data->user_id)->first();
 
-        if ($dataKaryawan->placement_id == 106 && $data->date === '2026-06-13') {
+        if ($dataKaryawan->placement_id == 103 && $data->date === '2026-06-13') {
             $is_saturday = true;
         }
         if ($dataKaryawan->placement_id == 8) {
@@ -417,6 +417,10 @@ class Newpresensi extends Component
             } else {
                 $is_sunday = true;
             }
+        }
+
+        if ($dataKaryawan->placement_id == 103 && $data->date === '2026-06-28') {
+            $is_sunday = false;
         }
 
 
