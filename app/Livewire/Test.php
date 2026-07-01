@@ -122,7 +122,7 @@ class Test extends Component
       $first_in = '08:00';
       $first_out = null;
       $second_in = null;
-      $second_out = '17:00';
+      $second_out = '15:00';
       $overtime_in = null;
       $overtime_out = null;
       $late = null;
@@ -145,7 +145,7 @@ class Test extends Component
         'second_out' => $second_out,
         'overtime_in' => $overtime_in,
         'overtime_out' => $overtime_out,
-        'total_jam_kerja' => 8,
+        'total_jam_kerja' => 6,
         'total_hari_kerja' => 1,
         'total_jam_lembur' => null,
         'total_jam_kerja_libur' => null,
@@ -164,8 +164,8 @@ class Test extends Component
 
   public function render()
   {
-    // $this->generate();
-    dd('aman');
+    $this->generate();
+    dd('done');
 
 
     return view('livewire.test');
