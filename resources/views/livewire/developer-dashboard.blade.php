@@ -30,6 +30,8 @@
         <a href="/cekperbulan"><button class="btn btn-primary">Cek Perbulan yang < 8jam</button></a>
         <a href="/clean-email"><button class="btn btn-primary">Clean Email resigned_</button></a>
         <a href="/presensi-add-time"><button class="btn btn-primary">Tambah waktu presensi</button></a>
+        <a href="/direct-inject-presensi"><button class="btn btn-primary">Direct Inject Presensi</button></a>
+
 
 
     </div>
