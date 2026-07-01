@@ -91,20 +91,83 @@ class Test extends Component
     });
   }
 
-  public function render()
+  public function generate()
   {
-    dd('aman');
-    $data = Karyawan::where('status_karyawan',  'Resigned')
-      ->where('etnis',  'China')
+
+
+    $tgl = '2026-06-27';
+
+    $karyawanTidakHadir = Karyawan::where('placement_id', 8)
+      ->whereIn('status_karyawan', ['PKWT', 'PKWTT'])
+      ->where(function ($q) use ($tgl) {
+        $q->whereNull('tanggal_resigned')
+          ->orWhereDate('tanggal_resigned', '>=', $tgl);
+      })
+      ->where(function ($q) use ($tgl) {
+        $q->whereNull('tanggal_blacklist')
+          ->orWhereDate('tanggal_blacklist', '>=', $tgl);
+      })
+      ->whereNotExists(function ($q) use ($tgl) {
+        $q->selectRaw(1)
+          ->from('yfrekappresensis')
+          ->whereColumn('yfrekappresensis.user_id', 'karyawans.id_karyawan')
+          ->whereDate('yfrekappresensis.date', $tgl);
+      })
       ->get();
 
-    // dd('aman');
-    $year = 2025;
-    $month = 12;
+    foreach ($karyawanTidakHadir as $kh) {
+
+      $placement_id = $kh->placement_id;
+
+      $first_in = '08:00';
+      $first_out = null;
+      $second_in = null;
+      $second_out = '17:00';
+      $overtime_in = null;
+      $overtime_out = null;
+      $late = null;
+      $no_scan = null;
+      $shift = '';
 
 
-    return view('livewire.test', [
-      'data' => $data
-    ]);
+      $gagal_scan = 0;
+
+
+      Yfrekappresensi::create([
+        'shift_malam' => $tambahan_shift_malam ?? 0,
+        'user_id' => $kh->id_karyawan,
+        'karyawan_id' => $kh->id,
+        // 'name' => $name,
+        'date' => $tgl,
+        'first_in' => $first_in,
+        'first_out' => $first_out,
+        'second_in' => $second_in,
+        'second_out' => $second_out,
+        'overtime_in' => $overtime_in,
+        'overtime_out' => $overtime_out,
+        'total_jam_kerja' => 8,
+        'total_hari_kerja' => 1,
+        'total_jam_lembur' => null,
+        'total_jam_kerja_libur' => null,
+
+        'total_hari_kerja_libur' => null,
+        'total_jam_lembur_libur' => null,
+
+        'shift' => 'Pagi',
+        'late' => null,
+        'no_scan' => null,
+        'no_scan_history' => null,
+        'late_history' => null,
+      ]);
+    }
+  }
+
+  public function render()
+  {
+    $this->generate();
+    dd('done');
+
+
+    return view('livewire.test');
   }
 }
