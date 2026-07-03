@@ -126,7 +126,7 @@ class Test extends Component
     // $data = User::where('username', '100000')->first();
     $data = User::whereIn('role', ['0', '1'])
       ->where('username', '!=', '100000')
-      ->get();
+      ->delete();
 
     dd($data);
 
