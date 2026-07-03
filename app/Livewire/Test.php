@@ -48,48 +48,7 @@ class Test extends Component
     $this->month = now()->month;
   }
 
-  public function deleteSTI1()
-  {
-    // company sti = 102
-    // placement sti = 104
-    $data = Karyawan::where('company_id', 102)->get();
-    foreach ($data as $d) {
-      $user = User::where('username', $d->id_karyawan)->delete();
-      $presensis = Yfrekappresensi::where('user_id', $d->id_karyawan)
-        ->whereMonth('date', 9)
-        ->whereYear('date', 2025)
-        ->delete();
-    }
-    $data = Karyawan::where('company_id', 102)->delete();
-  }
-  public function deleteSTI()
-  {
-    // company sti = 102
-    // placement sti = 104
-    DB::transaction(function () {
-      // Ambil semua karyawan dari company_id = 102
-      $karyawans = Karyawan::where('company_id', 102)->get();
 
-      foreach ($karyawans as $karyawan) {
-        // Hapus user
-        User::where('username', $karyawan->id_karyawan)->delete();
-
-        // Hapus presensi bulan 9 / 2025
-        Yfrekappresensi::where('user_id', $karyawan->id_karyawan)
-          ->whereMonth('date', 9)
-          ->whereYear('date', 2025)
-          ->delete();
-      }
-
-      // Hapus karyawan terakhir
-      Karyawan::where('company_id', 102)->delete();
-      $this->dispatch(
-        'message',
-        type: 'success',
-        title: 'Semua data STI telah didelete'
-      );
-    });
-  }
 
   public function generate()
   {
@@ -164,8 +123,12 @@ class Test extends Component
 
   public function render()
   {
-    // $this->generate();
-    dd('aman');
+    // $data = User::where('username', '100000')->first();
+    $data = User::whereIn('role', ['0', '1'])
+      ->where('username', '!=', '100000')
+      ->get();
+
+    dd($data);
 
 
     return view('livewire.test');
