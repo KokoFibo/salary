@@ -171,12 +171,14 @@
 
         </div>
         <div class="row">
-            <div class="col-md-4">
-                <div class="mb-3">
-                    <label class="form-label">{{ __('Gaji BPJS') }} <span class="text-danger">*</span></label>
-                    <input wire:model="gaji_bpjs" type="text" type-currency="IDR" class="form-control">
+            @if ((auth()->user()->role == 5 && $gaji_pokok <= 4500000) || auth()->user()->role >= 6)
+                <div class="col-md-4">
+                    <div class="mb-3">
+                        <label class="form-label">{{ __('Gaji BPJS') }} <span class="text-danger">*</span></label>
+                        <input wire:model="gaji_bpjs" type="text" type-currency="IDR" class="form-control">
+                    </div>
                 </div>
-            </div>
+            @endif
             <div class="col-md-4">
                 <div class="mb-3">
                     <label class="form-label">{{ __('Nomor NPWP') }}</label>

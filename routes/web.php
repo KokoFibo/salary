@@ -238,6 +238,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/karyawansettingwr', Karyawansettingwr::class)->name('karyawansettingwr');
                 Route::get('/payrollindex', Prindexwr::class);
                 Route::get('/salaryadjustment', SalaryAdjustment::class);
+
                 Route::get('/liburnasional', Liburnasionalwr::class);
                 Route::get('/tanpaemergensicontact', TanpaEmergencyContact::class);
 
