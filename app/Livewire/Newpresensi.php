@@ -399,25 +399,31 @@ class Newpresensi extends Component
         $is_saturday = is_saturday($data->date);
         $dataKaryawan = Karyawan::where('id_karyawan', $data->user_id)->first();
 
-        if ($dataKaryawan->placement_id == 103 && $data->date === '2026-06-13') {
-            $is_saturday = true;
+        // if ($dataKaryawan->placement_id == 103 && $data->date === '2026-06-13') {
+        //     $is_saturday = true;
+        // }
+        // if ($dataKaryawan->placement_id == 8) {
+        //     if ($data->date === '2026-06-13') {
+        //         $is_saturday = true;
+        //     }
+        //     if ($data->date === '2026-06-14') {
+        //         $is_saturday = false;
+        //         $is_sunday = true;
+        //     }
+        // }
+        // if ($data->date === '2026-06-15') {
+        //     if ($dataKaryawan->placement_id == 8 || $dataKaryawan->placement_id == 103) {
+        //         $is_sunday = false;
+        //     } else {
+        //         $is_sunday = true;
+        //     }
+        // }
+
+        if ($dataKaryawan->placement_id == 8 && $data->date === '2026-07-05') {
+            $is_sunday = true;
         }
-        if ($dataKaryawan->placement_id == 8) {
-            if ($data->date === '2026-06-13') {
-                $is_saturday = true;
-            }
-            if ($data->date === '2026-06-14') {
-                $is_saturday = false;
-                $is_sunday = true;
-            }
-        }
-        if ($data->date === '2026-06-15') {
-            if ($dataKaryawan->placement_id == 8 || $dataKaryawan->placement_id == 103) {
-                $is_sunday = false;
-            } else {
-                $is_sunday = true;
-            }
-        }
+
+
 
 
 
