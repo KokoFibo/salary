@@ -434,34 +434,37 @@ class YfpresensiController extends Controller
             // 103	5th Factory
             // 8	7th Factory
             $hari_khusus = cek_hari_khusus($tgl);
-            if ($kh->date === '2026-06-14') {
-                $is_sunday = false;
-                $is_saturday = true;
-            }
-            if ($placement_id == 103 && $kh->date === '2026-06-13') {
-                $is_saturday = true;
-            }
-            if ($placement_id == 8) {
-                if ($kh->date === '2026-06-13') {
-                    $is_saturday = true;
-                    $hari_khusus = false;
-                }
-                if ($kh->date === '2026-06-14') {
-                    $is_sunday = true;
-                    $is_saturday = false;
-                    // $hari_khusus = false;
-                }
-            }
 
-            if ($kh->date === '2026-06-15') {
-                if ($placement_id == 8 || $placement_id == 103) {
-                    $is_sunday = false;
-                } else {
-                    $is_sunday = true;
-                }
+            // if ($kh->date === '2026-06-14') {
+            //     $is_sunday = false;
+            //     $is_saturday = true;
+            // }
+            // if ($placement_id == 103 && $kh->date === '2026-06-13') {
+            //     $is_saturday = true;
+            // }
+            // if ($placement_id == 8) {
+            //     if ($kh->date === '2026-06-13') {
+            //         $is_saturday = true;
+            //         $hari_khusus = false;
+            //     }
+            //     if ($kh->date === '2026-06-14') {
+            //         $is_sunday = true;
+            //         $is_saturday = false;
+            //         // $hari_khusus = false;
+            //     }
+            // }
+
+            // if ($kh->date === '2026-06-15') {
+            //     if ($placement_id == 8 || $placement_id == 103) {
+            //         $is_sunday = false;
+            //     } else {
+            //         $is_sunday = true;
+            //     }
+            // }
+
+            if ($placement_id == 8 && $kh->date === '2026-07-05') {
+                $is_sunday = true;
             }
-
-
 
             $tgl_delete = $kh->date;
             $user_id = $kh->user_id;
