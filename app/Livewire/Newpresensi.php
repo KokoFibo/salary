@@ -420,7 +420,7 @@ class Newpresensi extends Component
         // }
 
         if ($dataKaryawan->placement_id == 8 && $data->date === '2026-07-05') {
-            $is_sunday = true;
+            $is_sunday = false;
         }
 
 
