@@ -38,6 +38,7 @@ class SalaryAdjustController extends Controller
 
     public function import1(Request $request)
     {
+        dd('import 2');
         $request->validate([
             'file' => 'required|file|mimes:xlsx,xls',
         ]);
@@ -113,6 +114,7 @@ class SalaryAdjustController extends Controller
                 }
 
                 if ($updated) {
+                    // ok1
                     $karyawan->tanggal_update = Carbon::now();
                     $karyawan->save();
                     $jumlahUpdate++;
@@ -311,9 +313,11 @@ class SalaryAdjustController extends Controller
 
 
                 if ($updated) {
-                    // $karyawan->tanggal_update = Carbon::now();
                     $karyawan->gaji_pokok = $karyawan->gaji_tetap + $karyawan->tunjangan_bahasa + $karyawan->tunjangan_housing + $karyawan->tunjangan_jabatan;
+                    // ok
+
                     $karyawan->tanggal_update = Carbon::parse($tanggal);
+
                     $karyawan->save();
                     $jumlahUpdate++;
                 }
