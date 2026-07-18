@@ -28,6 +28,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('/karyawan', [ApiController::class, 'index']);
 // Route::post('store/{id}', [ApiController::class, 'store']);
 Route::get('getkaryawan/{id}', [ApiController::class, 'getDataKaryawan']);
+
+Route::get('getkaryawan/{id}', [ApiController::class, 'getDataKaryawan']);
 Route::get('getuser/{id}', [ApiController::class, 'getDataUser']);
 Route::delete('delete_karyawan_yf_aja/{id}', [ApiController::class, 'delete_data_karyawan_yf_aja']);
 Route::delete('delete_user_yf_aja/{id}', [ApiController::class, 'delete_data_user_yf_aja']);
