@@ -228,28 +228,14 @@ function saveDetail($user_id, $first_in, $first_out, $second_in, $second_out, $l
     // 103	5th Factory
     // 8	7th Factory
 
-    // if ($placement_id == 103 && $date === '2026-06-13') {
-    //     $is_saturday = true;
-    // }
-    // if ($placement_id == 8) {
-    //     if ($date === '2026-06-13') {
-    //         $is_saturday = true;
-    //     }
-    //     if ($date === '2026-06-14') {
-    //         $is_saturday = false;
-    //         $is_sunday = true;
-    //     }
-    // }
-    // if ($date === '2026-06-15') {
-    //     if ($placement_id == 8 || $placement_id == 103) {
-    //         $is_sunday = false;
-    //     } else {
-    //         $is_sunday = true;
-    //     }
-    // }
 
-    if ($placement_id == 8 && $date === '2026-07-05') {
+
+
+    if ($placement_id == 8 && $date === '2026-08-30') {
         $is_sunday = false;
+    }
+    if ($placement_id == 8 && $date === '2026-09-01') {
+        $is_sunday = true;
     }
 
 
@@ -2061,8 +2047,13 @@ function langsungLembur($second_out, $tgl, $shift, $jabatan, $placement_id)
     //     }
     // }
 
-    if ($placement_id == 8 && $tgl === '2026-07-05') {
+
+
+    if ($placement_id == 8 && $tgl === '2026-08-30') {
         $is_sunday = false;
+    }
+    if ($placement_id == 8 && $tgl === '2026-09-01') {
+        $is_sunday = true;
     }
 
 
@@ -2354,8 +2345,13 @@ function hitung_jam_kerja($first_in, $first_out, $second_in, $second_out, $late,
     //     }
     // }
 
-    if ($placement_id == 8 && $tgl === '2026-07-05') {
+
+
+    if ($placement_id == 8 && $tgl === '2026-08-30') {
         $is_sunday = false;
+    }
+    if ($placement_id == 8 && $tgl === '2026-09-01') {
+        $is_sunday = true;
     }
 
 
@@ -3420,8 +3416,13 @@ function checkSecondOutLate($second_out, $shift, $tgl, $jabatan, $placement_id)
     // }
 
 
-    if ($placement_id == 8 && $tgl === '2026-07-05') {
+
+
+    if ($placement_id == 8 && $tgl === '2026-08-30') {
         $is_sunday = false;
+    }
+    if ($placement_id == 8 && $tgl === '2026-09-01') {
+        $is_sunday = true;
     }
 
 
