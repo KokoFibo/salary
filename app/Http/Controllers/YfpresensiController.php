@@ -462,8 +462,12 @@ class YfpresensiController extends Controller
             //     }
             // }
 
-            if ($placement_id == 8 && $kh->date === '2026-07-05') {
+            // pabrik 7 Id =8
+            if ($placement_id == 8 && $kh->date === '2026-08-30') {
                 $is_sunday = false;
+            }
+            if ($placement_id == 8 && $kh->date === '2026-09-01') {
+                $is_sunday = true;
             }
 
             $tgl_delete = $kh->date;
