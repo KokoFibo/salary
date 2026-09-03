@@ -585,7 +585,18 @@
                                             </td>
                                             <td class="text-end">{{ $p->jht ? number_format($p->jht) : '' }}</td>
                                             <td class="text-end">{{ $p->jp ? number_format($p->jp) : '' }}</td>
-                                            <td class="text-end">{{ $p->jkk ? 'Yes' : '' }}</td>
+
+                                            {{-- <td class="text-end">{{ $p->jkk ? 'Yes' : '' }}</td> --}}
+                                            @if ($p->company_id == 101)
+                                                <td class="text-end">
+                                                    {{ $p->jkk ? number_format(($p->gaji_bpjs * 0.89) / 100) : '-' }}
+                                                </td>
+                                            @else
+                                                <td class="text-end">
+                                                    {{ $p->jkk ? number_format(($p->gaji_bpjs * 0.24) / 100) : '-' }}
+                                                </td>
+                                            @endif
+
                                             <td class="text-end">{{ $p->jkm ? 'Yes' : '' }}</td>
                                             <td class="text-end">
                                                 {{ $p->kesehatan ? number_format($p->kesehatan) : '' }}
