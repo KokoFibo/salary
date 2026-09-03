@@ -822,7 +822,7 @@ function hitung_pph21(
 
         if ($jkk) {
             $jkk_company = ($gaji_bpjs * 0.24) / 100;
-            if ($company_id == 102) { // company STI = 102
+            if ($company_id == 101) { // company YNE = 101
                 $jkk_company = ($gaji_bpjs * 0.89) / 100;
             }
         } else $jkk_company = 0;

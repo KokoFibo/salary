@@ -196,8 +196,8 @@
 
                         if ($d->jkk) {
                             $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
-                            if ($d->company_id == 106) {
-                                // Company STI
+                            if ($d->company_id == 101) {
+                                // Company YNE = 101
                                 $jkk_company = ($d->gaji_bpjs * 0.89) / 100;
                             }
                         } else {
