@@ -48,6 +48,94 @@
             }
         }
     </style>
+    <style>
+        .pr-toolbar {
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #e7e9ee;
+            box-shadow: 0 2px 10px rgba(16, 24, 40, 0.04);
+        }
+
+        .pr-card {
+            border: 1px solid #e7e9ee;
+            border-radius: 14px;
+            box-shadow: 0 2px 10px rgba(16, 24, 40, 0.04);
+        }
+
+        .pr-total-chip {
+            border: none;
+            border-radius: 999px;
+            font-weight: 600;
+            background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+            color: #fff !important;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, .25);
+        }
+
+        .pr-rounded-btn {
+            border-radius: 10px !important;
+        }
+
+        .pr-select-rounded {
+            border-radius: 10px !important;
+        }
+
+        .table th {
+            background: #f7f8fa;
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+            color: #475467;
+            font-weight: 700;
+        }
+
+        .table td {
+            font-size: .85rem;
+            vertical-align: middle;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f0f6ff;
+        }
+
+        .pr-badge-aktif {
+            background-color: #16a34a !important;
+        }
+
+        .pr-badge-nonaktif {
+            background-color: #6b7280 !important;
+        }
+
+        .pr-switch-group {
+            row-gap: .6rem;
+        }
+
+        .pr-switch-group .form-check,
+        .pr-switch-single .form-check {
+            background: #f7f8fa;
+            border-radius: 999px;
+            padding: .4rem .9rem .4rem 2.1rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .pr-switch-group .form-check-input,
+        .pr-switch-single .form-check-input {
+            margin-top: 0;
+            flex-shrink: 0;
+        }
+
+        .pr-switch-group .form-check-label,
+        .pr-switch-single .form-check-label {
+            margin-left: .35rem;
+        }
+
+        @media (max-width: 575.98px) {
+            .pr-toolbar {
+                padding: .75rem !important;
+            }
+        }
+    </style>
     <div class="p-2">
         {{-- <p>selected_company : {{ $selected_company }}</p>
         <p>selected_placement : {{ $selected_placement }}</p>
@@ -60,28 +148,28 @@
         <p>Year : {{ $year }}</p> --}}
 
         @if (check_rebuild_done())
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
                 <strong>Congratulation!</strong> Payroll Rebuilt Succesfully.
                 <button wire:click='close_succesful_rebuilt' type="button" class="btn-close" data-bs-dismiss="alert"
                     aria-label="Close"></button>
             </div>
         @endif
         @if (check_rebuilding())
-            <div class="alert alert-primary" role="alert">
+            <div class="alert alert-primary shadow-sm" role="alert">
                 <strong>Payroll is rebuilding ...</strong> You may safely leave this page.
             </div>
         @endif
         @if ($fail = check_fail_job())
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger shadow-sm" role="alert">
                 <strong>Errror building payroll</strong>
             </div>
         @endif
         {{-- @endif --}}
 
-        <div class="row mb-2 d-flex flex-column flex-lg-row px-4 p-2">
+        <div class="row mb-2 d-flex flex-column flex-lg-row px-4 p-2 pr-toolbar mx-1 py-3">
             <div class="col">
                 @if (auth()->user()->role >= 7)
-                    <div class="form-check form-switch">
+                    <div class="form-check form-switch pr-switch-single">
                         <input wire:model.live="lock_slip_gaji" class="form-check-input" type="checkbox" role="switch"
                             id="flexSwitchCheckChecked" value=1 {{ $lock_slip_gaji ? 'checked' : '' }}>
                         <label class="form-check-label" for="flexSwitchCheckChecked">
@@ -99,7 +187,8 @@
                 <h4 class="text-center text-bold ">{{ __('Yifang Payroll') }}</h4>
             </div>
             <div class="col">
-                <div class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center justify-content-end">
+                <div
+                    class="d-flex gap-2 flex-column flex-xl-row gap-xl-5 align-items-center justify-content-end pr-switch-group">
                     @if (auth()->user()->role > 6)
                         <div class="form-check form-switch">
                             <input wire:model.live="lock_data" class="form-check-input" type="checkbox" role="switch"
@@ -131,21 +220,21 @@
         </div>
         @if (!check_rebuilding())
             {{-- =============== --}}
-            <div class="px-3 mb-2">
+            <div class="px-3 py-3 mb-3 pr-toolbar mx-1">
 
                 {{-- BARIS ATAS --}}
                 <div class="row g-2 align-items-center mb-3">
 
                     {{-- Total Gaji --}}
                     <div class="col-12 col-xl-auto">
-                        <button class="btn btn-info w-100 nightowl-daylight">
+                        <button class="btn btn-info w-100 nightowl-daylight pr-rounded-btn pr-total-chip">
                             {{ __('Total Gaji') }} : Rp. {{ number_format($total) }}
                         </button>
                     </div>
 
                     {{-- Year --}}
                     <div class="col-6 col-md-3 col-xl-auto">
-                        <select class="form-select" wire:model.live="year">
+                        <select class="form-select pr-select-rounded" wire:model.live="year">
                             @foreach ($select_year as $sy)
                                 <option value="{{ $sy }}">{{ $sy }}</option>
                             @endforeach
@@ -154,14 +243,15 @@
 
                     {{-- Month --}}
                     <div class="col-6 col-md-3 col-xl-auto d-flex gap-2">
-                        <select class="form-select" wire:model.live="month">
+                        <select class="form-select pr-select-rounded" wire:model.live="month">
                             @foreach ($select_month as $sm)
                                 <option value="{{ $sm }}">{{ monthName($sm) }}</option>
                             @endforeach
                             {{-- <option value="2">February 2026</option> --}}
                         </select>
                         @if (auth()->user()->role == 8)
-                            <button wire:click="clear_lock" class="btn btn-primary w-100 nightowl-daylight">
+                            <button wire:click="clear_lock"
+                                class="btn btn-primary w-100 nightowl-daylight pr-rounded-btn">
                                 {{ __('Clear Lock') }}
                             </button>
                         @endif
@@ -197,7 +287,7 @@
                     @if (auth()->user()->role == 8)
                         <div class="col-12 col-md-6 col-xl-auto">
                             <a href="/cekabsensitanpaid" class="d-grid">
-                                <button class="btn btn-primary nightowl-daylight">
+                                <button class="btn btn-primary nightowl-daylight pr-rounded-btn">
                                     {{ __('Cek Absensi Tanpa ID') }}
                                 </button>
                             </a>
@@ -205,19 +295,21 @@
 
                         <div class="col-6 col-md-4 col-xl-auto">
                             <button wire:click="buat_payroll('noQueue')"
-                                class="btn btn-primary w-100 nightowl-daylight">
+                                class="btn btn-primary w-100 nightowl-daylight pr-rounded-btn">
                                 {{ __('Rebuild tanpa queue') }}
                             </button>
                         </div>
 
                         <div class="col-6 col-md-4 col-xl-auto">
-                            <button wire:click="buat_payroll_baru" class="btn btn-primary w-100 nightowl-daylight">
+                            <button wire:click="buat_payroll_baru"
+                                class="btn btn-primary w-100 nightowl-daylight pr-rounded-btn">
                                 {{ __('Rebuild Baru') }}
                             </button>
                         </div>
 
                         <div class="col-6 col-md-4 col-xl-auto">
-                            <button wire:click="rebuildOptimized" class="btn btn-primary w-100 nightowl-daylight">
+                            <button wire:click="rebuildOptimized"
+                                class="btn btn-primary w-100 nightowl-daylight pr-rounded-btn">
                                 {{ __('Quick Rebuild') }}
                             </button>
                         </div>
@@ -225,33 +317,34 @@
 
                     <div class="col-6 col-md-4 col-xl-auto">
                         <a href="/ter" class="d-grid">
-                            <button class="btn btn-warning nightowl-daylight">
+                            <button class="btn btn-warning nightowl-daylight pr-rounded-btn">
                                 {{ __('Table TER PPh21') }}
                             </button>
                         </a>
                     </div>
 
                     <div class="col-6 col-md-4 col-xl-auto">
-                        <button wire:click="bankexcel" class="btn btn-success w-100 nightowl-daylight">
+                        <button wire:click="bankexcel" class="btn btn-success w-100 nightowl-daylight pr-rounded-btn">
                             {{ __('Report for Bank') }}
                         </button>
                     </div>
 
                     <div class="col-6 col-md-4 col-xl-auto">
-                        <button wire:click="excelDetailReport2" class="btn btn-warning w-100 nightowl-daylight">
+                        <button wire:click="excelDetailReport2"
+                            class="btn btn-warning w-100 nightowl-daylight pr-rounded-btn">
                             {{ __('Detail Report') }}
                         </button>
                     </div>
 
                     <div class="col-6 col-md-4 col-xl-auto">
-                        <button wire:click="export" class="btn btn-success w-100 nightowl-daylight">
+                        <button wire:click="export" class="btn btn-success w-100 nightowl-daylight pr-rounded-btn">
                             Excel
                         </button>
                     </div>
 
                     <div class="col-12 col-md-6 col-xl-auto">
                         <a href="/laporan-cost/{{ $year }}" class="d-grid">
-                            <button class="btn btn-success nightowl-daylight">
+                            <button class="btn btn-success nightowl-daylight pr-rounded-btn">
                                 Cost Report
                             </button>
                         </a>
@@ -261,7 +354,7 @@
                         {{-- <button wire:click="buat_payroll('queue')" --}}
                         <button wire:click="rebuildOptimized"
                             {{ is_40_days($month, $year) || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
-                            class="btn btn-primary w-100 nightowl-daylight">
+                            class="btn btn-primary w-100 nightowl-daylight pr-rounded-btn">
                             {{ __('Rebuild') }}
                         </button>
                     </div>
@@ -287,7 +380,7 @@
 
         @endif
 
-        <div class="card">
+        <div class="card pr-card">
             <div class="card-header">
                 <div class="row g-2 align-items-end">
 
@@ -304,7 +397,7 @@
 
                     {{-- Placement --}}
                     <div class="col-12 col-md-6 col-xl">
-                        <select wire:model.live="selected_placement" class="form-select">
+                        <select wire:model.live="selected_placement" class="form-select pr-select-rounded">
                             <option value="0">{{ __('All Directorates') }}</option>
                             @foreach ($placements as $p)
                                 <option value="{{ $p->id }}">{{ $p->placement_name }}</option>
@@ -314,7 +407,7 @@
 
                     {{-- Company --}}
                     <div class="col-12 col-md-6 col-xl">
-                        <select wire:model.live="selected_company" class="form-select">
+                        <select wire:model.live="selected_company" class="form-select pr-select-rounded">
                             <option value="0">{{ __('All Companies') }}</option>
                             @foreach ($companies as $c)
                                 <option value="{{ $c->id }}">{{ $c->company_name }}</option>
@@ -324,7 +417,7 @@
 
                     {{-- Department --}}
                     <div class="col-12 col-md-6 col-xl">
-                        <select wire:model.live="selected_departemen" class="form-select">
+                        <select wire:model.live="selected_departemen" class="form-select pr-select-rounded">
                             <option value="0">{{ __('All Department') }}</option>
                             @foreach ($departments as $d)
                                 <option value="{{ $d->id }}">{{ $d->nama_department }}</option>
@@ -334,7 +427,7 @@
 
                     {{-- Status --}}
                     <div class="col-6 col-md-3 col-xl">
-                        <select class="form-select" wire:model.live="status">
+                        <select class="form-select pr-select-rounded" wire:model.live="status">
                             <option value="0">{{ __('Semua') }}</option>
                             <option value="1">{{ __('Status Aktif') }}</option>
                             <option value="2">{{ __('Status Non Aktif') }}</option>
@@ -343,7 +436,7 @@
 
                     {{-- Per Page --}}
                     <div class="col-6 col-md-3 col-xl">
-                        <select class="form-select" wire:model.live="perpage">
+                        <select class="form-select pr-select-rounded" wire:model.live="perpage">
                             <option value="10">10 {{ __('rows') }}</option>
                             <option value="15">15 {{ __('rows') }}</option>
                             <option value="20">20 {{ __('rows') }}</option>
@@ -503,10 +596,10 @@
                                         <tr>
                                             <td>
                                                 <button type="button"
-                                                    class="btn btn-success btn-sm nightowl-daylight"
+                                                    class="btn btn-success btn-sm nightowl-daylight pr-rounded-btn"
                                                     wire:click="showDetail({{ $p->id_karyawan }})"
                                                     data-bs-toggle="modal" data-bs-target="#payroll"><i
-                                                        class="fa-solid fa-magnifying-glass nightowl-daylight"></i></button>
+                                                        class="fa-solid fa-magnifying-glass nightowl-daylight pr-rounded-btn"></i></button>
 
                                             </td>
 
@@ -518,7 +611,12 @@
                                             @if (auth()->user()->role == 8)
                                                 <td>{{ number_format($p->gaji_libur) }}</td>
                                             @endif
-                                            <td>{{ $p->status_karyawan }}</td>
+                                            <td>
+                                                <span
+                                                    class="badge rounded-pill {{ strtolower($p->status_karyawan) == 'aktif' ? 'pr-badge-aktif' : 'pr-badge-nonaktif' }}">
+                                                    {{ $p->status_karyawan }}
+                                                </span>
+                                            </td>
                                             <td>{{ nama_jabatan($p->jabatan_id) }}</td>
                                             <td>{{ nama_placement($p->placement_id) }}</td>
                                             <td>{{ nama_company($p->company_id) }}</td>
