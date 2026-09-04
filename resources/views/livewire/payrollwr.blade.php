@@ -79,6 +79,26 @@
             border-radius: 10px !important;
         }
 
+        .pr-action-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+        }
+
+        .pr-action-row>[class*="col-"] {
+            flex: 0 0 auto;
+            width: auto;
+            max-width: none;
+        }
+
+        .pr-action-row .btn {
+            white-space: nowrap;
+        }
+
+        .pr-action-row .btn i {
+            margin-right: .35rem;
+        }
+
         .table th {
             background: #f7f8fa;
             font-size: .78rem;
@@ -282,70 +302,72 @@
                 </div>
 
                 {{-- BARIS TOMBOL AKSI --}}
-                <div class="row g-2" wire:loading.class="invisible">
+                <div class="row g-2 pr-action-row" wire:loading.class="invisible">
 
                     @if (auth()->user()->role == 8)
                         <div class="col-12 col-md-6 col-xl-auto">
                             <a href="/cekabsensitanpaid" class="d-grid">
-                                <button class="btn btn-primary nightowl-daylight pr-rounded-btn">
-                                    {{ __('Cek Absensi Tanpa ID') }}
+                                <button class="btn btn-sm btn-primary nightowl-daylight pr-rounded-btn">
+                                    <i class="fa-solid fa-magnifying-glass"></i>{{ __('Cek Absensi Tanpa ID') }}
                                 </button>
                             </a>
                         </div>
 
                         <div class="col-6 col-md-4 col-xl-auto">
                             <button wire:click="buat_payroll('noQueue')"
-                                class="btn btn-primary w-100 nightowl-daylight pr-rounded-btn">
-                                {{ __('Rebuild tanpa queue') }}
+                                class="btn btn-sm btn-primary w-100 nightowl-daylight pr-rounded-btn">
+                                <i class="fa-solid fa-rotate"></i>{{ __('Rebuild tanpa queue') }}
                             </button>
                         </div>
 
                         <div class="col-6 col-md-4 col-xl-auto">
                             <button wire:click="buat_payroll_baru"
-                                class="btn btn-primary w-100 nightowl-daylight pr-rounded-btn">
-                                {{ __('Rebuild Baru') }}
+                                class="btn btn-sm btn-primary w-100 nightowl-daylight pr-rounded-btn">
+                                <i class="fa-solid fa-arrows-rotate"></i>{{ __('Rebuild Baru') }}
                             </button>
                         </div>
 
                         <div class="col-6 col-md-4 col-xl-auto">
                             <button wire:click="rebuildOptimized"
-                                class="btn btn-primary w-100 nightowl-daylight pr-rounded-btn">
-                                {{ __('Quick Rebuild') }}
+                                class="btn btn-sm btn-primary w-100 nightowl-daylight pr-rounded-btn">
+                                <i class="fa-solid fa-bolt"></i>{{ __('Quick Rebuild') }}
                             </button>
                         </div>
                     @endif
 
                     <div class="col-6 col-md-4 col-xl-auto">
                         <a href="/ter" class="d-grid">
-                            <button class="btn btn-warning nightowl-daylight pr-rounded-btn">
-                                {{ __('Table TER PPh21') }}
+                            <button class="btn btn-sm btn-warning nightowl-daylight pr-rounded-btn">
+                                <i class="fa-solid fa-table"></i>{{ __('Table TER PPh21') }}
                             </button>
                         </a>
                     </div>
 
                     <div class="col-6 col-md-4 col-xl-auto">
-                        <button wire:click="bankexcel" class="btn btn-success w-100 nightowl-daylight pr-rounded-btn">
-                            {{ __('Report for Bank') }}
+                        <button wire:click="bankexcel"
+                            class="btn btn-sm btn-success w-100 nightowl-daylight pr-rounded-btn">
+                            <i class="fa-solid fa-building-columns"></i>{{ __('Report for Bank') }}
                         </button>
                     </div>
 
                     <div class="col-6 col-md-4 col-xl-auto">
                         <button wire:click="excelDetailReport2"
-                            class="btn btn-warning w-100 nightowl-daylight pr-rounded-btn">
-                            {{ __('Detail Report') }}
+                            class="btn btn-sm btn-warning w-100 nightowl-daylight pr-rounded-btn">
+                            <i class="fa-solid fa-file-lines"></i>{{ __('Detail Report') }}
                         </button>
                     </div>
 
                     <div class="col-6 col-md-4 col-xl-auto">
-                        <button wire:click="export" class="btn btn-success w-100 nightowl-daylight pr-rounded-btn">
-                            Excel
+                        <button wire:click="export"
+                            class="btn btn-sm btn-success w-100 nightowl-daylight pr-rounded-btn">
+                            <i class="fa-solid fa-file-excel"></i>Excel
                         </button>
                     </div>
 
                     <div class="col-12 col-md-6 col-xl-auto">
                         <a href="/laporan-cost/{{ $year }}" class="d-grid">
-                            <button class="btn btn-success nightowl-daylight pr-rounded-btn">
-                                Cost Report
+                            <button class="btn btn-sm btn-success nightowl-daylight pr-rounded-btn">
+                                <i class="fa-solid fa-chart-line"></i>Cost Report
                             </button>
                         </a>
                     </div>
@@ -354,8 +376,8 @@
                         {{-- <button wire:click="buat_payroll('queue')" --}}
                         <button wire:click="rebuildOptimized"
                             {{ is_40_days($month, $year) || isDataUtamaLengkap() > 0 ? 'disabled' : '' }}
-                            class="btn btn-primary w-100 nightowl-daylight pr-rounded-btn">
-                            {{ __('Rebuild') }}
+                            class="btn btn-sm btn-primary w-100 nightowl-daylight pr-rounded-btn">
+                            <i class="fa-solid fa-arrow-rotate-right"></i>{{ __('Rebuild') }}
                         </button>
                     </div>
 
