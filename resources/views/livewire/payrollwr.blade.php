@@ -440,7 +440,7 @@
                     {{-- Department --}}
                     <div class="col-12 col-md-6 col-xl">
                         <select wire:model.live="selected_departemen" class="form-select pr-select-rounded">
-                            <option value="0">{{ __('All Department') }}</option>
+                            <option value="0">{{ __('All Departments') }}</option>
                             @foreach ($departments as $d)
                                 <option value="{{ $d->id }}">{{ $d->nama_department }}</option>
                             @endforeach
