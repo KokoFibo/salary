@@ -37,6 +37,9 @@ return new class extends Migration
             $table->string('alamat_identitas');
             $table->string('alamat_tinggal_sekarang');
             $table->integer('status');
+            $table->string('pendidikan')->nullable();
+            $table->string('jurusan')->nullable();
+            $table->string('nama_kampus')->nullable();
             $table->timestamps();
         });
     }

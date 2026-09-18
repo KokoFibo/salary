@@ -47,6 +47,9 @@
                 <th style="text-align: center;">Golongan Darah</th>
                 <th style="text-align: center;">Agama</th>
                 <th style="text-align: center;">Etnis</th>
+                <th style="text-align: center;">Pendidikan</th>
+                <th style="text-align: center;">Jurusan</th>
+                <th style="text-align: center;">Nama Sekolah/Kampus</th>
                 <th style="text-align: center;">Nama Kontak Darurat 1</th>
                 <th style="text-align: center;">Nomor Handphone Kontak Darurat 1</th>
                 <th style="text-align: center;">Hubungan Kontrak Darurat 1</th>
@@ -100,6 +103,9 @@
                     <th style="text-align: center;">{{ $d->golongan_darah }}</th>
                     <th style="text-align: center;">{{ $d->agama }}</th>
                     <th style="text-align: center;">{{ $d->etnis }}</th>
+                    <th style="text-align: center;">{{ $d->pendidikan }}</th>
+                    <th style="text-align: center;">{{ $d->jurusan }}</th>
+                    <th style="text-align: center;">{{ $d->nama_kampus }}</th>
                     <th style="text-align: center;">{{ $d->kontak_darurat }}</th>
                     <th style="text-align: center;">{{ $d->hp1 }}</th>
                     <th style="text-align: center;">{{ $d->hubungan1 }}</th>
