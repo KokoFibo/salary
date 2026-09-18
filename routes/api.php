@@ -5,6 +5,7 @@ use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\ApplicantFileController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LarkController;
 use App\Http\Controllers\SlipgajiController;
 use App\Http\Controllers\UserSyncController;
@@ -50,3 +51,7 @@ Route::get('/latest-month-year/{user_id}', [AttendanceController::class, 'getLat
 Route::get('/get-payroll/{id_karyawan}/{month}/{year}', [ApiController::class, 'getPayroll']);
 Route::post('/user/update-email', [ApiController::class, 'updateEmail']);
 Route::get('/applicant-files/{id_karyawan}', [ApplicantFileController::class, 'index']);
+Route::get(
+    '/karyawan/{id_karyawan}/pendidikan',
+    [KaryawanController::class, 'checkPendidikan']
+);
