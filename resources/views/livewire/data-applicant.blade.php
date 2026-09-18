@@ -34,6 +34,7 @@
                         <table class="table table-striped">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>id</th>
                                     <th>Nama</th>
                                     <th>Email</th>
@@ -42,6 +43,10 @@
                                     @if (auth()->user()->role == 8)
                                         <th>Etnis</th>
                                     @endif
+
+                                    <th>Pendidikan</th>
+                                    <th>Jurusan</th>
+                                    <th>Nama Sekolah/Kampus</th>
                                     <th>Tanggal Lahir</th>
                                     <th>Status Penerimaan</th>
                                     <th>Submitted</th>
@@ -50,64 +55,71 @@
                             </thead>
                             <tbody>
                                 @foreach ($data as $d)
-                                    <tr>
-                                        <td>{{ $d->id }}</td>
-                                        <td>{{ $d->nama }}</td>
-                                        <td>{{ $d->email }}</td>
-                                        <td>{{ $d->hp }}</td>
-                                        <td>{{ $d->gender }}</td>
-                                        @if (auth()->user()->role == 8)
-                                            <td>{{ $d->etnis }}</td>
+                                    <td>
+                                        @if (Auth::user()->role >= 6)
+                                            <button wire:click="deleteID(`{{ $d->id }}`)"
+                                                wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
+                                                class="btn btn-danger btn-sm"><i
+                                                    class="fa-solid fa-trash-can"></i></button>
                                         @endif
-                                        <td>{{ format_tgl($d->tgl_lahir) }}</td>
-                                        <td>
-                                            @if ($editId === $d->id)
-                                                {{-- selkect --}}
-                                                <select class="form-select" aria-label="Default select example"
-                                                    wire:model.live='status'>
-                                                    <option value="1">1. Melamar</option>
-                                                    <option value="2">2. Sedang Komunikasi</option>
-                                                    <option value="3">3. Psikotest</option>
-                                                    <option value="4">4. Interview</option>
-                                                    <option value="5">5. Ditolak</option>
-                                                    <option value="6">6. Cadangan</option>
-                                                    <option value="7">7. Onboarding</option>
-                                                    <option value="8">8. Diterima</option>
-                                                </select>
+                                    </td>
+                                    <td>{{ $d->id }}</td>
+                                    <td>{{ $d->nama }}</td>
+                                    <td>{{ $d->email }}</td>
+                                    <td>{{ $d->hp }}</td>
+                                    <td>{{ $d->gender }}</td>
+                                    @if (auth()->user()->role == 8)
+                                        <td>{{ $d->etnis }}</td>
+                                    @endif
+                                    <td>{{ $d->pendidikan }}</td>
+                                    <td>{{ $d->jurusan }}</td>
+                                    <td>{{ $d->nama_kampus }}</td>
+                                    <td>{{ format_tgl($d->tgl_lahir) }}</td>
+                                    <td>
+                                        @if ($editId === $d->id)
+                                            {{-- selkect --}}
+                                            <select class="form-select" aria-label="Default select example"
+                                                wire:model.live='status'>
+                                                <option value="1">1. Melamar</option>
+                                                <option value="2">2. Sedang Komunikasi</option>
+                                                <option value="3">3. Psikotest</option>
+                                                <option value="4">4. Interview</option>
+                                                <option value="5">5. Ditolak</option>
+                                                <option value="6">6. Cadangan</option>
+                                                <option value="7">7. Onboarding</option>
+                                                <option value="8">8. Diterima</option>
+                                            </select>
+                                        @else
+                                            <span
+                                                class="badge {{ getStatusColor($d->status) }}">{{ getNamaStatus($d->status) }}</span>
+                                        @endif
+                                    </td>
+                                    <td>{{ dateTimeFormat($d->created_at) }}</td>
+                                    <td>
+                                        @if ($editId === $d->id)
+                                            @if ($status == 8)
+                                                <button class="btn btn-sm btn-primary" wire:click='save'>Simpan</button>
                                             @else
-                                                <span
-                                                    class="badge {{ getStatusColor($d->status) }}">{{ getNamaStatus($d->status) }}</span>
+                                                <button class="btn btn-sm btn-primary" wire:click='save'>Simpan</button>
                                             @endif
-                                        </td>
-                                        <td>{{ dateTimeFormat($d->created_at) }}</td>
-                                        <td>
-                                            @if ($editId === $d->id)
-                                                @if ($status == 8)
-                                                    <button class="btn btn-sm btn-primary"
-                                                        wire:click='save'>Simpan</button>
-                                                @else
-                                                    <button class="btn btn-sm btn-primary"
-                                                        wire:click='save'>Simpan</button>
-                                                @endif
+                                            <button class="btn btn-sm btn-warning" wire:click='cancel'>Cancel</button>
+                                        @else
+                                            @if (check_storage($d->applicant_id))
+                                                <button class="btn btn-sm btn-success"
+                                                    wire:click='show({{ $d->id }})'>Show</button>
+                                            @else
                                                 <button class="btn btn-sm btn-warning"
-                                                    wire:click='cancel'>Cancel</button>
-                                            @else
-                                                @if (check_storage($d->applicant_id))
-                                                    <button class="btn btn-sm btn-success"
-                                                        wire:click='show({{ $d->id }})'>Show</button>
-                                                @else
-                                                    <button class="btn btn-sm btn-warning"
-                                                        wire:click='show({{ $d->id }})'>Show</button>
-                                                @endif
-                                                @if (auth()->user()->username != '8217')
-                                                    <button class="btn btn-sm btn-danger"
-                                                        wire:key="{{ $d->id }}-delete"
-                                                        wire:click='deleteConfirmation({{ $d->id }})'>Delete</button>
-                                                    <button class="btn btn-sm btn-primary"
-                                                        wire:click='edit({{ $d->id }})'>Rubah Status</button>
-                                                @endif
+                                                    wire:click='show({{ $d->id }})'>Show</button>
                                             @endif
-                                        </td>
+                                            @if (auth()->user()->username != '8217')
+                                                <button class="btn btn-sm btn-danger"
+                                                    wire:key="{{ $d->id }}-delete"
+                                                    wire:click='deleteConfirmation({{ $d->id }})'>Delete</button>
+                                                <button class="btn btn-sm btn-primary"
+                                                    wire:click='edit({{ $d->id }})'>Rubah Status</button>
+                                            @endif
+                                        @endif
+                                    </td>
                                     </tr>
                                 @endforeach
                             </tbody>

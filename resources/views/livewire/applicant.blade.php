@@ -248,15 +248,15 @@
                                 class="text-red-500 ml-1">*</span></label>
                         <div class="flex w-full gap-3">
                             <div class="flex w-1/2 items-center ps-4 border border-gray-200 rounded">
-                                <input wire:model.live='gender' id="bordered-radio-1" type="radio"
-                                    value="Laki-laki" name="bordered-radio"
+                                <input wire:model='gender' id="bordered-radio-1" type="radio" value="Laki-laki"
+                                    name="bordered-radio"
                                     class=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
                                 <label for="bordered-radio-1"
                                     class="w-full py-2.5 ms-2 text-sm font-medium text-gray-900">Pria</label>
                             </div>
                             <div class="flex w-1/2 items-center ps-4 border border-gray-200 rounded">
-                                <input wire:model.live='gender' id="bordered-radio-2" type="radio"
-                                    value="Perempuan" name="bordered-radio"
+                                <input wire:model='gender' id="bordered-radio-2" type="radio" value="Perempuan"
+                                    name="bordered-radio"
                                     class=" text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
                                 <label for="bordered-radio-2"
                                     class="w-full py-2.5 ms-2 text-sm font-medium text-gray-900">Wanita</label>
@@ -346,7 +346,7 @@
                     <div>
                         <label for="ptkp" class="block mb-2 text-sm font-medium text-gray-900">PTKP<span
                                 class="text-red-500 ml-1">*</span></label>
-                        <select id="ptkp" wire:model.live='ptkp'
+                        <select id="ptkp" wire:model='ptkp'
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                             <option value=" ">{{ __('Pilih PTKP') }}</option>
                             <option value="TK0">TK/0</option>
@@ -364,6 +364,65 @@
                             </div>
                         @enderror
                     </div>
+                </div>
+                {{-- Pendidikan --}}
+                <div class="p-3 grid gap-6 mb-6 md:grid-cols-3">
+                    <div>
+                        <label for="pendidikan" class="block mb-2 text-sm font-medium text-gray-900">Pendidikan<span
+                                class="text-red-500 ml-1">*</span></label>
+                        <select name="pendidikan" class="form-control" required wire:model.live='pendidikan'
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                            <option value="">
+                                -- Pilih Pendidikan --
+                            </option>
+
+                            <option value="Tidak Bersekolah">Tidak Bersekolah</option>
+                            <option value="SD">SD</option>
+                            <option value="SMP">SMP</option>
+                            <option value="SMA/SMK">SMA/SMK</option>
+                            <option value="D1">D1</option>
+                            <option value="D2">D2</option>
+                            <option value="D3">D3</option>
+                            <option value="D4">D4</option>
+                            <option value="S1">S1</option>
+                            <option value="S2">S2</option>
+                            <option value="S3">S3</option>
+                        </select>
+                        @error('pendidikan')
+                            <div class="text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    @if (!in_array($pendidikan, ['Tidak Bersekolah', 'SD', 'SMP', '']))
+                        <div>
+                            <label for="jurusan" class="block mb-2 text-sm font-medium text-gray-900">Jurusan<span
+                                    class="text-red-500 ml-1">*</span></label>
+                            <input wire:model='jurusan' type="text" id="jurusan"
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+                            @error('jurusan')
+                                <div class="text-red-500">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div>
+                            <label for="nama_kampus" class="block mb-2 text-sm font-medium text-gray-900">Nama
+                                Sekolah/Kampus<span class="text-red-500 ml-1">*</span></label>
+                            <input wire:model='nama_kampus' type="text" id="nama_kampus"
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full" />
+                            @error('nama_kampus')
+                                <div class="text-red-500">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    @endif
+
+
+
+
+
                 </div>
                 {{-- kontak --}}
                 <div class="p-3 grid gap-6 mb-6 md:grid-cols-3">

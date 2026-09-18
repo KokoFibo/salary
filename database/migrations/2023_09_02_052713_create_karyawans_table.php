@@ -80,6 +80,9 @@ return new class extends Migration
             $table->date('tanggal_update')->nullable();
             $table->integer('gaji_tetap')->nullable();
             $table->integer('tunjangan_housing')->nullable();
+            $table->string('pendidikan')->nullable();
+            $table->string('jurusan')->nullable();
+            $table->string('nama_kampus')->nullable();
             $table->timestamps();
         });
     }

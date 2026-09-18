@@ -27,7 +27,20 @@ class DataApplicant extends Component
     // public $amazonUrl;
 
 
+    public function deleteID($id)
+    {
+        $data = Applicantdata::find($id);
 
+        $data->delete();
+        $this->dispatch(
+            'message',
+            type: 'success',
+            title: 'Data Applicant berhasil dihapus.',
+            position: 'center'
+        );
+    }
+
+    public function terimaID($id) {}
 
     public function terimaConfirmation($id)
     {
@@ -114,6 +127,7 @@ class DataApplicant extends Component
             return;
         }
         $dataApplicant = Applicantdata::find($id);
+
         $dataKaryawan = Karyawan::where('id_file_karyawan', $dataApplicant->applicant_id)->first();
         if ($dataKaryawan != null) {
             // $this->dispatch('error', message: 'Data karyawan ini sudah di berada dalam database karyawan');
@@ -184,22 +198,29 @@ class DataApplicant extends Component
                 'company_id' => 100,
                 'department_id' => 100,
                 'placement_id' => 100,
-                'tanggal_bergabung' => Carbon::now()->toDateString()
+                'tanggal_bergabung' => Carbon::now()->toDateString(),
+                'pendidikan' => $dataApplicant->pendidikan,
+                'jurusan' => $dataApplicant->jurusan,
+                'nama_kampus' => $dataApplicant->nama_kampus,
+
             ]);
 
-            User::create([
-                'name' => titleCase($dataApplicant->nama),
-                'email' => trim($dataApplicant->email, ' '),
-                'username' => $id_karyawan_terbaru,
-                'role' => 1,
-                'password' => Hash::make($dataApplicant->password),
-            ]);
+            // User::create([
+            //     'name' => titleCase($dataApplicant->nama),
+            //     'email' => trim($dataApplicant->email, ' '),
+            //     'username' => $id_karyawan_terbaru,
+            //     'role' => 1,
+            //     'password' => Hash::make($dataApplicant->password),
+            // ]);
+            // Delete data applicant setelah di pindahkan ke database karyawan
 
-            //Create USer
+            //Create USer Di database 
             createUser($id_karyawan_terbaru);
+            $dataApplicant->delete();
+
+
 
             // hapus data applicant
-            $dataApplicant->delete();
             // $this->dispatch('success', message: 'Data Aplicant sudah berhasil di pindahkan kedalam database karyawan');
             $this->dispatch(
                 'message',
