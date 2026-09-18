@@ -55,3 +55,4 @@ Route::get(
     '/karyawan/{id_karyawan}/pendidikan',
     [KaryawanController::class, 'checkPendidikan']
 );
+Route::put('/karyawan/{id_karyawan}/pendidikan', [KaryawanController::class, 'updatePendidikan']);
