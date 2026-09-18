@@ -38,8 +38,10 @@ class Karyawanwr extends Component
     public $pilih_department;
     public $pilih_placement;
     public $jobgrades;
-
     public $gaji_tetap, $tunjangan_housing;
+    public $pendidikan, $jurusan, $nama_kampus;
+
+
 
 
     public function mount()
@@ -83,6 +85,10 @@ class Karyawanwr extends Component
         'hp2' => 'nullable',
         'hubungan1' => 'nullable',
         'hubungan2' => 'nullable',
+        'pendidikan' => 'required',
+        'jurusan' => 'nullable',
+        'nama_kampus' => 'nullable',
+
 
 
         // IDENTITAS
@@ -183,8 +189,10 @@ class Karyawanwr extends Component
             $data->hp2 = $this->hp2;
             $data->hubungan1 = $this->hubungan1;
             $data->hubungan2 = $this->hubungan2;
-
             $data->denda = $this->denda;
+            $data->pendidikan = $this->pendidikan;
+            $data->jurusan = $this->jurusan;
+            $data->nama_kampus = $this->nama_kampus;
 
             // Identitas
             $data->jenis_identitas = $this->jenis_identitas;
@@ -308,6 +316,9 @@ class Karyawanwr extends Component
             $data->hubungan1 = $this->hubungan1;
             $data->hubungan2 = $this->hubungan2;
             $data->denda = $this->denda;
+            $data->pendidikan = $this->pendidikan;
+            $data->jurusan = $this->jurusan;
+            $data->nama_kampus = $this->nama_kampus;
 
             // Identitas
             $data->jenis_identitas = $this->jenis_identitas;
