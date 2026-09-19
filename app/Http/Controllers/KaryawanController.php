@@ -17,6 +17,35 @@ use Illuminate\Support\Facades\DB;
 
 class KaryawanController extends Controller
 {
+    public function updatePendidikan(Request $request, $id_karyawan)
+    {
+        $validated = $request->validate([
+            'pendidikan'   => ['required', 'string', 'max:100'],
+            'jurusan'      => ['nullable', 'string', 'max:100'],
+            'nama_kampus'  => ['nullable', 'string', 'max:100'],
+        ]);
+
+        // $karyawan = Karyawan::find($id);
+        $karyawan = Karyawan::where('id_karyawan', $id_karyawan)->first();
+
+        if (!$karyawan) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Karyawan tidak ditemukan',
+            ], 404);
+        }
+
+        $karyawan->update($validated);
+
+        return response()->json([
+            'success' => true,
+            'id_karyawan' => $karyawan->id_karyawan,
+            'pendidikan' => $karyawan->pendidikan,
+            'jurusan' => $karyawan->jurusan,
+            'nama_kampus' => $karyawan->nama_kampus,
+            'sudah_terisi' => !empty($karyawan->pendidikan),
+        ]);
+    }
 
     public function checkPendidikan($id_karyawan)
     {
