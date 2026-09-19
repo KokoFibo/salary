@@ -1,7 +1,6 @@
 <div>
     <div class="container py-4">
 
-        ```
         <div class="row justify-content-center">
             <div class="col-12 col-sm-11 col-md-8 col-lg-5">
 
@@ -157,6 +156,5 @@
         </div>
 
     </div>
-    ```
 
 </div>
