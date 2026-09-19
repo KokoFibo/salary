@@ -56,7 +56,7 @@
                             <tbody>
                                 @foreach ($data as $d)
                                     <td>
-                                        @if (Auth::user()->role >= 6)
+                                        @if (Auth::user()->role >= 5)
                                             <button wire:click="deleteID(`{{ $d->id }}`)"
                                                 wire:confirm.prompt="Yakin mau di delete?\n\nKetik DELETE untuk konfirmasi|DELETE"
                                                 class="btn btn-danger btn-sm"><i
