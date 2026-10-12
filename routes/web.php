@@ -110,6 +110,7 @@ use App\Models\Lock;
 use App\Models\Payroll;
 use Google\Service\DriveActivity\Create;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AiQueryExportController;
 
 // Middleware
 Auth::routes([
@@ -255,6 +256,7 @@ Route::middleware(['auth'])->group(function () {
                         'is_uploadable' => $is_uploadable
                     ]);
                 });
+                Route::get('/ai-query/export', AiQueryExportController::class)->name('ai-query.export');
 
 
                 //Khusus Senior Admin
