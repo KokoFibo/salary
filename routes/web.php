@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AiQueryExportController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExcelController;
@@ -44,6 +45,7 @@ use App\Livewire\Deleteduplicatepresensi;
 use App\Livewire\DeleteMonthlyPresensi;
 use App\Livewire\DeleteNoscan;
 use App\Livewire\Deletepresensiwr;
+use App\Livewire\DeleteUserBackend;
 use App\Livewire\Departmentwr;
 use App\Livewire\Developer;
 use App\Livewire\DeveloperDashboard;
@@ -110,7 +112,6 @@ use App\Models\Lock;
 use App\Models\Payroll;
 use Google\Service\DriveActivity\Create;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AiQueryExportController;
 
 // Middleware
 Auth::routes([
@@ -377,6 +378,7 @@ Route::middleware(['auth'])->group(function () {
                             Route::get('/testok', function () {
                                 return view('test');
                             });
+                            Route::get('/delete-user-backend', DeleteUserBackend::class);
                         });
                     });
                 });
