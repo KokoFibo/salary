@@ -66,9 +66,17 @@
                     <td style="text-align: center"> {{ $d->alamat_tinggal }}</td>
                     <td style="text-align: center"> {{ $d->email }}</td>
                     <td style="text-align: center"> {{ $d->hp }}</td>
-                    <td style="text-align: center"> {{ $d->company->company_name }}</td>
-                    <td style="text-align: center"> {{ $d->company->placement_name }}</td>
-                    <td style="text-align: center"> {{ $d->department->nama_department }}</td>
+                    <td style="text-align: center">
+                        {{ optional($d->company)->company_name ?? '-' }}
+                    </td>
+
+                    <td style="text-align: center">
+                        {{ optional($d->placement)->placement_name ?? '-' }}
+                    </td>
+
+                    <td style="text-align: center">
+                        {{ optional($d->department)->nama_department ?? '-' }}
+                    </td>
                     <td style="text-align: center"> {{ $d->jabatan->nama_jabatan }}</td>
                     <td style="text-align: center"> {{ format_tgl($d->tanggal_bergabung) }}</td>
                     <td style="text-align: center"> {{ format_tgl($d->tanggal_resigned) }}</td>
