@@ -254,9 +254,18 @@
                                             <a href="/changeid">
                                                 <button class="btn btn-warning">Ganti ID</button> </a>
                                         </th>
+                                        @if (auth()->user()->role == 8)
+                                            <th style="width: 150px; border-style: none;">
+                                                <button wire:loading.remove wire:click="excelKhusus"
+                                                    class="btn btn-success col-12">Excel Khusus Lama</button>
+                                            </th>
+                                        @endif
+
                                         <th style="width: 150px; border-style: none;">
-                                            <button wire:loading.remove wire:click="excelKhusus"
-                                                class="btn btn-success col-12">Excel Khusus</button>
+                                            <a href="/excelkhusus">
+                                                <button wire:loading.remove wire:click="Excel Khusus"
+                                                    class="btn btn-success col-12">Excel Khusus</button>
+                                            </a>
                                         </th>
                                     @endif
                                     @if (auth()->user()->role >= 7)
