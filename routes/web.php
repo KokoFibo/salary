@@ -51,6 +51,7 @@ use App\Livewire\Developer;
 use App\Livewire\DeveloperDashboard;
 use App\Livewire\Directinject;
 use App\Livewire\Editpresensiwr;
+use App\Livewire\ExcelKhusus;
 use App\Livewire\Gajibpjs;
 use App\Livewire\Gantipassworddeveloper;
 use App\Livewire\Harikhususwr;
@@ -279,6 +280,7 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/hitungthr', Hitungthr::class);
                     Route::get('/hitungthrlebaran', Hitungthrlebaran::class);
                     Route::get('/laporan-cost/export/{year}', [LaporanCostController::class, 'export']);
+                    Route::get('/excelkhusus', ExcelKhusus::class);
 
 
 

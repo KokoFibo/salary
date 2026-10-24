@@ -30,8 +30,9 @@
                 <th style="text-align: center;">Email</th>
                 <th style="text-align: center;">No HP</th>
                 <th style="text-align: center;">Company</th>
-                <th style="text-align: center;">Jabatan</th>
+                <th style="text-align: center;">Directorate</th>
                 <th style="text-align: center;">Departement</th>
+                <th style="text-align: center;">Jabatan</th>
                 <th style="text-align: center;">Tanggal Bergabung</th>
                 @if ($status_karyawan == 2)
                     <th style="text-align: center;">Tanggal Resigned</th>
@@ -40,6 +41,8 @@
                 @elseif ($status_karyawan == 0)
                     <th style="text-align: center;">Tanggal Resigned/Blacklist</th>
                 @endif
+                <th style="text-align: center;">No rekening</th>
+
             </tr>
         </thead>
         <tbody>
@@ -70,8 +73,9 @@
                     <td style="text-align: center"> {{ $d->email }}</td>
                     <td style="text-align: center"> {{ $d->hp }}</td>
                     <td style="text-align: center"> {{ $d->company->company_name }}</td>
-                    <td style="text-align: center"> {{ $d->jabatan->nama_jabatan }}</td>
+                    <td style="text-align: center"> {{ $d->company->placement_name }}</td>
                     <td style="text-align: center"> {{ $d->department->nama_department }}</td>
+                    <td style="text-align: center"> {{ $d->jabatan->nama_jabatan }}</td>
                     <td style="text-align: center"> {{ format_tgl($d->tanggal_bergabung) }}</td>
                     @if ($status_karyawan == 2)
                         <td style="text-align: center"> {{ format_tgl($d->tanggal_resigned) }}</td>
@@ -94,6 +98,7 @@
                             @endif
                         </td>
                     @endif
+                    <td style="text-align: center">'{{ $d->nomor_rekening }}</td>
 
                 </tr>
             @endforeach

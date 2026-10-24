@@ -28,69 +28,6 @@ class karyawanExportKhusus implements FromView,  ShouldAutoSize, WithColumnForma
         $this->search_etnis = $search_etnis;
     }
 
-    // public function view(): View
-    // {
-
-    //     if ($this->selectStatus == 1) {
-    //         $statuses = ['PKWT', 'PKWTT', 'Dirumahkan'];
-    //     } elseif ($this->selectStatus == 2) {
-    //         $statuses = ['Blacklist', 'Resigned'];
-    //     } else {
-    //         $statuses = ['PKWT', 'PKWTT', 'Dirumahkan', 'Resigned', 'Blacklist'];
-    //     }
-    //     $data = Karyawan::whereIn('status_karyawan', $statuses);
-
-    //     if ($this->selected_placement) {
-    //         $data = $data->where('placement_id', $this->selected_placement);
-    //     }
-
-    //     if ($this->selected_company) {
-    //         $data = $data->where('company_id', $this->selected_company);
-    //     }
-    //     if ($this->selected_department) {
-    //         $data = $data->where('department_id', $this->selected_department);
-    //     }
-    //     if ($this->search_etnis) {
-    //         $data = $data->where('etnis', $this->search_etnis);
-    //     }
-
-
-
-    //     $data = $data->get();
-
-    //     $placement = nama_placement($this->selected_placement);
-    //     $company = nama_company($this->selected_company);
-    //     $department = nama_department($this->selected_department);
-
-
-
-    //     // if ($placement && $company) {
-    //     //     $header_text = "Excel Karyawan Company $company, Placement $placement";
-    //     // } elseif ($placement) {
-    //     //     $header_text = "Excel Karyawan Placement $placement";
-    //     // } elseif ($company) {
-    //     //     $header_text = "Excel Karyawan Company $company";
-    //     // } else {
-    //     //     $header_text = 'Excel Seluruh Karyawan';
-    //     // }
-
-    //     if ($placement || $company || $department || $this->search_etnis) {
-    //         $header_text = 'Data Karyawan';
-    //         if ($company) $header_text = $header_text . ' Company ' . $company;
-    //         if ($placement) $header_text = $header_text . ' Directorate ' . $placement;
-    //         if ($department) $header_text = $header_text . ' Department ' . $department;
-    //         if ($this->search_etnis) $header_text = $header_text . ' Etnis ' . $this->search_etnis;
-    //     } else {
-    //         $header_text = 'Data Seluruh Karyawan';
-    //     }
-
-
-
-    //     return view('karyawan_excel_view_khusus', [
-    //         'data' => $data,
-    //         'header_text' => $header_text
-    //     ]);
-    // }
 
     public function view(): View
     {
@@ -124,6 +61,7 @@ class karyawanExportKhusus implements FromView,  ShouldAutoSize, WithColumnForma
         }
 
         $data = $query->get();
+
         // dd($data[0]->status_karyawan, $this->selectStatus, $statuses);
         $placement = nama_placement($this->selected_placement);
         $company = nama_company($this->selected_company);
@@ -153,6 +91,7 @@ class karyawanExportKhusus implements FromView,  ShouldAutoSize, WithColumnForma
         return [
             'C' => NumberFormat::FORMAT_TEXT,
             'D' => '0',
+            'Q' => NumberFormat::FORMAT_TEXT,
 
             // 'D' => NumberFormat::FORMAT_NUMBER,
             // 'D' => NumberFormat::FORMAT_TEXT,
