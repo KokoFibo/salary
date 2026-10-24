@@ -3,7 +3,7 @@
 
     <div class="mb-3">
         <label class="form-label">
-            <input type="checkbox" wire:model="semuaData">
+            <input type="checkbox" wire:model.live="semuaData">
             Semua Data
         </label>
 
