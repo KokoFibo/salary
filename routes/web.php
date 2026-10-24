@@ -259,6 +259,8 @@ Route::middleware(['auth'])->group(function () {
                     ]);
                 });
                 Route::get('/ai-query/export', AiQueryExportController::class)->name('ai-query.export');
+                Route::get('/excelkhusus', ExcelKhusus::class);
+
 
 
                 //Khusus Senior Admin
@@ -280,7 +282,6 @@ Route::middleware(['auth'])->group(function () {
                     Route::get('/hitungthr', Hitungthr::class);
                     Route::get('/hitungthrlebaran', Hitungthrlebaran::class);
                     Route::get('/laporan-cost/export/{year}', [LaporanCostController::class, 'export']);
-                    Route::get('/excelkhusus', ExcelKhusus::class);
 
 
 
