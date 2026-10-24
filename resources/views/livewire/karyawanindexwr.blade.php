@@ -261,13 +261,13 @@
                                             </th>
                                         @endif
 
-                                        <th style="width: 150px; border-style: none;">
-                                            <a href="/excelkhusus">
-                                                <button wire:loading.remove wire:click="Excel Khusus"
-                                                    class="btn btn-success col-12">Excel Khusus</button>
-                                            </a>
-                                        </th>
                                     @endif
+                                    <th style="width: 150px; border-style: none;">
+                                        <a href="/excelkhusus">
+                                            <button wire:loading.remove wire:click="Excel Khusus"
+                                                class="btn btn-success col-12">Excel Khusus</button>
+                                        </a>
+                                    </th>
                                     @if (auth()->user()->role >= 7)
                                         <th style="width: 150px; border-style: none;">
                                             <a href="/cek-kenaikan-gaji"><button class="btn btn-primary col-12">Cek
