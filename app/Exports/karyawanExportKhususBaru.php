@@ -34,7 +34,7 @@ class karyawanExportKhususBaru implements
         $query = Karyawan::query();
 
         $query->where(function ($q) {
-            // Semua karyawan aktif selalu ditampilkan.
+            // Semua karyawan dengan status ini selalu ditampilkan.
             $q->whereIn('status_karyawan', [
                 'PKWT',
                 'PKWTT',
@@ -42,16 +42,20 @@ class karyawanExportKhususBaru implements
             ]);
 
             if ($this->semuaData) {
-                // Semua Resigned ditampilkan.
-                $q->orWhere('status_karyawan', 'Resigned');
+                // Semua karyawan Resigned dan Blacklist ditampilkan.
+                $q->orWhereIn('status_karyawan', [
+                    'Resigned',
+                    'Blacklist',
+                ]);
             } else {
-                // Resigned mulai dari bulan dan tahun pilihan.
+                // Menentukan tanggal awal berdasarkan bulan dan tahun.
                 $tanggalMulai = Carbon::create(
                     (int) $this->tahun,
                     (int) $this->bulan,
                     1
-                )->startOfMonth();
+                )->startOfMonth()->toDateString();
 
+                // Filter Resigned berdasarkan tanggal_resigned.
                 $q->orWhere(function ($resigned) use ($tanggalMulai) {
                     $resigned
                         ->where('status_karyawan', 'Resigned')
@@ -59,16 +63,28 @@ class karyawanExportKhususBaru implements
                         ->where(
                             'tanggal_resigned',
                             '>=',
-                            $tanggalMulai->toDateString()
+                            $tanggalMulai
+                        );
+                });
+
+                // Filter Blacklist berdasarkan tanggal_blacklist.
+                $q->orWhere(function ($blacklist) use ($tanggalMulai) {
+                    $blacklist
+                        ->where('status_karyawan', 'Blacklist')
+                        ->whereNotNull('tanggal_blacklist')
+                        ->where(
+                            'tanggal_blacklist',
+                            '>=',
+                            $tanggalMulai
                         );
                 });
             }
         });
 
-        // Blacklist otomatis tidak ikut karena tidak termasuk
-        // dalam status yang diperbolehkan di atas.
+        // Mengambil seluruh data yang memenuhi filter.
         $data = $query->get();
-        // Tambahkan tanda petik satu di depan nomor rekening.
+
+        // Menambahkan tanda petik satu di depan nomor rekening.
         foreach ($data as $karyawan) {
             if (
                 $karyawan->nomor_rekening !== null &&
@@ -79,6 +95,7 @@ class karyawanExportKhususBaru implements
             }
         }
 
+        // Menentukan judul laporan.
         $header_text = $this->semuaData
             ? 'Data Seluruh Karyawan'
             : 'Data Karyawan Mulai ' .
@@ -88,6 +105,7 @@ class karyawanExportKhususBaru implements
                 1
             )->translatedFormat('F Y');
 
+        // Mengirim data ke template Excel.
         return view('karyawan_excel_view_khusus_baru', [
             'data' => $data,
             'header_text' => $header_text,
