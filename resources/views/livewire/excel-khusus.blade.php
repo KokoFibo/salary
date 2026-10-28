@@ -1,7 +1,7 @@
 <div class="p-4 bg-white rounded shadow">
     <h4 class="mb-3">Export Data Karyawan Khusus</h4>
 
-    <div class="mb-3">
+    {{-- <div class="mb-3">
         <label class="form-label">
             <input type="checkbox" wire:model.live="semuaData">
             Semua Data
@@ -12,7 +12,7 @@
             karyawan Resigned akan ditampilkan.
             Karyawan Blacklist tetap dikecualikan.
         </div>
-    </div>
+    </div> --}}
 
     <div class="row mb-3">
         <div class="col-md-6">
