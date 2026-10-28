@@ -32,9 +32,11 @@
                 <th style="text-align: center;">Company</th>
                 <th style="text-align: center;">Directorate</th>
                 <th style="text-align: center;">Departement</th>
+                <th style="text-align: center;">Placement</th>
                 <th style="text-align: center;">Jabatan</th>
+                <th style="text-align: center;">Status</th>
                 <th style="text-align: center;">Tanggal Bergabung</th>
-                <th style="text-align: center;">Tanggal Resigned</th>
+                <th style="text-align: center;">Tanggal Resigned/Blacklist</th>
                 <th style="text-align: center;">No rekening</th>
 
             </tr>
@@ -77,9 +79,21 @@
                     <td style="text-align: center">
                         {{ optional($d->department)->nama_department ?? '-' }}
                     </td>
+                    <td style="text-align: center">
+                        {{ $d->placement2->nama_placement ?? '-' }}
+                    </td>
                     <td style="text-align: center"> {{ $d->jabatan->nama_jabatan }}</td>
+                    <td style="text-align: center"> {{ $d->status_karyawan }}</td>
                     <td style="text-align: center"> {{ format_tgl($d->tanggal_bergabung) }}</td>
-                    <td style="text-align: center"> {{ format_tgl($d->tanggal_resigned) }}</td>
+                    <td style="text-align: center">
+                        @if ($d->status_karyawan === 'Resigned')
+                            {{ $d->tanggal_resigned ? format_tgl($d->tanggal_resigned) : '-' }}
+                        @elseif ($d->status_karyawan === 'Blacklist')
+                            {{ $d->tanggal_blacklist ? format_tgl($d->tanggal_blacklist) : '-' }}
+                        @else
+                            -
+                        @endif
+                    </td>
                     <td style="text-align: center">'{{ $d->nomor_rekening }}</td>
 
                 </tr>
