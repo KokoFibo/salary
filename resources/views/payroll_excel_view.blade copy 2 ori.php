@@ -8,7 +8,7 @@
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> --}}
 
-    <title>Payroll Excel View</title>
+    <title>{{ $title }}</title>
 </head>
 
 
@@ -52,6 +52,14 @@
                 <th></th>
                 <th></th>
                 <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
                 <th colspan="5" style="text-align: center; background-color: green; color:black">
                     <h4>Karyawan</h4>
                 </th>
@@ -60,7 +68,6 @@
                     <h4>Company</h4>
                 </th>
 
-                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -75,21 +82,28 @@
                 <th style="text-align: center;">No. Rekening</th>
                 <th style="text-align: center;">Jabatan</th>
                 <th style="text-align: center;">Company</th>
-                <th style="text-align: center;">Placement</th>
+                <th style="text-align: center;">Directorate</th>
                 <th style="text-align: center;">Department</th>
                 <th style="text-align: center;">Metode Penggajian</th>
                 <th style="text-align: center;">Total Hari Kerja</th>
                 <th style="text-align: center;">Total Jam Kerja (Bersih)</th>
                 <th style="text-align: center;">Total Jam Lembur</th>
+                <th style="text-align: center;">Total Jam Kerja Libur</th>
+                <th style="text-align: center;">Total Jam Lembur Libur</th>
                 <th style="text-align: center;">Jumlah Jam Terlambat</th>
                 <th style="text-align: center;">Tambahan Shift Malam</th>
-                <th style="text-align: center;">Gaji Pokok</th>
+                <th style="text-align: center;">Gaji</th>
+                <th style="text-align: center;">Tunjangan Bahasa</th>
+                <th style="text-align: center;">Tunjangan Housing</th>
+                <th style="text-align: center;">Tunjangan Jabatan</th>
                 <th style="text-align: center;">Gaji Per Hari/Jam</th>
                 <th style="text-align: center;">Gaji Bulan Ini</th>
                 <th style="text-align: center;">Gaji Lembur</th>
                 <th style="text-align: center;">Total Gaji Lembur</th>
+                <th style="text-align: center;">Total Gaji Lembur Libur</th>
                 <th style="text-align: center;">Gaji Libur</th>
                 <th style="text-align: center;">Bonus/U.Makan</th>
+                <th style="text-align: center;">THR</th>
                 <th style="text-align: center;">Potongan 1X</th>
                 <th style="text-align: center;">Total NoScan</th>
                 <th style="text-align: center;">Denda Lupa Absen</th>
@@ -111,13 +125,21 @@
                 <th style="text-align: center;">JKM</th>
                 <th style="text-align: center;">Kesehatan</th>
                 <th style="text-align: center;">Total TAX</th>
+                {{-- <th style="text-align: center;">Total TAX Baru</th> --}}
                 {{-- <th style="text-align: center;">Perhitungan Tax Manual</th> --}}
                 <th style="text-align: center;">PTKP</th>
                 <th style="text-align: center;">TER</th>
                 <th style="text-align: center;">Rate</th>
                 <th style="text-align: center;">Pph21</th>
+                <th style="text-align: center;">NIK</th>
                 <th style="text-align: center;">No NPWP</th>
                 <th style="text-align: center;">Total</th>
+                <th style="text-align: center; background-color: #63BDF6;">PRF Salary</th>
+                <th style="text-align: center; background-color: #63BDF6;">Other Deductions</th>
+                <th style="text-align: center; background-color: #63BDF6;">BPJS Employee</th>
+                <th style="text-align: center; background-color: #63BDF6;">PPH21</th>
+                <th style="text-align: center; background-color: #63BDF6;">PRF</th>
+                <th style="text-align: center; background-color: #63BDF6;">Core Cash</th>
 
             </tr>
         </thead>
@@ -125,6 +147,7 @@
 
             @foreach ($data as $key => $d)
                 <tr>
+
                     <td style="text-align: center"> {{ $d->id_karyawan }}</td>
                     <td> {{ $d->nama }}</td>
                     <td style="text-align: center"> {{ $d->nama_bank }}</td>
@@ -138,32 +161,22 @@
                     <td> {{ $d->hari_kerja }}</td>
                     <td> {{ $d->jam_kerja }}</td>
                     <td> {{ $d->jam_lembur }}</td>
+                    <td> {{ $d->jam_kerja_libur }}</td>
+                    <td> {{ $d->jam_lembur_libur }}</td>
                     <td> {{ $d->jumlah_jam_terlambat }}</td>
                     <td style="text-align: right"> {{ $d->tambahan_shift_malam }}</td>
-                    <td style="text-align: right"> {{ $d->gaji_pokok }}</td>
+                    @php
+                        $data_karyawan = get_data_karyawan($d->id_karyawan);
+                    @endphp
+                    {{-- <td style="text-align: right"> {{ $d->gaji_tetap }}</td> --}}
+
+                    {{-- <td style="text-align: right"> {{ $data_karyawan->gaji_tetap }}</td> --}}
+                    <td style="text-align: right"> {{ $data_karyawan?->gaji_tetap ?? 0 }}</td>
+                    <td style="text-align: right"> {{ $data_karyawan->tunjangan_bahasa ?? 0 }}</td>
+                    <td style="text-align: right"> {{ $data_karyawan->tunjangan_housing ?? 0 }}</td>
+                    <td style="text-align: right"> {{ $data_karyawan->tunjangan_jabatan ?? 0 }}</td>
 
                     @php
-                        if ($d->metode_penggajian == 'Perjam') {
-                            $gaji_bulan_ini = total_gaji_perjam($d->gaji_pokok, $d->jam_kerja);
-                        } else {
-                            $gaji_bulan_ini = total_gaji_bulanan(
-                                $d->gaji_pokok,
-                                $d->hari_kerja,
-                                $total_n_hari_kerja,
-                                $jumlah_libur_nasional,
-                                $d->date,
-                                $d->id_karyawan,
-                                $d->status_karyawan,
-                            );
-                        }
-                        if ($d->gaji_pokok != 0) {
-                            // $gaji_bpjs_adjust = $d->gaji_bpjs * $total_gaji_sebelum_tax / $d->gaji_pokok;
-                            $gaji_bpjs_adjust = ($d->gaji_bpjs * $gaji_bulan_ini) / $d->gaji_pokok;
-                        } else {
-                            // Handle the case where gaji_pokok is zero (e.g., log an error or assign a default value)
-                            $gaji_bpjs_adjust = 0; // or another fallback value
-                            error_log('Division by zero error: gaji_pokok is zero for karyawan ID: ' . $d->id);
-                        }
 
                         if ($d->gaji_bpjs >= 12000000) {
                             $gaji_bpjs_max = 12000000;
@@ -171,8 +184,8 @@
                             $gaji_bpjs_max = $d->gaji_bpjs;
                         }
 
-                        if ($d->gaji_bpjs >= 10042300) {
-                            $gaji_jp_max = 10042300;
+                        if ($d->gaji_bpjs >= 11086300) {
+                            $gaji_jp_max = 11086300;
                         } else {
                             $gaji_jp_max = $d->gaji_bpjs;
                         }
@@ -184,6 +197,10 @@
 
                         if ($d->jkk) {
                             $jkk_company = ($d->gaji_bpjs * 0.24) / 100;
+                            if ($d->company_id == 101) {
+                                // Company YNE = 101
+                                $jkk_company = ($d->gaji_bpjs * 0.89) / 100;
+                            }
                         } else {
                             $jkk_company = 0;
                         }
@@ -208,14 +225,15 @@
 
                         $total_tax = 0;
                         $total_tax =
-                            $gaji_bpjs_adjust +
+                            $d->bpjs_adjustment +
                             // $d->gaji_bpjs +
                             $jkk_company +
                             $jkm_company +
                             $kesehatan_company +
-                            $d->gaji_lembur * $d->jam_lembur +
+                            $d->gaji_lembur * ($d->jam_lembur + $d->jam_lembur_libur) +
                             $d->gaji_libur +
                             $d->bonus1x +
+                            $d->thr +
                             $d->tambahan_shift_malam;
 
                         $ter = '';
@@ -247,23 +265,7 @@
                         }
 
                         $rate_pph21 = get_rate_ter_pph21($d->ptkp, $total_tax);
-                        $pph21 = ($total_tax * $rate_pph21) / 100;
-                        // if ($d->id_karyawan == 1662) {
-                        //     dd(
-                        //         $total_tax,
-                        //         $d->tambahan_shift_malam,
-                        //         $d->gaji_lembur * $d->jam_lembur,
-                        //         $d->gaji_libur,
-                        //         $d->bonus1x,
-                        //         $gaji_bpjs_adjust,
-                        //         $jkk_company,
-                        //         $jkm_company,
-                        //         $kesehatan_company,
-                        //         $d->kesehatan,
-                        //         $rate_pph21,
-                        //         $pph21,
-                        //     );
-                        // }
+
                     @endphp
 
                     @if ($d->metode_penggajian == 'Perjam')
@@ -271,11 +273,14 @@
                     @else
                         <td style="text-align: right"> {{ $d->gaji_pokok / $total_n_hari_kerja }}</td>
                     @endif
-                    <td style="text-align: right"> {{ $gaji_bulan_ini }}</td>
+                    {{-- <td style="text-align: right"> {{ $gaji_bulan_ini }}</td> --}}
+                    <td style="text-align: right"> {{ $d->gaji_bulan_ini }}</td>
                     <td style="text-align: right"> {{ $d->gaji_lembur }}</td>
                     <td style="text-align: right"> {{ $d->gaji_lembur * $d->jam_lembur }}</td>
+                    <td style="text-align: right"> {{ $d->gaji_lembur * $d->jam_lembur_libur }}</td>
                     <td style="text-align: right"> {{ $d->gaji_libur }}</td>
                     <td style="text-align: right"> {{ $d->bonus1x }}</td>
+                    <td style="text-align: right"> {{ $d->thr }}</td>
                     <td style="text-align: right"> {{ $d->potongan1x }}</td>
                     <td> {{ $d->total_noscan }}</td>
                     <td style="text-align: right"> {{ $d->denda_lupa_absen }}</td>
@@ -287,7 +292,7 @@
                     <td style="text-align: center"> {{ $d->status_karyawan }}</td>
 
 
-                    <td style="text-align: right"> {{ $gaji_bpjs_adjust }}</td>
+                    <td style="text-align: right"> {{ $d->bpjs_adjustment }}</td>
                     <td style="text-align: right"> {{ $d->gaji_bpjs }}</td>
                     <td style="text-align: right"> {{ $d->jht }}</td>
                     <td style="text-align: right"> {{ $d->jp }}</td>
@@ -335,19 +340,27 @@
                     @endif
 
 
-                    {{-- <td style="text-align: right"> {{ $d->total_bpjs }}</td> --}}
                     <td style="text-align: right"> {{ $total_tax }}</td>
+                    {{-- <td style="text-align: right"> {{ $d->total_tax }}</td> --}}
                     {{-- <td style="text-align: right">
                         {{ $d->gaji_lembur * $d->jam_lembur + $d->gaji_libur + $d->bonus1x + $d->tambahan_shift_malam + $gaji_bpjs_adjust + $jkk_company + $jkm_company + $kesehatan_company }}
                     </td> --}}
                     <td style="text-align: right"> {{ $d->ptkp }}</td>
                     <td style="text-align: right"> {{ $ter }}</td>
                     <td style="text-align: right"> {{ $rate_pph21 }}</td>
-                    {{-- <td style="text-align: right"> {{ $d->pph21 }}</td> --}}
-                    <td style="text-align: right"> {{ $pph21 }}</td>
+                    <td style="text-align: right"> {{ $d->pph21 }}</td>
 
-                    <td style="text-align: right"> {{ no_npwp($d->id_karyawan) }}</td>
+                    <td style="text-align: right"> {{ "'" . trim(strval(nik($d->id_karyawan))) }}</td>
+                    <td style="text-align: right"> {{ "'" . trim(strval(no_npwp($d->id_karyawan))) }}</td>
+                    {{-- <td style="text-align: right"> {{ strval(nik($d->id_karyawan)) }}</td>
+                    <td style="text-align: right"> {{ strval(no_npwp($d->id_karyawan)) }}</td> --}}
                     <td style="text-align: right"> {{ $d->total }}</td>
+                    <td style="text-align: right"> {{ $d->prf_salary }}</td>
+                    <td style="text-align: right"> {{ $d->other_deduction }}</td>
+                    <td style="text-align: right"> {{ $d->bpjs_employee }}</td>
+                    <td style="text-align: right"> {{ $d->pph21 }}</td>
+                    <td style="text-align: right"> {{ $d->prf }}</td>
+                    <td style="text-align: right"> {{ $d->core_cash }}</td>
                 </tr>
             @endforeach
 
